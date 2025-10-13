@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wandering Lantern - Children's Bookstore in Lakewood, OH</title>
     <style>
+        /* MOBILE-FIRST DESIGN */
         * {
             margin: 0;
             padding: 0;
@@ -29,11 +30,40 @@
             background-color: var(--parchment);
         }
 
-        /* Header */
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gentlePulse {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3),
+                            inset 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5),
+                            inset 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+            100% { opacity: 0.3; }
+        }
+
+        /* Header - Mobile First */
         header {
             background: linear-gradient(135deg, var(--deep-green) 0%, var(--forest-green) 100%);
             color: var(--cream);
-            padding: 2rem 1rem;
+            padding: 1.5rem 1rem;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
             position: relative;
@@ -52,7 +82,7 @@
         }
 
         .logo-container {
-            max-width: 200px;
+            max-width: 150px;
             margin: 0 auto 1rem;
             position: relative;
             z-index: 1;
@@ -65,17 +95,17 @@
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 1.75rem;
             margin-bottom: 0.5rem;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             position: relative;
             z-index: 1;
         }
 
         .tagline {
             font-style: italic;
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: var(--warm-gold);
             margin-bottom: 0.5rem;
             position: relative;
@@ -83,90 +113,78 @@
         }
 
         .location {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--cream);
             opacity: 0.9;
             position: relative;
             z-index: 1;
         }
 
-        /* Event Banner */
+        /* Event Banner - PROMINENT & ANIMATED */
         .event-banner {
             background: linear-gradient(135deg, var(--old-gold) 0%, var(--warm-gold) 100%);
             color: var(--dark-brown);
-            padding: 2.5rem 1rem;
+            padding: 2rem 1rem;
             text-align: center;
-            border-top: 3px solid var(--deep-green);
-            border-bottom: 3px solid var(--deep-green);
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--deep-green);
+            border-bottom: 4px solid var(--deep-green);
             position: relative;
-        }
-
-        .event-banner::before,
-        .event-banner::after {
-            content: '✦';
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 2rem;
-            color: var(--deep-green);
-            opacity: 0.3;
+            animation: gentlePulse 3s ease-in-out infinite;
         }
 
         .event-banner::before {
-            left: 1rem;
-        }
-
-        .event-banner::after {
-            right: 1rem;
+            content: '🎃';
+            position: absolute;
+            font-size: 3rem;
+            left: 50%;
+            top: -1.5rem;
+            transform: translateX(-50%);
+            animation: shimmer 2s ease-in-out infinite;
         }
 
         .event-banner h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
+            font-weight: bold;
         }
 
         .event-details {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: bold;
             margin: 0.5rem 0;
         }
 
         .event-date {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--deep-green);
             margin-top: 0.5rem;
+            font-weight: bold;
         }
 
-        /* Container */
+        .event-banner p:last-child {
+            font-style: italic;
+            margin-top: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        /* Container - Mobile First */
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 3rem 1.5rem;
+            padding: 2rem 1rem;
         }
 
         section {
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
             animation: fadeIn 0.8s ease-in;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         h2 {
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: var(--deep-green);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
             text-align: center;
             position: relative;
             padding-bottom: 0.5rem;
@@ -178,55 +196,56 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
+            width: 80px;
             height: 3px;
             background: linear-gradient(90deg, transparent, var(--old-gold), transparent);
         }
 
         p {
-            font-size: 1.1rem;
+            font-size: 1rem;
             margin-bottom: 1rem;
             text-align: center;
         }
 
+        /* Special Items - Mobile First */
         .special-items {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
 
         .special-item {
             background: var(--cream);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-left: 4px solid var(--old-gold);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .special-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        .special-item:active {
+            transform: scale(0.98);
         }
 
         .special-item h3 {
             color: var(--forest-green);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
         }
 
         .special-item p {
             text-align: left;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
-        /* Forms */
+        /* Forms - Mobile First */
         .form-container {
             max-width: 600px;
-            margin: 2rem auto;
+            margin: 1.5rem auto;
             background: var(--cream);
-            padding: 2.5rem;
+            padding: 1.5rem;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             border-top: 4px solid var(--old-gold);
@@ -235,7 +254,7 @@
         form {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1.25rem;
         }
 
         .form-group {
@@ -246,7 +265,7 @@
 
         .form-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 1rem;
         }
 
@@ -259,13 +278,14 @@
         input[type="text"],
         input[type="email"],
         input[type="number"] {
-            padding: 0.75rem;
+            padding: 0.875rem;
             border: 2px solid var(--sage-green);
             border-radius: 4px;
             font-family: 'Georgia', 'Garamond', serif;
             font-size: 1rem;
             transition: border-color 0.3s ease;
             background: var(--parchment);
+            -webkit-appearance: none;
         }
 
         input[type="text"]:focus,
@@ -278,47 +298,43 @@
         button[type="submit"] {
             background: linear-gradient(135deg, var(--deep-green) 0%, var(--forest-green) 100%);
             color: var(--cream);
-            padding: 1rem 2rem;
+            padding: 1rem;
             border: none;
             border-radius: 4px;
             font-family: 'Georgia', 'Garamond', serif;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
-        }
-
-        button[type="submit"]:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            -webkit-tap-highlight-color: transparent;
         }
 
         button[type="submit"]:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
 
         .form-note {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-style: italic;
             color: var(--forest-green);
             text-align: center;
             margin-top: 0.5rem;
         }
 
-        /* Contact Section */
+        /* Contact Section - Mobile First */
         .contact-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
 
         .contact-card {
             background: linear-gradient(135deg, var(--forest-green) 0%, var(--deep-green) 100%);
             color: var(--cream);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 8px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -326,12 +342,12 @@
 
         .contact-card h3 {
             color: var(--warm-gold);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
         }
 
         .contact-card p {
-            font-size: 1rem;
+            font-size: 0.95rem;
             line-height: 1.8;
         }
 
@@ -339,83 +355,209 @@
             color: var(--warm-gold);
             text-decoration: none;
             transition: color 0.3s ease;
+            word-break: break-word;
         }
 
-        .contact-card a:hover {
+        .contact-card a:active {
             color: var(--old-gold);
-            text-decoration: underline;
         }
 
-        /* Footer */
+        /* Footer - Mobile First */
         footer {
             background: var(--dark-brown);
             color: var(--cream);
             text-align: center;
-            padding: 2rem 1rem;
-            margin-top: 3rem;
+            padding: 1.5rem 1rem;
+            margin-top: 2rem;
         }
 
         footer p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             opacity: 0.8;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
+        /* TABLET: 600px and up */
+        @media (min-width: 600px) {
+            .logo-container {
+                max-width: 180px;
+            }
+
             h1 {
                 font-size: 2rem;
             }
 
             .tagline {
-                font-size: 1rem;
-            }
-
-            .event-banner h2 {
-                font-size: 1.5rem;
-            }
-
-            .event-details {
                 font-size: 1.1rem;
             }
 
+            .event-banner h2 {
+                font-size: 1.75rem;
+            }
+
+            .event-details {
+                font-size: 1.3rem;
+            }
+
             .event-date {
-                font-size: 1.2rem;
+                font-size: 1.5rem;
             }
 
-            h2 {
-                font-size: 1.6rem;
+            .special-items {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.75rem;
             }
 
-            .container {
-                padding: 2rem 1rem;
-            }
-
-            .event-banner::before,
-            .event-banner::after {
-                display: none;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.6rem;
-            }
-
-            .event-banner {
-                padding: 1.5rem 1rem;
-            }
-
-            .special-items,
             .contact-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-container {
-                padding: 1.5rem;
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .form-row {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-container {
+                padding: 2rem;
+            }
+        }
+
+        /* DESKTOP: 900px and up */
+        @media (min-width: 900px) {
+            header {
+                padding: 2rem 1rem;
+            }
+
+            .logo-container {
+                max-width: 200px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+            }
+
+            .location {
+                font-size: 0.95rem;
+            }
+
+            .event-banner {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .event-banner::after,
+            .event-banner::before:not(:first-child) {
+                content: '✦';
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 2.5rem;
+                color: var(--deep-green);
+                opacity: 0.3;
+                animation: shimmer 2.5s ease-in-out infinite;
+            }
+
+            .event-banner::after {
+                right: 2rem;
+            }
+
+            .event-banner h2 {
+                font-size: 2rem;
+                letter-spacing: 3px;
+                margin-bottom: 1rem;
+            }
+
+            .container {
+                padding: 3rem 1.5rem;
+            }
+
+            section {
+                margin-bottom: 4rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+            }
+
+            h2::after {
+                width: 100px;
+            }
+
+            p {
+                font-size: 1.1rem;
+            }
+
+            .special-items {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2rem;
+            }
+
+            .special-item {
+                padding: 2rem;
+            }
+
+            .special-item:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            }
+
+            .special-item h3 {
+                font-size: 1.3rem;
+                margin-bottom: 1rem;
+            }
+
+            .special-item p {
+                font-size: 1rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2rem;
+            }
+
+            .contact-card {
+                padding: 2rem;
+            }
+
+            .contact-card h3 {
+                font-size: 1.3rem;
+                margin-bottom: 1rem;
+            }
+
+            .contact-card p {
+                font-size: 1rem;
+            }
+
+            .contact-card a:hover {
+                color: var(--old-gold);
+                text-decoration: underline;
+            }
+
+            .form-container {
+                padding: 2.5rem;
+                margin: 2rem auto;
+            }
+
+            button[type="submit"] {
+                font-size: 1.1rem;
+                padding: 1rem 2rem;
+            }
+
+            button[type="submit"]:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+
+            footer {
+                padding: 2rem 1rem;
+                margin-top: 3rem;
+            }
+
+            footer p {
+                font-size: 0.9rem;
             }
         }
     </style>
