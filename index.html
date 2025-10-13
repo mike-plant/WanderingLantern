@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wandering Lantern - Children's Bookstore in Lakewood, OH</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
-        /* MOBILE-FIRST DESIGN */
+        /* MOBILE-FIRST DESIGN - POLISHED PROFESSIONAL VERSION */
         * {
             margin: 0;
             padding: 0;
@@ -21,13 +25,15 @@
             --cream: #faf8f3;
             --dark-brown: #3d2817;
             --parchment: #f5f1e8;
+            --accent-copper: #b87333;
         }
 
         body {
-            font-family: 'Georgia', 'Garamond', serif;
-            line-height: 1.7;
+            font-family: 'Lora', 'Georgia', serif;
+            line-height: 1.8;
             color: var(--dark-brown);
-            background-color: var(--parchment);
+            background: linear-gradient(to bottom, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%);
+            background-attachment: fixed;
         }
 
         /* Animations */
@@ -61,11 +67,11 @@
 
         /* Header - Mobile First */
         header {
-            background: linear-gradient(135deg, var(--deep-green) 0%, var(--forest-green) 100%);
+            background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 50%, #1a4d2e 100%);
             color: var(--cream);
-            padding: 1.5rem 1rem;
+            padding: 2rem 1rem 2.5rem;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
             position: relative;
             overflow: hidden;
         }
@@ -77,96 +83,139 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L50 50 L0 100 L50 100 L100 50 L50 0 Z" fill="rgba(255,255,255,0.03)"/></svg>');
-            opacity: 0.1;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L50 50 L0 100 L50 100 L100 50 L50 0 Z" fill="rgba(255,255,255,0.02)"/></svg>');
+            opacity: 1;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                var(--old-gold) 20%,
+                var(--warm-gold) 50%,
+                var(--old-gold) 80%,
+                transparent 100%);
+            opacity: 0.6;
         }
 
         .logo-container {
             max-width: 150px;
-            margin: 0 auto 1rem;
+            margin: 0 auto 1.25rem;
             position: relative;
             z-index: 1;
+            padding: 0.5rem;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
         }
 
         .logo-container img {
             width: 100%;
             height: auto;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
         }
 
         h1 {
-            font-size: 1.75rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            letter-spacing: 1px;
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
             position: relative;
             z-index: 1;
+            color: #fff;
         }
 
         .tagline {
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
             font-style: italic;
-            font-size: 1rem;
+            font-size: 1.15rem;
             color: var(--warm-gold);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             position: relative;
             z-index: 1;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            font-weight: 400;
         }
 
         .location {
             font-size: 0.9rem;
             color: var(--cream);
-            opacity: 0.9;
+            opacity: 0.95;
             position: relative;
             z-index: 1;
+            letter-spacing: 0.5px;
         }
 
         /* Event Banner - PROMINENT & ANIMATED */
         .event-banner {
-            background: linear-gradient(135deg, var(--old-gold) 0%, var(--warm-gold) 100%);
+            background:
+                linear-gradient(135deg, rgba(212, 175, 55, 0.95) 0%, rgba(240, 198, 116, 0.95) 100%),
+                repeating-linear-gradient(45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(255, 255, 255, 0.03) 10px,
+                    rgba(255, 255, 255, 0.03) 20px);
             color: var(--dark-brown);
-            padding: 2rem 1rem;
+            padding: 2.5rem 1.25rem;
             text-align: center;
-            border-top: 4px solid var(--deep-green);
-            border-bottom: 4px solid var(--deep-green);
+            border-top: 5px solid var(--deep-green);
+            border-bottom: 5px solid var(--deep-green);
             position: relative;
             animation: gentlePulse 3s ease-in-out infinite;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0,0,0,0.1);
         }
 
         .event-banner::before {
             content: '🎃';
             position: absolute;
-            font-size: 3rem;
+            font-size: 3.5rem;
             left: 50%;
-            top: -1.5rem;
+            top: -1.75rem;
             transform: translateX(-50%);
             animation: shimmer 2s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
         }
 
         .event-banner h2 {
-            font-size: 1.5rem;
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-size: 1.75rem;
             margin-bottom: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: bold;
+            letter-spacing: 3px;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
         }
 
         .event-details {
-            font-size: 1.2rem;
-            font-weight: bold;
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
             margin: 0.5rem 0;
         }
 
         .event-date {
-            font-size: 1.3rem;
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-size: 1.5rem;
             color: var(--deep-green);
-            margin-top: 0.5rem;
-            font-weight: bold;
+            margin-top: 0.75rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
         }
 
         .event-banner p:last-child {
             font-style: italic;
-            margin-top: 0.75rem;
-            font-size: 0.95rem;
+            margin-top: 1rem;
+            font-size: 1rem;
+            opacity: 0.9;
         }
 
         /* Container - Mobile First */
@@ -182,12 +231,15 @@
         }
 
         h2 {
-            font-size: 1.5rem;
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
             color: var(--deep-green);
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
             text-align: center;
             position: relative;
-            padding-bottom: 0.5rem;
+            padding-bottom: 1rem;
+            letter-spacing: 1px;
         }
 
         h2::after {
@@ -196,15 +248,33 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--old-gold), transparent);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                var(--sage-green) 10%,
+                var(--old-gold) 50%,
+                var(--sage-green) 90%,
+                transparent 100%);
+            border-radius: 2px;
+        }
+
+        h2::before {
+            content: '✦';
+            position: absolute;
+            bottom: -0.25rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--old-gold);
+            font-size: 0.5rem;
+            opacity: 0.7;
         }
 
         p {
-            font-size: 1rem;
+            font-size: 1.05rem;
             margin-bottom: 1rem;
             text-align: center;
+            line-height: 1.8;
         }
 
         /* Special Items - Mobile First */
@@ -216,12 +286,29 @@
         }
 
         .special-item {
-            background: var(--cream);
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-left: 4px solid var(--old-gold);
+            background: linear-gradient(to bottom, #fff 0%, var(--cream) 100%);
+            padding: 1.75rem;
+            border-radius: 12px;
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.08),
+                0 4px 12px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border-left: 5px solid var(--old-gold);
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .special-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            border-radius: 0 12px 0 100%;
         }
 
         .special-item:active {
@@ -229,26 +316,38 @@
         }
 
         .special-item h3 {
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
             color: var(--forest-green);
-            margin-bottom: 0.75rem;
-            font-size: 1.2rem;
+            margin-bottom: 0.875rem;
+            font-size: 1.35rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
         }
 
         .special-item p {
             text-align: left;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            font-size: 0.975rem;
+            line-height: 1.7;
+            color: rgba(61, 40, 23, 0.9);
+            position: relative;
+            z-index: 1;
         }
 
         /* Forms - Mobile First */
         .form-container {
             max-width: 600px;
             margin: 1.5rem auto;
-            background: var(--cream);
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            border-top: 4px solid var(--old-gold);
+            background: linear-gradient(to bottom, #fff 0%, var(--cream) 100%);
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
+            box-shadow:
+                0 4px 8px rgba(0, 0, 0, 0.1),
+                0 8px 24px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            border-top: 5px solid var(--old-gold);
+            border-left: 1px solid rgba(212, 175, 55, 0.3);
+            border-right: 1px solid rgba(212, 175, 55, 0.3);
         }
 
         form {
@@ -278,13 +377,14 @@
         input[type="text"],
         input[type="email"],
         input[type="number"] {
-            padding: 0.875rem;
-            border: 2px solid var(--sage-green);
-            border-radius: 4px;
-            font-family: 'Georgia', 'Garamond', serif;
+            padding: 0.875rem 1rem;
+            border: 2px solid rgba(74, 124, 89, 0.3);
+            border-radius: 6px;
+            font-family: 'Lora', 'Georgia', serif;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
-            background: var(--parchment);
+            transition: all 0.3s ease;
+            background: #fff;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
             -webkit-appearance: none;
         }
 
@@ -293,26 +393,53 @@
         input[type="number"]:focus {
             outline: none;
             border-color: var(--old-gold);
+            box-shadow:
+                inset 0 1px 3px rgba(0, 0, 0, 0.08),
+                0 0 0 3px rgba(212, 175, 55, 0.1);
         }
 
         button[type="submit"] {
-            background: linear-gradient(135deg, var(--deep-green) 0%, var(--forest-green) 100%);
+            background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 50%, #1a4d2e 100%);
             color: var(--cream);
-            padding: 1rem;
+            padding: 1rem 1.5rem;
             border: none;
-            border-radius: 4px;
-            font-family: 'Georgia', 'Garamond', serif;
-            font-size: 1rem;
-            font-weight: bold;
+            border-radius: 6px;
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             -webkit-tap-highlight-color: transparent;
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                0 4px 12px rgba(26, 77, 46, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button[type="submit"]::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        button[type="submit"]:hover::before {
+            left: 100%;
         }
 
         button[type="submit"]:active {
             transform: scale(0.98);
+            box-shadow:
+                0 1px 2px rgba(0, 0, 0, 0.1),
+                0 2px 6px rgba(26, 77, 46, 0.2);
         }
 
         .form-note {
@@ -332,30 +459,56 @@
         }
 
         .contact-card {
-            background: linear-gradient(135deg, var(--forest-green) 0%, var(--deep-green) 100%);
+            background: linear-gradient(135deg, #2d5f3f 0%, #1a4d2e 50%, #1a4d2e 100%);
             color: var(--cream);
-            padding: 1.5rem;
-            border-radius: 8px;
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow:
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                0 8px 20px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .contact-card h3 {
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
             color: var(--warm-gold);
-            margin-bottom: 0.75rem;
-            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-size: 1.35rem;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
         }
 
         .contact-card p {
-            font-size: 0.95rem;
+            font-size: 0.975rem;
             line-height: 1.8;
+            position: relative;
+            z-index: 1;
         }
 
         .contact-card a {
             color: var(--warm-gold);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
             word-break: break-word;
+            position: relative;
+            z-index: 1;
         }
 
         .contact-card a:active {
@@ -383,23 +536,23 @@
             }
 
             h1 {
-                font-size: 2rem;
+                font-size: 2.25rem;
             }
 
             .tagline {
-                font-size: 1.1rem;
+                font-size: 1.25rem;
             }
 
             .event-banner h2 {
-                font-size: 1.75rem;
+                font-size: 2rem;
             }
 
             .event-details {
-                font-size: 1.3rem;
+                font-size: 1.4rem;
             }
 
             .event-date {
-                font-size: 1.5rem;
+                font-size: 1.65rem;
             }
 
             .special-items {
@@ -431,12 +584,12 @@
             }
 
             h1 {
-                font-size: 2.5rem;
-                letter-spacing: 2px;
+                font-size: 2.75rem;
+                letter-spacing: 3px;
             }
 
             .tagline {
-                font-size: 1.2rem;
+                font-size: 1.35rem;
             }
 
             .location {
@@ -464,9 +617,17 @@
             }
 
             .event-banner h2 {
-                font-size: 2rem;
-                letter-spacing: 3px;
+                font-size: 2.25rem;
+                letter-spacing: 4px;
                 margin-bottom: 1rem;
+            }
+
+            .event-details {
+                font-size: 1.5rem;
+            }
+
+            .event-date {
+                font-size: 1.75rem;
             }
 
             .container {
@@ -478,8 +639,8 @@
             }
 
             h2 {
-                font-size: 2rem;
-                margin-bottom: 1.5rem;
+                font-size: 2.25rem;
+                margin-bottom: 1.75rem;
             }
 
             h2::after {
