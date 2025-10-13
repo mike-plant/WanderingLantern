@@ -221,6 +221,92 @@
             font-size: 1rem;
         }
 
+        /* Forms */
+        .form-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: var(--cream);
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-top: 4px solid var(--old-gold);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        label {
+            font-weight: bold;
+            color: var(--deep-green);
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"] {
+            padding: 0.75rem;
+            border: 2px solid var(--sage-green);
+            border-radius: 4px;
+            font-family: 'Georgia', 'Garamond', serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: var(--parchment);
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--old-gold);
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(135deg, var(--deep-green) 0%, var(--forest-green) 100%);
+            color: var(--cream);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Georgia', 'Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .form-note {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--forest-green);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
         /* Contact Section */
         .contact-grid {
             display: grid;
@@ -323,6 +409,14 @@
             .contact-grid {
                 grid-template-columns: 1fr;
             }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -341,6 +435,39 @@
         <p class="event-details">Join us for Trick-or-Treat!</p>
         <p class="event-date">October 22nd | 5:30 PM - 7:00 PM</p>
         <p style="margin-top: 1rem; font-style: italic;">Come in costume and enjoy treats, stories, and magical surprises!</p>
+    </div>
+
+    <!-- Halloween RSVP Form -->
+    <div class="container">
+        <section id="rsvp">
+            <h2>RSVP for Halloween Event</h2>
+            <p>Let us know you're coming so we can prepare enough treats and magic for everyone!</p>
+            <div class="form-container">
+                <!-- SETUP REQUIRED: Sign up at formspree.io and replace YOUR_RSVP_FORM_ID with your actual form ID -->
+                <form action="https://formspree.io/f/YOUR_RSVP_FORM_ID" method="POST">
+                    <div class="form-group">
+                        <label for="rsvp-name">Your Name *</label>
+                        <input type="text" id="rsvp-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rsvp-email">Email Address *</label>
+                        <input type="email" id="rsvp-email" name="email" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="num-kids">Number of Kids</label>
+                            <input type="number" id="num-kids" name="num-kids" min="0" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="num-adults">Number of Adults</label>
+                            <input type="number" id="num-adults" name="num-adults" min="0" value="1">
+                        </div>
+                    </div>
+                    <button type="submit">Reserve Your Spot</button>
+                    <p class="form-note">We'll send you a confirmation email with more details!</p>
+                </form>
+            </div>
+        </section>
     </div>
 
     <div class="container">
@@ -389,6 +516,22 @@
                         We're here to help you find the right book for every child.
                     </p>
                 </div>
+            </div>
+        </section>
+
+        <section id="newsletter">
+            <h2>Join Our Newsletter</h2>
+            <p>Stay updated on new arrivals, special events, storytimes, and magical happenings at The Wandering Lantern!</p>
+            <div class="form-container">
+                <!-- SETUP REQUIRED: Sign up at formspree.io and replace YOUR_NEWSLETTER_FORM_ID with your actual form ID -->
+                <form action="https://formspree.io/f/YOUR_NEWSLETTER_FORM_ID" method="POST">
+                    <div class="form-group">
+                        <label for="newsletter-email">Email Address *</label>
+                        <input type="email" id="newsletter-email" name="email" placeholder="your@email.com" required>
+                    </div>
+                    <button type="submit">Subscribe to Newsletter</button>
+                    <p class="form-note">We promise to only send you the good stuff - no spam, just stories!</p>
+                </form>
             </div>
         </section>
 
