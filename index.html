@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wandering Lantern - Children's Bookstore in Lakewood, OH</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --deep-green: #1a4d2e;
+            --forest-green: #2d5f3f;
+            --sage-green: #4a7c59;
+            --old-gold: #d4af37;
+            --warm-gold: #f0c674;
+            --cream: #faf8f3;
+            --dark-brown: #3d2817;
+            --parchment: #f5f1e8;
+        }
+
+        body {
+            font-family: 'Georgia', 'Garamond', serif;
+            line-height: 1.7;
+            color: var(--dark-brown);
+            background-color: var(--parchment);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--deep-green) 0%, var(--forest-green) 100%);
+            color: var(--cream);
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L50 50 L0 100 L50 100 L100 50 L50 0 Z" fill="rgba(255,255,255,0.03)"/></svg>');
+            opacity: 0.1;
+        }
+
+        .logo-container {
+            max-width: 200px;
+            margin: 0 auto 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tagline {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--warm-gold);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .location {
+            font-size: 0.95rem;
+            color: var(--cream);
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Event Banner */
+        .event-banner {
+            background: linear-gradient(135deg, var(--old-gold) 0%, var(--warm-gold) 100%);
+            color: var(--dark-brown);
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-top: 3px solid var(--deep-green);
+            border-bottom: 3px solid var(--deep-green);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .event-banner::before,
+        .event-banner::after {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: var(--deep-green);
+            opacity: 0.3;
+        }
+
+        .event-banner::before {
+            left: 1rem;
+        }
+
+        .event-banner::after {
+            right: 1rem;
+        }
+
+        .event-banner h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .event-details {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .event-date {
+            font-size: 1.5rem;
+            color: var(--deep-green);
+            margin-top: 0.5rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--deep-green);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--old-gold), transparent);
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .special-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .special-item {
+            background: var(--cream);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--old-gold);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .special-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .special-item h3 {
+            color: var(--forest-green);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .special-item p {
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-card {
+            background: linear-gradient(135deg, var(--forest-green) 0%, var(--deep-green) 100%);
+            color: var(--cream);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-card h3 {
+            color: var(--warm-gold);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .contact-card p {
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .contact-card a {
+            color: var(--warm-gold);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-card a:hover {
+            color: var(--old-gold);
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-brown);
+            color: var(--cream);
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .event-banner h2 {
+                font-size: 1.5rem;
+            }
+
+            .event-details {
+                font-size: 1.1rem;
+            }
+
+            .event-date {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .event-banner::before,
+            .event-banner::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .event-banner {
+                padding: 1.5rem 1rem;
+            }
+
+            .special-items,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="logo.png" alt="The Wandering Lantern Logo">
+        </div>
+        <h1>The Wandering Lantern</h1>
+        <p class="tagline">Follow the light, find the wonder</p>
+        <p class="location">A Children's Bookstore in Lakewood, Ohio</p>
+    </header>
+
+    <div class="event-banner">
+        <h2>🎃 Special Event 🎃</h2>
+        <p class="event-details">Join us for Trick-or-Treat!</p>
+        <p class="event-date">October 22nd | 5:30 PM - 7:00 PM</p>
+        <p style="margin-top: 1rem; font-style: italic;">Come in costume and enjoy treats, stories, and magical surprises!</p>
+    </div>
+
+    <div class="container">
+        <section id="about">
+            <h2>About Us</h2>
+            <p>
+                The Wandering Lantern is a place where curiosity meets wonder, and every book is a doorway to adventure.
+                Nestled in the heart of Lakewood, our cozy bookstore celebrates the magic of reading and the joy of discovery
+                for young minds and the young at heart.
+            </p>
+            <p>
+                We believe that books have the power to illuminate paths, spark imagination, and create lifelong readers.
+                Our carefully curated collection features both beloved classics and exciting new releases,
+                each chosen to inspire and delight.
+            </p>
+        </section>
+
+        <section id="special">
+            <h2>What Makes Us Special</h2>
+            <div class="special-items">
+                <div class="special-item">
+                    <h3>📚 Curated Collection</h3>
+                    <p>
+                        Every book is handpicked to inspire wonder, creativity, and a love of reading.
+                        From picture books to young adult novels, we offer stories that matter.
+                    </p>
+                </div>
+                <div class="special-item">
+                    <h3>✨ Community Events</h3>
+                    <p>
+                        Regular storytimes, author visits, and special celebrations create a vibrant community
+                        of book lovers and young readers.
+                    </p>
+                </div>
+                <div class="special-item">
+                    <h3>🏮 Magical Atmosphere</h3>
+                    <p>
+                        Step into a world of warm lighting, cozy reading nooks, and an atmosphere that
+                        feels like stepping into your favorite storybook.
+                    </p>
+                </div>
+                <div class="special-item">
+                    <h3>💡 Expert Guidance</h3>
+                    <p>
+                        Our knowledgeable staff loves matching readers with their perfect next adventure.
+                        We're here to help you find the right book for every child.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Visit & Connect</h2>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h3>📍 Location</h3>
+                    <p>
+                        15729 Madison Ave<br>
+                        Lakewood, OH 44107
+                    </p>
+                </div>
+                <div class="contact-card">
+                    <h3>✉️ Email</h3>
+                    <p>
+                        <a href="mailto:thewanderinglanterncle@gmail.com">thewanderinglanterncle@gmail.com</a>
+                    </p>
+                </div>
+                <div class="contact-card">
+                    <h3>📱 Instagram</h3>
+                    <p>
+                        <a href="https://instagram.com/thewanderinglanterncle" target="_blank">@thewanderinglanterncle</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 The Wandering Lantern. All rights reserved.</p>
+        <p style="margin-top: 0.5rem; font-style: italic;">Where every page turns into an adventure.</p>
+    </footer>
+</body>
+</html>
