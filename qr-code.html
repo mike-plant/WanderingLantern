@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code - Halloween Raffle Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            background: #f5f1e8;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 600px;
+        }
+        h1 {
+            color: #1a4d2e;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        .qr-code {
+            margin: 2rem 0;
+        }
+        .qr-code img {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+        }
+        .url {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            word-break: break-all;
+        }
+        .instructions {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f5f1e8;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .instructions h2 {
+            color: #1a4d2e;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .instructions p {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .instructions {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎃 Halloween Raffle Signup</h1>
+        <div class="qr-code">
+            <img src="qrcode_thewanderinglantern.com.png" alt="QR Code for Halloween Raffle Signup">
+        </div>
+        <div class="url">
+            <strong>URL:</strong><br>
+            https://www.thewanderinglantern.com/signup/
+        </div>
+
+        <div class="instructions">
+            <h2>Instructions for Event:</h2>
+            <p><strong>1.</strong> Print this page with the QR code</p>
+            <p><strong>2.</strong> Display at the event entrance or registration table</p>
+            <p><strong>3.</strong> Have visitors scan with their phones to enter the raffle</p>
+            <p><strong>4.</strong> The form collects: name, email, phone, number of kids, and basket preference</p>
+            <p><strong>5.</strong> All submissions go to your Mailchimp list tagged "Halloween 2025"</p>
+        </div>
+    </div>
+
+</body>
+</html>

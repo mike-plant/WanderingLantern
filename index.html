@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DD109W64TG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-DD109W64TG');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wandering Lantern - Children's Bookstore in Lakewood, OH</title>
@@ -811,12 +821,21 @@
             <h2>Join Our Newsletter</h2>
             <p>Stay updated on new arrivals, special events, storytimes, and magical happenings at The Wandering Lantern!</p>
             <div class="form-container">
-                <form action="https://formspree.io/f/mrgbzpar" method="POST">
+                <form action="https://thewanderinglantern.us3.list-manage.com/subscribe/post?u=f5535995545a29ebbdc6de523&amp;id=f1915b185f&amp;f_id=0089a2e0f0" method="post" class="validate" target="_self">
                     <div class="form-group">
-                        <label for="newsletter-email">Email Address *</label>
-                        <input type="email" id="newsletter-email" name="email" placeholder="your@email.com" required>
+                        <label for="mce-EMAIL">Email Address *</label>
+                        <input type="email" id="mce-EMAIL" name="EMAIL" class="required email" placeholder="your@email.com" required>
                     </div>
-                    <button type="submit">Subscribe to Newsletter</button>
+
+                    <!-- Hidden field for Pre Launch tag -->
+                    <input type="hidden" name="tags" value="7744609">
+
+                    <!-- Mailchimp bot prevention -->
+                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                        <input type="text" name="b_f5535995545a29ebbdc6de523_f1915b185f" tabindex="-1" value="">
+                    </div>
+
+                    <button type="submit" name="subscribe">Subscribe to Newsletter</button>
                     <p class="form-note">We promise to only send you the good stuff - no spam, just stories!</p>
                 </form>
             </div>
