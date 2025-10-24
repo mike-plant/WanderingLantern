@@ -323,7 +323,9 @@
             font-weight: 600;
         }
 
-        input[type="email"] {
+        input[type="email"],
+        input[type="text"],
+        textarea {
             width: 100%;
             padding: 0.875rem;
             border: 2px solid rgba(139, 111, 71, 0.3);
@@ -333,7 +335,13 @@
             transition: border-color 0.3s ease;
         }
 
-        input[type="email"]:focus {
+        textarea {
+            resize: vertical;
+        }
+
+        input[type="email"]:focus,
+        input[type="text"]:focus,
+        textarea:focus {
             outline: none;
             border-color: var(--aged-gold);
         }
@@ -502,8 +510,6 @@
             <span class="info-separator">|</span>
             <a href="tel:2169994462">(216) 999-4462</a>
             <span class="info-separator">|</span>
-            <a href="mailto:hello@thewanderinglantern.com">hello@thewanderinglantern.com</a>
-            <span class="info-separator">|</span>
             <a href="https://www.instagram.com/thewanderinglanterncle" target="_blank">Instagram</a>
             <span class="info-separator">|</span>
             <a href="https://www.facebook.com/thewanderinglanterncle" target="_blank">Facebook</a>
@@ -514,8 +520,8 @@
     <nav>
         <a href="#offerings">What We Offer</a>
         <a href="#about">About Us</a>
-        <a href="#newsletter">Newsletter</a>
-        <a href="#contact">Contact</a>
+        <a href="newsletter/">Newsletter</a>
+        <a href="#contact">Get in Touch</a>
     </nav>
 
     <!-- What We Offer Section -->
@@ -592,46 +598,50 @@
             </p>
         </section>
 
-        <!-- Newsletter Section -->
-        <section id="newsletter">
-            <h2>Join Our Newsletter</h2>
-            <p style="text-align: center;">Stay updated on new arrivals, special events, storytimes, and magical happenings at The Wandering Lantern!</p>
+        <!-- Contact Form Section -->
+        <section id="contact">
+            <h2>Send Us a Message</h2>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto 2rem;">
+                Have a question about our books? Curious about hosting an event? Just want to chat about a great story? Drop us a line.
+            </p>
             <div class="form-container">
-                <form action="https://thewanderinglantern.us3.list-manage.com/subscribe/post?u=f5535995545a29ebbdc6de523&amp;id=f1915b185f&amp;f_id=0089a2e0f0" method="post" class="validate" target="_self">
+                <form action="https://formspree.io/f/xkgqdarv" method="POST" id="contact-form">
                     <div class="form-group">
-                        <label for="mce-EMAIL">Email Address</label>
-                        <input type="email" id="mce-EMAIL" name="EMAIL" class="required email" placeholder="your@email.com" required>
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required>
                     </div>
 
-                    <!-- Hidden field for Pre Launch tag -->
-                    <input type="hidden" name="tags" value="7744609">
-
-                    <!-- Mailchimp bot prevention -->
-                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
-                        <input type="text" name="b_f5535995545a29ebbdc6de523_f1915b185f" tabindex="-1" value="">
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required>
                     </div>
 
-                    <button type="submit" name="subscribe">Subscribe</button>
-                    <p class="form-note">We promise to only send you the good stuff - no spam, just stories!</p>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="newsletter" name="newsletter" value="yes" style="width: auto; margin: 0;">
+                        <label for="newsletter" style="margin: 0; font-weight: 400;">Keep me updated with your newsletter</label>
+                    </div>
+
+                    <button type="submit">Send Message</button>
                 </form>
             </div>
-        </section>
 
-        <!-- Contact Section -->
-        <section id="contact">
-            <h2>Visit & Connect</h2>
-            <div class="contact-grid">
+            <!-- Contact Info Cards -->
+            <div class="contact-grid" style="margin-top: 3rem;">
                 <div class="contact-card">
                     <h3>Visit Us</h3>
                     <p>15729 Madison Ave<br>Lakewood, OH 44107</p>
                 </div>
                 <div class="contact-card">
-                    <h3>Contact</h3>
+                    <h3>Call</h3>
                     <p><a href="tel:2169994462">(216) 999-4462</a></p>
-                    <p><a href="mailto:hello@thewanderinglantern.com">hello@thewanderinglantern.com</a></p>
                 </div>
                 <div class="contact-card">
-                    <h3>Follow Us</h3>
+                    <h3>Follow</h3>
                     <p><a href="https://www.instagram.com/thewanderinglanterncle" target="_blank">Instagram</a></p>
                     <p><a href="https://www.facebook.com/thewanderinglanterncle" target="_blank">Facebook</a></p>
                 </div>
@@ -674,6 +684,38 @@
                 }
             });
         }
+
+        // Handle contact form submission with Mailchimp integration
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', async function(e) {
+            const newsletterCheckbox = document.getElementById('newsletter');
+
+            // If newsletter is checked, also submit to Mailchimp
+            if (newsletterCheckbox.checked) {
+                const email = document.getElementById('email').value;
+                const name = document.getElementById('name').value;
+
+                // Create form data for Mailchimp
+                const mailchimpData = new FormData();
+                mailchimpData.append('EMAIL', email);
+                mailchimpData.append('FNAME', name.split(' ')[0]); // First name
+                if (name.split(' ').length > 1) {
+                    mailchimpData.append('LNAME', name.split(' ').slice(1).join(' ')); // Last name
+                }
+                mailchimpData.append('tags', '7744609'); // Pre Launch tag
+
+                // Submit to Mailchimp (non-blocking)
+                fetch('https://thewanderinglantern.us3.list-manage.com/subscribe/post-json?u=f5535995545a29ebbdc6de523&id=f1915b185f&f_id=0089a2e0f0', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: mailchimpData
+                }).catch(() => {
+                    // Silent fail - form will still submit to Formspree
+                });
+            }
+
+            // Let the form submit normally to Formspree
+        });
     </script>
 </body>
 </html>

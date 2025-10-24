@@ -13,13 +13,13 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get to Know You - The Wandering Lantern</title>
+    <title>Newsletter Signup - The Wandering Lantern</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        /* MOBILE-FIRST HALLOWEEN SIGNUP PAGE */
+        /* MOBILE-FIRST NEWSLETTER PAGE */
         * {
             margin: 0;
             padding: 0;
@@ -27,20 +27,21 @@
         }
 
         :root {
-            --deep-green: #1a4d2e;
-            --forest-green: #2d5f3f;
-            --old-gold: #d4af37;
-            --warm-gold: #f0c674;
-            --cream: #faf8f3;
-            --dark-brown: #3d2817;
-            --parchment: #f5f1e8;
+            --warm-brown: #8b6f47;
+            --deep-brown: #5c4d3c;
+            --aged-gold: #c9a961;
+            --muted-gold: #a38b5f;
+            --cream: #faf7f0;
+            --parchment: #f5eedc;
+            --dark-text: #3a2f27;
+            --soft-green: #7a8b6f;
         }
 
         body {
-            font-family: 'Lora', 'Georgia', serif;
+            font-family: 'Libre Baskerville', 'Georgia', serif;
             line-height: 1.7;
-            color: var(--dark-brown);
-            background: linear-gradient(to bottom, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%);
+            color: var(--dark-text);
+            background: linear-gradient(to bottom, #f5eedc 0%, #faf7f0 50%, #f5eedc 100%);
             background-attachment: fixed;
             min-height: 100vh;
             display: flex;
@@ -54,12 +55,12 @@
             width: 100%;
             background: #fff;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 20px rgba(90, 75, 60, 0.15);
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, var(--deep-green) 0%, var(--forest-green) 100%);
+            background: linear-gradient(135deg, var(--warm-brown) 0%, var(--deep-brown) 100%);
             color: var(--cream);
             padding: 2rem 1.5rem;
             text-align: center;
@@ -76,9 +77,9 @@
         }
 
         h1 {
-            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-family: 'Playfair Display', serif;
             font-size: 1.75rem;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 0.5rem;
             letter-spacing: 1px;
         }
@@ -95,7 +96,7 @@
         .intro-text {
             text-align: center;
             margin-bottom: 2rem;
-            color: var(--dark-brown);
+            color: var(--dark-text);
             font-size: 0.95rem;
         }
 
@@ -113,92 +114,41 @@
 
         label {
             font-weight: 600;
-            color: var(--deep-green);
+            color: var(--deep-brown);
             font-size: 0.9rem;
         }
 
-        label .required {
-            color: #d84848;
-        }
-
         input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="number"],
-        select {
+        input[type="email"] {
             padding: 0.875rem;
-            border: 2px solid rgba(74, 124, 89, 0.3);
+            border: 2px solid rgba(139, 111, 71, 0.3);
             border-radius: 6px;
-            font-family: 'Lora', 'Georgia', serif;
+            font-family: 'Libre Baskerville', serif;
             font-size: 1rem;
             transition: border-color 0.3s ease;
             background: #fff;
-            -webkit-appearance: none;
         }
 
-        input:focus,
-        select:focus {
+        input:focus {
             outline: none;
-            border-color: var(--old-gold);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
-        }
-
-        select {
-            cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%233d2817' stroke-width='2' fill='none'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            padding-right: 2.5rem;
-        }
-
-        .basket-options {
-            display: grid;
-            gap: 0.75rem;
-            margin-top: 0.5rem;
-        }
-
-        .basket-option {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            border: 2px solid rgba(74, 124, 89, 0.2);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .basket-option:hover {
-            border-color: var(--old-gold);
-            background-color: rgba(212, 175, 55, 0.05);
-        }
-
-        .basket-option input[type="radio"] {
-            margin-right: 0.75rem;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .basket-option label {
-            font-weight: 500;
-            cursor: pointer;
-            margin: 0;
+            border-color: var(--aged-gold);
+            box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.1);
         }
 
         button[type="submit"] {
-            background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 50%, #1a4d2e 100%);
+            background: linear-gradient(135deg, var(--warm-brown) 0%, var(--deep-brown) 100%);
             color: var(--cream);
             padding: 1rem;
             border: none;
             border-radius: 6px;
-            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-family: 'Playfair Display', serif;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 2px;
-            box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3);
+            box-shadow: 0 4px 12px rgba(90, 75, 60, 0.3);
             margin-top: 1rem;
         }
 
@@ -209,7 +159,7 @@
         .footer-note {
             text-align: center;
             font-size: 0.85rem;
-            color: var(--dark-brown);
+            color: var(--dark-text);
             margin-top: 1.5rem;
             font-style: italic;
         }
@@ -220,7 +170,7 @@
         }
 
         .back-link a {
-            color: var(--deep-green);
+            color: var(--warm-brown);
             text-decoration: none;
             font-size: 0.9rem;
         }
@@ -250,51 +200,26 @@
             <div class="logo">
                 <img src="../logo.png" alt="The Wandering Lantern">
             </div>
-            <h1>Get to Know You!</h1>
-            <p class="subtitle">Tell us more about your family</p>
+            <h1>Join Our Newsletter</h1>
+            <p class="subtitle">Stay connected with stories & magic</p>
         </div>
 
         <div class="form-section">
             <p class="intro-text">
-                We'd love to learn more about you and your family so we can better serve your reading needs and keep you updated on events and stories you'll love!
+                Be the first to hear about new arrivals, special events, storytimes, and all the magical happenings at The Wandering Lantern!
             </p>
 
             <!-- MAILCHIMP FORM -->
             <form action="https://thewanderinglantern.us3.list-manage.com/subscribe/post?u=f5535995545a29ebbdc6de523&amp;id=f1915b185f&amp;f_id=0089a2e0f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_self">
 
                 <div class="form-group">
-                    <label for="mce-FNAME">First Name <span class="required">*</span></label>
-                    <input type="text" id="mce-FNAME" name="FNAME" required>
+                    <label for="mce-FNAME">First Name</label>
+                    <input type="text" id="mce-FNAME" name="FNAME">
                 </div>
 
                 <div class="form-group">
-                    <label for="mce-LNAME">Last Name <span class="required">*</span></label>
-                    <input type="text" id="mce-LNAME" name="LNAME" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="mce-EMAIL">Email Address <span class="required">*</span></label>
+                    <label for="mce-EMAIL">Email Address *</label>
                     <input type="email" id="mce-EMAIL" name="EMAIL" class="required email" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="mce-PHONE">Phone Number <span class="required">*</span></label>
-                    <input type="text" id="mce-PHONE" name="PHONE" class="REQ_CSS" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="mce-KIDS">Number of Kids in Household</label>
-                    <input type="number" id="mce-KIDS" name="KIDS" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label for="mce-AGES">Ages of Children (optional)</label>
-                    <input type="text" id="mce-AGES" name="AGES" placeholder="e.g., 5, 8, 12">
-                </div>
-
-                <div class="form-group">
-                    <label for="mce-INTERESTS">Their Reading Interests (optional)</label>
-                    <input type="text" id="mce-INTERESTS" name="INTERESTS" placeholder="e.g., Fantasy, Science, Animals">
                 </div>
 
                 <!-- Hidden field for Pre Launch tag -->
@@ -305,7 +230,8 @@
                     <input type="text" name="b_f5535995545a29ebbdc6de523_f1915b185f" tabindex="-1" value="">
                 </div>
 
-                <button type="submit" name="subscribe" id="mc-embedded-subscribe">Join Our Community!</button>
+                <button type="submit" name="subscribe">Subscribe</button>
+                <p class="footer-note">We promise to only send you the good stuff - no spam, just stories!</p>
             </form>
 
             <div class="back-link">
