@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
-        /* MOBILE-FIRST HALLOWEEN SIGNUP PAGE */
+        /* MOBILE-FIRST FAMILY SIGNUP PAGE */
         * {
             margin: 0;
             padding: 0;
@@ -229,6 +229,49 @@
             text-decoration: underline;
         }
 
+        /* Dynamic child fields styling */
+        .child-card {
+            background: rgba(26, 77, 46, 0.03);
+            border: 2px solid rgba(74, 124, 89, 0.2);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .child-card:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+
+        .child-card-header {
+            font-weight: 600;
+            color: var(--deep-green);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .child-card-header::before {
+            content: "📚";
+            font-size: 1.1rem;
+        }
+
+        .child-fields {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .child-fields .form-group {
+            margin: 0;
+        }
+
+        .child-fields label {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
         @media (min-width: 600px) {
             body {
                 padding: 3rem 1.5rem;
@@ -284,18 +327,15 @@
 
                 <div class="form-group">
                     <label for="mce-KIDS">Number of Kids in Household</label>
-                    <input type="number" id="mce-KIDS" name="KIDS" min="0">
+                    <input type="number" id="mce-KIDS" name="KIDS" min="0" max="10">
                 </div>
 
-                <div class="form-group">
-                    <label for="mce-AGES">Ages of Children (optional)</label>
-                    <input type="text" id="mce-AGES" name="AGES" placeholder="e.g., 5, 8, 12">
-                </div>
+                <!-- Dynamic child fields will be generated here -->
+                <div id="children-container"></div>
 
-                <div class="form-group">
-                    <label for="mce-INTERESTS">Their Reading Interests (optional)</label>
-                    <input type="text" id="mce-INTERESTS" name="INTERESTS" placeholder="e.g., Fantasy, Science, Animals">
-                </div>
+                <!-- Hidden fields that will be populated before submission -->
+                <input type="hidden" id="mce-AGES" name="AGES">
+                <input type="hidden" id="mce-INTERESTS" name="INTERESTS">
 
                 <!-- Hidden field for Pre Launch tag -->
                 <input type="hidden" name="tags" value="7744609">
@@ -313,5 +353,71 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Handle dynamic child fields
+        const kidsInput = document.getElementById('mce-KIDS');
+        const childrenContainer = document.getElementById('children-container');
+        const form = document.getElementById('mc-embedded-subscribe-form');
+
+        // Generate child fields when number of kids changes
+        kidsInput.addEventListener('input', function() {
+            const numKids = parseInt(this.value) || 0;
+
+            // Clear existing fields
+            childrenContainer.innerHTML = '';
+
+            // Generate fields for each child
+            for (let i = 1; i <= numKids; i++) {
+                const childCard = document.createElement('div');
+                childCard.className = 'child-card';
+                childCard.innerHTML = `
+                    <div class="child-card-header">Child ${i}</div>
+                    <div class="child-fields">
+                        <div class="form-group">
+                            <label for="child-${i}-age">Age</label>
+                            <input type="number"
+                                   id="child-${i}-age"
+                                   class="child-age"
+                                   min="0"
+                                   max="18"
+                                   placeholder="e.g., 7">
+                        </div>
+                        <div class="form-group">
+                            <label for="child-${i}-interests">Reading Interests</label>
+                            <input type="text"
+                                   id="child-${i}-interests"
+                                   class="child-interests"
+                                   placeholder="e.g., Fantasy, Animals">
+                        </div>
+                    </div>
+                `;
+                childrenContainer.appendChild(childCard);
+            }
+        });
+
+        // Before form submission, collect all child data
+        form.addEventListener('submit', function(e) {
+            // Get all ages
+            const ageInputs = document.querySelectorAll('.child-age');
+            const ages = Array.from(ageInputs)
+                .map(input => input.value)
+                .filter(val => val !== '')
+                .join(', ');
+
+            // Get all interests
+            const interestInputs = document.querySelectorAll('.child-interests');
+            const interests = Array.from(interestInputs)
+                .map(input => input.value)
+                .filter(val => val !== '')
+                .join(' | ');
+
+            // Set hidden fields
+            document.getElementById('mce-AGES').value = ages;
+            document.getElementById('mce-INTERESTS').value = interests;
+
+            // Form will submit normally to Mailchimp
+        });
+    </script>
 </body>
 </html>
