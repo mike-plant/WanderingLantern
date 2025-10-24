@@ -26,6 +26,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         :root {
             --deep-green: #1a4d2e;
             --forest-green: #2d5f3f;
@@ -98,6 +102,7 @@
                 radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
                 url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L50 50 L0 100 L50 100 L100 50 L50 0 Z" fill="rgba(255,255,255,0.02)"/></svg>');
             opacity: 1;
+            pointer-events: none;
         }
 
         header::after {
@@ -163,6 +168,33 @@
             position: relative;
             z-index: 1;
             letter-spacing: 0.5px;
+        }
+
+        /* Navigation */
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 10;
+        }
+
+        .main-nav a {
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .main-nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--old-gold);
         }
 
         /* Event Banner - PROMINENT & ANIMATED */
@@ -741,36 +773,18 @@
         <h1>The Wandering Lantern</h1>
         <p class="tagline">Follow the light, find the wonder</p>
         <p class="location">A Children's Bookstore in Lakewood, Ohio</p>
+
+        <nav class="main-nav">
+            <a href="#special">What We Offer</a>
+            <a href="#about">About Us</a>
+            <a href="#newsletter">Newsletter</a>
+            <a href="#contact">Contact</a>
+        </nav>
     </header>
 
-    <div class="event-banner">
-        <h2>🎃 Trick-or-Treat Raffle 🎃</h2>
-        <p class="event-details">Join us TONIGHT for treats, stories, and magical surprises!</p>
-        <p class="event-date">October 21st | 5:30 PM - 7:00 PM</p>
-        <p style="margin-top: 1.5rem; font-size: 1.1rem;">
-            <a href="signup/" style="color: var(--dark-brown); text-decoration: none; font-weight: 600; padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.9); border-radius: 8px; display: inline-block; box-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: all 0.3s ease;">
-                Enter Our Raffle to Win! →
-            </a>
-        </p>
-    </div>
-
     <div class="container">
-        <section id="about">
-            <h2>About Us</h2>
-            <p>
-                The Wandering Lantern is a place where curiosity meets wonder, and every book is a doorway to adventure.
-                Nestled in the heart of Lakewood, our cozy bookstore celebrates the magic of reading and the joy of discovery
-                for young minds and the young at heart.
-            </p>
-            <p>
-                We believe that books have the power to illuminate paths, spark imagination, and create lifelong readers.
-                Our carefully curated collection features both beloved classics and exciting new releases,
-                each chosen to inspire and delight.
-            </p>
-        </section>
-
         <section id="special">
-            <h2>What Makes Us Special</h2>
+            <h2>What We Offer</h2>
             <div class="special-items">
                 <div class="special-item">
                     <h3>📚 Curated Collection</h3>
@@ -815,6 +829,29 @@
                     </p>
                 </div>
             </div>
+        </section>
+
+        <section id="about">
+            <h2>About Us</h2>
+            <p>
+                The Wandering Lantern is a community bookstore created by Emily and Michael, two book lovers who wanted to bring
+                something special to Lakewood.
+            </p>
+            <p>
+                <strong>Emily</strong> is the heart of our book curation. With a Master's in English Literature and a background in
+                teaching, she has a genuine love for children's stories and helping young readers discover books they'll treasure.
+                As a mom of four and former homeschool educator, she knows firsthand how the right book at the right time can make
+                all the difference.
+            </p>
+            <p>
+                <strong>Michael</strong> is a local realtor and small business owner who believes thriving neighborhoods need gathering
+                places where people connect. He brings business operations and community relationships to the table, working to make
+                The Wandering Lantern a welcoming space for Lakewood families.
+            </p>
+            <p>
+                Together, we're building Cleveland's first dedicated children's bookstore—a place where stories come alive and
+                families can explore, discover, and connect.
+            </p>
         </section>
 
         <section id="newsletter">
