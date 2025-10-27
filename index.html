@@ -708,6 +708,9 @@
             </p>
             <div class="form-container">
                 <form action="https://formspree.io/f/xkgqdarv" method="POST" id="contact-form">
+                    <!-- Redirect to thank you page after submission -->
+                    <input type="hidden" name="_next" value="https://thewanderinglantern.com/thankyou/">
+
                     <div class="form-group">
                         <label for="name">Your Name</label>
                         <input type="text" id="name" name="name" required>
