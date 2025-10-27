@@ -413,8 +413,11 @@
                 .join(' | ');
 
             // Set hidden fields
-            document.getElementById('mce-AGES').value = ages;
-            document.getElementById('mce-BOOKINTS').value = interests;
+            const agesField = document.getElementById('mce-AGES');
+            const bookintsField = document.getElementById('mce-BOOKINTS');
+
+            agesField.value = ages;
+            bookintsField.value = interests;
 
             // Form will submit normally to Mailchimp
         });

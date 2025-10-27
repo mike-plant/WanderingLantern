@@ -65,6 +65,37 @@
             overflow: hidden;
         }
 
+        .hero-opening-banner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: rgba(245, 238, 220, 0.95);
+            padding: 2.5rem 4rem;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(58, 47, 39, 0.3);
+            border: 3px solid var(--aged-gold);
+            max-width: 90%;
+        }
+
+        .hero-opening-banner h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--deep-brown);
+            margin: 0 0 0.5rem 0;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .hero-opening-banner .date {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--warm-brown);
+            font-style: italic;
+            font-weight: 400;
+        }
+
         .hero-logo {
             max-width: 400px;
             width: 80%;
@@ -475,6 +506,19 @@
                 min-height: 250px;
             }
 
+            .hero-opening-banner {
+                padding: 1.5rem 2rem;
+            }
+
+            .hero-opening-banner h1 {
+                font-size: 1.5rem;
+                letter-spacing: 1px;
+            }
+
+            .hero-opening-banner .date {
+                font-size: 1.25rem;
+            }
+
             /* Make tagline bar always visible and static on mobile */
             .tagline-bar {
                 position: relative;
@@ -544,7 +588,10 @@
 
     <!-- Hero Section with Storefront Image -->
     <div class="hero" id="hero">
-        <!-- Just the storefront image, no logo or text -->
+        <div class="hero-opening-banner">
+            <h1>Opening Soon</h1>
+            <div class="date">November 28th</div>
+        </div>
     </div>
 
     <!-- Info Bar -->
@@ -760,7 +807,7 @@
                 mailchimpData.append('tags', '7744609'); // Pre Launch tag
 
                 // Submit to Mailchimp (non-blocking)
-                fetch('https://thewanderinglantern.us3.list-manage.com/subscribe/post-json?u=f5535995545a29ebbdc6de523&id=f1915b185f&f_id=0089a2e0f0', {
+                fetch('https://thewanderinglantern.us3.list-manage.com/subscribe/post?u=f5535995545a29ebbdc6de523&id=f1915b185f&f_id=0089a2e0f0', {
                     method: 'POST',
                     mode: 'no-cors',
                     body: mailchimpData
