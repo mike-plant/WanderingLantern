@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opening Calendar - The Wandering Lantern</title>
+    <style>
+        @media print {
+            @page {
+                margin: 0.5in;
+                size: letter portrait;
+            }
+            .week {
+                page-break-after: always;
+            }
+            .week:last-child {
+                page-break-after: auto;
+            }
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: white;
+        }
+
+        .week {
+            max-width: 8in;
+            margin: 0 auto 40px;
+            border: 3px solid #1a4d2e;
+            background: white;
+        }
+
+        .week-header {
+            background: #1a4d2e;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .week-header h1 {
+            margin: 0;
+            font-size: 24pt;
+        }
+
+        .week-header .dates {
+            font-size: 14pt;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 10pt;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .priority-critical {
+            background: #c41e3a;
+        }
+
+        .priority-high {
+            background: #f0ad4e;
+        }
+
+        .priority-medium {
+            background: #5bc0de;
+        }
+
+        .day {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 20px;
+        }
+
+        .day:last-child {
+            border-bottom: none;
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .day-name {
+            font-weight: bold;
+            font-size: 14pt;
+            color: #1a4d2e;
+        }
+
+        .day-date {
+            color: #666;
+            font-size: 11pt;
+        }
+
+        .tasks {
+            margin-left: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .task {
+            padding: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .task:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #1a4d2e;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 11pt;
+            line-height: 1.4;
+        }
+
+        .task-category {
+            display: inline-block;
+            background: #f5eedc;
+            color: #5c4d3c;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 9pt;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .category-website { background: #e3f2fd; color: #1565c0; }
+        .category-email { background: #fff3e0; color: #e65100; }
+        .category-social { background: #f3e5f5; color: #6a1b9a; }
+        .category-press { background: #e8f5e9; color: #2e7d32; }
+        .category-store { background: #fce4ec; color: #c2185b; }
+        .category-planning { background: #fff9c4; color: #f57f17; }
+
+        .notes {
+            background: #fffbf0;
+            border-left: 4px solid #d4af37;
+            padding: 12px 15px;
+            margin: 15px 20px;
+            font-size: 10pt;
+            font-style: italic;
+        }
+
+        .notes-title {
+            font-weight: bold;
+            font-style: normal;
+            color: #5c4d3c;
+            margin-bottom: 5px;
+        }
+
+        .goals {
+            background: #e8f5e9;
+            border-left: 4px solid #2e7d32;
+            padding: 12px 15px;
+            margin: 15px 20px;
+            font-size: 10pt;
+        }
+
+        .goals-title {
+            font-weight: bold;
+            color: #1a4d2e;
+            margin-bottom: 8px;
+        }
+
+        .goals ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .goals li {
+            margin: 4px 0;
+        }
+
+        .cover-page {
+            max-width: 8in;
+            margin: 0 auto;
+            padding: 2in 1in;
+            text-align: center;
+            border: 3px solid #1a4d2e;
+        }
+
+        .cover-page h1 {
+            font-size: 32pt;
+            color: #1a4d2e;
+            margin-bottom: 20px;
+        }
+
+        .cover-page .subtitle {
+            font-size: 18pt;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .cover-page .countdown {
+            font-size: 48pt;
+            color: #d4af37;
+            font-weight: bold;
+            margin: 30px 0;
+        }
+
+        .cover-page .tagline {
+            font-size: 14pt;
+            font-style: italic;
+            color: #999;
+            margin-top: 40px;
+        }
+
+        .quick-ref {
+            background: #f5f5f5;
+            padding: 15px 20px;
+            margin: 15px 20px;
+            border-radius: 8px;
+        }
+
+        .quick-ref-title {
+            font-weight: bold;
+            color: #1a4d2e;
+            margin-bottom: 10px;
+            font-size: 11pt;
+        }
+
+        .quick-ref-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 9pt;
+        }
+
+        .quick-ref-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .quick-ref-label {
+            font-weight: bold;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover-page" style="page-break-after: always;">
+    <h1>The Wandering Lantern</h1>
+    <div class="subtitle">Opening Day Countdown Calendar</div>
+    <div class="countdown">24 DAYS</div>
+    <div class="subtitle">November 4 - November 28, 2024</div>
+    <div class="tagline">"Follow the light, find the wonder"</div>
+
+    <div style="margin-top: 60px; text-align: left; max-width: 500px; margin-left: auto; margin-right: auto;">
+        <div style="font-weight: bold; margin-bottom: 10px; color: #1a4d2e;">Legend:</div>
+        <div style="margin: 8px 0;"><span class="task-category category-website">WEBSITE</span> Website updates & fixes</div>
+        <div style="margin: 8px 0;"><span class="task-category category-email">EMAIL</span> Email campaigns</div>
+        <div style="margin: 8px 0;"><span class="task-category category-social">SOCIAL</span> Instagram/Facebook posts</div>
+        <div style="margin: 8px 0;"><span class="task-category category-press">PRESS</span> Media outreach</div>
+        <div style="margin: 8px 0;"><span class="task-category category-store">STORE</span> Physical store tasks</div>
+        <div style="margin: 8px 0;"><span class="task-category category-planning">PLAN</span> Planning & admin</div>
+    </div>
+</div>
+
+<!-- WEEK 1 -->
+<div class="week">
+    <div class="week-header">
+        <h1>Week 1: Launch & Foundation <span class="priority-badge priority-critical">CRITICAL WEEK</span></h1>
+        <div class="dates">November 4-10, 2024</div>
+    </div>
+
+    <div class="goals">
+        <div class="goals-title">🎯 Week 1 Goals:</div>
+        <ul>
+            <li>Send first email to 100+ contacts</li>
+            <li>Fix website hero image (biggest performance issue)</li>
+            <li>Post 3-4 social media updates</li>
+            <li>Complete store painting & shelving</li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Monday, November 4</div>
+            <div class="day-date">23 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Behind-the-scenes construction photo with caption "The transformation is happening! 23 days until we open Cleveland's first children's bookstore 📚✨"
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Review week's calendar together, assign who does what
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Continue painting & shelving installation
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Tuesday, November 5 ⭐ EMAIL DAY</div>
+            <div class="day-date">22 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-email">EMAIL</span>
+                    <strong>SEND Email #1:</strong> "The countdown begins! Opening November 28th ✨" (10am send time)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-website">WEBSITE</span>
+                    Start hero image optimization: Convert storefront-temp.png to WebP format (use online tool: squoosh.app)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Begin receiving & organizing inventory
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Wednesday, November 6</div>
+            <div class="day-date">21 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Meet Emily video (30 sec) - why she started this, favorite childhood book
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-website">WEBSITE</span>
+                    Update hero headline to: "Cleveland's First Children's Bookstore Opens November 28th"
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Draft press release for local media
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Thursday, November 7</div>
+            <div class="day-date">20 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-website">WEBSITE</span>
+                    Make phone number optional in signup form (remove "required" attribute)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Install & test POS system (Square or similar)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Finalize press contact list (Lakewood Observer, Cleveland Scene, TV stations)
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Friday, November 8 ⭐ PRESS DEADLINE</div>
+            <div class="day-date">19 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Countdown graphic "19 days until we open!" + call to share with friends
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-press">PRESS</span>
+                    <strong>SEND press releases to all media contacts</strong> (Lakewood Observer, Cleveland Scene, TV stations)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Review Email #2 draft for next week
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Saturday, November 9</div>
+            <div class="day-date">18 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Store progress photos carousel (before/after, shelving, mural, etc.)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Continue inventory stocking & organizing by age/section
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Sunday, November 10</div>
+            <div class="day-date">17 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Review Week 2 calendar, adjust as needed
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Rest & recharge - big week ahead!
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="notes">
+        <div class="notes-title">📝 Week 1 Notes & Tips:</div>
+        • Keep email #1 warm and personal - you're inviting people into your journey<br>
+        • Social media: Focus on storytelling, not selling. Show the transformation.<br>
+        • Website fixes: Even small improvements matter. Don't stress perfection.<br>
+        • Press outreach: Follow up on Monday if no response by end of week.
+    </div>
+</div>
+
+<!-- WEEK 2 -->
+<div class="week">
+    <div class="week-header">
+        <h1>Week 2: Press & Community <span class="priority-badge priority-high">HIGH PRIORITY</span></h1>
+        <div class="dates">November 11-17, 2024</div>
+    </div>
+
+    <div class="goals">
+        <div class="goals-title">🎯 Week 2 Goals:</div>
+        <ul>
+            <li>Send Email #2 with founder story</li>
+            <li>Get at least 1 press hit (Lakewood Observer priority)</li>
+            <li>Ramp up social to 5-6 posts this week</li>
+            <li>Add FAQ section to website</li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Monday, November 11</div>
+            <div class="day-date">16 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: "2 weeks to go!" countdown with opening date details
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-press">PRESS</span>
+                    Follow up with press contacts who haven't responded (friendly email or call)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Finalize inventory pricing & labels
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Tuesday, November 12</div>
+            <div class="day-date">15 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Book stack photo - "Building our curated collection one story at a time"
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-website">WEBSITE</span>
+                    Add simple FAQ section (hours, parking, birthday parties, age ranges)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Source Emily & Michael photos for website About section
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Wednesday, November 13</div>
+            <div class="day-date">14 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Emily's book recommendations for ages 3-5 (carousel of 3-4 books)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Contact local elementary schools (Roosevelt, Grant, Harding) about partnerships
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Thursday, November 14 ⭐ EMAIL DAY</div>
+            <div class="day-date">13 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-email">EMAIL</span>
+                    <strong>SEND Email #2:</strong> "Meet Emily & Michael—the storytellers behind The Wandering Lantern" (10am send)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Mural artist progress / highlight
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Practice POS system, train anyone helping at opening
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Friday, November 15</div>
+            <div class="day-date">12 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: "Tag a parent who needs to know about us!" (engagement post)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-website">WEBSITE</span>
+                    Add founder photos to About section
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Recruit 3-5 volunteers for opening weekend
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Saturday, November 16</div>
+            <div class="day-date">11 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Create display arrangements, staff picks section
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Order signage (A-frame outdoor sign, window clings, interior wayfinding)
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Sunday, November 17</div>
+            <div class="day-date">10 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Story hour teaser - "Coming soon: Weekly story adventures!"
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Review Week 3 calendar - VIP preview invitation week!
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="notes">
+        <div class="notes-title">📝 Week 2 Notes & Tips:</div>
+        • Email #2 should be personal and storytelling-focused. Why did you start this?<br>
+        • Press: Lakewood Observer is your #1 priority. Personal outreach if possible.<br>
+        • Social: Mix educational content (book recs) with personal story (founders, progress)<br>
+        • Website: Simple FAQ prevents 20+ emails asking the same questions.
+    </div>
+</div>
+
+<!-- WEEK 3 -->
+<div class="week">
+    <div class="week-header">
+        <h1>Week 3: VIP Invitation & Final Prep <span class="priority-badge priority-high">CRUNCH TIME</span></h1>
+        <div class="dates">November 18-24, 2024</div>
+    </div>
+
+    <div class="goals">
+        <div class="goals-title">🎯 Week 3 Goals:</div>
+        <ul>
+            <li>Send VIP preview invitation (Email #3)</li>
+            <li>Get 50-75 RSVPs for VIP night</li>
+            <li>Ramp social to 7-10 posts (daily posting)</li>
+            <li>Complete store setup & staging</li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Monday, November 18 ⭐ VIP INVITE DAY</div>
+            <div class="day-date">9 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-email">EMAIL</span>
+                    <strong>SEND Email #3:</strong> "You're invited: VIP Preview Night - Nov 27, 4-7pm" (10am send)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: VIP preview invitation video (Emily speaking directly to camera)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Set up RSVP tracking system (spreadsheet or Google Form)
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Tuesday, November 19</div>
+            <div class="day-date">8 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: "Sneak peek inside!" - Store walkthrough video (1 min)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-website">WEBSITE</span>
+                    Add "Upcoming Events" section with VIP preview + grand opening details
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Book photographer for opening events (or designate friend/volunteer)
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Wednesday, November 20</div>
+            <div class="day-date">7 days to opening - ONE WEEK!</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Michael's business story - why Lakewood, why now
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Final store cleaning & staging
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Confirm volunteers for VIP night & grand opening
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Thursday, November 21</div>
+            <div class="day-date">6 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Grand opening event details graphic (save/share-worthy)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Stock gift wrapping supplies, shopping bags, business cards
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Print all signage, event materials, QR codes
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Friday, November 22</div>
+            <div class="day-date">5 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: "Meet our books" - Showcase unique sections (local authors, diverse voices)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Professional photography session (store interior, products, Emily & Michael)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Review VIP night run-of-show with team
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Saturday, November 23</div>
+            <div class="day-date">4 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Community testimonials / excitement from email list
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Set up reading nooks, kids play area, checkout counter final touches
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Shop for VIP night refreshments & supplies
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Sunday, November 24</div>
+            <div class="day-date">3 days to opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Countdown "1 WEEK UNTIL OPENING!" with event recap
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Final checklist review, ensure nothing forgotten
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Rest up - opening week starts Wednesday!
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="notes">
+        <div class="notes-title">📝 Week 3 Notes & Tips:</div>
+        • VIP email: Create urgency with RSVP. Make guests feel special & valued.<br>
+        • Social: Post daily this week. Build momentum and excitement.<br>
+        • Store: This is final prep week. Everything should be 95% done by Sunday.<br>
+        • Photography: These photos will be used for months - worth investing in quality.
+    </div>
+</div>
+
+<!-- WEEK 4 -->
+<div class="week">
+    <div class="week-header">
+        <h1>Week 4: OPENING WEEK! <span class="priority-badge priority-critical">IT'S HAPPENING!</span></h1>
+        <div class="dates">November 25-29, 2025</div>
+    </div>
+
+    <div class="goals">
+        <div class="goals-title">🎯 Week 4 Goals:</div>
+        <ul>
+            <li>Execute flawless VIP preview (Nov 27)</li>
+            <li>Execute unforgettable grand opening (Nov 28)</li>
+            <li>Document EVERYTHING with photos/video</li>
+            <li>Welcome 150-250 people to grand opening</li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Monday, November 25</div>
+            <div class="day-date">2 days to VIP preview</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Team walkthrough - test POS, check lighting, music, signage
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Prep opening day materials: cash for register, extra bags, supplies
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: "2 days until VIP preview!" excitement builder
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Tuesday, November 26</div>
+            <div class="day-date">1 day to VIP preview</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-email">EMAIL</span>
+                    <strong>SEND Email #4:</strong> "Tomorrow! VIP Preview Night 4-7pm" (6pm send)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Prep VIP night: set up refreshments, face painting station, photo backdrop, guest book
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Briefing with volunteers - assign roles, review timeline
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: "TOMORROW! VIP Preview 4-7pm" final reminder
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Wednesday, November 27</div>
+            <div class="day-date">2 days to soft opening</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    Final store prep - arrange refreshments for tomorrow
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Coordinate with volunteers - confirm everyone is ready
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: "TOMORROW! VIP Preview opens at 4pm!"
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">Thursday, November 28 - THANKSGIVING</div>
+            <div class="day-date">Rest & prepare for opening weekend!</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Enjoy Thanksgiving! Rest up for tomorrow's soft opening.
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Post: Happy Thanksgiving + "Opening tomorrow at 4pm!"
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">⭐ FRIDAY, NOVEMBER 29 ⭐</div>
+            <div class="day-date">VIP SOFT OPENING 4-7pm</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    <strong>3:00pm:</strong> Final prep - turn on music, lights, arrange refreshments
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    <strong>4:00pm:</strong> DOORS OPEN - Welcome guests!
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    <strong>4:15pm:</strong> Emily & Michael welcome speech (5 min)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    <strong>5:00pm:</strong> Story time for younger kids
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    <strong>6:00pm:</strong> Thank you toast, closing remarks
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Live Instagram Stories throughout event
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Document: Photos, videos, testimonials, count attendees/sales
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="day">
+        <div class="day-header">
+            <div class="day-name">⭐⭐ SATURDAY, NOVEMBER 29 ⭐⭐</div>
+            <div class="day-date">GRAND OPENING DAY 10am-6pm (Small Business Saturday!)</div>
+        </div>
+        <ul class="tasks">
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-email">EMAIL</span>
+                    <strong>SEND Email #5:</strong> "WE'RE OPEN! Grand Opening Day is HERE!" (8am send)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    <strong>9:00am:</strong> Team arrives, final setup check
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    <strong>10:00am:</strong> RIBBON CUTTING & DOORS OPEN!
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    <strong>10:30am & 11:30am:</strong> Story hours
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    <strong>12-2pm:</strong> Meet local authors (if booked)
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    <strong>2-4pm:</strong> Kids craft activities
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-store">STORE</span>
+                    <strong>4-6pm:</strong> Door prize drawings, final sales rush
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-social">SOCIAL</span>
+                    Live coverage all day - Stories every hour, posts at key moments
+                </div>
+            </li>
+            <li class="task">
+                <div class="checkbox"></div>
+                <div class="task-text">
+                    <span class="task-category category-planning">PLAN</span>
+                    Document EVERYTHING - photos, videos, customer count, sales total
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="notes">
+        <div class="notes-title">📝 Opening Week Tips:</div>
+        • Stay hydrated, eat, take breaks when you can<br>
+        • Designate someone to document - you'll be too busy to remember<br>
+        • Thank every volunteer profusely<br>
+        • Enjoy this moment - you've worked so hard for this!<br>
+        • Post highlights within 24 hours while excitement is fresh
+    </div>
+
+    <div class="goals" style="background: #fff9e0; border-color: #f57f17;">
+        <div class="goals-title" style="color: #e65100;">🎉 POST-OPENING CHECKLIST (Nov 29):</div>
+        <ul>
+            <li>Send thank you email to all VIP attendees</li>
+            <li>Post opening day photo recap on social media</li>
+            <li>Review what worked / what to improve</li>
+            <li>Celebrate your success!</li>
+            <li>Begin regular store hours & weekly story times</li>
+        </ul>
+    </div>
+</div>
+
+<!-- QUICK REFERENCE PAGE -->
+<div class="week" style="border-color: #d4af37;">
+    <div class="week-header" style="background: #d4af37; color: #1a4d2e;">
+        <h1 style="font-size: 20pt;">Quick Reference Guide</h1>
+    </div>
+
+    <div class="quick-ref">
+        <div class="quick-ref-title">📧 Email Schedule</div>
+        <div class="quick-ref-grid">
+            <div class="quick-ref-item">
+                <span class="quick-ref-label">Email #1:</span>
+                <span>Tuesday, Nov 5 (10am)</span>
+            </div>
+            <div class="quick-ref-item">
+                <span class="quick-ref-label">Email #2:</span>
+                <span>Thursday, Nov 14 (10am)</span>
+            </div>
+            <div class="quick-ref-item">
+                <span class="quick-ref-label">Email #3:</span>
+                <span>Monday, Nov 18 (10am)</span>
+            </div>
+            <div class="quick-ref-item">
+                <span class="quick-ref-label">Email #4:</span>
+                <span>Wednesday, Nov 26 (6pm)</span>
+            </div>
+            <div class="quick-ref-item" style="grid-column: 1 / -1;">
+                <span class="quick-ref-label">Email #5:</span>
+                <span>Thursday, Nov 28 (8am) - GRAND OPENING DAY</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="quick-ref">
+        <div class="quick-ref-title">📱 Social Media Posting Rhythm</div>
+        <div style="font-size: 9pt; line-height: 1.6;">
+            <strong>Week 1:</strong> 3-4 posts (ease into it)<br>
+            <strong>Week 2:</strong> 5-6 posts (ramp up)<br>
+            <strong>Week 3:</strong> 7-10 posts (daily posting)<br>
+            <strong>Week 4:</strong> Daily + live Stories on opening days
+        </div>
+    </div>
+
+    <div class="quick-ref">
+        <div class="quick-ref-title">🌐 Minimum Website Updates</div>
+        <div style="font-size: 9pt; line-height: 1.6;">
+            <strong>Week 1 (Critical):</strong><br>
+            • Convert hero image to WebP (performance)<br>
+            • Update headline to "Cleveland's First Children's Bookstore"<br>
+            • Make phone optional in signup form<br><br>
+            <strong>Week 2 (Important):</strong><br>
+            • Add FAQ section<br>
+            • Add founder photos<br><br>
+            <strong>Week 3 (Nice to Have):</strong><br>
+            • Add "Upcoming Events" section with opening details
+        </div>
+    </div>
+
+    <div class="quick-ref">
+        <div class="quick-ref-title">🎯 Key Goals by Week</div>
+        <div style="font-size: 9pt; line-height: 1.6;">
+            <strong>Week 1:</strong> Launch momentum, send first email, fix website image<br>
+            <strong>Week 2:</strong> Get press coverage, add FAQ, recruit volunteers<br>
+            <strong>Week 3:</strong> VIP invites, 50+ RSVPs, finish store setup<br>
+            <strong>Week 4:</strong> Execute perfect opening events!
+        </div>
+    </div>
+
+    <div class="quick-ref">
+        <div class="quick-ref-title">📞 Key Contacts</div>
+        <div style="font-size: 9pt; line-height: 1.6;">
+            <strong>Lakewood Observer:</strong> publisher@lakewoodobserver.com<br>
+            <strong>Cleveland Scene:</strong> events@clevescene.com<br>
+            <strong>Store Address:</strong> 15729 Madison Ave, Lakewood, OH 44107<br>
+            <strong>Email:</strong> thewanderinglanterncle@gmail.com<br>
+            <strong>Instagram:</strong> @thewanderinglanterncle
+        </div>
+    </div>
+
+    <div class="notes" style="background: #e8f5e9; border-color: #2e7d32;">
+        <div class="notes-title" style="color: #1a4d2e;">💡 Remember:</div>
+        <strong>Done is better than perfect.</strong> You don't need everything to be flawless. You need momentum, consistency, and authentic connection with your community. Focus on what matters most: opening a store people love. Everything else can be refined over time.
+    </div>
+</div>
+
+</body>
+</html>

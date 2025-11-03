@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launch Dashboard - The Wandering Lantern</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .tagline {
+            font-style: italic;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .countdown-box {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .countdown-number {
+            font-size: 4em;
+            font-weight: bold;
+            color: #f0c674;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .countdown-label {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #1a4d2e;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #d4af37, #f0c674);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .nav-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #1a4d2e, #d4af37);
+        }
+
+        .nav-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .nav-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #1a4d2e;
+            margin-bottom: 10px;
+        }
+
+        .nav-desc {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .nav-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 0.85em;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #999;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-critical {
+            background: #ffebee;
+            color: #c41e3a;
+        }
+
+        .badge-high {
+            background: #fff3e0;
+            color: #f0ad4e;
+        }
+
+        .badge-medium {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .quick-actions {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+        }
+
+        .quick-actions h2 {
+            color: #1a4d2e;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 100%);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: transform 0.2s;
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #d4af37 0%, #f0c674 100%);
+            color: #1a4d2e;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .countdown-number {
+                font-size: 3em;
+            }
+
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+
+        .help-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #d4af37 0%, #f0c674 100%);
+            color: #1a4d2e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            z-index: 1000;
+        }
+
+        .help-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+        }
+
+        .help-tooltip {
+            position: absolute;
+            right: 75px;
+            background: white;
+            color: #1a4d2e;
+            padding: 8px 15px;
+            border-radius: 8px;
+            white-space: nowrap;
+            font-size: 0.45em;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .help-button:hover .help-tooltip {
+            opacity: 1;
+        }
+
+        .info-banner {
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            border-radius: 12px;
+            padding: 15px 20px;
+            color: white;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .info-banner a {
+            color: #f0c674;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px solid #f0c674;
+        }
+
+        .info-banner a:hover {
+            color: white;
+            border-color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🎯 Launch Dashboard</h1>
+        <div class="tagline">"Follow the light, find the wonder"</div>
+    </div>
+
+    <div class="info-banner">
+        📖 First time here? <a href="how-to-use.html">Read the How-To Guide</a> to get started!
+    </div>
+
+    <div class="countdown-box">
+        <div class="countdown-number" id="daysLeft">25</div>
+        <div class="countdown-label">Days Until Grand Opening</div>
+        <div style="margin-top: 10px; opacity: 0.9;">Friday, Nov 28 (Soft Opening) • Saturday, Nov 29 (Grand Opening)</div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number" id="tasksCompleted">0</div>
+            <div class="stat-label">Tasks Completed</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="emailsSent">1</div>
+            <div class="stat-label">Emails Sent (of 5)</div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 20%"></div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="currentWeek">1</div>
+            <div class="stat-label">Current Week</div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 25%"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <h2>⚡ Today's Priority</h2>
+        <div id="todayTask" style="padding: 15px; background: #f5eedc; border-radius: 8px; margin-bottom: 15px;">
+            <strong>Monday, Nov 4:</strong> Instagram post - Construction photo "23 days until we open!"
+        </div>
+        <div class="action-buttons">
+            <button class="action-btn" onclick="markComplete()">✓ Mark Complete</button>
+            <button class="action-btn secondary" onclick="skipTask()">→ Skip for Now</button>
+        </div>
+    </div>
+
+    <div class="nav-grid">
+        <a href="week-by-week.html" class="nav-card">
+            <div class="nav-icon">📅</div>
+            <div class="nav-title">Week-by-Week Plan</div>
+            <div class="nav-desc">Daily tasks for all 4 weeks. Check off as you go!</div>
+            <div class="nav-meta">
+                <span class="meta-item">📋 47 tasks</span>
+                <span class="badge badge-critical">DAILY USE</span>
+            </div>
+        </a>
+
+        <a href="modular-plan.html" class="nav-card">
+            <div class="nav-icon">🎯</div>
+            <div class="nav-title">Modular Plan</div>
+            <div class="nav-desc">10 initiatives you can keep or skip. Make decisions here.</div>
+            <div class="nav-meta">
+                <span class="meta-item">🔧 10 modules</span>
+                <span class="badge badge-high">DECISIONS</span>
+            </div>
+        </a>
+
+        <a href="progress.html" class="nav-card">
+            <div class="nav-icon">📊</div>
+            <div class="nav-title">Progress Tracker</div>
+            <div class="nav-desc">See overall progress, add notes, track metrics.</div>
+            <div class="nav-meta">
+                <span class="meta-item">📈 0% complete</span>
+                <span class="badge badge-medium">WEEKLY</span>
+            </div>
+        </a>
+
+        <a href="quick-ref.html" class="nav-card">
+            <div class="nav-icon">📞</div>
+            <div class="nav-title">Quick Reference</div>
+            <div class="nav-desc">Contacts, dates, checklists - everything at a glance.</div>
+            <div class="nav-meta">
+                <span class="meta-item">⚡ Fast access</span>
+                <span class="badge badge-medium">AS NEEDED</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="quick-actions">
+        <h2>🎬 This Week's Focus (Nov 4-10)</h2>
+        <ul style="list-style: none; padding: 0;">
+            <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✅ Email #1 sent (Nov 3)</li>
+            <li style="padding: 10px 0; border-bottom: 1px solid #eee;">⏳ Fix website hero image (45 min)</li>
+            <li style="padding: 10px 0; border-bottom: 1px solid #eee;">⏳ Send press releases (by Friday)</li>
+            <li style="padding: 10px 0;">⏳ Post 3-4 Instagram updates</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        The Wandering Lantern • 15729 Madison Ave, Lakewood, OH 44107<br>
+        Launch Dashboard • Updated Nov 3, 2025
+    </div>
+</div>
+
+<a href="how-to-use.html" class="help-button" title="How to use this dashboard">
+    ❓
+    <span class="help-tooltip">How to Use</span>
+</a>
+
+<script>
+// Calculate days until opening
+function updateCountdown() {
+    const openingDay = new Date('2025-11-29');
+    const today = new Date();
+    const daysLeft = Math.ceil((openingDay - today) / (1000 * 60 * 60 * 24));
+    document.getElementById('daysLeft').textContent = daysLeft;
+}
+
+// Load progress from localStorage
+function loadProgress() {
+    const completed = localStorage.getItem('tasksCompleted') || 0;
+    const total = 47; // Total tasks across all weeks
+    const percentage = (completed / total) * 100;
+
+    document.getElementById('tasksCompleted').textContent = completed;
+    document.getElementById('progressBar').style.width = percentage + '%';
+}
+
+// Mark today's task complete
+function markComplete() {
+    const completed = parseInt(localStorage.getItem('tasksCompleted') || 0) + 1;
+    localStorage.setItem('tasksCompleted', completed);
+    loadProgress();
+    alert('✓ Task marked complete! Great job!');
+    updateTodayTask();
+}
+
+// Skip task
+function skipTask() {
+    if(confirm('Skip this task? You can come back to it later.')) {
+        updateTodayTask();
+    }
+}
+
+// Update today's task
+function updateTodayTask() {
+    document.getElementById('todayTask').innerHTML = '<strong>All done for today!</strong> Check the Week-by-Week plan for tomorrow.';
+}
+
+// Initialize
+updateCountdown();
+loadProgress();
+
+// Update countdown daily
+setInterval(updateCountdown, 1000 * 60 * 60); // Every hour
+</script>
+
+</body>
+</html>

@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modular Marketing Plan - The Wandering Lantern</title>
+    <style>
+        @media print {
+            @page {
+                margin: 0.5in;
+                size: letter;
+            }
+            .module {
+                page-break-inside: avoid;
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: #1a4d2e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24pt;
+        }
+
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+
+        .intro {
+            background: white;
+            padding: 20px;
+            border-left: 5px solid #d4af37;
+            margin: 20px 0;
+        }
+
+        .module {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .module-header {
+            background: #f5eedc;
+            padding: 15px 20px;
+            border-bottom: 2px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .module-title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #1a4d2e;
+            margin: 0;
+        }
+
+        .module-status {
+            display: flex;
+            gap: 10px;
+        }
+
+        .status-btn {
+            padding: 5px 15px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            font-size: 10pt;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .status-btn.keep {
+            border-color: #2e7d32;
+            color: #2e7d32;
+        }
+
+        .status-btn.skip {
+            border-color: #c41e3a;
+            color: #c41e3a;
+        }
+
+        .module-meta {
+            background: #f9f9f9;
+            padding: 10px 20px;
+            border-bottom: 1px solid #eee;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            font-size: 10pt;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-weight: bold;
+            color: #666;
+            font-size: 9pt;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            color: #1a4d2e;
+            font-weight: bold;
+            margin-top: 3px;
+        }
+
+        .module-content {
+            padding: 20px;
+        }
+
+        .module-content h4 {
+            margin-top: 0;
+            color: #1a4d2e;
+            font-size: 12pt;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .task-list li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .task-list li:before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            font-size: 16px;
+        }
+
+        .dependency {
+            background: #fff3cd;
+            border-left: 4px solid #f0ad4e;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 10pt;
+        }
+
+        .dependency strong {
+            color: #856404;
+        }
+
+        .effort-impact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .effort, .impact {
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .effort {
+            background: #e3f2fd;
+            border: 2px solid #1976d2;
+        }
+
+        .impact {
+            background: #e8f5e9;
+            border: 2px solid #388e3c;
+        }
+
+        .effort-label, .impact-label {
+            font-size: 9pt;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .effort-value, .impact-value {
+            font-size: 14pt;
+            font-weight: bold;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 9pt;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .cat-email { background: #fff3e0; color: #e65100; }
+        .cat-social { background: #f3e5f5; color: #6a1b9a; }
+        .cat-press { background: #e8f5e9; color: #2e7d32; }
+        .cat-website { background: #e3f2fd; color: #1565c0; }
+        .cat-store { background: #fce4ec; color: #c2185b; }
+        .cat-events { background: #fff9c4; color: #f57f17; }
+
+        .skip-note {
+            background: #ffebee;
+            border: 2px solid #c41e3a;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .skip-note h4 {
+            margin-top: 0;
+            color: #c41e3a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Modular Marketing Plan</h1>
+    <p>The Wandering Lantern Opening Campaign</p>
+    <p style="font-size: 12pt; margin-top: 15px;">November 4 - November 29, 2024</p>
+</div>
+
+<div class="intro">
+    <h3 style="margin-top: 0; color: #1a4d2e;">How to Use This Plan</h3>
+    <p><strong>Each module below is independent and can be kept or skipped.</strong></p>
+    <p>For each module, mark either <span style="color: #2e7d32; font-weight: bold;">KEEP</span> or <span style="color: #c41e3a; font-weight: bold;">SKIP</span>:</p>
+    <ul>
+        <li><strong>KEEP:</strong> You'll execute this initiative</li>
+        <li><strong>SKIP:</strong> Remove it from your plan - no impact on other modules</li>
+    </ul>
+    <p><strong>Each module shows:</strong> Time commitment, impact level, dependencies, and what happens if you skip it.</p>
+</div>
+
+<!-- MODULE 1: EMAIL CAMPAIGN -->
+<div class="module">
+    <div class="module-header">
+        <h3 class="module-title"><span class="category-badge cat-email">EMAIL</span> Email Campaign (5 emails)</h3>
+        <div class="module-status">
+            <button class="status-btn keep">✓ KEEP</button>
+            <button class="status-btn skip">✗ SKIP</button>
+        </div>
+    </div>
+    <div class="module-meta">
+        <div class="meta-item">
+            <span class="meta-label">Time Commitment</span>
+            <span class="meta-value">2-3 hrs total</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Impact</span>
+            <span class="meta-value">⭐⭐⭐⭐⭐ CRITICAL</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Dependencies</span>
+            <span class="meta-value">None</span>
+        </div>
+    </div>
+    <div class="module-content">
+        <h4>What This Is:</h4>
+        <p>5 emails to your 100+ subscribers leading up to opening. Already drafted and scheduled for Sundays at 6-8pm.</p>
+
+        <h4>Schedule:</h4>
+        <ul class="task-list">
+            <li><strong>Nov 3 (Sun):</strong> ✅ SENT - Save the dates announcement</li>
+            <li><strong>Nov 10 (Sun):</strong> Pre-orders coming Nov 21, ask for event input</li>
+            <li><strong>Nov 17 (Sun):</strong> Pre-orders open Thursday, behind-the-scenes update</li>
+            <li><strong>Nov 21 (Thu):</strong> 🚨 PRE-ORDERS ARE LIVE! Direct link to shop</li>
+            <li><strong>Nov 26 (Tue):</strong> Last call for pre-orders, opening weekend details</li>
+        </ul>
+
+        <div class="effort-impact">
+            <div class="effort">
+                <div class="effort-label">Time Per Email</div>
+                <div class="effort-value">30 min</div>
+            </div>
+            <div class="impact">
+                <div class="impact-label">Expected Result</div>
+                <div class="impact-value">50+ opening attendees</div>
+            </div>
+        </div>
+
+        <div class="skip-note" style="display: none;">
+            <h4>If You Skip This:</h4>
+            <ul>
+                <li>Your 100+ email contacts won't know about pre-orders</li>
+                <li>Soft opening attendance will be lower</li>
+                <li>You lose your most engaged audience communication</li>
+                <li><strong>Recommendation: DON'T SKIP - This is your #1 marketing asset</strong></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- MODULE 2: INSTAGRAM DAILY POSTING -->
+<div class="module">
+    <div class="module-header">
+        <h3 class="module-title"><span class="category-badge cat-social">SOCIAL</span> Instagram Daily Posting</h3>
+        <div class="module-status">
+            <button class="status-btn keep">✓ KEEP</button>
+            <button class="status-btn skip">✗ SKIP</button>
+        </div>
+    </div>
+    <div class="module-meta">
+        <div class="meta-item">
+            <span class="meta-label">Time Commitment</span>
+            <span class="meta-value">20-30 min/day</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Impact</span>
+            <span class="meta-value">⭐⭐⭐⭐ HIGH</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Dependencies</span>
+            <span class="meta-value">Coordinates with emails</span>
+        </div>
+    </div>
+    <div class="module-content">
+        <h4>What This Is:</h4>
+        <p>Daily Instagram posts + Stories showing behind-the-scenes, driving to email list, building excitement for opening.</p>
+
+        <h4>Content Themes (Rotate):</h4>
+        <ul class="task-list">
+            <li>Behind-the-scenes build-out photos/videos</li>
+            <li>Book arrivals and unboxing</li>
+            <li>Emily & Michael introductions/story</li>
+            <li>Countdown graphics (23 days, 20 days, 1 week, etc.)</li>
+            <li>"Link in bio" to drive email signups</li>
+            <li>Pre-order announcements (Nov 21-28)</li>
+            <li>Customer order reposts (when they tag you)</li>
+        </ul>
+
+        <div class="effort-impact">
+            <div class="effort">
+                <div class="effort-label">Daily Time</div>
+                <div class="effort-value">20-30 min</div>
+            </div>
+            <div class="impact">
+                <div class="impact-label">Expected Reach</div>
+                <div class="impact-value">500-1000 people</div>
+            </div>
+        </div>
+
+        <div class="dependency">
+            <strong>Coordination:</strong> Post AFTER emails go out (few hours later) so email subscribers feel special first.
+        </div>
+
+        <div class="skip-note">
+            <h4>If You Skip This:</h4>
+            <ul>
+                <li>You lose visual storytelling momentum</li>
+                <li>Fewer email signups from Instagram followers</li>
+                <li>Less community building before opening</li>
+                <li><strong>Alternative:</strong> Reduce to 3x/week instead of daily (M/W/F pattern)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- MODULE 3: PRESS OUTREACH -->
+<div class="module">
+    <div class="module-header">
+        <h3 class="module-title"><span class="category-badge cat-press">PRESS</span> Local Press Outreach</h3>
+        <div class="module-status">
+            <button class="status-btn keep">✓ KEEP</button>
+            <button class="status-btn skip">✗ SKIP</button>
+        </div>
+    </div>
+    <div class="module-meta">
+        <div class="meta-item">
+            <span class="meta-label">Time Commitment</span>
+            <span class="meta-value">3-4 hours total</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Impact</span>
+            <span class="meta-value">⭐⭐⭐⭐ HIGH</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Dependencies</span>
+            <span class="meta-value">None</span>
+        </div>
+    </div>
+    <div class="module-content">
+        <h4>What This Is:</h4>
+        <p>One-time press release + follow-ups to local media. "Cleveland's First Children's Bookstore Opens in Lakewood."</p>
+
+        <h4>Action Items:</h4>
+        <ul class="task-list">
+            <li>Draft press release (1 hour) - template available</li>
+            <li>Send to 8-10 outlets (30 min)</li>
+            <li>Follow up with Lakewood Observer personally (30 min)</li>
+            <li>Follow up with others if no response (1 hour total)</li>
+            <li>Coordinate any interviews/photo shoots (1-2 hours if booked)</li>
+        </ul>
+
+        <h4>Key Contacts:</h4>
+        <ul style="margin: 10px 0; font-size: 10pt;">
+            <li><strong>Lakewood Observer:</strong> publisher@lakewoodobserver.com (PRIORITY #1)</li>
+            <li><strong>Cleveland Scene:</strong> events@clevescene.com</li>
+            <li><strong>Cleveland.com:</strong> Business desk</li>
+            <li><strong>TV Stations:</strong> WKYC, WEWS, WJW assignment desks</li>
+            <li><strong>Cleveland Magazine, Fresh Water Cleveland, Cleveland Moms Blog</strong></li>
+        </ul>
+
+        <div class="effort-impact">
+            <div class="effort">
+                <div class="effort-label">Total Time</div>
+                <div class="effort-value">3-4 hours</div>
+            </div>
+            <div class="impact">
+                <div class="impact-label">Potential Reach</div>
+                <div class="impact-value">10,000+ people</div>
+            </div>
+        </div>
+
+        <div class="skip-note">
+            <h4>If You Skip This:</h4>
+            <ul>
+                <li>You miss free publicity to thousands of Lakewood residents</li>
+                <li>Credibility boost from media coverage lost</li>
+                <li>Harder to build initial customer base</li>
+                <li><strong>Alternative:</strong> Just do Lakewood Observer (1 hour total) - it's the most important one</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- MODULE 4: WEBSITE CRITICAL FIXES -->
+<div class="module">
+    <div class="module-header">
+        <h3 class="module-title"><span class="category-badge cat-website">WEBSITE</span> Website Critical Fixes (Minimum)</h3>
+        <div class="module-status">
+            <button class="status-btn keep">✓ KEEP</button>
+            <button class="status-btn skip">✗ SKIP</button>
+        </div>
+    </div>
+    <div class="module-meta">
+        <div class="meta-item">
+            <span class="meta-label">Time Commitment</span>
+            <span class="meta-value">2-3 hours ONE TIME</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Impact</span>
+            <span class="meta-value">⭐⭐⭐ MEDIUM</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Dependencies</span>
+            <span class="meta-value">None</span>
+        </div>
+    </div>
+    <div class="module-content">
+        <h4>What This Is:</h4>
+        <p>Bare minimum website improvements for performance and credibility. ONLY 3 critical fixes.</p>
+
+        <h4>The 3 Must-Do Fixes:</h4>
+        <ul class="task-list">
+            <li><strong>Fix hero image (45 min):</strong> Use squoosh.app to compress storefront-temp.png from 4.6MB to ~300KB WebP format. Upload to website.</li>
+            <li><strong>Update headline (5 min):</strong> Change "Opening Soon November 28th" to "Cleveland's First Children's Bookstore Opens November 28-29"</li>
+            <li><strong>Make phone optional (5 min):</strong> Remove "required" from phone field in signup form so people can skip it</li>
+        </ul>
+
+        <div class="effort-impact">
+            <div class="effort">
+                <div class="effort-label">Total Time</div>
+                <div class="effort-value">1 hour</div>
+            </div>
+            <div class="impact">
+                <div class="impact-label">Performance Gain</div>
+                <div class="impact-value">8s → 2s load time</div>
+            </div>
+        </div>
+
+        <div class="skip-note">
+            <h4>If You Skip This:</h4>
+            <ul>
+                <li>Website loads very slowly (8-10 seconds) - people may leave</li>
+                <li>Phone requirement may prevent signups</li>
+                <li>Headline doesn't reflect accurate opening dates</li>
+                <li><strong>Alternative:</strong> Just do #1 (image fix) - biggest impact, 45 min</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- MODULE 5: PRE-ORDER SYSTEM -->
+<div class="module">
+    <div class="module-header">
+        <h3 class="module-title"><span class="category-badge cat-website">WEBSITE</span> Pre-Order System (Nov 21 Launch)</h3>
+        <div class="module-status">
+            <button class="status-btn keep">✓ KEEP</button>
+            <button class="status-btn skip">✗ SKIP</button>
+        </div>
+    </div>
+    <div class="module-meta">
+        <div class="meta-item">
+            <span class="meta-label">Time Commitment</span>
+            <span class="meta-value">5-8 hours setup</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Impact</span>
+            <span class="meta-value">⭐⭐⭐⭐ HIGH</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Dependencies</span>
+            <span class="meta-value">Emails #2-4 promote this</span>
+        </div>
+    </div>
+    <div class="module-content">
+        <h4>What This Is:</h4>
+        <p>Online shop goes live Nov 21. Customers can pre-order books, choose pickup (soft opening Nov 28) or Lakewood delivery (Nov 27-28).</p>
+
+        <h4>Setup Tasks:</h4>
+        <ul class="task-list">
+            <li>Choose platform: Shopify, Square Online, or WooCommerce (2 hours research/setup)</li>
+            <li>Upload inventory with photos, prices, descriptions (3-4 hours)</li>
+            <li>Set up pickup + delivery options (1 hour)</li>
+            <li>Test checkout process (30 min)</li>
+            <li>Add "Shop" link to website navigation (15 min)</li>
+        </ul>
+
+        <div class="dependency">
+            <strong>⚠️ Important:</strong> If you skip pre-orders, you'll need to revise Email #2, #3, and #4 to remove pre-order mentions. Instagram content will also need adjustment.
+        </div>
+
+        <div class="effort-impact">
+            <div class="effort">
+                <div class="effort-label">Setup Time</div>
+                <div class="effort-value">5-8 hours</div>
+            </div>
+            <div class="impact">
+                <div class="impact-label">Revenue Potential</div>
+                <div class="impact-value">$1,000-2,500 pre-opening</div>
+            </div>
+        </div>
+
+        <div class="skip-note">
+            <h4>If You Skip This:</h4>
+            <ul>
+                <li>No pre-opening revenue</li>
+                <li>Email campaign loses a key hook (pre-order early access)</li>
+                <li>All revenue comes from opening weekend only</li>
+                <li><strong>Alternative:</strong> Simple Google Form + Square invoices (2 hours setup instead of 8)</li>
+                <li><strong>Alternative:</strong> Skip entirely, focus 100% on in-store opening weekend</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- MODULE 6: VIP SOFT OPENING -->
+<div class="module">
+    <div class="module-header">
+        <h3 class="module-title"><span class="category-badge cat-events">EVENT</span> VIP Soft Opening (Nov 28, Fri)</h3>
+        <div class="module-status">
+            <button class="status-btn keep">✓ KEEP</button>
+            <button class="status-btn skip">✗ SKIP</button>
+        </div>
+    </div>
+    <div class="module-meta">
+        <div class="meta-item">
+            <span class="meta-label">Time Commitment</span>
+            <span class="meta-value">Planning: 3-4 hrs<br>Event: 4-5 hrs</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Impact</span>
+            <span class="meta-value">⭐⭐⭐⭐ HIGH</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Dependencies</span>
+            <span class="meta-value">Email list, volunteers</span>
+        </div>
+    </div>
+    <div class="module-content">
+        <h4>What This Is:</h4>
+        <p>Email-list-only preview night, 4-7pm Friday Nov 28. Exclusive first access, light refreshments, kids activities, 15% off purchases.</p>
+
+        <h4>Planning Checklist:</h4>
+        <ul class="task-list">
+            <li>Recruit 2-3 volunteers (1 hour)</li>
+            <li>Plan activities: book scavenger hunt, face painting, photo backdrop (2 hours)</li>
+            <li>Shop for refreshments (1 hour + $100-150)</li>
+            <li>Create run-of-show timeline (30 min)</li>
+            <li>Set up RSVP tracking (30 min)</li>
+        </ul>
+
+        <h4>Day-Of Schedule:</h4>
+        <ul style="margin: 10px 0; font-size: 10pt; line-height: 1.8;">
+            <li>3:00pm - Team arrives, final setup</li>
+            <li>4:00pm - Doors open</li>
+            <li>4:15pm - Welcome speech (Emily & Michael, 5 min)</li>
+            <li>4:30-6:00pm - Open browsing, activities, purchases</li>
+            <li>5:00pm - Story time for younger kids (15 min)</li>
+            <li>6:00pm - Thank you toast</li>
+            <li>7:00pm - Close, clean up</li>
+        </ul>
+
+        <div class="effort-impact">
+            <div class="effort">
+                <div class="effort-label">Total Time</div>
+                <div class="effort-value">7-9 hours</div>
+            </div>
+            <div class="impact">
+                <div class="impact-label">Expected Outcome</div>
+                <div class="impact-value">40-60 attendees<br>$500-1,000 revenue<br>Testimonials/photos</div>
+            </div>
+        </div>
+
+        <div class="skip-note">
+            <h4>If You Skip This:</h4>
+            <ul>
+                <li>Email list feels less special (no exclusive preview)</li>
+                <li>You lose a practice run before grand opening</li>
+                <li>Less revenue opportunity</li>
+                <li>Fewer testimonials and photos for social proof</li>
+                <li><strong>Alternative:</strong> Do "VIP Hour" Saturday morning 9-10am instead (1 hour, less setup)</li>
+                <li><strong>Alternative:</strong> Skip entirely, focus all energy on grand opening Saturday</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- MODULE 7: GRAND OPENING -->
+<div class="module">
+    <div class="module-header">
+        <h3 class="module-title"><span class="category-badge cat-events">EVENT</span> Grand Opening (Nov 29, Sat)</h3>
+        <div class="module-status">
+            <button class="status-btn keep">✓ KEEP</button>
+            <button class="status-btn skip">✗ SKIP</button>
+        </div>
+    </div>
+    <div class="module-meta">
+        <div class="meta-item">
+            <span class="meta-label">Time Commitment</span>
+            <span class="meta-value">Planning: 5-6 hrs<br>Event: 8-10 hrs</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Impact</span>
+            <span class="meta-value">⭐⭐⭐⭐⭐ CRITICAL</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Dependencies</span>
+            <span class="meta-value">Volunteers, inventory, POS</span>
+        </div>
+    </div>
+    <div class="module-content">
+        <h4>What This Is:</h4>
+        <p>Public grand opening on Small Business Saturday, 10am-6pm. Ribbon cutting, story hours, activities, door prizes. EVERYONE WELCOME.</p>
+
+        <h4>Planning Checklist:</h4>
+        <ul class="task-list">
+            <li>Recruit 4-5 people to help (staff all day in shifts)</li>
+            <li>Plan hourly activities: story hours (10:30am, 11:30am), crafts (2-4pm), prize drawings (4-6pm)</li>
+            <li>Invite local officials for 10am ribbon cutting</li>
+            <li>Stock register with $200 cash for change</li>
+            <li>Set up signage: A-frame outside, event schedule inside, wayfinding</li>
+            <li>Prep raffle prizes, door prizes</li>
+            <li>Designate photographer for all-day documentation</li>
+        </ul>
+
+        <h4>Day-Of Schedule:</h4>
+        <ul style="margin: 10px 0; font-size: 10pt; line-height: 1.8;">
+            <li>9:00am - Team arrives, final setup</li>
+            <li>10:00am - RIBBON CUTTING + doors open</li>
+            <li>10:30am & 11:30am - Story hours</li>
+            <li>12-2pm - Meet local authors (if booked)</li>
+            <li>2-4pm - Kids craft activities</li>
+            <li>4-6pm - Door prize drawings, final rush</li>
+            <li>6:00pm - Close, team celebration!</li>
+        </ul>
+
+        <div class="effort-impact">
+            <div class="effort">
+                <div class="effort-label">Total Time</div>
+                <div class="effort-value">13-16 hours</div>
+            </div>
+            <div class="impact">
+                <div class="impact-label">Expected Outcome</div>
+                <div class="impact-value">150-250 attendees<br>$2,000-3,500 revenue<br>MAJOR milestone!</div>
+            </div>
+        </div>
+
+        <div class="dependency">
+            <strong>🚨 This is your MAIN EVENT - don't skip!</strong> This is what everything else builds toward.
+        </div>
+
+        <div class="skip-note">
+            <h4>If You Skip This:</h4>
+            <ul>
+                <li><strong>DON'T SKIP THIS.</strong> This is the culmination of your opening campaign.</li>
+                <li>If absolutely necessary to scale back: Reduce hours (10am-2pm instead of 10am-6pm)</li>
+                <li>Or simplify activities (just story hours, no crafts/authors)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- MODULE 8: COMMUNITY PARTNERSHIPS -->
+<div class="module">
+    <div class="module-header">
+        <h3 class="module-title"><span class="category-badge cat-press">OUTREACH</span> Community Partnerships</h3>
+        <div class="module-status">
+            <button class="status-btn keep">✓ KEEP</button>
+            <button class="status-btn skip">✗ SKIP</button>
+        </div>
+    </div>
+    <div class="module-meta">
+        <div class="meta-item">
+            <span class="meta-label">Time Commitment</span>
+            <span class="meta-value">2-3 hours</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Impact</span>
+            <span class="meta-value">⭐⭐ LOW (short-term)<br>⭐⭐⭐⭐ HIGH (long-term)</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Dependencies</span>
+            <span class="meta-value">None</span>
+        </div>
+    </div>
+    <div class="module-content">
+        <h4>What This Is:</h4>
+        <p>Reach out to local schools, library, YMCA, and kid-focused businesses to introduce yourself and explore future collaboration.</p>
+
+        <h4>Outreach List:</h4>
+        <ul class="task-list">
+            <li>Email 4-5 elementary schools (Roosevelt, Grant, Harding, Horace Mann) - 1 hour</li>
+            <li>Visit Lakewood Public Library to introduce yourself - 30 min</li>
+            <li>Connect with Lakewood Family YMCA - 30 min</li>
+            <li>Cross-promote with local cafes (coffee sleeves with your flyer?) - 1 hour</li>
+        </ul>
+
+        <div class="effort-impact">
+            <div class="effort">
+                <div class="effort-label">Total Time</div>
+                <div class="effort-value">2-3 hours</div>
+            </div>
+            <div class="impact">
+                <div class="impact-label">Opening Impact</div>
+                <div class="impact-value">+10-20 attendees</div>
+            </div>
+        </div>
+
+        <div class="skip-note">
+            <h4>If You Skip This:</h4>
+            <ul>
+                <li>Won't hurt opening weekend significantly</li>
+                <li>You can do this AFTER opening when you have more time</li>
+                <li><strong>Recommendation:</strong> Skip for now, focus on opening, then do this in December</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- MODULE 9: PAID ADVERTISING -->
+<div class="module">
+    <div class="module-header">
+        <h3 class="module-title"><span class="category-badge cat-social">PAID ADS</span> Facebook/Instagram Ads</h3>
+        <div class="module-status">
+            <button class="status-btn keep">✓ KEEP</button>
+            <button class="status-btn skip">✗ SKIP</button>
+        </div>
+    </div>
+    <div class="module-meta">
+        <div class="meta-item">
+            <span class="meta-label">Time Commitment</span>
+            <span class="meta-value">3-4 hours setup<br>$150-300 budget</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Impact</span>
+            <span class="meta-value">⭐⭐⭐ MEDIUM</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Dependencies</span>
+            <span class="meta-value">Facebook Business account</span>
+        </div>
+    </div>
+    <div class="module-content">
+        <h4>What This Is:</h4>
+        <p>Targeted ads to Lakewood parents (ages 25-45) Nov 18-29 promoting grand opening + pre-orders.</p>
+
+        <h4>Setup:</h4>
+        <ul class="task-list">
+            <li>Create Facebook Business account (1 hour if new)</li>
+            <li>Design ad creative (store photo + opening details) - 1 hour</li>
+            <li>Set targeting: Lakewood, OH + 5 mile radius, parents, ages 25-45 - 30 min</li>
+            <li>Budget: $15-25/day Nov 18-29 - set it and forget it</li>
+            <li>Monitor and adjust - 30 min/week</li>
+        </ul>
+
+        <div class="effort-impact">
+            <div class="effort">
+                <div class="effort-label">Total Cost</div>
+                <div class="effort-value">$150-300</div>
+            </div>
+            <div class="impact">
+                <div class="impact-label">Expected Reach</div>
+                <div class="impact-value">3,000-5,000 people<br>+20-40 attendees</div>
+            </div>
+        </div>
+
+        <div class="skip-note">
+            <h4>If You Skip This:</h4>
+            <ul>
+                <li>You rely on organic reach only (email + Instagram followers)</li>
+                <li>Potentially fewer opening attendees</li>
+                <li>Save $150-300</li>
+                <li><strong>Recommendation:</strong> Skip if budget is tight - organic is working well already</li>
+                <li><strong>Alternative:</strong> Do $50 total budget just to test (Nov 26-29 only)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- MODULE 10: WEBSITE ENHANCEMENTS -->
+<div class="module">
+    <div class="module-header">
+        <h3 class="module-title"><span class="category-badge cat-website">WEBSITE</span> Website Enhancements (FAQ, Photos, Events)</h3>
+        <div class="module-status">
+            <button class="status-btn keep">✓ KEEP</button>
+            <button class="status-btn skip">✗ SKIP</button>
+        </div>
+    </div>
+    <div class="module-meta">
+        <div class="meta-item">
+            <span class="meta-label">Time Commitment</span>
+            <span class="meta-value">4-5 hours total</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Impact</span>
+            <span class="meta-value">⭐⭐⭐ MEDIUM</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Dependencies</span>
+            <span class="meta-value">Module 4 (critical fixes) should be done first</span>
+        </div>
+    </div>
+    <div class="module-content">
+        <h4>What This Is:</h4>
+        <p>Nice-to-have website improvements: FAQ section, founder photos, upcoming events section.</p>
+
+        <h4>Tasks:</h4>
+        <ul class="task-list">
+            <li>Add FAQ section (6-8 questions: hours, parking, birthday parties, age ranges, returns) - 2 hours</li>
+            <li>Add Emily & Michael photos to About section - 1 hour</li>
+            <li>Add "Upcoming Events" section with opening weekend details - 1 hour</li>
+            <li>Optional: Rewrite About Us copy to be more story-driven - 1 hour</li>
+        </ul>
+
+        <div class="effort-impact">
+            <div class="effort">
+                <div class="effort-label">Total Time</div>
+                <div class="effort-value">4-5 hours</div>
+            </div>
+            <div class="impact">
+                <div class="impact-label">Benefit</div>
+                <div class="impact-value">Answers questions<br>Builds trust<br>Looks professional</div>
+            </div>
+        </div>
+
+        <div class="skip-note">
+            <h4>If You Skip This:</h4>
+            <ul>
+                <li>You'll get more emails/DMs asking basic questions</li>
+                <li>Website looks less polished</li>
+                <li>Trust signals (founder photos) missing</li>
+                <li><strong>Recommendation:</strong> Do FAQ only (2 hours) - prevents repetitive questions</li>
+                <li><strong>Alternative:</strong> Do this AFTER opening in December when you have more time</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- SUMMARY PAGE -->
+<div class="module" style="border-color: #d4af37; border-width: 3px;">
+    <div class="module-header" style="background: #d4af37;">
+        <h3 class="module-title" style="color: #1a4d2e;">📋 Quick Decision Matrix</h3>
+    </div>
+    <div class="module-content">
+        <h4>If You're Feeling Overwhelmed, Here's the Bare Minimum:</h4>
+        <div style="background: #e8f5e9; padding: 15px; border-radius: 5px; margin: 15px 0;">
+            <h4 style="margin-top: 0; color: #1a4d2e;">✅ MUST KEEP (Non-Negotiable):</h4>
+            <ul>
+                <li><strong>Module 1:</strong> Email Campaign (2-3 hrs total) - Your #1 asset</li>
+                <li><strong>Module 7:</strong> Grand Opening Saturday (13-16 hrs) - The main event</li>
+                <li><strong>Module 4:</strong> Website Critical Fixes (1 hour) - Minimum credibility</li>
+            </ul>
+        </div>
+
+        <div style="background: #fff9e0; padding: 15px; border-radius: 5px; margin: 15px 0;">
+            <h4 style="margin-top: 0; color: #e65100;">⭐ HIGHLY RECOMMENDED:</h4>
+            <ul>
+                <li><strong>Module 2:</strong> Instagram Daily (20-30 min/day) - Visual momentum</li>
+                <li><strong>Module 3:</strong> Press Outreach (3-4 hrs) - Free publicity</li>
+                <li><strong>Module 6:</strong> VIP Soft Opening (7-9 hrs) - Practice run + exclusivity</li>
+            </ul>
+        </div>
+
+        <div style="background: #e3f2fd; padding: 15px; border-radius: 5px; margin: 15px 0;">
+            <h4 style="margin-top: 0; color: #1565c0;">💡 OPTIONAL (Nice to Have):</h4>
+            <ul>
+                <li><strong>Module 5:</strong> Pre-Order System (5-8 hrs) - Extra revenue but complex</li>
+                <li><strong>Module 9:</strong> Paid Ads ($150-300) - Reach boost if budget allows</li>
+                <li><strong>Module 10:</strong> Website Enhancements (4-5 hrs) - Can do after opening</li>
+                <li><strong>Module 8:</strong> Community Partnerships (2-3 hrs) - Better for post-opening</li>
+            </ul>
+        </div>
+
+        <h4>Time Investment by Priority:</h4>
+        <table style="width: 100%; margin: 15px 0; font-size: 10pt; border-collapse: collapse;">
+            <tr style="background: #f5f5f5;">
+                <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Priority</th>
+                <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Modules</th>
+                <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Total Time</th>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Must Keep</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Email + Grand Opening + Website Fixes</td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>16-19 hours</strong></td>
+            </tr>
+            <tr style="background: #fafafa;">
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>+ Recommended</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">+ Instagram + Press + VIP Opening</td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>40-50 hours total</strong></td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>+ Everything</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">+ All optional modules</td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>65-80 hours total</strong></td>
+            </tr>
+        </table>
+
+        <div style="background: #ffebee; padding: 15px; border-radius: 5px; margin: 20px 0; border: 2px solid #c41e3a;">
+            <h4 style="margin-top: 0; color: #c41e3a;">🚨 Reality Check:</h4>
+            <p style="margin-bottom: 0;"><strong>You have 25 days until opening.</strong> Don't try to do everything. Pick what matters most to YOU, and skip the rest without guilt. A successful opening with 6 things done well is better than 10 things done poorly.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
