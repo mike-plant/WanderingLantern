@@ -467,7 +467,7 @@
 const SHEET_CONFIG = {
     sheetId: '1rPTT6ieC2FqCqA0cLoECNSXmvAk1zH91ha4-M4w3vM4',
     sheetName: 'tasks-template',
-    scriptUrl: 'https://script.google.com/macros/s/AKfycbytKuWdpaeULomJvtckZJlQ-YZCil2aGeTX18rjuYn8sEen-MsaSN6Si2zS0Zc2N6gg7w/exec'
+    scriptUrl: 'https://script.google.com/macros/s/AKfycbyUPBunnqM1Nbod5_bCFffF4VRrGFPdWAF5_OC88RMRZW0cGMtXk1iLLT9MqmJ8tglklw/exec'
 };
 
 let allTasks = [];
@@ -554,19 +554,18 @@ function processTasks() {
 
         const taskDateStr = formatDateForComparison(taskDate);
 
-        // Today's tasks
+        // Today's tasks (show both completed and incomplete)
         if (taskDateStr === todayStr) {
+            todaysTasks.push(task);
             if (task.completed) {
-                completedToday.push(task);
-            } else {
-                todaysTasks.push(task);
+                completedToday.push(task); // Also track for stats
             }
         }
-        // Tomorrow's tasks
-        else if (taskDateStr === tomorrowStr && !task.completed) {
+        // Tomorrow's tasks (show both completed and incomplete)
+        else if (taskDateStr === tomorrowStr) {
             tomorrowsTasks.push(task);
         }
-        // Missed tasks
+        // Missed tasks (only incomplete)
         else if (taskDate < today && !task.completed) {
             missedTasks.push(task);
         }
@@ -648,14 +647,17 @@ function updateTodayTask() {
     const today = new Date();
     const dayName = today.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
 
-    if (todaysTasks.length > 0) {
-        const firstTask = todaysTasks[0];
+    // Get all today's tasks (including completed)
+    const allTodayTasks = [...todaysTasks, ...completedToday];
 
-        if (firstTask.isUpcoming) {
+    if (allTodayTasks.length > 0) {
+        const firstIncomplete = todaysTasks[0];
+
+        if (firstIncomplete && firstIncomplete.isUpcoming) {
             // Showing next upcoming task (only if no tasks tomorrow)
-            const upcomingDate = firstTask.upcomingDate.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+            const upcomingDate = firstIncomplete.upcomingDate.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
             const taskList = todaysTasks.map(task =>
-                `<div style="margin-bottom: 10px;">
+                `<div style="margin-bottom: 10px; padding: 8px; border-left: 3px solid #1a4d2e; background: #f9f9f9;">
                     <strong>${task.task}</strong>
                     ${task.category ? `<span style="margin-left: 10px; color: #666; font-size: 0.9em;">[${task.category}]</span>` : ''}
                     ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em;">${task.time}</span>` : ''}
@@ -669,17 +671,27 @@ function updateTodayTask() {
             `;
             taskButtons.style.display = 'none';
         } else {
-            // Showing today's tasks
-            const taskList = todaysTasks.map(task =>
-                `<div style="margin-bottom: 10px;">
-                    <strong>${task.task}</strong>
-                    ${task.category ? `<span style="margin-left: 10px; color: #666; font-size: 0.9em;">[${task.category}]</span>` : ''}
-                    ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em;">${task.time}</span>` : ''}
-                </div>`
-            ).join('');
+            // Showing all today's tasks (completed and incomplete)
+            const taskList = allTodayTasks.map(task => {
+                const isCompleted = task.completed;
+                const checkmark = isCompleted ? '✓' : '☐';
+                const textStyle = isCompleted ? 'text-decoration: line-through; opacity: 0.6;' : '';
+                const bgColor = isCompleted ? '#e8f5e9' : '#f9f9f9';
+                const borderColor = isCompleted ? '#2e7d32' : '#1a4d2e';
+
+                return `<div style="margin-bottom: 8px; padding: 10px; border-left: 3px solid ${borderColor}; background: ${bgColor}; cursor: pointer; transition: all 0.2s;"
+                            onclick="markTaskCompleteById(${task.id})"
+                            onmouseover="this.style.background='#f0f0f0'"
+                            onmouseout="this.style.background='${bgColor}'">
+                    <span style="font-size: 1.2em; margin-right: 8px;">${checkmark}</span>
+                    <strong style="${textStyle}">${task.task}</strong>
+                    ${task.category ? `<span style="margin-left: 10px; color: #666; font-size: 0.9em; ${textStyle}">[${task.category}]</span>` : ''}
+                    ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em; ${textStyle}">${task.time}</span>` : ''}
+                </div>`;
+            }).join('');
 
             todayTaskEl.innerHTML = `<strong>${dayName}:</strong><div style="margin-top: 10px;">${taskList}</div>`;
-            taskButtons.style.display = 'grid';
+            taskButtons.style.display = 'none';
         }
     } else {
         // No tasks today - check if tomorrow has tasks
@@ -719,31 +731,11 @@ function updateMissedTasks() {
     }
 }
 
-// Update completed today display
+// Update completed today display - now hidden since we show inline
 function updateCompletedToday() {
+    // Completed tasks are now shown inline with today's tasks
     const completedSection = document.getElementById('completedTodaySection');
-    const completedList = document.getElementById('completedTodayList');
-
-    if (completedToday.length > 0) {
-        const taskList = completedToday.map(task =>
-            `<div style="padding: 10px; border-bottom: 1px solid #ddd;">
-                <div style="display: flex; align-items: center;">
-                    <span style="font-size: 1.2em; margin-right: 10px; color: #2e7d32;">✓</span>
-                    <div style="flex: 1;">
-                        <strong style="text-decoration: line-through; color: #666;">${task.task}</strong>
-                        <div style="color: #999; font-size: 0.85em; margin-top: 3px;">
-                            ${task.category || 'Task'}${task.time ? ` • ${task.time}` : ''}
-                        </div>
-                    </div>
-                </div>
-            </div>`
-        ).join('');
-
-        completedList.innerHTML = taskList;
-        completedSection.style.display = 'block';
-    } else {
-        completedSection.style.display = 'none';
-    }
+    completedSection.style.display = 'none';
 }
 
 // Update tomorrow's tasks display
@@ -756,19 +748,27 @@ function updateTomorrowTasks() {
         tomorrow.setDate(tomorrow.getDate() + 1);
         const tomorrowName = tomorrow.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
 
-        const taskList = tomorrowsTasks.map(task =>
-            `<div style="padding: 10px; border-bottom: 1px solid #ddd;">
+        const taskList = tomorrowsTasks.map(task => {
+            const isCompleted = task.completed;
+            const checkmark = isCompleted ? '✓' : '☐';
+            const textStyle = isCompleted ? 'text-decoration: line-through; opacity: 0.6;' : '';
+            const bgColor = isCompleted ? '#e8f5e9' : 'white';
+
+            return `<div style="padding: 10px; border-bottom: 1px solid #ddd; cursor: pointer; background: ${bgColor};"
+                        onclick="markTaskCompleteById(${task.id})"
+                        onmouseover="this.style.background='#f0f0f0'"
+                        onmouseout="this.style.background='${bgColor}'">
                 <div style="display: flex; align-items: center;">
-                    <span style="font-size: 1.2em; margin-right: 10px;">📌</span>
+                    <span style="font-size: 1.2em; margin-right: 10px;">${checkmark}</span>
                     <div style="flex: 1;">
-                        <strong>${task.task}</strong>
-                        <div style="color: #999; font-size: 0.85em; margin-top: 3px;">
+                        <strong style="${textStyle}">${task.task}</strong>
+                        <div style="color: #999; font-size: 0.85em; margin-top: 3px; ${textStyle}">
                             ${task.category || 'Task'}${task.time ? ` • ${task.time}` : ''}
                         </div>
                     </div>
                 </div>
-            </div>`
-        ).join('');
+            </div>`;
+        }).join('');
 
         tomorrowList.innerHTML = `<div style="margin-bottom: 10px; color: #1976d2; font-weight: bold;">${tomorrowName}</div>` + taskList;
         tomorrowSection.style.display = 'block';
@@ -806,15 +806,22 @@ function updateThisWeek() {
 
     if (thisWeekTasks.length > 0) {
         const taskHTML = thisWeekTasks.map((task, index) => {
-            const icon = task.completed ? '✅' : '⏳';
+            const isCompleted = task.completed;
+            const checkmark = isCompleted ? '✓' : '☐';
+            const textStyle = isCompleted ? 'text-decoration: line-through; opacity: 0.6;' : '';
             const isLast = index === thisWeekTasks.length - 1;
             const borderStyle = isLast ? '' : 'border-bottom: 1px solid #eee;';
+            const bgColor = isCompleted ? '#e8f5e9' : 'white';
 
             return `
-                <div style="padding: 10px 0; ${borderStyle}">
-                    ${icon} <strong>${task.task}</strong>
-                    ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em;">(${task.time})</span>` : ''}
-                    ${task.date && task.date !== 'Anytime' ? `<span style="margin-left: 10px; color: #666; font-size: 0.85em;">• ${task.date}</span>` : ''}
+                <div style="padding: 10px; ${borderStyle} cursor: pointer; background: ${bgColor}; transition: all 0.2s;"
+                    onclick="markTaskCompleteById(${task.id})"
+                    onmouseover="this.style.background='#f0f0f0'"
+                    onmouseout="this.style.background='${bgColor}'">
+                    <span style="font-size: 1.2em; margin-right: 8px;">${checkmark}</span>
+                    <strong style="${textStyle}">${task.task}</strong>
+                    ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em; ${textStyle}">(${task.time})</span>` : ''}
+                    ${task.date && task.date !== 'Anytime' ? `<span style="margin-left: 10px; color: #666; font-size: 0.85em; ${textStyle}">• ${task.date}</span>` : ''}
                 </div>
             `;
         }).join('');
@@ -842,10 +849,13 @@ function markTaskComplete() {
     }
 }
 
-// Mark specific task complete by ID
+// Toggle task completion by ID
 function markTaskCompleteById(taskId) {
     const task = allTasks.find(t => t.id === taskId);
     if (!task) return;
+
+    // Toggle the completion status
+    const newStatus = !task.completed;
 
     // Update Google Sheet
     fetch(SHEET_CONFIG.scriptUrl, {
@@ -857,30 +867,22 @@ function markTaskCompleteById(taskId) {
             sheetName: SHEET_CONFIG.sheetName,
             row: taskId,
             column: 4, // Column D (Completed)
-            value: 'TRUE'
+            value: newStatus ? 'TRUE' : 'FALSE'
         })
     })
     .then(() => {
         // Update local task
-        task.completed = true;
+        task.completed = newStatus;
 
         // Refresh display
         processTasks();
         updateDisplay();
-
-        // Show success message
-        const message = todaysTasks.length === 0 && missedTasks.length === 0
-            ? '✓ Task complete! You\'re all caught up! 🎉'
-            : '✓ Task complete! Keep going!';
-
-        alert(message);
     })
     .catch(err => {
         console.error('Error updating task:', err);
-        alert('Task marked locally, but could not sync to Google Sheets. Check your connection.');
 
         // Still update locally even if sync fails
-        task.completed = true;
+        task.completed = newStatus;
         processTasks();
         updateDisplay();
     });
