@@ -376,11 +376,17 @@
     <div class="quick-actions">
         <h2>⚡ Today's Priority</h2>
         <div id="todayTask" style="padding: 15px; background: #f5eedc; border-radius: 8px; margin-bottom: 15px;">
-            <strong>Monday, Nov 4:</strong> Instagram post - Construction photo "23 days until we open!"
+            <div style="text-align: center; color: #999;">Loading tasks from Google Sheets...</div>
         </div>
-        <div class="action-buttons">
-            <button class="action-btn" onclick="markComplete()">✓ Mark Complete</button>
+        <div class="action-buttons" id="taskButtons" style="display: none;">
+            <button class="action-btn" onclick="markTaskComplete()">✓ Mark Complete</button>
             <button class="action-btn secondary" onclick="skipTask()">→ Skip for Now</button>
+        </div>
+    </div>
+
+    <div class="quick-actions" id="missedTasksSection" style="display: none;">
+        <h2>⚠️ Missed Tasks</h2>
+        <div id="missedTasksList" style="padding: 15px; background: #fff3e0; border-radius: 8px;">
         </div>
     </div>
 
@@ -448,116 +454,249 @@
 </a>
 
 <script>
-// Task schedule - maps dates to tasks
-const taskSchedule = {
-    '2025-11-04': 'Instagram: Construction photo "23 days to go"',
-    '2025-11-05': 'Convert hero image to WebP (squoosh.app) + Instagram: Behind-the-scenes setup',
-    '2025-11-06': 'Update hero headline to "Cleveland\'s First..."',
-    '2025-11-07': 'Draft press release + Instagram: Book display photo',
-    '2025-11-08': 'Send press releases to all media contacts',
-    '2025-11-09': 'Instagram: "Meet Emily" intro post',
-    '2025-11-10': 'Email #2: "Meet Your Book Experts" (Sunday 6-8pm)',
-    '2025-11-11': 'Instagram: Countdown "18 days!"',
-    '2025-11-12': 'Website: Add testimonials section (optional)',
-    '2025-11-13': 'Instagram: Featured book recommendation',
-    '2025-11-14': 'Instagram: Store exterior/sign photo',
-    '2025-11-15': 'Review press coverage (if any responses)',
-    '2025-11-16': 'Instagram: Reading nook/cozy corner photo',
-    '2025-11-17': 'Email #3: "Sneak Peek Inside" (Sunday 6-8pm)',
-    '2025-11-18': 'Instagram: Countdown "12 days!"',
-    '2025-11-19': 'Finalize inventory for opening',
-    '2025-11-20': 'Instagram: Best-sellers shelf',
-    '2025-11-21': 'PRE-ORDER LAUNCH (if doing) + Instagram announcement',
-    '2025-11-22': 'Instagram: Staff picks display',
-    '2025-11-23': 'Final store prep and cleaning',
-    '2025-11-24': 'Email #4: "This Week is the Week!" (Sunday 6-8pm)',
-    '2025-11-25': 'Instagram: Final countdown "5 days!"',
-    '2025-11-26': 'Prep opening day supplies (bags, receipts, etc.) + Print price tags',
-    '2025-11-27': 'Instagram: "Opening in 2 days!" teaser',
-    '2025-11-28': 'VIP SOFT OPENING (4-7pm) + Instagram Stories',
-    '2025-11-29': 'GRAND OPENING DAY! (10am-6pm) 🎉',
-    '2025-11-30': 'Email #5: "Thank You!" recap + Instagram thank you post'
+// Google Sheets Configuration
+const SHEET_CONFIG = {
+    sheetId: '1rPTT6ieC2FqCqA0cLoECNSXmvAk1zH91ha4-M4w3vM4',
+    sheetName: 'tasks-template',
+    scriptUrl: 'https://script.google.com/macros/s/AKfycbytKuWdpaeULomJvtckZJlQ-YZCil2aGeTX18rjuYn8sEen-MsaSN6Si2zS0Zc2N6gg7w/exec'
 };
+
+let allTasks = [];
+let todaysTasks = [];
+let missedTasks = [];
 
 // Calculate days until opening
 function updateCountdown() {
     const openingDay = new Date('2025-11-29T00:00:00');
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate day count
+    today.setHours(0, 0, 0, 0);
 
     const daysLeft = Math.ceil((openingDay - today) / (1000 * 60 * 60 * 24));
     document.getElementById('daysLeft').textContent = daysLeft >= 0 ? daysLeft : 0;
 
-    // Update current week (Nov 4-10 = Week 1, Nov 11-17 = Week 2, etc.)
+    // Update current week
     const week1Start = new Date('2025-11-04T00:00:00');
     const daysSinceStart = Math.floor((today - week1Start) / (1000 * 60 * 60 * 24));
     const currentWeek = Math.max(1, Math.min(4, Math.ceil((daysSinceStart + 1) / 7)));
     document.getElementById('currentWeek').textContent = currentWeek;
 }
 
-// Get today's task
-function getTodayTask() {
-    const today = new Date();
-    const dateKey = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+// Fetch tasks from Google Sheet
+function fetchTasks() {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_CONFIG.sheetId}/gviz/tq?tqx=out:json&sheet=${SHEET_CONFIG.sheetName}`;
 
-    return taskSchedule[dateKey] || null;
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            // Parse Google's JSONP response
+            const json = JSON.parse(data.substr(47).slice(0, -2));
+            const rows = json.table.rows;
+
+            // Skip header row, map to task objects
+            allTasks = rows.slice(1).map((row, index) => ({
+                id: index + 2, // +2 because: +1 for index starting at 0, +1 for header row
+                task: row.c[0]?.v || '',
+                week: row.c[1]?.v || '',
+                date: row.c[2]?.v || '',
+                completed: row.c[3]?.v === 'TRUE' || row.c[3]?.v === true,
+                category: row.c[4]?.v || '',
+                time: row.c[5]?.v || '',
+                notes: row.c[6]?.v || ''
+            })).filter(task => task.task); // Filter out empty rows
+
+            processTasks();
+            updateDisplay();
+        })
+        .catch(error => {
+            console.error('Error fetching tasks:', error);
+            document.getElementById('todayTask').innerHTML =
+                '<div style="color: #c41e3a;">❌ Could not connect to Google Sheets. Check your internet connection.</div>';
+        });
+}
+
+// Process tasks to find today's and missed tasks
+function processTasks() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayStr = formatDateForComparison(today);
+
+    todaysTasks = [];
+    missedTasks = [];
+
+    allTasks.forEach(task => {
+        if (!task.date || task.date === 'Anytime') return;
+
+        const taskDate = parseDateString(task.date);
+        const taskDateStr = formatDateForComparison(taskDate);
+
+        if (taskDateStr === todayStr && !task.completed) {
+            todaysTasks.push(task);
+        } else if (taskDate < today && !task.completed) {
+            missedTasks.push(task);
+        }
+    });
+}
+
+// Parse date string like "Nov 4" to Date object (assumes 2025)
+function parseDateString(dateStr) {
+    const months = {
+        'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+        'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+    };
+
+    const parts = dateStr.split(' ');
+    if (parts.length !== 2) return new Date();
+
+    const month = months[parts[0]];
+    const day = parseInt(parts[1]);
+
+    return new Date(2025, month, day);
+}
+
+// Format date for comparison (YYYY-MM-DD)
+function formatDateForComparison(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+// Update display with tasks
+function updateDisplay() {
+    updateTodayTask();
+    updateMissedTasks();
+    updateStats();
 }
 
 // Update today's task display
 function updateTodayTask() {
-    const todayTask = getTodayTask();
     const todayTaskEl = document.getElementById('todayTask');
+    const taskButtons = document.getElementById('taskButtons');
     const today = new Date();
     const dayName = today.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
 
-    if (todayTask) {
-        todayTaskEl.innerHTML = `<strong>${dayName}:</strong> ${todayTask}`;
+    if (todaysTasks.length > 0) {
+        const taskList = todaysTasks.map(task =>
+            `<div style="margin-bottom: 10px;">
+                <strong>${task.task}</strong>
+                ${task.category ? `<span style="margin-left: 10px; color: #666; font-size: 0.9em;">[${task.category}]</span>` : ''}
+                ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em;">${task.time}</span>` : ''}
+            </div>`
+        ).join('');
+
+        todayTaskEl.innerHTML = `<strong>${dayName}:</strong><div style="margin-top: 10px;">${taskList}</div>`;
+        taskButtons.style.display = 'grid';
     } else {
-        todayTaskEl.innerHTML = '<strong>No scheduled task today!</strong> Check the Week-by-Week plan for other tasks or take a well-deserved break! 🎉';
+        todayTaskEl.innerHTML = `<strong>${dayName}:</strong> No tasks scheduled for today! Take a break or check the Week-by-Week plan. 🎉`;
+        taskButtons.style.display = 'none';
     }
 }
 
-// Load progress from localStorage
-function loadProgress() {
-    const completed = localStorage.getItem('tasksCompleted') || 0;
-    const total = 45; // Total tasks across all weeks
-    const percentage = (completed / total) * 100;
+// Update missed tasks display
+function updateMissedTasks() {
+    const missedSection = document.getElementById('missedTasksSection');
+    const missedList = document.getElementById('missedTasksList');
 
-    document.getElementById('tasksCompleted').textContent = completed;
+    if (missedTasks.length > 0) {
+        const taskList = missedTasks.map(task =>
+            `<div style="padding: 10px; border-bottom: 1px solid #ddd; cursor: pointer;" onclick="markTaskCompleteById(${task.id})">
+                <div style="display: flex; align-items: center;">
+                    <span style="font-size: 1.2em; margin-right: 10px;">☐</span>
+                    <div style="flex: 1;">
+                        <strong>${task.task}</strong>
+                        <div style="color: #999; font-size: 0.85em; margin-top: 3px;">
+                            ${task.date} • ${task.category || 'Task'}${task.time ? ` • ${task.time}` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>`
+        ).join('');
+
+        missedList.innerHTML = taskList + '<div style="margin-top: 10px; font-size: 0.9em; color: #666;">Click any task to mark it complete</div>';
+        missedSection.style.display = 'block';
+    } else {
+        missedSection.style.display = 'none';
+    }
+}
+
+// Update stats from tasks
+function updateStats() {
+    const completedCount = allTasks.filter(t => t.completed).length;
+    const totalCount = allTasks.length;
+    const percentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+
+    document.getElementById('tasksCompleted').textContent = completedCount;
     document.getElementById('progressBar').style.width = percentage + '%';
 }
 
-// Mark today's task complete
-function markComplete() {
-    const completed = parseInt(localStorage.getItem('tasksCompleted') || 0) + 1;
-    localStorage.setItem('tasksCompleted', completed);
-    loadProgress();
-    alert('✓ Task marked complete! Great job!');
+// Mark today's first task complete
+function markTaskComplete() {
+    if (todaysTasks.length > 0) {
+        markTaskCompleteById(todaysTasks[0].id);
+    }
+}
 
-    // Mark task as done for today
-    const today = new Date().toISOString().split('T')[0];
-    localStorage.setItem('completedDate_' + today, 'true');
+// Mark specific task complete by ID
+function markTaskCompleteById(taskId) {
+    const task = allTasks.find(t => t.id === taskId);
+    if (!task) return;
 
-    document.getElementById('todayTask').innerHTML = '<strong>✓ Done for today!</strong> Check the Week-by-Week plan for more, or enjoy your success! 🎉';
+    // Update Google Sheet
+    fetch(SHEET_CONFIG.scriptUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            sheetId: SHEET_CONFIG.sheetId,
+            sheetName: SHEET_CONFIG.sheetName,
+            row: taskId,
+            column: 4, // Column D (Completed)
+            value: 'TRUE'
+        })
+    })
+    .then(() => {
+        // Update local task
+        task.completed = true;
+
+        // Refresh display
+        processTasks();
+        updateDisplay();
+
+        // Show success message
+        const message = todaysTasks.length === 0 && missedTasks.length === 0
+            ? '✓ Task complete! You\'re all caught up! 🎉'
+            : '✓ Task complete! Keep going!';
+
+        alert(message);
+    })
+    .catch(err => {
+        console.error('Error updating task:', err);
+        alert('Task marked locally, but could not sync to Google Sheets. Check your connection.');
+
+        // Still update locally even if sync fails
+        task.completed = true;
+        processTasks();
+        updateDisplay();
+    });
 }
 
 // Skip task
 function skipTask() {
     if(confirm('Skip this task? You can come back to it later.')) {
         document.getElementById('todayTask').innerHTML = '<strong>Task skipped.</strong> Check the Week-by-Week plan when you\'re ready!';
+        document.getElementById('taskButtons').style.display = 'none';
     }
 }
 
 // Initialize
 updateCountdown();
-updateTodayTask();
-loadProgress();
+fetchTasks();
 
-// Update countdown and today's task every hour
+// Auto-refresh every 5 minutes to sync changes from Emily
 setInterval(() => {
     updateCountdown();
-    updateTodayTask();
-}, 1000 * 60 * 60); // Every hour
+    fetchTasks();
+}, 5 * 60 * 1000); // Every 5 minutes
 </script>
 
 </body>
