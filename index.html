@@ -56,7 +56,7 @@
             min-height: 500px;
             background:
                 linear-gradient(to bottom, rgba(245, 238, 220, 0.3), rgba(245, 238, 220, 0.6)),
-                url('storefront-temp.png') center center / cover no-repeat;
+                url('storefront-temp.webp') center center / cover no-repeat;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -81,19 +81,38 @@
 
         .hero-opening-banner h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            color: var(--deep-brown);
-            margin: 0 0 0.5rem 0;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--warm-brown);
+            margin: 0 0 1.5rem 0;
+            font-weight: 500;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .hero-opening-banner .countdown {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(4rem, 8vw, 6rem);
+            color: var(--old-gold);
+            font-weight: 700;
+            margin: 1rem 0 0.5rem 0;
+            line-height: 1;
+        }
+
+        .hero-opening-banner .countdown-label {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--warm-brown);
             font-weight: 600;
-            letter-spacing: 2px;
+            margin-bottom: 1rem;
         }
 
         .hero-opening-banner .date {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
             color: var(--warm-brown);
             font-style: italic;
             font-weight: 400;
+            opacity: 0.85;
         }
 
         .hero-logo {
@@ -589,8 +608,10 @@
     <!-- Hero Section with Storefront Image -->
     <div class="hero" id="hero">
         <div class="hero-opening-banner">
-            <h1>Opening Soon</h1>
-            <div class="date">November 28th</div>
+            <h1>Cleveland's First Children's Bookstore</h1>
+            <div class="countdown" id="countdown">26</div>
+            <div class="countdown-label">Days Until We Open</div>
+            <div class="date">Grand Opening: Friday, November 29th</div>
         </div>
     </div>
 
@@ -760,6 +781,31 @@
     </footer>
 
     <script>
+        // Countdown Timer
+        function updateCountdown() {
+            const openingDay = new Date('2025-11-29T00:00:00');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const daysLeft = Math.ceil((openingDay - today) / (1000 * 60 * 60 * 24));
+            const countdownEl = document.getElementById('countdown');
+
+            if (daysLeft > 0) {
+                countdownEl.textContent = daysLeft;
+            } else if (daysLeft === 0) {
+                countdownEl.textContent = 'TODAY!';
+                countdownEl.style.fontSize = 'clamp(3rem, 7vw, 5rem)';
+            } else {
+                countdownEl.textContent = "We're Open!";
+                countdownEl.style.fontSize = 'clamp(3rem, 7vw, 5rem)';
+            }
+        }
+
+        // Update countdown on page load
+        updateCountdown();
+        // Update countdown daily (every 24 hours)
+        setInterval(updateCountdown, 24 * 60 * 60 * 1000);
+
         // Show sticky bars on scroll (desktop only)
         const hero = document.getElementById('hero');
         const taglineBar = document.getElementById('tagline-bar');
