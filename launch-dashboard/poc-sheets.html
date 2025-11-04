@@ -281,6 +281,13 @@ function connectSheet() {
     sheetConfig.scriptUrl = scriptUrl;
     useSheet = true;
 
+    // Save config to localStorage for next time
+    localStorage.setItem('sheetConfig', JSON.stringify({
+        sheetId: sheetId,
+        sheetName: sheetName,
+        scriptUrl: scriptUrl
+    }));
+
     if (scriptUrl) {
         showStatus('loading', '⏳ Connecting to Google Sheet (with write access)...');
     } else {
@@ -376,12 +383,31 @@ function showStatus(type, message) {
     }
 }
 
-// Load demo data on page load if previously saved
+// Load saved config and data on page load
 window.onload = function() {
+    // Load saved sheet configuration
+    const savedConfig = localStorage.getItem('sheetConfig');
+    if (savedConfig) {
+        const config = JSON.parse(savedConfig);
+        document.getElementById('sheetId').value = config.sheetId || '';
+        document.getElementById('sheetName').value = config.sheetName || 'Sheet1';
+        document.getElementById('scriptUrl').value = config.scriptUrl || '';
+
+        // Auto-connect if we have a sheet ID
+        if (config.sheetId) {
+            sheetConfig = config;
+            useSheet = true;
+            showStatus('loading', '⏳ Reconnecting to your saved Google Sheet...');
+            fetchSheetData();
+            return;
+        }
+    }
+
+    // Otherwise load demo data if previously saved
     const savedTasks = localStorage.getItem('demoTasks');
     if (savedTasks) {
         tasks = JSON.parse(savedTasks);
-        showStatus('success', '✓ Loaded your previous progress from browser');
+        showStatus('success', '✓ Loaded your previous demo progress from browser');
         renderTasks();
     }
 };

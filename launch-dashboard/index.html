@@ -344,7 +344,7 @@
     </div>
 
     <div class="countdown-box">
-        <div class="countdown-number" id="daysLeft">25</div>
+        <div class="countdown-number" id="daysLeft">...</div>
         <div class="countdown-label">Days Until Grand Opening</div>
         <div style="margin-top: 10px; opacity: 0.9;">Friday, Nov 28 (Soft Opening) • Saturday, Nov 29 (Grand Opening)</div>
     </div>
@@ -448,18 +448,79 @@
 </a>
 
 <script>
+// Task schedule - maps dates to tasks
+const taskSchedule = {
+    '2025-11-04': 'Instagram: Construction photo "23 days to go"',
+    '2025-11-05': 'Convert hero image to WebP (squoosh.app) + Instagram: Behind-the-scenes setup',
+    '2025-11-06': 'Update hero headline to "Cleveland\'s First..."',
+    '2025-11-07': 'Draft press release + Instagram: Book display photo',
+    '2025-11-08': 'Send press releases to all media contacts',
+    '2025-11-09': 'Instagram: "Meet Emily" intro post',
+    '2025-11-10': 'Email #2: "Meet Your Book Experts" (Sunday 6-8pm)',
+    '2025-11-11': 'Instagram: Countdown "18 days!"',
+    '2025-11-12': 'Website: Add testimonials section (optional)',
+    '2025-11-13': 'Instagram: Featured book recommendation',
+    '2025-11-14': 'Instagram: Store exterior/sign photo',
+    '2025-11-15': 'Review press coverage (if any responses)',
+    '2025-11-16': 'Instagram: Reading nook/cozy corner photo',
+    '2025-11-17': 'Email #3: "Sneak Peek Inside" (Sunday 6-8pm)',
+    '2025-11-18': 'Instagram: Countdown "12 days!"',
+    '2025-11-19': 'Finalize inventory for opening',
+    '2025-11-20': 'Instagram: Best-sellers shelf',
+    '2025-11-21': 'PRE-ORDER LAUNCH (if doing) + Instagram announcement',
+    '2025-11-22': 'Instagram: Staff picks display',
+    '2025-11-23': 'Final store prep and cleaning',
+    '2025-11-24': 'Email #4: "This Week is the Week!" (Sunday 6-8pm)',
+    '2025-11-25': 'Instagram: Final countdown "5 days!"',
+    '2025-11-26': 'Prep opening day supplies (bags, receipts, etc.) + Print price tags',
+    '2025-11-27': 'Instagram: "Opening in 2 days!" teaser',
+    '2025-11-28': 'VIP SOFT OPENING (4-7pm) + Instagram Stories',
+    '2025-11-29': 'GRAND OPENING DAY! (10am-6pm) 🎉',
+    '2025-11-30': 'Email #5: "Thank You!" recap + Instagram thank you post'
+};
+
 // Calculate days until opening
 function updateCountdown() {
-    const openingDay = new Date('2025-11-29');
+    const openingDay = new Date('2025-11-29T00:00:00');
     const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate day count
+
     const daysLeft = Math.ceil((openingDay - today) / (1000 * 60 * 60 * 24));
-    document.getElementById('daysLeft').textContent = daysLeft;
+    document.getElementById('daysLeft').textContent = daysLeft >= 0 ? daysLeft : 0;
+
+    // Update current week (Nov 4-10 = Week 1, Nov 11-17 = Week 2, etc.)
+    const week1Start = new Date('2025-11-04T00:00:00');
+    const daysSinceStart = Math.floor((today - week1Start) / (1000 * 60 * 60 * 24));
+    const currentWeek = Math.max(1, Math.min(4, Math.ceil((daysSinceStart + 1) / 7)));
+    document.getElementById('currentWeek').textContent = currentWeek;
+}
+
+// Get today's task
+function getTodayTask() {
+    const today = new Date();
+    const dateKey = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+
+    return taskSchedule[dateKey] || null;
+}
+
+// Update today's task display
+function updateTodayTask() {
+    const todayTask = getTodayTask();
+    const todayTaskEl = document.getElementById('todayTask');
+    const today = new Date();
+    const dayName = today.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+
+    if (todayTask) {
+        todayTaskEl.innerHTML = `<strong>${dayName}:</strong> ${todayTask}`;
+    } else {
+        todayTaskEl.innerHTML = '<strong>No scheduled task today!</strong> Check the Week-by-Week plan for other tasks or take a well-deserved break! 🎉';
+    }
 }
 
 // Load progress from localStorage
 function loadProgress() {
     const completed = localStorage.getItem('tasksCompleted') || 0;
-    const total = 47; // Total tasks across all weeks
+    const total = 45; // Total tasks across all weeks
     const percentage = (completed / total) * 100;
 
     document.getElementById('tasksCompleted').textContent = completed;
@@ -472,27 +533,31 @@ function markComplete() {
     localStorage.setItem('tasksCompleted', completed);
     loadProgress();
     alert('✓ Task marked complete! Great job!');
-    updateTodayTask();
+
+    // Mark task as done for today
+    const today = new Date().toISOString().split('T')[0];
+    localStorage.setItem('completedDate_' + today, 'true');
+
+    document.getElementById('todayTask').innerHTML = '<strong>✓ Done for today!</strong> Check the Week-by-Week plan for more, or enjoy your success! 🎉';
 }
 
 // Skip task
 function skipTask() {
     if(confirm('Skip this task? You can come back to it later.')) {
-        updateTodayTask();
+        document.getElementById('todayTask').innerHTML = '<strong>Task skipped.</strong> Check the Week-by-Week plan when you\'re ready!';
     }
-}
-
-// Update today's task
-function updateTodayTask() {
-    document.getElementById('todayTask').innerHTML = '<strong>All done for today!</strong> Check the Week-by-Week plan for tomorrow.';
 }
 
 // Initialize
 updateCountdown();
+updateTodayTask();
 loadProgress();
 
-// Update countdown daily
-setInterval(updateCountdown, 1000 * 60 * 60); // Every hour
+// Update countdown and today's task every hour
+setInterval(() => {
+    updateCountdown();
+    updateTodayTask();
+}, 1000 * 60 * 60); // Every hour
 </script>
 
 </body>
