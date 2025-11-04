@@ -200,13 +200,13 @@
             <div class="logo">
                 <img src="../logo.png" alt="The Wandering Lantern">
             </div>
-            <h1>Join Our Newsletter</h1>
-            <p class="subtitle">Stay connected with stories & magic</p>
+            <h1>Join The First Light</h1>
+            <p class="subtitle">Get exclusive updates as we count down to opening day</p>
         </div>
 
         <div class="form-section">
             <p class="intro-text">
-                Be the first to hear about new arrivals, special events, storytimes, and all the magical happenings at The Wandering Lantern!
+                Stay in the know as Cleveland's first children's bookstore comes to life! Get early announcements about our grand opening, special events, storytimes, and all the magical happenings at The Wandering Lantern.
             </p>
 
             <!-- MAILCHIMP FORM -->
@@ -222,15 +222,15 @@
                     <input type="email" id="mce-EMAIL" name="EMAIL" class="required email" required>
                 </div>
 
-                <!-- Hidden field for Pre Launch tag -->
-                <input type="hidden" name="tags" value="7744609">
+                <!-- Newsletter Only tag -->
+                <input type="hidden" name="tags" value="3728682">
 
                 <!-- Mailchimp bot prevention -->
                 <div style="position: absolute; left: -5000px;" aria-hidden="true">
                     <input type="text" name="b_f5535995545a29ebbdc6de523_f1915b185f" tabindex="-1" value="">
                 </div>
 
-                <button type="submit" name="subscribe">Subscribe</button>
+                <button type="submit" name="subscribe">Join The First Light</button>
                 <p class="footer-note">We promise to only send you the good stuff - no spam, just stories!</p>
             </form>
 
@@ -239,5 +239,29 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Handle form submission with redirect to thank you page
+        const form = document.getElementById('mc-embedded-subscribe-form');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Submit via AJAX to avoid Mailchimp's default page
+            const formData = new FormData(form);
+            const actionUrl = form.action.replace('/post?', '/post-json?');
+
+            fetch(actionUrl + '&' + new URLSearchParams(formData).toString(), {
+                method: 'GET',
+                mode: 'no-cors'
+            }).then(() => {
+                // Redirect to thank you page
+                window.location.href = '/thankyou/';
+            }).catch(() => {
+                // Still redirect even if there's an error (form was likely submitted)
+                window.location.href = '/thankyou/';
+            });
+        });
+    </script>
 </body>
 </html>

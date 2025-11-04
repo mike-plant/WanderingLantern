@@ -52,8 +52,8 @@
 
         /* Hero Section with Storefront Image */
         .hero {
-            height: 80vh;
-            min-height: 500px;
+            height: 75vh;
+            min-height: 525px;
             background:
                 linear-gradient(to bottom, rgba(245, 238, 220, 0.3), rgba(245, 238, 220, 0.6)),
                 url('storefront-temp.webp') center center / cover no-repeat;
@@ -72,18 +72,19 @@
             transform: translate(-50%, -50%);
             text-align: center;
             background: rgba(245, 238, 220, 0.95);
-            padding: 2.5rem 4rem;
+            padding: 3rem 5rem;
             border-radius: 8px;
             box-shadow: 0 8px 30px rgba(58, 47, 39, 0.3);
             border: 3px solid var(--aged-gold);
             max-width: 90%;
+            margin-top: 2em;
         }
 
         .hero-opening-banner h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
             color: var(--warm-brown);
-            margin: 0 0 1.5rem 0;
+            margin: 0 0 0.75rem 0;
             font-weight: 500;
             letter-spacing: 1px;
             opacity: 0.8;
@@ -91,28 +92,29 @@
 
         .hero-opening-banner .countdown {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(4rem, 8vw, 6rem);
+            font-size: clamp(3rem, 6vw, 4.5rem);
             color: var(--old-gold);
             font-weight: 700;
-            margin: 1rem 0 0.5rem 0;
-            line-height: 1;
+            margin: 0.5rem 0 0.5rem 0;
+            line-height: 0.85;
         }
 
         .hero-opening-banner .countdown-label {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
             color: var(--warm-brown);
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
 
         .hero-opening-banner .date {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             color: var(--warm-brown);
             font-style: italic;
             font-weight: 400;
             opacity: 0.85;
+            margin: 0;
         }
 
         .hero-logo {
@@ -254,12 +256,12 @@
         .container {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 4rem 2rem;
+            padding: 1.5rem 2rem;
         }
 
         /* Sections */
         section {
-            margin: 4rem 0;
+            margin: 2rem 0;
             position: relative;
         }
 
@@ -459,6 +461,70 @@
             box-shadow: 0 6px 16px rgba(90, 75, 60, 0.4);
         }
 
+        /* First Light Section - Enhanced Styling */
+        .first-light-section {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(26, 77, 46, 0.08) 50%, rgba(212, 175, 55, 0.12) 100%);
+            border: 2px solid var(--old-gold);
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 2rem !important;
+            margin: 1.5rem auto 2rem auto !important;
+        }
+
+        .first-light-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, transparent 30%, rgba(212, 175, 55, 0.3) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+            border-radius: 12px;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .first-light-section h2 {
+            color: var(--deep-green);
+            text-shadow: 1px 1px 2px rgba(212, 175, 55, 0.2);
+            font-size: 2rem;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.75rem !important;
+        }
+
+        .first-light-section p {
+            position: relative;
+            z-index: 1;
+            margin: 0 auto 1.5rem !important;
+            font-size: 1rem;
+        }
+
+        .first-light-cta {
+            background: linear-gradient(135deg, var(--old-gold) 0%, var(--warm-gold) 50%, var(--old-gold) 100%);
+            color: var(--deep-brown);
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 1.2rem 3rem;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        .first-light-cta:hover {
+            background: linear-gradient(135deg, var(--warm-gold) 0%, var(--old-gold) 50%, var(--warm-gold) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(212, 175, 55, 0.6);
+        }
+
         .form-note {
             font-size: 0.85rem;
             color: var(--warm-brown);
@@ -636,6 +702,20 @@
         <a href="#contact">Get in Touch</a>
     </nav>
 
+    <!-- Join Community Section -->
+    <div class="container">
+        <div class="community-section first-light-section">
+            <h2>Join The First Light</h2>
+            <p>
+                <strong>Be among the first to experience The Wandering Lantern.</strong> Tell us about your little readers
+                and gain exclusive pre-launch access to personalized book recommendations, early event notifications,
+                and special story hours designed just for your family's ages and interests. This is your invitation to
+                illuminate the path ahead.
+            </p>
+            <a href="signup/" class="cta-button first-light-cta">Join The First Light</a>
+        </div>
+    </div>
+
     <!-- What We Offer Section -->
     <div class="container">
         <section id="offerings">
@@ -709,17 +789,6 @@
                 families can explore, discover, and connect.
             </p>
         </section>
-
-        <!-- Join Community Section -->
-        <div class="community-section">
-            <h2>Join Our Community</h2>
-            <p>
-                Tell us about your little readers and we'll keep you in the loop with personalized book recommendations,
-                story hours perfect for their ages, and events tailored just for your family. Be part of a community that
-                celebrates wonder, curiosity, and the magic of a good book.
-            </p>
-            <a href="signup/" class="cta-button">Tell Us About Your Family</a>
-        </div>
 
         <!-- Contact Form Section -->
         <section id="contact">
@@ -853,7 +922,7 @@
                 if (name.split(' ').length > 1) {
                     mailchimpData.append('LNAME', name.split(' ').slice(1).join(' ')); // Last name
                 }
-                mailchimpData.append('tags', '7744609'); // Pre Launch tag
+                mailchimpData.append('tags', '3728681'); // Contact Us Optin tag
 
                 // Submit to Mailchimp (non-blocking)
                 fetch('https://thewanderinglantern.us3.list-manage.com/subscribe/post?u=f5535995545a29ebbdc6de523&id=f1915b185f&f_id=0089a2e0f0', {

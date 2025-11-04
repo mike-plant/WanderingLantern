@@ -293,13 +293,13 @@
             <div class="logo">
                 <img src="../logo.png" alt="The Wandering Lantern">
             </div>
-            <h1>Get to Know You!</h1>
-            <p class="subtitle">Tell us more about your family</p>
+            <h1>Join The First Light</h1>
+            <p class="subtitle">Be part of Cleveland's first children's bookstore from day one</p>
         </div>
 
         <div class="form-section">
             <p class="intro-text">
-                We'd love to learn more about you and your family so we can better serve your reading needs and keep you updated on events and stories you'll love!
+                Tell us about your family and get exclusive pre-launch updates as we count down to opening day! Stay in the know about our grand opening plans, early event announcements, personalized book recommendations for your little readers, and special invitations just for First Light members.
             </p>
 
             <!-- MAILCHIMP FORM -->
@@ -337,15 +337,15 @@
                 <input type="hidden" id="mce-AGES" name="AGES">
                 <input type="hidden" id="mce-BOOKINTS" name="BOOKINTS">
 
-                <!-- Hidden field for Pre Launch tag -->
-                <input type="hidden" name="tags" value="7744609">
+                <!-- Newsletter Signup tag -->
+                <input type="hidden" name="tags" value="3728680">
 
                 <!-- Mailchimp bot prevention -->
                 <div style="position: absolute; left: -5000px;" aria-hidden="true">
                     <input type="text" name="b_f5535995545a29ebbdc6de523_f1915b185f" tabindex="-1" value="">
                 </div>
 
-                <button type="submit" name="subscribe" id="mc-embedded-subscribe">Join Our Community!</button>
+                <button type="submit" name="subscribe" id="mc-embedded-subscribe">Join The First Light</button>
             </form>
 
             <div class="back-link">
@@ -419,7 +419,23 @@
             agesField.value = ages;
             bookintsField.value = interests;
 
-            // Form will submit normally to Mailchimp
+            // Prevent default form submission
+            e.preventDefault();
+
+            // Submit via AJAX to avoid Mailchimp's default page
+            const formData = new FormData(form);
+            const actionUrl = form.action.replace('/post?', '/post-json?');
+
+            fetch(actionUrl + '&' + new URLSearchParams(formData).toString(), {
+                method: 'GET',
+                mode: 'no-cors'
+            }).then(() => {
+                // Redirect to thank you page
+                window.location.href = '/thankyou/';
+            }).catch(() => {
+                // Still redirect even if there's an error (form was likely submitted)
+                window.location.href = '/thankyou/';
+            });
         });
     </script>
 </body>
