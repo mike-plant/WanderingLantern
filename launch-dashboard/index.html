@@ -390,6 +390,18 @@
         </div>
     </div>
 
+    <div class="quick-actions" id="completedTodaySection" style="display: none;">
+        <h2>✅ Completed Today</h2>
+        <div id="completedTodayList" style="padding: 15px; background: #e8f5e9; border-radius: 8px;">
+        </div>
+    </div>
+
+    <div class="quick-actions" id="tomorrowSection" style="display: none;">
+        <h2>📅 Tomorrow's Tasks</h2>
+        <div id="tomorrowList" style="padding: 15px; background: #e3f2fd; border-radius: 8px;">
+        </div>
+    </div>
+
     <div class="nav-grid">
         <a href="week-by-week.html" class="nav-card">
             <div class="nav-icon">📅</div>
@@ -432,14 +444,11 @@
         </a>
     </div>
 
-    <div class="quick-actions">
-        <h2>🎬 This Week's Focus (Nov 4-10)</h2>
-        <ul style="list-style: none; padding: 0;">
-            <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✅ Email #1 sent (Nov 3)</li>
-            <li style="padding: 10px 0; border-bottom: 1px solid #eee;">⏳ Fix website hero image (45 min)</li>
-            <li style="padding: 10px 0; border-bottom: 1px solid #eee;">⏳ Send press releases (by Friday)</li>
-            <li style="padding: 10px 0;">⏳ Post 3-4 Instagram updates</li>
-        </ul>
+    <div class="quick-actions" id="thisWeekSection">
+        <h2 id="thisWeekHeader">🎬 This Week's Focus</h2>
+        <div id="thisWeekList" style="list-style: none; padding: 0;">
+            <div style="text-align: center; color: #999; padding: 20px;">Loading this week's tasks...</div>
+        </div>
     </div>
 
     <div class="footer">
@@ -464,6 +473,8 @@ const SHEET_CONFIG = {
 let allTasks = [];
 let todaysTasks = [];
 let missedTasks = [];
+let completedToday = [];
+let tomorrowsTasks = [];
 
 // Calculate days until opening
 function updateCountdown() {
@@ -492,9 +503,9 @@ function fetchTasks() {
             const json = JSON.parse(data.substr(47).slice(0, -2));
             const rows = json.table.rows;
 
-            // Skip header row, map to task objects
-            allTasks = rows.slice(1).map((row, index) => ({
-                id: index + 2, // +2 because: +1 for index starting at 0, +1 for header row
+            // Map to task objects (Google API already removed header)
+            allTasks = rows.map((row, index) => ({
+                id: index + 2, // +2 because row 1 is header in sheet
                 task: row.c[0]?.v || '',
                 week: row.c[1]?.v || '',
                 date: row.c[2]?.v || '',
@@ -520,37 +531,96 @@ function processTasks() {
     today.setHours(0, 0, 0, 0);
     const todayStr = formatDateForComparison(today);
 
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = formatDateForComparison(tomorrow);
+
     todaysTasks = [];
     missedTasks = [];
+    completedToday = [];
+    tomorrowsTasks = [];
+
+    let upcomingTasks = [];
 
     allTasks.forEach(task => {
-        if (!task.date || task.date === 'Anytime') return;
+        // Skip tasks without specific dates
+        if (!task.date || task.date === 'Anytime' ||
+            task.date.includes('Before') || task.date.includes('After')) {
+            return;
+        }
 
         const taskDate = parseDateString(task.date);
+        if (!taskDate) return; // Skip if couldn't parse
+
         const taskDateStr = formatDateForComparison(taskDate);
 
-        if (taskDateStr === todayStr && !task.completed) {
-            todaysTasks.push(task);
-        } else if (taskDate < today && !task.completed) {
+        // Today's tasks
+        if (taskDateStr === todayStr) {
+            if (task.completed) {
+                completedToday.push(task);
+            } else {
+                todaysTasks.push(task);
+            }
+        }
+        // Tomorrow's tasks
+        else if (taskDateStr === tomorrowStr && !task.completed) {
+            tomorrowsTasks.push(task);
+        }
+        // Missed tasks
+        else if (taskDate < today && !task.completed) {
             missedTasks.push(task);
         }
+        // Upcoming tasks (for fallback if nothing today)
+        else if (taskDate > today && !task.completed) {
+            upcomingTasks.push({ task, taskDate });
+        }
     });
+
+    // If no tasks today AND no tasks tomorrow, show next upcoming
+    if (todaysTasks.length === 0 && tomorrowsTasks.length === 0 && upcomingTasks.length > 0) {
+        upcomingTasks.sort((a, b) => a.taskDate - b.taskDate);
+        const nextTask = upcomingTasks[0];
+        nextTask.task.isUpcoming = true;
+        nextTask.task.upcomingDate = nextTask.taskDate;
+        todaysTasks.push(nextTask.task);
+    }
 }
 
-// Parse date string like "Nov 4" to Date object (assumes 2025)
+// Parse date string - handles Google Sheets "Date(2025,10,4)" format
 function parseDateString(dateStr) {
+    if (!dateStr) return null;
+
+    // Handle Google Sheets Date format: "Date(2025,10,4)"
+    if (dateStr.startsWith('Date(')) {
+        const match = dateStr.match(/Date\((\d+),(\d+),(\d+)\)/);
+        if (match) {
+            const year = parseInt(match[1]);
+            const month = parseInt(match[2]); // Already 0-indexed in Google format
+            const day = parseInt(match[3]);
+            return new Date(year, month, day);
+        }
+    }
+
+    // Try parsing as a standard date format (handles "11/4/2024", "2024-11-04", etc.)
+    let parsed = new Date(dateStr);
+    if (!isNaN(parsed.getTime())) {
+        return parsed;
+    }
+
+    // Fallback: Try "Nov 4" format
     const months = {
         'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
         'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
     };
 
     const parts = dateStr.split(' ');
-    if (parts.length !== 2) return new Date();
+    if (parts.length === 2 && months[parts[0]] !== undefined) {
+        const month = months[parts[0]];
+        const day = parseInt(parts[1]);
+        return new Date(2025, month, day);
+    }
 
-    const month = months[parts[0]];
-    const day = parseInt(parts[1]);
-
-    return new Date(2025, month, day);
+    return null; // Couldn't parse
 }
 
 // Format date for comparison (YYYY-MM-DD)
@@ -565,6 +635,9 @@ function formatDateForComparison(date) {
 function updateDisplay() {
     updateTodayTask();
     updateMissedTasks();
+    updateCompletedToday();
+    updateTomorrowTasks();
+    updateThisWeek();
     updateStats();
 }
 
@@ -576,18 +649,45 @@ function updateTodayTask() {
     const dayName = today.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
 
     if (todaysTasks.length > 0) {
-        const taskList = todaysTasks.map(task =>
-            `<div style="margin-bottom: 10px;">
-                <strong>${task.task}</strong>
-                ${task.category ? `<span style="margin-left: 10px; color: #666; font-size: 0.9em;">[${task.category}]</span>` : ''}
-                ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em;">${task.time}</span>` : ''}
-            </div>`
-        ).join('');
+        const firstTask = todaysTasks[0];
 
-        todayTaskEl.innerHTML = `<strong>${dayName}:</strong><div style="margin-top: 10px;">${taskList}</div>`;
-        taskButtons.style.display = 'grid';
+        if (firstTask.isUpcoming) {
+            // Showing next upcoming task (only if no tasks tomorrow)
+            const upcomingDate = firstTask.upcomingDate.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+            const taskList = todaysTasks.map(task =>
+                `<div style="margin-bottom: 10px;">
+                    <strong>${task.task}</strong>
+                    ${task.category ? `<span style="margin-left: 10px; color: #666; font-size: 0.9em;">[${task.category}]</span>` : ''}
+                    ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em;">${task.time}</span>` : ''}
+                </div>`
+            ).join('');
+
+            todayTaskEl.innerHTML = `
+                <div style="color: #666; font-size: 0.9em; margin-bottom: 5px;">Nothing scheduled for ${dayName}</div>
+                <strong>Next Up (${upcomingDate}):</strong>
+                <div style="margin-top: 10px;">${taskList}</div>
+            `;
+            taskButtons.style.display = 'none';
+        } else {
+            // Showing today's tasks
+            const taskList = todaysTasks.map(task =>
+                `<div style="margin-bottom: 10px;">
+                    <strong>${task.task}</strong>
+                    ${task.category ? `<span style="margin-left: 10px; color: #666; font-size: 0.9em;">[${task.category}]</span>` : ''}
+                    ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em;">${task.time}</span>` : ''}
+                </div>`
+            ).join('');
+
+            todayTaskEl.innerHTML = `<strong>${dayName}:</strong><div style="margin-top: 10px;">${taskList}</div>`;
+            taskButtons.style.display = 'grid';
+        }
     } else {
-        todayTaskEl.innerHTML = `<strong>${dayName}:</strong> No tasks scheduled for today! Take a break or check the Week-by-Week plan. 🎉`;
+        // No tasks today - check if tomorrow has tasks
+        if (tomorrowsTasks.length > 0) {
+            todayTaskEl.innerHTML = `<strong>${dayName}:</strong> No tasks scheduled today. Check "Tomorrow's Tasks" below! 🎉`;
+        } else {
+            todayTaskEl.innerHTML = `<strong>${dayName}:</strong> No upcoming tasks found. Check the Week-by-Week plan! 🎉`;
+        }
         taskButtons.style.display = 'none';
     }
 }
@@ -616,6 +716,112 @@ function updateMissedTasks() {
         missedSection.style.display = 'block';
     } else {
         missedSection.style.display = 'none';
+    }
+}
+
+// Update completed today display
+function updateCompletedToday() {
+    const completedSection = document.getElementById('completedTodaySection');
+    const completedList = document.getElementById('completedTodayList');
+
+    if (completedToday.length > 0) {
+        const taskList = completedToday.map(task =>
+            `<div style="padding: 10px; border-bottom: 1px solid #ddd;">
+                <div style="display: flex; align-items: center;">
+                    <span style="font-size: 1.2em; margin-right: 10px; color: #2e7d32;">✓</span>
+                    <div style="flex: 1;">
+                        <strong style="text-decoration: line-through; color: #666;">${task.task}</strong>
+                        <div style="color: #999; font-size: 0.85em; margin-top: 3px;">
+                            ${task.category || 'Task'}${task.time ? ` • ${task.time}` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>`
+        ).join('');
+
+        completedList.innerHTML = taskList;
+        completedSection.style.display = 'block';
+    } else {
+        completedSection.style.display = 'none';
+    }
+}
+
+// Update tomorrow's tasks display
+function updateTomorrowTasks() {
+    const tomorrowSection = document.getElementById('tomorrowSection');
+    const tomorrowList = document.getElementById('tomorrowList');
+
+    if (tomorrowsTasks.length > 0) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const tomorrowName = tomorrow.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+
+        const taskList = tomorrowsTasks.map(task =>
+            `<div style="padding: 10px; border-bottom: 1px solid #ddd;">
+                <div style="display: flex; align-items: center;">
+                    <span style="font-size: 1.2em; margin-right: 10px;">📌</span>
+                    <div style="flex: 1;">
+                        <strong>${task.task}</strong>
+                        <div style="color: #999; font-size: 0.85em; margin-top: 3px;">
+                            ${task.category || 'Task'}${task.time ? ` • ${task.time}` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>`
+        ).join('');
+
+        tomorrowList.innerHTML = `<div style="margin-bottom: 10px; color: #1976d2; font-weight: bold;">${tomorrowName}</div>` + taskList;
+        tomorrowSection.style.display = 'block';
+    } else {
+        tomorrowSection.style.display = 'none';
+    }
+}
+
+// Update this week's focus
+function updateThisWeek() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Calculate current week (1-4)
+    const week1Start = new Date('2025-11-04T00:00:00');
+    const daysSinceStart = Math.floor((today - week1Start) / (1000 * 60 * 60 * 24));
+    const currentWeek = Math.max(1, Math.min(4, Math.ceil((daysSinceStart + 1) / 7)));
+
+    // Calculate week date range
+    const weekStart = new Date(week1Start);
+    weekStart.setDate(weekStart.getDate() + (currentWeek - 1) * 7);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+
+    const weekRange = `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+
+    // Filter tasks for current week
+    const thisWeekTasks = allTasks.filter(task => task.week === currentWeek);
+
+    // Update header
+    document.getElementById('thisWeekHeader').textContent = `🎬 This Week's Focus (Week ${currentWeek}: ${weekRange})`;
+
+    // Update task list
+    const thisWeekList = document.getElementById('thisWeekList');
+
+    if (thisWeekTasks.length > 0) {
+        const taskHTML = thisWeekTasks.map((task, index) => {
+            const icon = task.completed ? '✅' : '⏳';
+            const isLast = index === thisWeekTasks.length - 1;
+            const borderStyle = isLast ? '' : 'border-bottom: 1px solid #eee;';
+
+            return `
+                <div style="padding: 10px 0; ${borderStyle}">
+                    ${icon} <strong>${task.task}</strong>
+                    ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em;">(${task.time})</span>` : ''}
+                    ${task.date && task.date !== 'Anytime' ? `<span style="margin-left: 10px; color: #666; font-size: 0.85em;">• ${task.date}</span>` : ''}
+                </div>
+            `;
+        }).join('');
+
+        thisWeekList.innerHTML = taskHTML;
+    } else {
+        thisWeekList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">No tasks scheduled for this week</div>';
     }
 }
 
