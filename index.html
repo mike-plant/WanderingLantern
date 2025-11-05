@@ -587,21 +587,33 @@
         /* Responsive - Simple mobile layout, no parallax */
         @media (max-width: 768px) {
             .hero {
-                height: 40vh;
-                min-height: 250px;
+                height: 60vh;
+                min-height: 400px;
             }
 
             .hero-opening-banner {
-                padding: 1.5rem 2rem;
+                padding: 1.5rem 1.5rem;
+                margin-top: 0;
+                max-width: 95%;
             }
 
             .hero-opening-banner h1 {
-                font-size: 1.5rem;
-                letter-spacing: 1px;
+                font-size: clamp(0.8rem, 4vw, 1.1rem);
+                margin-bottom: 0.5rem;
+            }
+
+            .hero-opening-banner .countdown {
+                font-size: clamp(2.5rem, 12vw, 3.5rem);
+                margin: 0.25rem 0;
+            }
+
+            .hero-opening-banner .countdown-label {
+                font-size: clamp(0.9rem, 4vw, 1.2rem);
+                margin-bottom: 0.5rem;
             }
 
             .hero-opening-banner .date {
-                font-size: 1.25rem;
+                font-size: clamp(0.8rem, 3.5vw, 1rem);
             }
 
             /* Make tagline bar always visible and static on mobile */
@@ -650,7 +662,7 @@
             }
 
             .container {
-                padding: 2rem 1rem;
+                padding: 1.5rem 1rem;
             }
 
             .offerings-grid {
@@ -660,6 +672,27 @@
 
             h2 {
                 font-size: 1.75rem;
+            }
+
+            /* First Light mobile adjustments */
+            .first-light-section {
+                padding: 1.5rem 1rem !important;
+                margin: 1rem auto 1.5rem auto !important;
+            }
+
+            .first-light-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .first-light-section p {
+                font-size: 0.9rem;
+                margin: 0 auto 1.25rem !important;
+            }
+
+            .first-light-cta {
+                font-size: 1rem;
+                padding: 1rem 2rem;
+                letter-spacing: 1.5px;
             }
         }
     </style>
