@@ -1,0 +1,16 @@
+{
+  "name": "wanderinglantern",
+  "version": "1.0.0",
+  "description": "The Wandering Lantern - Cleveland's First Children's Bookstore",
+  "scripts": {
+    "dev": "eleventy --serve --incremental",
+    "build": "eleventy",
+    "clean": "rm -rf _site"
+  },
+  "keywords": ["bookstore", "children", "cleveland", "lakewood"],
+  "author": "The Wandering Lantern",
+  "license": "MIT",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1"
+  }
+}

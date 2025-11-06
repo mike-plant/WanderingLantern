@@ -1,0 +1,44 @@
+<!-- Footer Navigation -->
+{% if features.footer.showFooterNav %}
+<div class="footer-nav">
+    <div class="footer-nav-content">
+        <div class="footer-brand">
+            <a href="/">
+                <img src="/logo with out tagline - horizontal.png" alt="The Wandering Lantern" class="footer-logo">
+            </a>
+            <p class="footer-tagline">Follow the light, find the wonder</p>
+        </div>
+
+        <div class="footer-links">
+            <div class="footer-link-group">
+                <h4>Visit</h4>
+                <p>15729 Madison Ave<br>Lakewood, OH 44107</p>
+                <p><a href="tel:2169994462">(216) 999-4462</a></p>
+            </div>
+
+            <div class="footer-link-group">
+                <h4>Connect</h4>
+                {% if features.navigation.showEventsInMainNav %}
+                <a href="/events/">Events</a>
+                {% endif %}
+                {% if features.navigation.showNewsletterInMainNav %}
+                <a href="/newsletter/">Stay in the Know</a>
+                {% endif %}
+                <a href="/press/">Press & Media</a>
+                <a href="/#contact">Contact Us</a>
+            </div>
+
+            <div class="footer-link-group">
+                <h4>Follow</h4>
+                {% if features.footer.showSocialLinks %}
+                <a href="https://www.instagram.com/thewanderinglanterncle" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/thewanderinglanterncle" target="_blank">Facebook</a>
+                {% endif %}
+                {% if features.footer.showBackToTop %}
+                <a href="#top" class="back-to-top">Back to Top ↑</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}

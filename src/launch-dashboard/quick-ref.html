@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Reference - The Wandering Lantern</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .ref-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .ref-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .ref-card h2 {
+            color: #1a4d2e;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 3px solid #d4af37;
+            padding-bottom: 10px;
+        }
+
+        .ref-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .ref-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .ref-label {
+            font-weight: bold;
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .ref-value {
+            font-size: 1.1em;
+            color: #1a4d2e;
+        }
+
+        .ref-value a {
+            color: #1a4d2e;
+            text-decoration: none;
+            border-bottom: 2px solid #d4af37;
+        }
+
+        .ref-value a:hover {
+            color: #d4af37;
+        }
+
+        .date-highlight {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #f0ad4e;
+            margin-bottom: 15px;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 8px 0 8px 30px;
+            position: relative;
+        }
+
+        .checklist li:before {
+            content: '□';
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+            color: #1a4d2e;
+        }
+
+        .section-full {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th {
+            background: #1a4d2e;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .badge-critical {
+            background: #ffebee;
+            color: #c41e3a;
+        }
+
+        .badge-high {
+            background: #fff3e0;
+            color: #f0ad4e;
+        }
+
+        .badge-medium {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .back-link {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-link">← Back to Dashboard</a>
+
+    <div class="header">
+        <h1>📞 Quick Reference</h1>
+        <div style="font-style: italic; opacity: 0.9;">Everything you need at a glance</div>
+    </div>
+
+    <!-- Key Dates -->
+    <div class="section-full">
+        <h2>📅 Key Dates</h2>
+        <div class="date-highlight">
+            <strong style="font-size: 1.2em;">🎯 Grand Opening Weekend</strong><br>
+            <div style="margin-top: 10px;">
+                <strong>Friday, Nov 28, 2025</strong> - VIP Soft Opening (4-7pm)<br>
+                <strong>Saturday, Nov 29, 2025</strong> - Grand Opening (10am-6pm) <span class="badge badge-critical">SMALL BUSINESS SATURDAY</span>
+            </div>
+        </div>
+
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Event</th>
+                <th>Priority</th>
+            </tr>
+            <tr>
+                <td>Nov 3 (Sun)</td>
+                <td>Email #1: "We're Almost Ready!" sent</td>
+                <td><span class="badge badge-medium">Done</span></td>
+            </tr>
+            <tr>
+                <td>Nov 10 (Sun)</td>
+                <td>Email #2: "Meet Your Book Experts"</td>
+                <td><span class="badge badge-critical">Week 1</span></td>
+            </tr>
+            <tr>
+                <td>Nov 17 (Sun)</td>
+                <td>Email #3: "Sneak Peek Inside"</td>
+                <td><span class="badge badge-critical">Week 2</span></td>
+            </tr>
+            <tr>
+                <td>Nov 21 (Thu)</td>
+                <td>Pre-orders go live (optional)</td>
+                <td><span class="badge badge-high">Week 3</span></td>
+            </tr>
+            <tr>
+                <td>Nov 24 (Sun)</td>
+                <td>Email #4: "This Week is the Week!"</td>
+                <td><span class="badge badge-critical">Week 3</span></td>
+            </tr>
+            <tr>
+                <td>Nov 27 (Thu)</td>
+                <td>Thanksgiving - Store closed</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Nov 28 (Fri)</td>
+                <td>VIP Soft Opening (4-7pm)</td>
+                <td><span class="badge badge-critical">Week 4</span></td>
+            </tr>
+            <tr>
+                <td>Nov 29 (Sat)</td>
+                <td>GRAND OPENING (10am-6pm)</td>
+                <td><span class="badge badge-critical">Week 4</span></td>
+            </tr>
+            <tr>
+                <td>Nov 30 (Sun)</td>
+                <td>Email #5: "Thank You!" recap</td>
+                <td><span class="badge badge-medium">Week 4</span></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="ref-grid">
+        <!-- Contact Info -->
+        <div class="ref-card">
+            <h2>📬 Contact Information</h2>
+
+            <div class="ref-item">
+                <div class="ref-label">Store Address</div>
+                <div class="ref-value">
+                    15729 Madison Ave<br>
+                    Lakewood, OH 44107
+                </div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Email</div>
+                <div class="ref-value">
+                    <a href="mailto:thewanderinglanterncle@gmail.com">thewanderinglanterncle@gmail.com</a>
+                </div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Instagram</div>
+                <div class="ref-value">
+                    <a href="https://instagram.com/thewanderinglanterncle" target="_blank">@thewanderinglanterncle</a>
+                </div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Website</div>
+                <div class="ref-value">
+                    <a href="https://mike-plant.github.io/WanderingLantern/" target="_blank">thewanderinglanterncle.com</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Media Contacts -->
+        <div class="ref-card">
+            <h2>📰 Media Contacts</h2>
+
+            <div class="ref-item">
+                <div class="ref-label">Cleveland.com / Plain Dealer</div>
+                <div class="ref-value">
+                    <a href="mailto:metro@cleveland.com">metro@cleveland.com</a>
+                </div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Scene Magazine</div>
+                <div class="ref-value">
+                    <a href="mailto:info@clevescene.com">info@clevescene.com</a>
+                </div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">West Life / Sun Post Herald</div>
+                <div class="ref-value">
+                    <a href="mailto:editor@westlifenews.com">editor@westlifenews.com</a>
+                </div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">WKYC (Channel 3)</div>
+                <div class="ref-value">
+                    <a href="mailto:news@wkyc.com">news@wkyc.com</a>
+                </div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Ideastream / WKSU</div>
+                <div class="ref-value">
+                    <a href="mailto:news@ideastream.org">news@ideastream.org</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ref-grid">
+        <!-- Quick Links -->
+        <div class="ref-card">
+            <h2>🔗 Quick Links & Tools</h2>
+
+            <div class="ref-item">
+                <div class="ref-label">Mailchimp Dashboard</div>
+                <div class="ref-value">
+                    <a href="https://mailchimp.com" target="_blank">Login to Mailchimp</a>
+                </div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Instagram Scheduler</div>
+                <div class="ref-value">Meta Business Suite</div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Image Optimizer</div>
+                <div class="ref-value">
+                    <a href="https://squoosh.app" target="_blank">Squoosh.app</a> (WebP converter)
+                </div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">GitHub Pages (Website)</div>
+                <div class="ref-value">
+                    <a href="https://github.com/mike-plant/WanderingLantern" target="_blank">GitHub Repository</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email Subscribers -->
+        <div class="ref-card">
+            <h2>📧 Email Campaign Info</h2>
+
+            <div class="ref-item">
+                <div class="ref-label">Current Subscribers</div>
+                <div class="ref-value">100+</div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Send Schedule</div>
+                <div class="ref-value">Sundays, 6-8pm</div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Total Emails</div>
+                <div class="ref-value">5 emails (1 sent, 4 remaining)</div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Platform</div>
+                <div class="ref-value">Mailchimp</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Opening Day Checklist -->
+    <div class="section-full">
+        <h2>✅ Grand Opening Day Checklist</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+            <div>
+                <h3 style="color: #1a4d2e; margin-bottom: 15px;">Before Opening (9am)</h3>
+                <ul class="checklist">
+                    <li>Unlock door, turn on lights</li>
+                    <li>Start background music</li>
+                    <li>Check register has cash/change</li>
+                    <li>Put out sandwich board sign</li>
+                    <li>Start coffee/tea station</li>
+                    <li>Set out cookies/treats</li>
+                    <li>Test Square reader</li>
+                    <li>Post "We're OPEN!" on Instagram</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #1a4d2e; margin-bottom: 15px;">During Opening</h3>
+                <ul class="checklist">
+                    <li>Greet every customer warmly</li>
+                    <li>Take photos/videos for social</li>
+                    <li>Collect email signups</li>
+                    <li>Hand out business cards</li>
+                    <li>Note best-selling books</li>
+                    <li>Capture testimonials/reactions</li>
+                    <li>Thank everyone for coming</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #1a4d2e; margin-bottom: 15px;">After Closing (6pm+)</h3>
+                <ul class="checklist">
+                    <li>Count cash/receipts</li>
+                    <li>Note inventory sold</li>
+                    <li>Upload photos to Instagram</li>
+                    <li>Thank VIPs personally</li>
+                    <li>Write notes for tomorrow</li>
+                    <li>Celebrate! You did it! 🎉</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Talking Points -->
+    <div class="section-full">
+        <h2>💬 Your Story - Key Talking Points</h2>
+        <div style="background: #f5f1e8; padding: 20px; border-radius: 8px; margin-top: 15px;">
+            <p style="margin-bottom: 15px;"><strong>What makes you unique:</strong></p>
+            <ul style="line-height: 1.8; margin-left: 20px;">
+                <li><strong>Cleveland's FIRST & ONLY independent children's bookstore</strong></li>
+                <li>Emily's expertise: <strong>former teacher + mom of 4</strong></li>
+                <li>Every book is <strong>hand-selected and age-appropriate</strong></li>
+                <li>Opening on <strong>Small Business Saturday</strong> (perfect timing!)</li>
+                <li>Focus on <strong>diverse, inclusive stories</strong></li>
+                <li>Community gathering space, not just a store</li>
+                <li>Supporting literacy and a love of reading</li>
+            </ul>
+
+            <p style="margin-top: 20px; margin-bottom: 15px;"><strong>Your elevator pitch (30 seconds):</strong></p>
+            <div style="background: white; padding: 15px; border-radius: 5px; border-left: 4px solid #d4af37;">
+                "We're The Wandering Lantern, Cleveland's first and only independent children's bookstore.
+                I'm a former teacher and mom of four, and I hand-select every book to make sure it's
+                age-appropriate, engaging, and celebrates diverse voices. We're more than a bookstore -
+                we're a community space where kids discover the magic of reading. We open November 29th
+                on Small Business Saturday in Lakewood!"
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Contacts -->
+    <div class="ref-grid">
+        <div class="ref-card">
+            <h2>🚨 Emergency Contacts</h2>
+
+            <div class="ref-item">
+                <div class="ref-label">Square Support</div>
+                <div class="ref-value">1-855-700-6000</div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Landlord</div>
+                <div class="ref-value">[Add contact info]</div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Tech Support (Website)</div>
+                <div class="ref-value">[Add contact info]</div>
+            </div>
+        </div>
+
+        <div class="ref-card">
+            <h2>📊 Opening Weekend Goals</h2>
+
+            <div class="ref-item">
+                <div class="ref-label">Customer Visits</div>
+                <div class="ref-value">Target: 100-150</div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Sales Target</div>
+                <div class="ref-value">$2,000-3,000</div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Email Signups</div>
+                <div class="ref-value">Target: 30-50 new</div>
+            </div>
+
+            <div class="ref-item">
+                <div class="ref-label">Social Media Posts</div>
+                <div class="ref-value">10-15 stories/posts</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

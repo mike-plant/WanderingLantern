@@ -1,0 +1,117 @@
+/* Sticky Tagline Bar (hidden initially) */
+.tagline-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--parchment);
+  padding: 0.5rem 2rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(139, 111, 71, 0.2);
+  z-index: 102;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: all 0.4s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.tagline-bar.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tagline-bar-logo {
+  height: 50px;
+  width: auto;
+  max-width: 300px;
+  margin-right: 1rem;
+}
+
+.tagline-bar .tagline {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--warm-brown);
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* Info Bar */
+.info-bar {
+  background: var(--deep-brown);
+  color: var(--cream);
+  padding: 1rem 2rem;
+  text-align: center;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 101;
+  transition: all 0.3s ease;
+}
+
+.info-bar.under-tagline {
+  top: 68px; /* Height of tagline bar with logo */
+}
+
+.info-bar-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.info-bar a {
+  color: var(--aged-gold);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.info-bar a:hover {
+  color: var(--cream);
+}
+
+.info-separator {
+  color: var(--muted-gold);
+  opacity: 0.5;
+}
+
+/* Navigation */
+nav {
+  background: var(--parchment);
+  padding: 0.5rem 2rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(139, 111, 71, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+/* When tagline and info bars are visible on homepage */
+nav.under-bars {
+  top: 116px; /* Height of tagline bar + info bar */
+}
+
+nav a {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--deep-brown);
+  text-decoration: none;
+  margin: 0 1rem;
+  padding: 0.25rem 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+nav a:hover {
+  color: var(--aged-gold);
+  border-bottom-color: var(--aged-gold);
+}

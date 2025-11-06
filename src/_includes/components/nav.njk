@@ -1,0 +1,24 @@
+<!-- Navigation -->
+<nav id="nav">
+    {% if page.url != "/" %}
+    <a href="/">Home</a>
+    {% endif %}
+    <a href="/#offerings">What We Offer</a>
+    <a href="/#about">About Us</a>
+
+    {% if features.navigation.showEventsInMainNav %}
+    <a href="/events/">Events</a>
+    {% endif %}
+
+    {% if features.navigation.showPressInMainNav %}
+    <a href="/press/">Press & Media</a>
+    {% endif %}
+
+    {% if features.navigation.showNewsletterInMainNav %}
+    <a href="/newsletter/">Join Newsletter</a>
+    {% endif %}
+
+    {% if features.navigation.showContactInMainNav %}
+    <a href="/#contact">Contact Us</a>
+    {% endif %}
+</nav>

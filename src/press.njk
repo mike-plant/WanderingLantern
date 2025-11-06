@@ -1,0 +1,91 @@
+---
+layout: layouts/base.njk
+title: Press & Media - The Wandering Lantern
+---
+
+<div class="container">
+    <section id="press">
+        <h2>Press & Media</h2>
+        <p style="text-align: center; max-width: 700px; margin: 0 auto 3rem;">
+            Welcome to our press room. Find press releases, media assets, and information about The Wandering Lantern.
+        </p>
+
+        <!-- Press Kit Download Section -->
+        <div class="press-kit-section" style="background: linear-gradient(135deg, rgba(122, 139, 111, 0.08) 0%, rgba(139, 111, 71, 0.08) 100%); border-radius: 12px; padding: 2.5rem 2rem; text-align: center; margin: 3rem auto; border: 2px solid rgba(201, 169, 97, 0.2); max-width: 700px;">
+            <h3 style="font-family: 'Playfair Display', serif; color: var(--deep-brown); margin-bottom: 1rem;">Media Kit</h3>
+            <p style="margin-bottom: 1.5rem;">High-resolution logos, photos, and brand information for media use.</p>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <a href="#" class="cta-button" style="font-size: 0.95rem; padding: 0.75rem 1.5rem;">Download Press Kit</a>
+            </div>
+        </div>
+
+        <!-- Store Information -->
+        <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(90, 75, 60, 0.1); margin: 3rem 0;">
+            <h3 style="text-align: center; margin-bottom: 2rem;">Store Information</h3>
+            <div style="max-width: 650px; margin: 0 auto;">
+                <p><strong>Official Name:</strong> The Wandering Lantern</p>
+                <p><strong>Tagline:</strong> "Follow the light, find the wonder"</p>
+                <p><strong>Location:</strong> 15729 Madison Ave, Lakewood, OH 44107</p>
+                <p><strong>Phone:</strong> (216) 999-4462</p>
+                <p><strong>Email:</strong> thewanderinglanterncle@gmail.com</p>
+                <p><strong>Website:</strong> thewanderinglantern.com</p>
+                <p><strong>Social Media:</strong><br>
+                   Instagram: @thewanderinglanterncle<br>
+                   Facebook: @thewanderinglanterncle
+                </p>
+                <p><strong>Hours:</strong><br>
+                   Tuesday - Saturday: 10 AM - 6 PM<br>
+                   Thursday: 10 AM - 8 PM<br>
+                   Sunday - Monday: Closed
+                </p>
+            </div>
+        </div>
+
+        <!-- Boilerplate -->
+        <div style="background: var(--parchment); padding: 2rem; border-radius: 8px; margin: 3rem 0; border-left: 4px solid var(--aged-gold);">
+            <h3 style="margin-bottom: 1rem;">About The Wandering Lantern (Boilerplate)</h3>
+            <p style="font-style: italic; line-height: 1.8;">
+                The Wandering Lantern is Cleveland's first dedicated children's bookstore, offering a curated selection
+                of picture books, middle grade novels, young adult fiction, and educational materials. Founded by Emily
+                Mitchell and Michael Plant, the store serves as a community hub for families seeking quality children's
+                literature and literary programming. Located in Lakewood's vibrant Madison Avenue district, The Wandering
+                Lantern hosts regular storytimes, author events, and seasonal celebrations designed to spark imagination
+                and foster a lifelong love of reading.
+            </p>
+        </div>
+
+        <!-- Press Releases -->
+        <h3 style="margin-top: 4rem; margin-bottom: 2rem; text-align: center;">Press Releases</h3>
+        {% if collections.press.length > 0 %}
+        <div class="press-grid" style="display: grid; gap: 2rem; max-width: 800px; margin: 0 auto;">
+            {% for article in collections.press %}
+            <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(90, 75, 60, 0.1);">
+                <h4 style="font-family: 'Playfair Display', serif; color: var(--deep-brown); margin-bottom: 0.5rem; font-size: 1.3rem;">
+                    <a href="{{ article.url }}" style="color: var(--deep-brown); text-decoration: none;">{{ article.data.title }}</a>
+                </h4>
+                <p style="font-size: 0.9rem; color: var(--warm-brown); margin-bottom: 1rem;">
+                    {{ article.data.date | date('MMMM D, YYYY') }}
+                </p>
+                <p style="margin-bottom: 1rem;">{{ article.data.excerpt }}</p>
+                <a href="{{ article.url }}" style="color: var(--aged-gold); text-decoration: none; font-weight: 600;">
+                    Read Full Release →
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="text-align: center; color: var(--warm-brown);">No press releases available at this time.</p>
+        {% endif %}
+
+        <!-- Media Contact -->
+        <div style="margin-top: 4rem; padding: 2rem; background: linear-gradient(135deg, rgba(122, 139, 111, 0.08) 0%, rgba(139, 111, 71, 0.08) 100%); border-radius: 8px; text-align: center;">
+            <h3 style="margin-bottom: 1rem;">Media Inquiries</h3>
+            <p>For interview requests, high-resolution images, or additional information, please contact:</p>
+            <p style="margin-top: 1rem;">
+                <strong>Emily Mitchell</strong><br>
+                <a href="mailto:thewanderinglanterncle@gmail.com" style="color: var(--aged-gold);">thewanderinglanterncle@gmail.com</a><br>
+                (216) 999-4462
+            </p>
+        </div>
+    </section>
+</div>

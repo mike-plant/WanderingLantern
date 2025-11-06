@@ -1,0 +1,47 @@
+---
+layout: layouts/base.njk
+---
+
+{# Event detail page layout #}
+<div class="event-hero" style="background: linear-gradient(135deg, rgba(122, 139, 111, 0.12) 0%, rgba(139, 111, 71, 0.12) 100%); padding: 3rem 2rem; text-align: center; border-bottom: 2px solid rgba(201, 169, 97, 0.3);">
+    <div class="container">
+        {% if features.events.enableEventFlyers and flyerImage %}
+        <div style="max-width: 600px; margin: 0 auto 2rem;">
+            <img src="{{ flyerImage }}" alt="{{ title }}" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 8px 24px rgba(90, 75, 60, 0.2);">
+        </div>
+        {% endif %}
+
+        <h1 style="font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); color: var(--deep-brown); margin-bottom: 1rem;">{{ title }}</h1>
+
+        <div class="event-meta" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; font-size: 1.1rem; color: var(--warm-brown); margin-top: 1.5rem;">
+            {% if date %}
+            <div>
+                <strong>Date:</strong> {{ date | date('MMMM D, YYYY') }}
+            </div>
+            {% endif %}
+
+            {% if time %}
+            <div>
+                <strong>Time:</strong> {{ time }}
+            </div>
+            {% endif %}
+
+            {% if ageRange %}
+            <div>
+                <strong>Ages:</strong> {{ ageRange }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="event-content" style="max-width: 800px; margin: 3rem auto;">
+        {{ content | safe }}
+    </div>
+
+    {# Include Mailchimp registration form if form details are provided #}
+    {% if mailchimpFormId and mailchimpTag %}
+    {% include "components/mailchimp-event-form.njk" %}
+    {% endif %}
+</div>

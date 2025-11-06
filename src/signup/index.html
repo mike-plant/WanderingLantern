@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DD109W64TG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-DD109W64TG');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get to Know You - The Wandering Lantern</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* MOBILE-FIRST FAMILY SIGNUP PAGE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --deep-green: #1a4d2e;
+            --forest-green: #2d5f3f;
+            --old-gold: #d4af37;
+            --warm-gold: #f0c674;
+            --cream: #faf8f3;
+            --dark-brown: #3d2817;
+            --parchment: #f5f1e8;
+        }
+
+        body {
+            font-family: 'Lora', 'Georgia', serif;
+            line-height: 1.7;
+            color: var(--dark-brown);
+            background: linear-gradient(to bottom, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--deep-green) 0%, var(--forest-green) 100%);
+            color: var(--cream);
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 120px;
+            margin: 0 auto 1rem;
+        }
+
+        .logo img {
+            width: 100%;
+            height: auto;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        .form-section {
+            padding: 2rem 1.5rem;
+        }
+
+        .intro-text {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--dark-brown);
+            font-size: 0.95rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--deep-green);
+            font-size: 0.9rem;
+        }
+
+        label .required {
+            color: #d84848;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        select {
+            padding: 0.875rem;
+            border: 2px solid rgba(74, 124, 89, 0.3);
+            border-radius: 6px;
+            font-family: 'Lora', 'Georgia', serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: #fff;
+            -webkit-appearance: none;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--old-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%233d2817' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .basket-options {
+            display: grid;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .basket-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid rgba(74, 124, 89, 0.2);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .basket-option:hover {
+            border-color: var(--old-gold);
+            background-color: rgba(212, 175, 55, 0.05);
+        }
+
+        .basket-option input[type="radio"] {
+            margin-right: 0.75rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .basket-option label {
+            font-weight: 500;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 50%, #1a4d2e 100%);
+            color: var(--cream);
+            padding: 1rem;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3);
+            margin-top: 1rem;
+        }
+
+        button[type="submit"]:active {
+            transform: scale(0.98);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--dark-brown);
+            margin-top: 1.5rem;
+            font-style: italic;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-link a {
+            color: var(--deep-green);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dynamic child fields styling */
+        .child-card {
+            background: rgba(26, 77, 46, 0.03);
+            border: 2px solid rgba(74, 124, 89, 0.2);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .child-card:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+
+        .child-card-header {
+            font-weight: 600;
+            color: var(--deep-green);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .child-card-header::before {
+            content: "📚";
+            font-size: 1.1rem;
+        }
+
+        .child-fields {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .child-fields .form-group {
+            margin: 0;
+        }
+
+        .child-fields label {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        @media (min-width: 600px) {
+            body {
+                padding: 3rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .form-section {
+                padding: 2.5rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="../logo.png" alt="The Wandering Lantern">
+            </div>
+            <h1>Join The First Light</h1>
+            <p class="subtitle">Be part of Cleveland's first children's bookstore from day one</p>
+        </div>
+
+        <div class="form-section">
+            <p class="intro-text">
+                Tell us about your family and get exclusive pre-launch updates as we count down to opening day! Stay in the know about our grand opening plans, early event announcements, personalized book recommendations for your little readers, and special invitations just for First Light members.
+            </p>
+
+            <!-- MAILCHIMP FORM -->
+            <form action="https://thewanderinglantern.us3.list-manage.com/subscribe/post?u=f5535995545a29ebbdc6de523&amp;id=f1915b185f&amp;f_id=0089a2e0f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_self">
+
+                <div class="form-group">
+                    <label for="mce-FNAME">First Name <span class="required">*</span></label>
+                    <input type="text" id="mce-FNAME" name="FNAME" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mce-LNAME">Last Name <span class="required">*</span></label>
+                    <input type="text" id="mce-LNAME" name="LNAME" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mce-EMAIL">Email Address <span class="required">*</span></label>
+                    <input type="email" id="mce-EMAIL" name="EMAIL" class="required email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mce-PHONE">Phone Number <span style="font-style: italic; font-weight: normal; color: #999;">(optional)</span></label>
+                    <input type="text" id="mce-PHONE" name="PHONE">
+                </div>
+
+                <div class="form-group">
+                    <label for="mce-KIDS">Number of Kids in Household</label>
+                    <input type="number" id="mce-KIDS" name="KIDS" min="0" max="10">
+                </div>
+
+                <!-- Dynamic child fields will be generated here -->
+                <div id="children-container"></div>
+
+                <!-- Hidden fields that will be populated before submission -->
+                <input type="hidden" id="mce-AGES" name="AGES">
+                <input type="hidden" id="mce-BOOKINTS" name="BOOKINTS">
+
+                <!-- Newsletter Signup tag -->
+                <input type="hidden" name="tags" value="3728680">
+
+                <!-- Mailchimp bot prevention -->
+                <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                    <input type="text" name="b_f5535995545a29ebbdc6de523_f1915b185f" tabindex="-1" value="">
+                </div>
+
+                <button type="submit" name="subscribe" id="mc-embedded-subscribe">Join The First Light</button>
+            </form>
+
+            <div class="back-link">
+                <a href="../index.html">← Back to Main Site</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle dynamic child fields
+        const kidsInput = document.getElementById('mce-KIDS');
+        const childrenContainer = document.getElementById('children-container');
+        const form = document.getElementById('mc-embedded-subscribe-form');
+
+        // Generate child fields when number of kids changes
+        kidsInput.addEventListener('input', function() {
+            const numKids = parseInt(this.value) || 0;
+
+            // Clear existing fields
+            childrenContainer.innerHTML = '';
+
+            // Generate fields for each child
+            for (let i = 1; i <= numKids; i++) {
+                const childCard = document.createElement('div');
+                childCard.className = 'child-card';
+                childCard.innerHTML = `
+                    <div class="child-card-header">Child ${i}</div>
+                    <div class="child-fields">
+                        <div class="form-group">
+                            <label for="child-${i}-age">Age</label>
+                            <input type="number"
+                                   id="child-${i}-age"
+                                   class="child-age"
+                                   min="0"
+                                   max="18"
+                                   placeholder="e.g., 7">
+                        </div>
+                        <div class="form-group">
+                            <label for="child-${i}-interests">Reading Interests</label>
+                            <input type="text"
+                                   id="child-${i}-interests"
+                                   class="child-interests"
+                                   placeholder="e.g., Fantasy, Animals">
+                        </div>
+                    </div>
+                `;
+                childrenContainer.appendChild(childCard);
+            }
+        });
+
+        // Before form submission, collect all child data
+        form.addEventListener('submit', function(e) {
+            // Get all ages
+            const ageInputs = document.querySelectorAll('.child-age');
+            const ages = Array.from(ageInputs)
+                .map(input => input.value)
+                .filter(val => val !== '')
+                .join(', ');
+
+            // Get all interests
+            const interestInputs = document.querySelectorAll('.child-interests');
+            const interests = Array.from(interestInputs)
+                .map(input => input.value)
+                .filter(val => val !== '')
+                .join(' | ');
+
+            // Set hidden fields
+            const agesField = document.getElementById('mce-AGES');
+            const bookintsField = document.getElementById('mce-BOOKINTS');
+
+            agesField.value = ages;
+            bookintsField.value = interests;
+
+            // Prevent default form submission
+            e.preventDefault();
+
+            // Submit via AJAX to avoid Mailchimp's default page
+            const formData = new FormData(form);
+            const actionUrl = form.action.replace('/post?', '/post-json?');
+
+            fetch(actionUrl + '&' + new URLSearchParams(formData).toString(), {
+                method: 'GET',
+                mode: 'no-cors'
+            }).then(() => {
+                // Redirect to thank you page
+                window.location.href = '/thankyou/';
+            }).catch(() => {
+                // Still redirect even if there's an error (form was likely submitted)
+                window.location.href = '/thankyou/';
+            });
+        });
+    </script>
+</body>
+</html>

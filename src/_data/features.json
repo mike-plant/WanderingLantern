@@ -1,0 +1,22 @@
+{
+  "navigation": {
+    "showEventsInMainNav": false,
+    "showNewsletterInMainNav": true,
+    "showPressInMainNav": false,
+    "showContactInMainNav": true
+  },
+  "footer": {
+    "showFooterNav": true,
+    "showBackToTop": true,
+    "showSocialLinks": true
+  },
+  "homepage": {
+    "showCountdown": true,
+    "showFirstLight": true
+  },
+  "events": {
+    "showUpcomingEvents": true,
+    "showPastEvents": true,
+    "enableEventFlyers": true
+  }
+}

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Tracker - The Wandering Lantern</title>
+    <style>
+        @media print {
+            @page {
+                margin: 0.5in;
+                size: letter;
+            }
+            .page {
+                page-break-after: always;
+            }
+            .page:last-child {
+                page-break-after: auto;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: #1a4d2e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22pt;
+        }
+
+        .header .instructions {
+            margin-top: 10px;
+            font-size: 11pt;
+            opacity: 0.9;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .status-legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .status-item {
+            text-align: center;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .status-symbol {
+            font-size: 20pt;
+            margin-bottom: 5px;
+        }
+
+        .status-label {
+            font-size: 9pt;
+            font-weight: bold;
+        }
+
+        .stats-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #1a4d2e;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .week-section {
+            margin: 30px 0;
+            border: 2px solid #1a4d2e;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .week-header {
+            background: #d4af37;
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 14pt;
+            color: #1a4d2e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .week-stats {
+            font-size: 11pt;
+            opacity: 0.8;
+        }
+
+        .task-row {
+            display: grid;
+            grid-template-columns: 40px 100px 1fr 120px;
+            gap: 10px;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .task-row:hover {
+            background: #f9f9f9;
+        }
+
+        .task-row:last-child {
+            border-bottom: none;
+        }
+
+        .task-row.completed {
+            opacity: 0.6;
+            background: #e8f5e9;
+        }
+
+        .task-row.completed .task-desc {
+            text-decoration: line-through;
+        }
+
+        .checkbox {
+            width: 28px;
+            height: 28px;
+            border: 3px solid #1a4d2e;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #2e7d32;
+        }
+
+        .task-row.completed .checkbox {
+            background: #2e7d32;
+            border-color: #2e7d32;
+            color: white;
+        }
+
+        .task-date {
+            font-weight: bold;
+            font-size: 10pt;
+            color: #666;
+        }
+
+        .task-desc {
+            font-size: 11pt;
+        }
+
+        .task-category {
+            background: #e0e0e0;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 9pt;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .cat-email { background: #fff3e0; color: #e65100; }
+        .cat-social { background: #f3e5f5; color: #6a1b9a; }
+        .cat-press { background: #e8f5e9; color: #2e7d32; }
+        .cat-website { background: #e3f2fd; color: #1565c0; }
+        .cat-store { background: #fce4ec; color: #c2185b; }
+        .cat-marketing { background: #fff9c4; color: #f57f17; }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: white;
+            color: #1a4d2e;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 2px solid #1a4d2e;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: #1a4d2e;
+            color: white;
+        }
+
+        .sync-status {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .sync-status.syncing {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        @media (max-width: 768px) {
+            .task-row {
+                grid-template-columns: 40px 1fr;
+                gap: 10px;
+            }
+
+            .task-date {
+                grid-column: 2;
+                font-size: 9pt;
+            }
+
+            .task-category {
+                grid-column: 2;
+                justify-self: start;
+                font-size: 8pt;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<a href="index.html" class="back-link no-print">← Back to Dashboard</a>
+
+<div class="header">
+    <h1>📋 Progress Tracker</h1>
+    <div class="instructions">
+        Click any task to mark it complete • Auto-syncs with Google Sheets
+    </div>
+</div>
+
+<div class="sync-status" id="syncStatus">
+    Loading tasks from Google Sheets...
+</div>
+
+<div class="stats-bar" id="statsBar" style="display: none;">
+    <div class="stat-box">
+        <div class="stat-number" id="totalCompleted">0</div>
+        <div class="stat-label">Completed</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-number" id="totalTasks">0</div>
+        <div class="stat-label">Total Tasks</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-number" id="percentComplete">0%</div>
+        <div class="stat-label">Progress</div>
+    </div>
+</div>
+
+<div class="status-legend no-print" style="display: none;" id="legend">
+    <div class="status-item">
+        <div class="status-symbol">☐</div>
+        <div class="status-label">TODO</div>
+    </div>
+    <div class="status-item">
+        <div class="status-symbol">✓</div>
+        <div class="status-label">DONE</div>
+    </div>
+    <div class="status-item">
+        <div class="status-symbol">Click</div>
+        <div class="status-label">TO TOGGLE</div>
+    </div>
+</div>
+
+<div id="tasksContainer">
+    <div class="loading">Loading...</div>
+</div>
+
+<script>
+// Google Sheets Configuration (same as main dashboard)
+const SHEET_CONFIG = {
+    sheetId: '1rPTT6ieC2FqCqA0cLoECNSXmvAk1zH91ha4-M4w3vM4',
+    sheetName: 'tasks-template',
+    scriptUrl: 'https://script.google.com/macros/s/AKfycbyUPBunnqM1Nbod5_bCFffF4VRrGFPdWAF5_OC88RMRZW0cGMtXk1iLLT9MqmJ8tglklw/exec'
+};
+
+let allTasks = [];
+
+// Fetch tasks from Google Sheet
+function fetchTasks() {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_CONFIG.sheetId}/gviz/tq?tqx=out:json&sheet=${SHEET_CONFIG.sheetName}`;
+
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            // Parse Google's JSONP response
+            const json = JSON.parse(data.substr(47).slice(0, -2));
+            const rows = json.table.rows;
+
+            // Map to task objects
+            allTasks = rows.map((row, index) => ({
+                id: index + 2, // +2 because row 1 is header in sheet
+                task: row.c[0]?.v || '',
+                week: row.c[1]?.v || '',
+                date: row.c[2]?.v || '',
+                completed: row.c[3]?.v === 'TRUE' || row.c[3]?.v === true,
+                category: row.c[4]?.v || '',
+                time: row.c[5]?.v || '',
+                notes: row.c[6]?.v || ''
+            })).filter(task => task.task); // Filter out empty rows
+
+            displayTasks();
+            updateStats();
+            updateSyncStatus('success');
+        })
+        .catch(error => {
+            console.error('Error fetching tasks:', error);
+            document.getElementById('syncStatus').innerHTML = '❌ Could not connect to Google Sheets. Check your internet connection.';
+            document.getElementById('syncStatus').className = 'sync-status';
+        });
+}
+
+// Display tasks grouped by week
+function displayTasks() {
+    const container = document.getElementById('tasksContainer');
+
+    // Group tasks by week
+    const weeks = {
+        1: [],
+        2: [],
+        3: [],
+        4: []
+    };
+
+    allTasks.forEach(task => {
+        if (task.week >= 1 && task.week <= 4) {
+            weeks[task.week].push(task);
+        }
+    });
+
+    // Build HTML for all weeks
+    let html = '';
+
+    for (let weekNum = 1; weekNum <= 4; weekNum++) {
+        const weekTasks = weeks[weekNum];
+        if (weekTasks.length === 0) continue;
+
+        const completedCount = weekTasks.filter(t => t.completed).length;
+        const totalCount = weekTasks.length;
+
+        // Calculate week date range
+        const week1Start = new Date('2025-11-04T00:00:00');
+        const weekStart = new Date(week1Start);
+        weekStart.setDate(weekStart.getDate() + (weekNum - 1) * 7);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+
+        const weekRange = `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+
+        html += `
+            <div class="week-section">
+                <div class="week-header">
+                    <span>WEEK ${weekNum}: ${weekRange}</span>
+                    <span class="week-stats">${completedCount}/${totalCount} complete</span>
+                </div>
+        `;
+
+        // Sort tasks by date within the week
+        weekTasks.sort((a, b) => {
+            const dateA = parseDateString(a.date);
+            const dateB = parseDateString(b.date);
+            if (!dateA) return 1;
+            if (!dateB) return -1;
+            return dateA - dateB;
+        });
+
+        // Add tasks
+        weekTasks.forEach(task => {
+            const completedClass = task.completed ? 'completed' : '';
+            const checkmark = task.completed ? '✓' : '';
+            const categoryClass = task.category ? `cat-${task.category.toLowerCase()}` : '';
+
+            html += `
+                <div class="task-row ${completedClass}" onclick="toggleTask(${task.id})">
+                    <div class="checkbox">${checkmark}</div>
+                    <div class="task-date">${formatDate(task.date)}</div>
+                    <div class="task-desc">${task.task}${task.time ? ` <span style="color: #999; font-size: 0.9em;">(${task.time})</span>` : ''}</div>
+                    <div class="task-category ${categoryClass}">${task.category || 'TASK'}</div>
+                </div>
+            `;
+        });
+
+        html += `</div>`;
+    }
+
+    container.innerHTML = html;
+    document.getElementById('legend').style.display = 'grid';
+}
+
+// Format date for display
+function formatDate(dateStr) {
+    if (!dateStr) return 'TBD';
+    if (dateStr === 'Anytime') return 'Anytime';
+    if (dateStr.includes('Before')) return dateStr;
+    if (dateStr.includes('After')) return dateStr;
+
+    const date = parseDateString(dateStr);
+    if (!date) return dateStr;
+
+    return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+}
+
+// Parse date string - handles Google Sheets "Date(2025,10,4)" format
+function parseDateString(dateStr) {
+    if (!dateStr) return null;
+
+    // Handle Google Sheets Date format: "Date(2025,10,4)"
+    if (dateStr.startsWith('Date(')) {
+        const match = dateStr.match(/Date\((\d+),(\d+),(\d+)\)/);
+        if (match) {
+            const year = parseInt(match[1]);
+            const month = parseInt(match[2]); // Already 0-indexed in Google format
+            const day = parseInt(match[3]);
+            return new Date(year, month, day);
+        }
+    }
+
+    // Try parsing as a standard date format
+    let parsed = new Date(dateStr);
+    if (!isNaN(parsed.getTime())) {
+        return parsed;
+    }
+
+    // Fallback: Try "Nov 4" format
+    const months = {
+        'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+        'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+    };
+
+    const parts = dateStr.split(' ');
+    if (parts.length === 2 && months[parts[0]] !== undefined) {
+        const month = months[parts[0]];
+        const day = parseInt(parts[1]);
+        return new Date(2025, month, day);
+    }
+
+    return null;
+}
+
+// Update stats
+function updateStats() {
+    const completedCount = allTasks.filter(t => t.completed).length;
+    const totalCount = allTasks.length;
+    const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+
+    document.getElementById('totalCompleted').textContent = completedCount;
+    document.getElementById('totalTasks').textContent = totalCount;
+    document.getElementById('percentComplete').textContent = percentage + '%';
+    document.getElementById('statsBar').style.display = 'grid';
+}
+
+// Update sync status
+function updateSyncStatus(type) {
+    const status = document.getElementById('syncStatus');
+
+    if (type === 'success') {
+        status.textContent = '✓ Connected to Google Sheets • Auto-syncing every 5 minutes';
+        status.className = 'sync-status';
+    } else if (type === 'syncing') {
+        status.textContent = '⏳ Syncing with Google Sheets...';
+        status.className = 'sync-status syncing';
+    }
+}
+
+// Toggle task completion
+function toggleTask(taskId) {
+    const task = allTasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    // Toggle the completion status
+    const newStatus = !task.completed;
+
+    // Update Google Sheet
+    updateSyncStatus('syncing');
+
+    fetch(SHEET_CONFIG.scriptUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            sheetId: SHEET_CONFIG.sheetId,
+            sheetName: SHEET_CONFIG.sheetName,
+            row: taskId,
+            column: 4, // Column D (Completed)
+            value: newStatus ? 'TRUE' : 'FALSE'
+        })
+    })
+    .then(() => {
+        // Update local task
+        task.completed = newStatus;
+
+        // Refresh display
+        displayTasks();
+        updateStats();
+        updateSyncStatus('success');
+    })
+    .catch(err => {
+        console.error('Error updating task:', err);
+
+        // Still update locally even if sync fails
+        task.completed = newStatus;
+        displayTasks();
+        updateStats();
+        updateSyncStatus('success');
+    });
+}
+
+// Initialize
+fetchTasks();
+
+// Auto-refresh every 5 minutes to sync changes
+setInterval(() => {
+    fetchTasks();
+}, 5 * 60 * 1000); // Every 5 minutes
+</script>
+
+</body>
+</html>

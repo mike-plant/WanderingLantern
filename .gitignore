@@ -1,0 +1,7 @@
+node_modules/
+_site/
+.env
+.DS_Store
+
+# Archive is optional - uncomment to exclude from git
+# archive/

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "components/head.njk" %}
+<body>
+    <!-- Simple layout for forms - no header/nav, just content -->
+    {{ content | safe }}
+
+    <!-- Simple footer with back link -->
+    <footer style="background: var(--deep-brown); color: var(--cream); text-align: center; padding: 2rem;">
+        <p><a href="/" style="color: var(--aged-gold); text-decoration: none; font-weight: 600;">← Back to The Wandering Lantern</a></p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">&copy; 2025 The Wandering Lantern</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/assets/js/main.js" defer></script>
+</body>
+</html>

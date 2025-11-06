@@ -1,0 +1,122 @@
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  /* Hero Section */
+  .hero {
+    height: 60vh;
+    min-height: 400px;
+  }
+
+  .hero-opening-banner {
+    padding: 1.5rem 1.5rem;
+    margin-top: 0;
+    max-width: 95%;
+  }
+
+  .hero-opening-banner h1 {
+    font-size: clamp(0.8rem, 4vw, 1.1rem);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-opening-banner .countdown {
+    font-size: clamp(2.5rem, 12vw, 3.5rem);
+    margin: 0.25rem 0;
+  }
+
+  .hero-opening-banner .countdown-label {
+    font-size: clamp(0.9rem, 4vw, 1.2rem);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-opening-banner .date {
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+  }
+
+  /* Make tagline bar always visible and static on mobile */
+  .tagline-bar {
+    position: relative;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    padding: 0.5rem 1rem;
+  }
+
+  .tagline-bar-logo {
+    max-height: 40px;
+  }
+
+  .tagline-bar .tagline {
+    font-size: 0.85rem;
+  }
+
+  /* Make info bar static on mobile */
+  .info-bar {
+    position: relative;
+    top: 0 !important;
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+  }
+
+  .info-bar-content {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .info-separator {
+    display: none;
+  }
+
+  /* Make nav static on mobile */
+  nav {
+    position: relative;
+    top: 0 !important;
+    padding: 0.5rem 1rem;
+  }
+
+  nav a {
+    margin: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  /* Container & Layout */
+  .container {
+    padding: 1.5rem 1rem;
+  }
+
+  .offerings-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  /* First Light mobile adjustments */
+  .first-light-section {
+    padding: 1.5rem 1rem !important;
+    margin: 1rem auto 1.5rem auto !important;
+  }
+
+  .first-light-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .first-light-section p {
+    font-size: 0.9rem;
+    margin: 0 auto 1.25rem !important;
+  }
+
+  .first-light-cta {
+    font-size: 1rem;
+    padding: 1rem 2rem;
+    letter-spacing: 1.5px;
+  }
+
+  /* Forms on mobile */
+  .form-container {
+    padding: 1.5rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}

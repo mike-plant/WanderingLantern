@@ -1,0 +1,108 @@
+/* Button & CTA Styling */
+.cta-button {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--warm-brown) 0%, var(--deep-brown) 100%);
+  color: var(--cream);
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(90, 75, 60, 0.3);
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(90, 75, 60, 0.4);
+}
+
+/* Join Community Section */
+.community-section {
+  background: linear-gradient(135deg, rgba(122, 139, 111, 0.08) 0%, rgba(139, 111, 71, 0.08) 100%);
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  margin: 4rem 0;
+  border: 2px solid rgba(201, 169, 97, 0.2);
+}
+
+.community-section h2 {
+  color: var(--deep-brown);
+  margin-bottom: 1rem;
+}
+
+.community-section p {
+  max-width: 650px;
+  margin: 0 auto 2rem;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+/* First Light Section - Enhanced Styling */
+.first-light-section {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(26, 77, 46, 0.08) 50%, rgba(212, 175, 55, 0.12) 100%);
+  border: 2px solid var(--old-gold);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
+  position: relative;
+  overflow: hidden;
+  padding: 2rem 2rem !important;
+  margin: 1.5rem auto 2rem auto !important;
+}
+
+.first-light-section::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, transparent 30%, rgba(212, 175, 55, 0.3) 50%, transparent 70%);
+  animation: shimmer 3s infinite;
+  pointer-events: none;
+  border-radius: 12px;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.first-light-section h2 {
+  color: var(--deep-green);
+  text-shadow: 1px 1px 2px rgba(212, 175, 55, 0.2);
+  font-size: 2rem;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 0.75rem !important;
+}
+
+.first-light-section p {
+  position: relative;
+  z-index: 1;
+  margin: 0 auto 1.5rem !important;
+  font-size: 1rem;
+}
+
+.first-light-cta {
+  background: linear-gradient(135deg, var(--old-gold) 0%, var(--warm-gold) 50%, var(--old-gold) 100%);
+  color: var(--deep-brown);
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 1.2rem 3rem;
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+  position: relative;
+  z-index: 1;
+}
+
+.first-light-cta:hover {
+  background: linear-gradient(135deg, var(--warm-gold) 0%, var(--old-gold) 50%, var(--warm-gold) 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(212, 175, 55, 0.6);
+}

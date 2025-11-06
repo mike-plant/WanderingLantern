@@ -1,0 +1,56 @@
+---
+layout: layouts/base.njk
+title: Events & Story Hours - The Wandering Lantern
+---
+
+<div class="container">
+    <section id="events">
+        <h2>Upcoming Events</h2>
+        <p style="text-align: center; max-width: 700px; margin: 0 auto 3rem;">
+            Join us for storytimes, author visits, and special celebrations. Each event is designed to spark imagination
+            and foster a love of reading in children of all ages.
+        </p>
+
+        {% if features.events.showUpcomingEvents and collections.upcomingEvents.length > 0 %}
+        <div class="events-grid">
+            {% for event in collections.upcomingEvents %}
+                {% set event = event %}
+                {% include "components/event-card.njk" %}
+            {% endfor %}
+        </div>
+        {% elif features.events.showUpcomingEvents %}
+        <div style="text-align: center; padding: 3rem 2rem; background: var(--parchment); border-radius: 8px; margin-top: 2rem;">
+            <p style="font-size: 1.1rem; color: var(--warm-brown); margin: 0;">
+                We're currently planning our upcoming events! Check back soon or
+                <a href="/newsletter/" style="color: var(--aged-gold); text-decoration: underline;">sign up for our newsletter</a>
+                to be the first to know when new events are announced.
+            </p>
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 3rem 2rem; background: var(--parchment); border-radius: 8px; margin-top: 2rem;">
+            <p style="font-size: 1.1rem; color: var(--warm-brown); margin: 0;">
+                We're currently planning our upcoming events! Check back soon or
+                <a href="/newsletter/" style="color: var(--aged-gold); text-decoration: underline;">sign up for our newsletter</a>
+                to be the first to know when new events are announced.
+            </p>
+        </div>
+        {% endif %}
+    </section>
+
+    {% if features.events.showPastEvents and collections.pastEvents.length > 0 %}
+    <section id="past-events" style="margin-top: 5rem;">
+        <h2>Past Events</h2>
+        <div class="events-grid">
+            {% for event in collections.pastEvents | limit(6) %}
+                {% set event = event %}
+                {% include "components/event-card.njk" %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Join Our Community Section -->
+    <div style="margin-top: 5rem;">
+        {% include "components/first-light.njk" %}
+    </div>
+</div>

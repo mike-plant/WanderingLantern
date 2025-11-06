@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DD109W64TG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-DD109W64TG');
+
+      // Fire conversion event
+      gtag('event', 'contact_form_submit', {
+        'event_category': 'engagement',
+        'event_label': 'Contact Form Submission'
+      });
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - The Wandering Lantern</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* THANK YOU PAGE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --warm-brown: #8b6f47;
+            --deep-brown: #5c4d3c;
+            --aged-gold: #c9a961;
+            --muted-gold: #a38b5f;
+            --cream: #faf7f0;
+            --parchment: #f5eedc;
+            --dark-text: #3a2f27;
+            --soft-green: #7a8b6f;
+        }
+
+        body {
+            font-family: 'Libre Baskerville', 'Georgia', serif;
+            line-height: 1.7;
+            color: var(--dark-text);
+            background: linear-gradient(to bottom, #f5eedc 0%, #faf7f0 50%, #f5eedc 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 650px;
+            width: 100%;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(90, 75, 60, 0.15);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--warm-brown) 0%, var(--deep-brown) 100%);
+            color: var(--cream);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 150px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .logo img {
+            width: 100%;
+            height: auto;
+        }
+
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            background: rgba(250, 247, 240, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            padding: 3rem 2rem;
+        }
+
+        .message {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: var(--dark-text);
+        }
+
+        .next-steps {
+            background: rgba(122, 139, 111, 0.08);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid rgba(201, 169, 97, 0.2);
+        }
+
+        .next-steps h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--deep-brown);
+            margin-bottom: 1rem;
+        }
+
+        .next-steps p {
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .back-link {
+            margin-top: 2rem;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--warm-brown) 0%, var(--deep-brown) 100%);
+            color: var(--cream);
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(90, 75, 60, 0.3);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(90, 75, 60, 0.4);
+        }
+
+        .social-links {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(90, 75, 60, 0.1);
+        }
+
+        .social-links p {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: var(--warm-brown);
+        }
+
+        .social-links a {
+            color: var(--deep-brown);
+            text-decoration: none;
+            margin: 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .social-links a:hover {
+            color: var(--aged-gold);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 2rem 1.5rem;
+            }
+
+            .checkmark {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="../logo.png" alt="The Wandering Lantern">
+            </div>
+            <div class="checkmark">✓</div>
+            <h1>Thank You!</h1>
+        </div>
+
+        <div class="content">
+            <p class="message">
+                We've received your message and we're excited to connect with you! We'll get back to you soon.
+            </p>
+
+            <div class="next-steps">
+                <h2>What's Next?</h2>
+                <p><strong>Opening November 28th</strong> at 15729 Madison Ave, Lakewood</p>
+                <p>Follow us on social media for updates, sneak peeks, and book recommendations as we prepare to open our doors.</p>
+            </div>
+
+            <div class="back-link">
+                <a href="../index.html" class="back-button">Back to Home</a>
+            </div>
+
+            <div class="social-links">
+                <p>Stay connected:</p>
+                <a href="https://www.instagram.com/thewanderinglanterncle" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/thewanderinglanterncle" target="_blank">Facebook</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

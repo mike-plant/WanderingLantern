@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POC: Google Sheets Task List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #1a4d2e;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        .setup-box {
+            background: #fff9e0;
+            border-left: 4px solid #f0ad4e;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .setup-box h3 {
+            color: #e65100;
+            margin-bottom: 10px;
+        }
+
+        .setup-box ol {
+            margin-left: 20px;
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        .config-section {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+
+        button {
+            background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .task-list {
+            margin-top: 20px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+
+        .task-item:hover {
+            background: #f9f9f9;
+        }
+
+        .task-item.completed {
+            opacity: 0.6;
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+        }
+
+        input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .task-text {
+            flex: 1;
+        }
+
+        .task-date {
+            color: #999;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .status.loading {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status.error {
+            background: #ffebee;
+            color: #c41e3a;
+        }
+
+        .demo-note {
+            background: #e8f5e9;
+            border-left: 4px solid #2e7d32;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .demo-note strong {
+            color: #1a4d2e;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🧪 POC: Google Sheets Task Tracker</h1>
+    <div class="subtitle">Proof of Concept - Shows it actually works!</div>
+
+    <div class="setup-box">
+        <h3>📋 Setup Steps:</h3>
+        <ol>
+            <li><strong>Create Google Sheet</strong> with columns: Task, Week, Date, Completed</li>
+            <li><strong>Add sample data:</strong> Task in column A, 1 in column B, "Nov 4" in column C, FALSE in column D</li>
+            <li><strong>Share publicly:</strong> Share > Anyone with link can <strong>view</strong></li>
+            <li><strong>Get Sheet ID:</strong> Copy from URL between /d/ and /edit</li>
+            <li><strong>For WRITE capability:</strong> Deploy the Apps Script (see google-apps-script.js file)</li>
+        </ol>
+    </div>
+
+    <div class="config-section">
+        <label style="font-weight: bold; display: block; margin-bottom: 5px;">Google Sheet ID:</label>
+        <input type="text" id="sheetId" placeholder="e.g., 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms">
+
+        <label style="font-weight: bold; display: block; margin-top: 15px; margin-bottom: 5px;">Sheet Name (tab):</label>
+        <input type="text" id="sheetName" value="Week1" placeholder="e.g., Week1, Tasks, etc.">
+
+        <label style="font-weight: bold; display: block; margin-top: 15px; margin-bottom: 5px;">Apps Script URL (optional - for writes):</label>
+        <input type="text" id="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
+
+        <button onclick="connectSheet()">📊 Connect to Sheet (Read-Only)</button>
+        <button onclick="loadDemoData()" style="background: linear-gradient(135deg, #d4af37 0%, #f0c674 100%); color: #1a4d2e;">🎯 Load Demo</button>
+    </div>
+
+    <div id="status" class="status" style="display: none;"></div>
+
+    <div class="task-list" id="taskList">
+        <div style="text-align: center; padding: 40px; color: #999;">
+            Connect to your Google Sheet above, or click "Load Demo" to see how it works
+        </div>
+    </div>
+
+    <div class="demo-note">
+        <strong>💡 How This Works:</strong><br>
+        • <strong>READ:</strong> Uses public Google Sheets API (no auth needed)<br>
+        • <strong>WRITE:</strong> Uses Google Apps Script you deploy once<br>
+        • <strong>SYNC:</strong> Auto-refreshes every 30 seconds<br>
+        • <strong>CROSS-DEVICE:</strong> Emily's phone, Michael's laptop - same data!<br>
+        • <strong>NO SERVER NEEDED:</strong> Google Sheets IS your database
+    </div>
+
+    <div class="demo-note" style="background: #fff3e0; border-color: #f0ad4e; margin-top: 15px;">
+        <strong>🚀 Quick Setup (10 minutes):</strong><br>
+        1. Open the <code>google-apps-script.js</code> file<br>
+        2. Follow the instructions at the top to deploy it<br>
+        3. Paste the Web App URL into "Apps Script URL" above<br>
+        4. Click "Connect to Sheet" - you now have full read/write!<br>
+        <br>
+        <strong>Demo Mode:</strong> Click "Load Demo" to test without any setup
+    </div>
+</div>
+
+<script>
+let tasks = [];
+let sheetConfig = {
+    sheetId: '',
+    sheetName: 'Week1',
+    scriptUrl: ''
+};
+let useSheet = false;
+
+// Demo data (for testing without Sheet)
+function loadDemoData() {
+    useSheet = false;
+    tasks = [
+        { id: 1, task: 'Instagram: Construction photo "23 days to go"', week: 1, date: 'Nov 4', completed: false },
+        { id: 2, task: 'Convert hero image to WebP (squoosh.app)', week: 1, date: 'Nov 5', completed: false },
+        { id: 3, task: 'Update hero headline to "Cleveland\'s First..."', week: 1, date: 'Nov 6', completed: false },
+        { id: 4, task: 'Draft press release', week: 1, date: 'Nov 7', completed: false },
+        { id: 5, task: 'Send press releases to all media', week: 1, date: 'Nov 8', completed: false }
+    ];
+
+    showStatus('success', '✓ Demo data loaded! (Check boxes to test - saves to browser localStorage)');
+    renderTasks();
+}
+
+// Connect to Google Sheet
+function connectSheet() {
+    const sheetId = document.getElementById('sheetId').value.trim();
+    const sheetName = document.getElementById('sheetName').value.trim();
+    const scriptUrl = document.getElementById('scriptUrl').value.trim();
+
+    if (!sheetId) {
+        showStatus('error', '❌ Please enter a Sheet ID');
+        return;
+    }
+
+    sheetConfig.sheetId = sheetId;
+    sheetConfig.sheetName = sheetName;
+    sheetConfig.scriptUrl = scriptUrl;
+    useSheet = true;
+
+    // Save config to localStorage for next time
+    localStorage.setItem('sheetConfig', JSON.stringify({
+        sheetId: sheetId,
+        sheetName: sheetName,
+        scriptUrl: scriptUrl
+    }));
+
+    if (scriptUrl) {
+        showStatus('loading', '⏳ Connecting to Google Sheet (with write access)...');
+    } else {
+        showStatus('loading', '⏳ Connecting to Google Sheet (read-only mode)...');
+    }
+
+    // Try to fetch data from Sheet
+    fetchSheetData();
+}
+
+// Fetch data from Google Sheet (public API)
+function fetchSheetData() {
+    const url = `https://docs.google.com/spreadsheets/d/${sheetConfig.sheetId}/gviz/tq?tqx=out:json&sheet=${sheetConfig.sheetName}`;
+
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            // Google returns JSONP, need to parse it
+            const json = JSON.parse(data.substr(47).slice(0, -2));
+            const rows = json.table.rows;
+
+            tasks = rows.map((row, index) => ({
+                id: index + 1,
+                task: row.c[0]?.v || '',
+                week: row.c[1]?.v || '',
+                date: row.c[2]?.v || '',
+                completed: row.c[3]?.v === 'TRUE' || row.c[3]?.v === true
+            }));
+
+            showStatus('success', `✓ Connected! Loaded ${tasks.length} tasks from Sheet`);
+            renderTasks();
+        })
+        .catch(error => {
+            showStatus('error', `❌ Error: ${error.message}. Make sure Sheet is shared publicly!`);
+        });
+}
+
+// Render tasks
+function renderTasks() {
+    const taskList = document.getElementById('taskList');
+
+    if (tasks.length === 0) {
+        taskList.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">No tasks found</div>';
+        return;
+    }
+
+    taskList.innerHTML = tasks.map(task => `
+        <div class="task-item ${task.completed ? 'completed' : ''}" id="task-${task.id}">
+            <input
+                type="checkbox"
+                ${task.completed ? 'checked' : ''}
+                onchange="toggleTask(${task.id})"
+                id="checkbox-${task.id}"
+            >
+            <div class="task-text">${task.task}</div>
+            <div class="task-date">${task.date}</div>
+        </div>
+    `).join('');
+}
+
+// Toggle task completion
+function toggleTask(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    task.completed = !task.completed;
+
+    // Re-render immediately for responsive UI
+    renderTasks();
+
+    if (useSheet && sheetConfig.scriptUrl) {
+        // Update Google Sheet via Apps Script
+        updateSheetRow(taskId, task.completed);
+    } else {
+        // Save to localStorage for demo/read-only mode
+        localStorage.setItem('demoTasks', JSON.stringify(tasks));
+        const mode = useSheet ? '(Read-only mode - add Apps Script URL for writes)' : '(Demo mode - saved to browser)';
+        showStatus('success', `✓ Task ${task.completed ? 'completed' : 'uncompleted'}! ${mode}`);
+    }
+}
+
+// Show status message
+function showStatus(type, message) {
+    const status = document.getElementById('status');
+    status.className = `status ${type}`;
+    status.textContent = message;
+    status.style.display = 'block';
+
+    if (type === 'success') {
+        setTimeout(() => {
+            status.style.display = 'none';
+        }, 3000);
+    }
+}
+
+// Load saved config and data on page load
+window.onload = function() {
+    // Load saved sheet configuration
+    const savedConfig = localStorage.getItem('sheetConfig');
+    if (savedConfig) {
+        const config = JSON.parse(savedConfig);
+        document.getElementById('sheetId').value = config.sheetId || '';
+        document.getElementById('sheetName').value = config.sheetName || 'Sheet1';
+        document.getElementById('scriptUrl').value = config.scriptUrl || '';
+
+        // Auto-connect if we have a sheet ID
+        if (config.sheetId) {
+            sheetConfig = config;
+            useSheet = true;
+            showStatus('loading', '⏳ Reconnecting to your saved Google Sheet...');
+            fetchSheetData();
+            return;
+        }
+    }
+
+    // Otherwise load demo data if previously saved
+    const savedTasks = localStorage.getItem('demoTasks');
+    if (savedTasks) {
+        tasks = JSON.parse(savedTasks);
+        showStatus('success', '✓ Loaded your previous demo progress from browser');
+        renderTasks();
+    }
+};
+
+// Update Google Sheet via Apps Script
+function updateSheetRow(taskId, completed) {
+    if (!sheetConfig.scriptUrl) {
+        console.warn('No Apps Script URL configured');
+        return;
+    }
+
+    showStatus('loading', '⏳ Saving to Google Sheet...');
+
+    fetch(sheetConfig.scriptUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            sheetId: sheetConfig.sheetId,
+            sheetName: sheetConfig.sheetName,
+            row: taskId + 1, // +1 because row 1 is header
+            column: 4, // "Completed" column (D)
+            value: completed
+        })
+    })
+    .then(() => {
+        showStatus('success', `✓ Saved to Google Sheet! (Row ${taskId} updated)`);
+        console.log('Sheet updated successfully:', { taskId, completed });
+    })
+    .catch(err => {
+        showStatus('error', `❌ Error saving to Sheet: ${err.message}`);
+        console.error('Update error:', err);
+    });
+}
+
+// Auto-refresh from Sheet every 30 seconds (if connected)
+setInterval(() => {
+    if (useSheet && sheetConfig.sheetId) {
+        fetchSheetData();
+    }
+}, 30000);
+</script>
+
+</body>
+</html>

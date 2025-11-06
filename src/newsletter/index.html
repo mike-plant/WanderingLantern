@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DD109W64TG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-DD109W64TG');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter Signup - The Wandering Lantern</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* MOBILE-FIRST NEWSLETTER PAGE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --warm-brown: #8b6f47;
+            --deep-brown: #5c4d3c;
+            --aged-gold: #c9a961;
+            --muted-gold: #a38b5f;
+            --cream: #faf7f0;
+            --parchment: #f5eedc;
+            --dark-text: #3a2f27;
+            --soft-green: #7a8b6f;
+        }
+
+        body {
+            font-family: 'Libre Baskerville', 'Georgia', serif;
+            line-height: 1.7;
+            color: var(--dark-text);
+            background: linear-gradient(to bottom, #f5eedc 0%, #faf7f0 50%, #f5eedc 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(90, 75, 60, 0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--warm-brown) 0%, var(--deep-brown) 100%);
+            color: var(--cream);
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 120px;
+            margin: 0 auto 1rem;
+        }
+
+        .logo img {
+            width: 100%;
+            height: auto;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        .form-section {
+            padding: 2rem 1.5rem;
+        }
+
+        .intro-text {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--dark-text);
+            font-size: 0.95rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--deep-brown);
+            font-size: 0.9rem;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            padding: 0.875rem;
+            border: 2px solid rgba(139, 111, 71, 0.3);
+            border-radius: 6px;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: #fff;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--aged-gold);
+            box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.1);
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(135deg, var(--warm-brown) 0%, var(--deep-brown) 100%);
+            color: var(--cream);
+            padding: 1rem;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 12px rgba(90, 75, 60, 0.3);
+            margin-top: 1rem;
+        }
+
+        button[type="submit"]:active {
+            transform: scale(0.98);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--dark-text);
+            margin-top: 1.5rem;
+            font-style: italic;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-link a {
+            color: var(--warm-brown);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (min-width: 600px) {
+            body {
+                padding: 3rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .form-section {
+                padding: 2.5rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="../logo.png" alt="The Wandering Lantern">
+            </div>
+            <h1>Join The First Light</h1>
+            <p class="subtitle">Get exclusive updates as we count down to opening day</p>
+        </div>
+
+        <div class="form-section">
+            <p class="intro-text">
+                Stay in the know as Cleveland's first children's bookstore comes to life! Get early announcements about our grand opening, special events, storytimes, and all the magical happenings at The Wandering Lantern.
+            </p>
+
+            <!-- MAILCHIMP FORM -->
+            <form action="https://thewanderinglantern.us3.list-manage.com/subscribe/post?u=f5535995545a29ebbdc6de523&amp;id=f1915b185f&amp;f_id=0089a2e0f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_self">
+
+                <div class="form-group">
+                    <label for="mce-FNAME">First Name</label>
+                    <input type="text" id="mce-FNAME" name="FNAME">
+                </div>
+
+                <div class="form-group">
+                    <label for="mce-EMAIL">Email Address *</label>
+                    <input type="email" id="mce-EMAIL" name="EMAIL" class="required email" required>
+                </div>
+
+                <!-- Newsletter Only tag -->
+                <input type="hidden" name="tags" value="3728682">
+
+                <!-- Mailchimp bot prevention -->
+                <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                    <input type="text" name="b_f5535995545a29ebbdc6de523_f1915b185f" tabindex="-1" value="">
+                </div>
+
+                <button type="submit" name="subscribe">Join The First Light</button>
+                <p class="footer-note">We promise to only send you the good stuff - no spam, just stories!</p>
+            </form>
+
+            <div class="back-link">
+                <a href="../index.html">← Back to Main Site</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission with redirect to thank you page
+        const form = document.getElementById('mc-embedded-subscribe-form');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Submit via AJAX to avoid Mailchimp's default page
+            const formData = new FormData(form);
+            const actionUrl = form.action.replace('/post?', '/post-json?');
+
+            fetch(actionUrl + '&' + new URLSearchParams(formData).toString(), {
+                method: 'GET',
+                mode: 'no-cors'
+            }).then(() => {
+                // Redirect to thank you page
+                window.location.href = '/thankyou/';
+            }).catch(() => {
+                // Still redirect even if there's an error (form was likely submitted)
+                window.location.href = '/thankyou/';
+            });
+        });
+    </script>
+</body>
+</html>

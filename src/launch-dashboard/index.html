@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launch Dashboard - The Wandering Lantern</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .tagline {
+            font-style: italic;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .countdown-box {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .countdown-number {
+            font-size: 4em;
+            font-weight: bold;
+            color: #f0c674;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .countdown-label {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #1a4d2e;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #d4af37, #f0c674);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .nav-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #1a4d2e, #d4af37);
+        }
+
+        .nav-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .nav-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #1a4d2e;
+            margin-bottom: 10px;
+        }
+
+        .nav-desc {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .nav-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 0.85em;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #999;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-critical {
+            background: #ffebee;
+            color: #c41e3a;
+        }
+
+        .badge-high {
+            background: #fff3e0;
+            color: #f0ad4e;
+        }
+
+        .badge-medium {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .quick-actions {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+        }
+
+        .quick-actions h2 {
+            color: #1a4d2e;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 100%);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: transform 0.2s;
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #d4af37 0%, #f0c674 100%);
+            color: #1a4d2e;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .countdown-number {
+                font-size: 3em;
+            }
+
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+
+        .help-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #d4af37 0%, #f0c674 100%);
+            color: #1a4d2e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            z-index: 1000;
+        }
+
+        .help-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+        }
+
+        .help-tooltip {
+            position: absolute;
+            right: 75px;
+            background: white;
+            color: #1a4d2e;
+            padding: 8px 15px;
+            border-radius: 8px;
+            white-space: nowrap;
+            font-size: 0.45em;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .help-button:hover .help-tooltip {
+            opacity: 1;
+        }
+
+        .info-banner {
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            border-radius: 12px;
+            padding: 15px 20px;
+            color: white;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .info-banner a {
+            color: #f0c674;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px solid #f0c674;
+        }
+
+        .info-banner a:hover {
+            color: white;
+            border-color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🎯 Launch Dashboard</h1>
+        <div class="tagline">"Follow the light, find the wonder"</div>
+    </div>
+
+    <div class="info-banner">
+        📖 First time here? <a href="how-to-use.html">Read the How-To Guide</a> to get started!
+    </div>
+
+    <div class="countdown-box">
+        <div class="countdown-number" id="daysLeft">...</div>
+        <div class="countdown-label">Days Until Grand Opening</div>
+        <div style="margin-top: 10px; opacity: 0.9;">Saturday, November 29th, 2025 (Grand Opening)</div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number" id="tasksCompleted">0</div>
+            <div class="stat-label">Tasks Completed</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="emailsSent">1</div>
+            <div class="stat-label">Emails Sent (of 5)</div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 20%"></div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="currentWeek">1</div>
+            <div class="stat-label">Current Week</div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 25%"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <h2>⚡ Today's Priority</h2>
+        <div id="todayTask" style="padding: 15px; background: #f5eedc; border-radius: 8px; margin-bottom: 15px;">
+            <div style="text-align: center; color: #999;">Loading tasks from Google Sheets...</div>
+        </div>
+        <div class="action-buttons" id="taskButtons" style="display: none;">
+            <button class="action-btn" onclick="markTaskComplete()">✓ Mark Complete</button>
+            <button class="action-btn secondary" onclick="skipTask()">→ Skip for Now</button>
+        </div>
+    </div>
+
+    <div class="quick-actions" id="missedTasksSection" style="display: none;">
+        <h2>⚠️ Missed Tasks</h2>
+        <div id="missedTasksList" style="padding: 15px; background: #fff3e0; border-radius: 8px;">
+        </div>
+    </div>
+
+    <div class="quick-actions" id="completedTodaySection" style="display: none;">
+        <h2>✅ Completed Today</h2>
+        <div id="completedTodayList" style="padding: 15px; background: #e8f5e9; border-radius: 8px;">
+        </div>
+    </div>
+
+    <div class="quick-actions" id="tomorrowSection" style="display: none;">
+        <h2>📅 Tomorrow's Tasks</h2>
+        <div id="tomorrowList" style="padding: 15px; background: #e3f2fd; border-radius: 8px;">
+        </div>
+    </div>
+
+    <div class="nav-grid">
+        <a href="week-by-week.html" class="nav-card">
+            <div class="nav-icon">📅</div>
+            <div class="nav-title">Week-by-Week Plan</div>
+            <div class="nav-desc">Daily tasks for all 4 weeks. Check off as you go!</div>
+            <div class="nav-meta">
+                <span class="meta-item">📋 47 tasks</span>
+                <span class="badge badge-critical">DAILY USE</span>
+            </div>
+        </a>
+
+        <a href="modular-plan.html" class="nav-card">
+            <div class="nav-icon">🎯</div>
+            <div class="nav-title">Modular Plan</div>
+            <div class="nav-desc">10 initiatives you can keep or skip. Make decisions here.</div>
+            <div class="nav-meta">
+                <span class="meta-item">🔧 10 modules</span>
+                <span class="badge badge-high">DECISIONS</span>
+            </div>
+        </a>
+
+        <a href="progress.html" class="nav-card">
+            <div class="nav-icon">📊</div>
+            <div class="nav-title">Progress Tracker</div>
+            <div class="nav-desc">See overall progress, add notes, track metrics.</div>
+            <div class="nav-meta">
+                <span class="meta-item">📈 0% complete</span>
+                <span class="badge badge-medium">WEEKLY</span>
+            </div>
+        </a>
+
+        <a href="quick-ref.html" class="nav-card">
+            <div class="nav-icon">📞</div>
+            <div class="nav-title">Quick Reference</div>
+            <div class="nav-desc">Contacts, dates, checklists - everything at a glance.</div>
+            <div class="nav-meta">
+                <span class="meta-item">⚡ Fast access</span>
+                <span class="badge badge-medium">AS NEEDED</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="quick-actions" id="thisWeekSection">
+        <h2 id="thisWeekHeader">🎬 This Week's Focus</h2>
+        <div id="thisWeekList" style="list-style: none; padding: 0;">
+            <div style="text-align: center; color: #999; padding: 20px;">Loading this week's tasks...</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        The Wandering Lantern • 15729 Madison Ave, Lakewood, OH 44107<br>
+        Launch Dashboard • Updated Nov 3, 2025
+    </div>
+</div>
+
+<a href="how-to-use.html" class="help-button" title="How to use this dashboard">
+    ❓
+    <span class="help-tooltip">How to Use</span>
+</a>
+
+<script>
+// Google Sheets Configuration
+const SHEET_CONFIG = {
+    sheetId: '1rPTT6ieC2FqCqA0cLoECNSXmvAk1zH91ha4-M4w3vM4',
+    sheetName: 'tasks-template',
+    scriptUrl: 'https://script.google.com/macros/s/AKfycbyUPBunnqM1Nbod5_bCFffF4VRrGFPdWAF5_OC88RMRZW0cGMtXk1iLLT9MqmJ8tglklw/exec'
+};
+
+let allTasks = [];
+let todaysTasks = [];
+let missedTasks = [];
+let completedToday = [];
+let tomorrowsTasks = [];
+
+// Calculate days until opening
+function updateCountdown() {
+    const openingDay = new Date('2025-11-29T00:00:00');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const daysLeft = Math.ceil((openingDay - today) / (1000 * 60 * 60 * 24));
+    document.getElementById('daysLeft').textContent = daysLeft >= 0 ? daysLeft : 0;
+
+    // Update current week
+    const week1Start = new Date('2025-11-06T00:00:00');  // Updated to Nov 6 (actual start date)
+    const daysSinceStart = Math.floor((today - week1Start) / (1000 * 60 * 60 * 24));
+    const currentWeek = Math.max(1, Math.min(4, Math.ceil((daysSinceStart + 1) / 7)));
+    document.getElementById('currentWeek').textContent = currentWeek;
+}
+
+// Fetch tasks from Google Sheet
+function fetchTasks() {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_CONFIG.sheetId}/gviz/tq?tqx=out:json&sheet=${SHEET_CONFIG.sheetName}`;
+
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            // Parse Google's JSONP response
+            const json = JSON.parse(data.substr(47).slice(0, -2));
+            const rows = json.table.rows;
+
+            // Map to task objects (Google API already removed header)
+            allTasks = rows.map((row, index) => ({
+                id: index + 2, // +2 because row 1 is header in sheet
+                task: row.c[0]?.v || '',
+                week: row.c[1]?.v || '',
+                date: row.c[2]?.v || '',
+                completed: row.c[3]?.v === 'TRUE' || row.c[3]?.v === true,
+                category: row.c[4]?.v || '',
+                time: row.c[5]?.v || '',
+                notes: row.c[6]?.v || ''
+            })).filter(task => task.task); // Filter out empty rows
+
+            processTasks();
+            updateDisplay();
+        })
+        .catch(error => {
+            console.error('Error fetching tasks:', error);
+            document.getElementById('todayTask').innerHTML =
+                '<div style="color: #c41e3a;">❌ Could not connect to Google Sheets. Check your internet connection.</div>';
+        });
+}
+
+// Process tasks to find today's and missed tasks
+function processTasks() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayStr = formatDateForComparison(today);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = formatDateForComparison(tomorrow);
+
+    todaysTasks = [];
+    missedTasks = [];
+    completedToday = [];
+    tomorrowsTasks = [];
+
+    let upcomingTasks = [];
+
+    allTasks.forEach(task => {
+        // Skip tasks without specific dates
+        if (!task.date || task.date === 'Anytime' ||
+            task.date.includes('Before') || task.date.includes('After')) {
+            return;
+        }
+
+        const taskDate = parseDateString(task.date);
+        if (!taskDate) return; // Skip if couldn't parse
+
+        const taskDateStr = formatDateForComparison(taskDate);
+
+        // Today's tasks (show both completed and incomplete)
+        if (taskDateStr === todayStr) {
+            todaysTasks.push(task);
+            if (task.completed) {
+                completedToday.push(task); // Also track for stats
+            }
+        }
+        // Tomorrow's tasks (show both completed and incomplete)
+        else if (taskDateStr === tomorrowStr) {
+            tomorrowsTasks.push(task);
+        }
+        // Missed tasks (only incomplete)
+        else if (taskDate < today && !task.completed) {
+            missedTasks.push(task);
+        }
+        // Upcoming tasks (for fallback if nothing today)
+        else if (taskDate > today && !task.completed) {
+            upcomingTasks.push({ task, taskDate });
+        }
+    });
+
+    // If no tasks today AND no tasks tomorrow, show next upcoming
+    if (todaysTasks.length === 0 && tomorrowsTasks.length === 0 && upcomingTasks.length > 0) {
+        upcomingTasks.sort((a, b) => a.taskDate - b.taskDate);
+        const nextTask = upcomingTasks[0];
+        nextTask.task.isUpcoming = true;
+        nextTask.task.upcomingDate = nextTask.taskDate;
+        todaysTasks.push(nextTask.task);
+    }
+}
+
+// Parse date string - handles Google Sheets "Date(2025,10,4)" format
+function parseDateString(dateStr) {
+    if (!dateStr) return null;
+
+    // Handle Google Sheets Date format: "Date(2025,10,4)"
+    if (dateStr.startsWith('Date(')) {
+        const match = dateStr.match(/Date\((\d+),(\d+),(\d+)\)/);
+        if (match) {
+            const year = parseInt(match[1]);
+            const month = parseInt(match[2]); // Already 0-indexed in Google format
+            const day = parseInt(match[3]);
+            return new Date(year, month, day);
+        }
+    }
+
+    // Try parsing as a standard date format (handles "11/4/2024", "2024-11-04", etc.)
+    let parsed = new Date(dateStr);
+    if (!isNaN(parsed.getTime())) {
+        return parsed;
+    }
+
+    // Fallback: Try "Nov 4" format
+    const months = {
+        'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+        'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+    };
+
+    const parts = dateStr.split(' ');
+    if (parts.length === 2 && months[parts[0]] !== undefined) {
+        const month = months[parts[0]];
+        const day = parseInt(parts[1]);
+        return new Date(2025, month, day);
+    }
+
+    return null; // Couldn't parse
+}
+
+// Format date for comparison (YYYY-MM-DD)
+function formatDateForComparison(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+// Update display with tasks
+function updateDisplay() {
+    updateTodayTask();
+    updateMissedTasks();
+    updateCompletedToday();
+    updateTomorrowTasks();
+    updateThisWeek();
+    updateStats();
+}
+
+// Update today's task display
+function updateTodayTask() {
+    const todayTaskEl = document.getElementById('todayTask');
+    const taskButtons = document.getElementById('taskButtons');
+    const today = new Date();
+    const dayName = today.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+
+    // Get all today's tasks (including completed)
+    const allTodayTasks = [...todaysTasks, ...completedToday];
+
+    if (allTodayTasks.length > 0) {
+        const firstIncomplete = todaysTasks[0];
+
+        if (firstIncomplete && firstIncomplete.isUpcoming) {
+            // Showing next upcoming task (only if no tasks tomorrow)
+            const upcomingDate = firstIncomplete.upcomingDate.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+            const taskList = todaysTasks.map(task =>
+                `<div style="margin-bottom: 10px; padding: 8px; border-left: 3px solid #1a4d2e; background: #f9f9f9;">
+                    <strong>${task.task}</strong>
+                    ${task.category ? `<span style="margin-left: 10px; color: #666; font-size: 0.9em;">[${task.category}]</span>` : ''}
+                    ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em;">${task.time}</span>` : ''}
+                </div>`
+            ).join('');
+
+            todayTaskEl.innerHTML = `
+                <div style="color: #666; font-size: 0.9em; margin-bottom: 5px;">Nothing scheduled for ${dayName}</div>
+                <strong>Next Up (${upcomingDate}):</strong>
+                <div style="margin-top: 10px;">${taskList}</div>
+            `;
+            taskButtons.style.display = 'none';
+        } else {
+            // Showing all today's tasks (completed and incomplete)
+            const taskList = allTodayTasks.map(task => {
+                const isCompleted = task.completed;
+                const checkmark = isCompleted ? '✓' : '☐';
+                const textStyle = isCompleted ? 'text-decoration: line-through; opacity: 0.6;' : '';
+                const bgColor = isCompleted ? '#e8f5e9' : '#f9f9f9';
+                const borderColor = isCompleted ? '#2e7d32' : '#1a4d2e';
+
+                return `<div style="margin-bottom: 8px; padding: 10px; border-left: 3px solid ${borderColor}; background: ${bgColor}; cursor: pointer; transition: all 0.2s;"
+                            onclick="markTaskCompleteById(${task.id})"
+                            onmouseover="this.style.background='#f0f0f0'"
+                            onmouseout="this.style.background='${bgColor}'">
+                    <span style="font-size: 1.2em; margin-right: 8px;">${checkmark}</span>
+                    <strong style="${textStyle}">${task.task}</strong>
+                    ${task.category ? `<span style="margin-left: 10px; color: #666; font-size: 0.9em; ${textStyle}">[${task.category}]</span>` : ''}
+                    ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em; ${textStyle}">${task.time}</span>` : ''}
+                </div>`;
+            }).join('');
+
+            todayTaskEl.innerHTML = `<strong>${dayName}:</strong><div style="margin-top: 10px;">${taskList}</div>`;
+            taskButtons.style.display = 'none';
+        }
+    } else {
+        // No tasks today - check if tomorrow has tasks
+        if (tomorrowsTasks.length > 0) {
+            todayTaskEl.innerHTML = `<strong>${dayName}:</strong> No tasks scheduled today. Check "Tomorrow's Tasks" below! 🎉`;
+        } else {
+            todayTaskEl.innerHTML = `<strong>${dayName}:</strong> No upcoming tasks found. Check the Week-by-Week plan! 🎉`;
+        }
+        taskButtons.style.display = 'none';
+    }
+}
+
+// Update missed tasks display
+function updateMissedTasks() {
+    const missedSection = document.getElementById('missedTasksSection');
+    const missedList = document.getElementById('missedTasksList');
+
+    if (missedTasks.length > 0) {
+        const taskList = missedTasks.map(task =>
+            `<div style="padding: 10px; border-bottom: 1px solid #ddd; cursor: pointer;" onclick="markTaskCompleteById(${task.id})">
+                <div style="display: flex; align-items: center;">
+                    <span style="font-size: 1.2em; margin-right: 10px;">☐</span>
+                    <div style="flex: 1;">
+                        <strong>${task.task}</strong>
+                        <div style="color: #999; font-size: 0.85em; margin-top: 3px;">
+                            ${task.date} • ${task.category || 'Task'}${task.time ? ` • ${task.time}` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>`
+        ).join('');
+
+        missedList.innerHTML = taskList + '<div style="margin-top: 10px; font-size: 0.9em; color: #666;">Click any task to mark it complete</div>';
+        missedSection.style.display = 'block';
+    } else {
+        missedSection.style.display = 'none';
+    }
+}
+
+// Update completed today display - now hidden since we show inline
+function updateCompletedToday() {
+    // Completed tasks are now shown inline with today's tasks
+    const completedSection = document.getElementById('completedTodaySection');
+    completedSection.style.display = 'none';
+}
+
+// Update tomorrow's tasks display
+function updateTomorrowTasks() {
+    const tomorrowSection = document.getElementById('tomorrowSection');
+    const tomorrowList = document.getElementById('tomorrowList');
+
+    if (tomorrowsTasks.length > 0) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const tomorrowName = tomorrow.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+
+        const taskList = tomorrowsTasks.map(task => {
+            const isCompleted = task.completed;
+            const checkmark = isCompleted ? '✓' : '☐';
+            const textStyle = isCompleted ? 'text-decoration: line-through; opacity: 0.6;' : '';
+            const bgColor = isCompleted ? '#e8f5e9' : 'white';
+
+            return `<div style="padding: 10px; border-bottom: 1px solid #ddd; cursor: pointer; background: ${bgColor};"
+                        onclick="markTaskCompleteById(${task.id})"
+                        onmouseover="this.style.background='#f0f0f0'"
+                        onmouseout="this.style.background='${bgColor}'">
+                <div style="display: flex; align-items: center;">
+                    <span style="font-size: 1.2em; margin-right: 10px;">${checkmark}</span>
+                    <div style="flex: 1;">
+                        <strong style="${textStyle}">${task.task}</strong>
+                        <div style="color: #999; font-size: 0.85em; margin-top: 3px; ${textStyle}">
+                            ${task.category || 'Task'}${task.time ? ` • ${task.time}` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+
+        tomorrowList.innerHTML = `<div style="margin-bottom: 10px; color: #1976d2; font-weight: bold;">${tomorrowName}</div>` + taskList;
+        tomorrowSection.style.display = 'block';
+    } else {
+        tomorrowSection.style.display = 'none';
+    }
+}
+
+// Update this week's focus
+function updateThisWeek() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Calculate current week (1-4)
+    const week1Start = new Date('2025-11-04T00:00:00');
+    const daysSinceStart = Math.floor((today - week1Start) / (1000 * 60 * 60 * 24));
+    const currentWeek = Math.max(1, Math.min(4, Math.ceil((daysSinceStart + 1) / 7)));
+
+    // Calculate week date range
+    const weekStart = new Date(week1Start);
+    weekStart.setDate(weekStart.getDate() + (currentWeek - 1) * 7);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+
+    const weekRange = `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+
+    // Filter tasks for current week
+    const thisWeekTasks = allTasks.filter(task => task.week === currentWeek);
+
+    // Update header
+    document.getElementById('thisWeekHeader').textContent = `🎬 This Week's Focus (Week ${currentWeek}: ${weekRange})`;
+
+    // Update task list
+    const thisWeekList = document.getElementById('thisWeekList');
+
+    if (thisWeekTasks.length > 0) {
+        const taskHTML = thisWeekTasks.map((task, index) => {
+            const isCompleted = task.completed;
+            const checkmark = isCompleted ? '✓' : '☐';
+            const textStyle = isCompleted ? 'text-decoration: line-through; opacity: 0.6;' : '';
+            const isLast = index === thisWeekTasks.length - 1;
+            const borderStyle = isLast ? '' : 'border-bottom: 1px solid #eee;';
+            const bgColor = isCompleted ? '#e8f5e9' : 'white';
+
+            return `
+                <div style="padding: 10px; ${borderStyle} cursor: pointer; background: ${bgColor}; transition: all 0.2s;"
+                    onclick="markTaskCompleteById(${task.id})"
+                    onmouseover="this.style.background='#f0f0f0'"
+                    onmouseout="this.style.background='${bgColor}'">
+                    <span style="font-size: 1.2em; margin-right: 8px;">${checkmark}</span>
+                    <strong style="${textStyle}">${task.task}</strong>
+                    ${task.time ? `<span style="margin-left: 10px; color: #999; font-size: 0.85em; ${textStyle}">(${task.time})</span>` : ''}
+                    ${task.date && task.date !== 'Anytime' ? `<span style="margin-left: 10px; color: #666; font-size: 0.85em; ${textStyle}">• ${task.date}</span>` : ''}
+                </div>
+            `;
+        }).join('');
+
+        thisWeekList.innerHTML = taskHTML;
+    } else {
+        thisWeekList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">No tasks scheduled for this week</div>';
+    }
+}
+
+// Update stats from tasks
+function updateStats() {
+    const completedCount = allTasks.filter(t => t.completed).length;
+    const totalCount = allTasks.length;
+    const percentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+
+    document.getElementById('tasksCompleted').textContent = completedCount;
+    document.getElementById('progressBar').style.width = percentage + '%';
+}
+
+// Mark today's first task complete
+function markTaskComplete() {
+    if (todaysTasks.length > 0) {
+        markTaskCompleteById(todaysTasks[0].id);
+    }
+}
+
+// Toggle task completion by ID
+function markTaskCompleteById(taskId) {
+    const task = allTasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    // Toggle the completion status
+    const newStatus = !task.completed;
+
+    // Update Google Sheet
+    fetch(SHEET_CONFIG.scriptUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            sheetId: SHEET_CONFIG.sheetId,
+            sheetName: SHEET_CONFIG.sheetName,
+            row: taskId,
+            column: 4, // Column D (Completed)
+            value: newStatus ? 'TRUE' : 'FALSE'
+        })
+    })
+    .then(() => {
+        // Update local task
+        task.completed = newStatus;
+
+        // Refresh display
+        processTasks();
+        updateDisplay();
+    })
+    .catch(err => {
+        console.error('Error updating task:', err);
+
+        // Still update locally even if sync fails
+        task.completed = newStatus;
+        processTasks();
+        updateDisplay();
+    });
+}
+
+// Skip task
+function skipTask() {
+    if(confirm('Skip this task? You can come back to it later.')) {
+        document.getElementById('todayTask').innerHTML = '<strong>Task skipped.</strong> Check the Week-by-Week plan when you\'re ready!';
+        document.getElementById('taskButtons').style.display = 'none';
+    }
+}
+
+// Initialize
+updateCountdown();
+fetchTasks();
+
+// Auto-refresh every 5 minutes to sync changes from Emily
+setInterval(() => {
+    updateCountdown();
+    fetchTasks();
+}, 5 * 60 * 1000); // Every 5 minutes
+</script>
+
+</body>
+</html>
