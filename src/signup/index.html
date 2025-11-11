@@ -638,11 +638,13 @@
                 method: 'GET',
                 mode: 'no-cors'
             }).then(() => {
-                // Redirect to thank you page
-                window.location.href = '/thankyou/';
+                // Redirect to thank you page with appropriate source parameter
+                const source = firstLightCheckbox.checked ? 'firstlight' : 'newsletter';
+                window.location.href = '/thankyou/?source=' + source;
             }).catch(() => {
                 // Still redirect even if there's an error (form was likely submitted)
-                window.location.href = '/thankyou/';
+                const source = firstLightCheckbox.checked ? 'firstlight' : 'newsletter';
+                window.location.href = '/thankyou/?source=' + source;
             });
         });
     </script>

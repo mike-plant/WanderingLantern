@@ -10,10 +10,39 @@
 
       gtag('config', 'G-DD109W64TG');
 
-      // Fire conversion event
-      gtag('event', 'contact_form_submit', {
-        'event_category': 'engagement',
-        'event_label': 'Contact Form Submission'
+      // Fire conversion event based on source
+      const urlParams = new URLSearchParams(window.location.search);
+      const source = urlParams.get('source') || 'contact';
+
+      // Map sources to event names and labels
+      const eventMapping = {
+        'event': {
+          name: 'event_registration',
+          category: 'conversion',
+          label: 'Event Registration'
+        },
+        'newsletter': {
+          name: 'newsletter_signup',
+          category: 'conversion',
+          label: 'Newsletter Signup'
+        },
+        'firstlight': {
+          name: 'firstlight_signup',
+          category: 'conversion',
+          label: 'First Light Signup'
+        },
+        'contact': {
+          name: 'contact_form_submit',
+          category: 'engagement',
+          label: 'Contact Form Submission'
+        }
+      };
+
+      const eventData = eventMapping[source] || eventMapping['contact'];
+
+      gtag('event', eventData.name, {
+        'event_category': eventData.category,
+        'event_label': eventData.label
       });
     </script>
 
@@ -212,9 +241,24 @@
         </div>
 
         <div class="content">
-            <p class="message">
+            <p class="message" id="thank-you-message">
                 We've received your message and we're excited to connect with you! We'll get back to you soon.
             </p>
+            <script>
+                // Customize message based on source
+                const urlParams = new URLSearchParams(window.location.search);
+                const source = urlParams.get('source') || 'contact';
+                const messageEl = document.getElementById('thank-you-message');
+
+                const messages = {
+                    'event': "You're all set! We'll send you a confirmation email with event details shortly. Can't wait to see you there!",
+                    'newsletter': "Welcome to our community! You'll start receiving updates about our grand opening, events, and book recommendations soon.",
+                    'firstlight': "Welcome to The First Light! You're now part of our exclusive pre-launch community. Watch your inbox for VIP invitations and personalized book recommendations.",
+                    'contact': "We've received your message and we're excited to connect with you! We'll get back to you soon."
+                };
+
+                messageEl.textContent = messages[source] || messages['contact'];
+            </script>
 
             <div class="next-steps">
                 <h2>What's Next?</h2>
