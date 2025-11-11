@@ -3,15 +3,13 @@
     {% if page.url != "/" %}
     <a href="/">Home</a>
     {% endif %}
-    <a href="/#offerings">What We Offer</a>
-    <a href="/#about">About Us</a>
 
     {% if features.navigation.showEventsInMainNav %}
     <a href="/events/">Events</a>
     {% endif %}
 
-    {% if features.navigation.showPressInMainNav %}
-    <a href="/press/">Press & Media</a>
+    {% if features.navigation.showAboutInMainNav %}
+    <a href="/about/">About</a>
     {% endif %}
 
     {% if features.navigation.showNewsletterInMainNav %}
@@ -19,6 +17,6 @@
     {% endif %}
 
     {% if features.navigation.showContactInMainNav %}
-    <a href="/#contact">Contact Us</a>
+    <a href="/#contact">Contact</a>
     {% endif %}
 </nav>

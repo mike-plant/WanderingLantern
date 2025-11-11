@@ -1,0 +1,343 @@
+/* Homepage-Specific Styles - Mobile First */
+
+/* ===== HERO COMPACT REDESIGN ===== */
+.hero {
+  height: 65vh;
+  min-height: 500px;
+}
+
+.hero-opening-banner {
+  padding: 2rem 1.5rem;
+  max-width: 90%;
+}
+
+.hero-tagline {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--warm-brown);
+  margin: 1rem 0 1.5rem;
+  opacity: 0.9;
+}
+
+.hero-cta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  align-items: center;
+}
+
+.hero-cta-row .cta-button {
+  width: 100%;
+  max-width: 280px;
+  text-align: center;
+}
+
+/* Desktop hero */
+@media (min-width: 768px) {
+  .hero {
+    height: 60vh;
+    min-height: 500px;
+  }
+
+  .hero-opening-banner {
+    padding: 2.5rem 4rem 3rem;
+    max-width: 85%;
+  }
+
+  .hero-tagline {
+    font-size: 1.1rem;
+  }
+
+  .hero-cta-row {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .hero-cta-row .cta-button {
+    width: auto;
+    min-width: 180px;
+  }
+}
+
+/* Featured event section removed - now handled in events-preview */
+
+/* ===== UPCOMING EVENTS PREVIEW ===== */
+#upcoming-events-preview {
+  padding: 3rem 0;
+  text-align: center;
+}
+
+#upcoming-events-preview h2 {
+  margin-bottom: 2rem;
+}
+
+.events-preview-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  align-items: stretch;
+}
+
+.event-preview-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  height: 100%;
+}
+
+.event-preview-card {
+  background: white;
+  border-radius: 4px;
+  border: 2px solid var(--warm-brown);
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(90, 75, 60, 0.08);
+  transition: all 0.3s ease;
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+  height: 100%;
+}
+
+.event-preview-card-link:hover .event-preview-card {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(90, 75, 60, 0.12);
+}
+
+/* Featured card (first event) - larger and more prominent */
+.event-card-featured {
+  border: 3px solid var(--aged-gold);
+  padding: 2rem;
+  background: var(--cream);
+}
+
+.event-card-featured h3 {
+  font-size: 1.5rem;
+}
+
+.event-card-featured .event-preview-date {
+  min-width: 80px;
+  padding: 1rem;
+}
+
+.event-card-featured .date-day {
+  font-size: 2.5rem;
+}
+
+.event-excerpt {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--dark-text);
+  margin-bottom: 0.75rem;
+}
+
+.event-preview-date {
+  background: var(--warm-brown);
+  color: white;
+  border-radius: 4px;
+  padding: 0.75rem;
+  text-align: center;
+  min-width: 70px;
+  flex-shrink: 0;
+}
+
+.date-month {
+  display: block;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.date-day {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 0.25rem;
+}
+
+.event-preview-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--deep-brown);
+  margin-bottom: 0.5rem;
+}
+
+.event-time {
+  font-size: 0.95rem;
+  color: var(--dark-text);
+  margin-bottom: 0.5rem;
+}
+
+.event-badge-small {
+  display: inline-block;
+  background: var(--cream);
+  color: var(--warm-brown);
+  border: 1px solid var(--warm-brown);
+  padding: 0.25rem 0.75rem;
+  border-radius: 3px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.events-preview-cta {
+  margin-top: 2rem;
+}
+
+/* Desktop events preview - featured card spans full width */
+@media (min-width: 768px) {
+  .events-preview-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  /* Force featured card to span full width */
+  .event-preview-card-link:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .event-card-featured {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .event-card-featured .event-preview-date {
+    min-width: 100px;
+    padding: 1.25rem;
+  }
+
+  .event-card-featured .date-day {
+    font-size: 3rem;
+  }
+}
+
+/* ===== STREAMLINED OFFERINGS ===== */
+#offerings {
+  padding: 3rem 0;
+}
+
+.offerings-grid-streamlined {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.offering-item-large {
+  background: white;
+  padding: 2rem 1.5rem;
+  border-radius: 4px;
+  border: 2px solid var(--warm-brown);
+  box-shadow: 0 2px 6px rgba(90, 75, 60, 0.06);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.offering-item-large:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(90, 75, 60, 0.1);
+}
+
+.offering-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.offering-item-large h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--deep-brown);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.offering-item-large p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--dark-text);
+  margin: 0;
+}
+
+/* Desktop offerings - 3 columns */
+@media (min-width: 900px) {
+  .offerings-grid-streamlined {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .offering-item-large {
+    padding: 2.5rem 2rem;
+  }
+
+  .offering-icon {
+    font-size: 3.5rem;
+  }
+}
+
+/* ===== BUTTON ENHANCEMENTS - VINTAGE STYLE ===== */
+.primary-cta {
+  background: var(--aged-gold);
+  color: var(--deep-brown);
+  border: 2px solid var(--warm-brown);
+  font-weight: 700;
+}
+
+.primary-cta:hover {
+  background: var(--warm-brown);
+  color: white;
+}
+
+.secondary-outline,
+.secondary {
+  background: transparent;
+  color: var(--warm-brown);
+  border: 2px solid var(--warm-brown);
+  box-shadow: none;
+}
+
+.secondary-outline:hover,
+.secondary:hover {
+  background: var(--warm-brown);
+  color: white;
+}
+
+/* Ensure all buttons work well on mobile */
+@media (max-width: 767px) {
+  .cta-button {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+/* ===== SPACING IMPROVEMENTS ===== */
+.container {
+  padding: 0 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+/* Section spacing */
+section {
+  margin: 2rem 0;
+}
+
+@media (min-width: 768px) {
+  section {
+    margin: 3rem 0;
+  }
+}

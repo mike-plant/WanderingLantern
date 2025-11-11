@@ -1,0 +1,64 @@
+<!-- Two-Column Layout: About + Contact -->
+<div class="two-column-section">
+    <div class="column about-column">
+        <span class="section-icon">🌙</span>
+        <h2>Our Story</h2>
+        <p>
+            It started with a storefront — empty, full of potential.
+            Between Emily's lifelong love of literature and Michael's drive to build meaningful things, the idea began to take shape.
+        </p>
+        <p>
+            A place built on stories, imagination, and community, glowing a little brighter each day.
+        </p>
+        <a href="/about/" class="text-link">Read our full story →</a>
+    </div>
+
+    <div class="column contact-column">
+        {% include "components/contact.njk" %}
+    </div>
+</div>
+
+<style>
+.two-column-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  padding: 3rem 0;
+}
+
+.column h2 {
+  text-align: left;
+  font-size: 2rem;
+}
+
+.about-column {
+  padding-right: 2rem;
+}
+
+.about-column p {
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.text-link {
+  color: var(--warm-brown);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .two-column-section {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .about-column {
+    padding-right: 0;
+  }
+}
+</style>

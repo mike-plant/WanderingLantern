@@ -1,0 +1,34 @@
+<!-- Featured Event Section - Next Upcoming Event -->
+{% if collections.nextEvent.length > 0 %}
+{% set event = collections.nextEvent[0] %}
+<section class="featured-event-section">
+    <h2 class="featured-event-label">Next Event</h2>
+    <a href="{{ event.url }}" class="featured-event-link">
+        <div class="featured-event">
+            <div class="featured-event-image">
+                <!-- Event image placeholder - will add photos later -->
+                <div class="event-image-overlay">
+                    <span class="event-type-badge">{{ event.data.ageRange and "Ages " + event.data.ageRange or "All Ages" }}</span>
+                </div>
+            </div>
+            <div class="featured-event-content">
+                <h3 class="featured-event-title">{{ event.data.title }}</h3>
+                <div class="featured-event-meta">
+                    <div class="meta-item">
+                        <strong>📅 {{ event.data.date | date('MMMM D, YYYY') }}</strong>
+                    </div>
+                    {% if event.data.time %}
+                    <div class="meta-item">
+                        <strong>🕐 {{ event.data.time }}</strong>
+                    </div>
+                    {% endif %}
+                </div>
+                <p class="featured-event-description">{{ event.data.excerpt }}</p>
+                <div class="featured-event-cta">
+                    <span class="cta-button primary-cta">Register Free →</span>
+                </div>
+            </div>
+        </div>
+    </a>
+</section>
+{% endif %}

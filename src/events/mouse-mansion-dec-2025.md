@@ -6,7 +6,7 @@ time: "6:00 PM - 7:00 PM"
 ageRange: "4-12"
 excerpt: "Come help us build the furniture for our in-store Mouse Mansion to be a part of the fun! Build and paint little die-cut wooden furniture that will remain in the store for the community to see and play with."
 mailchimpFormId: "f1915b185f"
-mailchimpTag: "3728680"
+mailchimpTag: "3728685"
 showChildFields: true
 ---
 

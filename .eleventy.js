@@ -34,8 +34,14 @@ module.exports = function(eleventyConfig) {
   // Collections
   eleventyConfig.addCollection("upcomingEvents", collection => {
     const now = new Date();
+    const fourMonthsFromNow = new Date();
+    fourMonthsFromNow.setMonth(now.getMonth() + 4);
+
     return collection.getFilteredByGlob("src/events/*.md")
-      .filter(item => parseDate(item.data.date) >= now)
+      .filter(item => {
+        const eventDate = parseDate(item.data.date);
+        return eventDate >= now && eventDate <= fourMonthsFromNow;
+      })
       .sort((a, b) => parseDate(a.data.date) - parseDate(b.data.date));
   });
 
@@ -49,6 +55,30 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addCollection("press", collection => {
     return collection.getFilteredByGlob("src/press/*.md")
       .sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+  });
+
+  // Featured event - next upcoming event only
+  eleventyConfig.addCollection("nextEvent", collection => {
+    const now = new Date();
+    const upcoming = collection.getFilteredByGlob("src/events/*.md")
+      .filter(item => parseDate(item.data.date) >= now)
+      .sort((a, b) => parseDate(a.data.date) - parseDate(b.data.date));
+    return upcoming.length > 0 ? [upcoming[0]] : [];
+  });
+
+  // Preview events - next 3 upcoming events within 4 months
+  eleventyConfig.addCollection("previewEvents", collection => {
+    const now = new Date();
+    const fourMonthsFromNow = new Date();
+    fourMonthsFromNow.setMonth(now.getMonth() + 4);
+
+    return collection.getFilteredByGlob("src/events/*.md")
+      .filter(item => {
+        const eventDate = parseDate(item.data.date);
+        return eventDate >= now && eventDate <= fourMonthsFromNow;
+      })
+      .sort((a, b) => parseDate(a.data.date) - parseDate(b.data.date))
+      .slice(0, 3);
   });
 
   // Filters

@@ -20,28 +20,30 @@ function updateCountdown() {
     }
 }
 
-// Sticky bars on scroll (desktop only)
+// Sticky bars on scroll (desktop only, all pages except forms)
 function initStickyBars() {
-    const hero = document.getElementById('hero');
     const taglineBar = document.getElementById('tagline-bar');
     const infoBar = document.querySelector('.info-bar');
     const nav = document.querySelector('nav');
 
-    if (!hero || !taglineBar || !infoBar || !nav) return;
+    // Only run if all bars exist
+    if (!taglineBar || !infoBar || !nav) return;
 
     // Check if mobile
     function isMobile() {
         return window.innerWidth <= 768;
     }
 
-    // Only apply parallax on desktop
+    // Only apply on desktop
     if (!isMobile()) {
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
-            const heroHeight = hero.offsetHeight;
 
-            // Show sticky tagline bar after scrolling past hero
-            if (scrolled > heroHeight * 0.5) {
+            // Show sticky tagline bar after scrolling 300px (or past hero if it exists)
+            const hero = document.getElementById('hero');
+            const triggerPoint = hero ? hero.offsetHeight * 0.5 : 300;
+
+            if (scrolled > triggerPoint) {
                 taglineBar.classList.add('visible');
                 infoBar.classList.add('under-tagline');
                 nav.classList.add('under-bars');
@@ -90,12 +92,45 @@ function initContactForm() {
     });
 }
 
+// Handle Mailchimp event registration forms redirect
+function initEventRegistrationRedirect() {
+    const eventForm = document.getElementById('mc-embedded-subscribe-form');
+    if (!eventForm) return;
+
+    const redirectUrl = eventForm.getAttribute('data-redirect');
+    if (!redirectUrl) return;
+
+    eventForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(eventForm);
+
+        // Submit to Mailchimp
+        fetch(eventForm.action, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors'
+        }).then(() => {
+            // Redirect after successful submission
+            setTimeout(() => {
+                window.location.href = redirectUrl;
+            }, 500);
+        }).catch(() => {
+            // Even on error, redirect (no-cors mode doesn't report actual errors)
+            setTimeout(() => {
+                window.location.href = redirectUrl;
+            }, 500);
+        });
+    });
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     updateCountdown();
     // Update countdown daily (every 24 hours)
     setInterval(updateCountdown, 24 * 60 * 60 * 1000);
 
-    initStickyBars();
+    initStickyBars(); // Homepage-specific sticky tagline bar
     initContactForm();
+    initEventRegistrationRedirect(); // Event form redirects
 });
