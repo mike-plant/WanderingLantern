@@ -1,25 +1,25 @@
 {# Event card component for use in event listings #}
 {# Usage: {% include "components/event-card.njk" %} #}
 
-<div class="event-card">
-    <div class="event-card-content">
-        <h3 class="event-card-title">{{ event.data.title }}</h3>
-        <div class="event-card-meta">
-            {% if event.data.date %}
-            <strong>{{ event.data.date | date('MMMM D, YYYY') }}</strong>
+<a href="{{ event.url }}" class="event-card-link">
+    <div class="event-card">
+        <div class="event-card-content">
+            <h3 class="event-card-title">{{ event.data.title }}</h3>
+            <div class="event-card-meta">
+                {% if event.data.date %}
+                <div><strong>{{ event.data.date | date('MMMM D, YYYY') }}</strong></div>
+                {% endif %}
+                {% if event.data.time %}
+                <div>{{ event.data.time }}</div>
+                {% endif %}
+            </div>
+            <p class="event-card-description">{{ event.data.excerpt }}</p>
+            {% if event.data.ageRange %}
+            <span class="event-badge">Ages {{ event.data.ageRange }}</span>
             {% endif %}
-            {% if event.data.time %}
-            <span> • {{ event.data.time }}</span>
-            {% endif %}
-        </div>
-        <p class="event-card-description">{{ event.data.excerpt }}</p>
-        {% if event.data.ageRange %}
-        <span class="event-badge">Ages {{ event.data.ageRange }}</span>
-        {% endif %}
-        <div style="margin-top: 1rem;">
-            <a href="{{ event.url }}" style="color: var(--aged-gold); text-decoration: none; font-weight: 600;">
+            <div class="event-card-cta">
                 Learn More & Register →
-            </a>
+            </div>
         </div>
     </div>
-</div>
+</a>

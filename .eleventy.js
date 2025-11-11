@@ -1,4 +1,25 @@
 module.exports = function(eleventyConfig) {
+  // Helper function to parse dates as local time
+  const parseDate = (date) => {
+    if (!date) return new Date();
+
+    // If it's a string in YYYY-MM-DD format, parse as local time
+    if (typeof date === 'string' && date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      const [year, month, day] = date.split('-').map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    // If it's already a Date object from YAML, convert from UTC to local
+    if (date instanceof Date) {
+      const year = date.getUTCFullYear();
+      const month = date.getUTCMonth();
+      const day = date.getUTCDate();
+      return new Date(year, month, day);
+    }
+
+    return new Date(date);
+  };
+
   // Copy static assets and existing pages
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/signup");
@@ -14,15 +35,15 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addCollection("upcomingEvents", collection => {
     const now = new Date();
     return collection.getFilteredByGlob("src/events/*.md")
-      .filter(item => new Date(item.data.date) >= now)
-      .sort((a, b) => new Date(a.data.date) - new Date(b.data.date));
+      .filter(item => parseDate(item.data.date) >= now)
+      .sort((a, b) => parseDate(a.data.date) - parseDate(b.data.date));
   });
 
   eleventyConfig.addCollection("pastEvents", collection => {
     const now = new Date();
     return collection.getFilteredByGlob("src/events/*.md")
-      .filter(item => new Date(item.data.date) < now)
-      .sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+      .filter(item => parseDate(item.data.date) < now)
+      .sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
   });
 
   eleventyConfig.addCollection("press", collection => {
@@ -33,7 +54,8 @@ module.exports = function(eleventyConfig) {
   // Filters
   eleventyConfig.addFilter("formatDate", (date) => {
     if (!date) return '';
-    return new Date(date).toLocaleDateString('en-US', {
+    const d = parseDate(date);
+    return d.toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -43,7 +65,7 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addFilter("date", (date, format) => {
     if (!date) return '';
-    const d = new Date(date);
+    const d = parseDate(date);
 
     switch(format) {
       case 'MMM':

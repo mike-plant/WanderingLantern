@@ -1,5 +1,12 @@
 /* Event Page Styles */
 
+/* Event Card Link Wrapper */
+.event-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 /* Event Card for Listings */
 .event-card {
   background: white;
@@ -7,9 +14,10 @@
   box-shadow: 0 4px 12px rgba(90, 75, 60, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
-.event-card:hover {
+.event-card-link:hover .event-card {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(90, 75, 60, 0.15);
 }
@@ -53,6 +61,12 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.event-card-cta {
+  margin-top: 1rem;
+  color: var(--aged-gold);
+  font-weight: 600;
 }
 
 /* Event Grid Layout */

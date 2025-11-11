@@ -13,7 +13,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get to Know You - The Wandering Lantern</title>
+    <title>Join The First Light - The Wandering Lantern</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -272,6 +272,139 @@
             font-weight: 500;
         }
 
+        /* First Light Upgrade Styling */
+        .first-light-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2.5rem 0 1.5rem;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(74, 124, 89, 0.3), transparent);
+        }
+
+        .divider-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--deep-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .first-light-offer {
+            background: linear-gradient(135deg, rgba(26, 77, 46, 0.03) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .offer-content {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .offer-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .offer-text h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--deep-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .offer-text p {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            color: var(--dark-brown);
+        }
+
+        .offer-text ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .offer-text li {
+            font-size: 0.85rem;
+            padding: 0.4rem 0;
+            color: var(--dark-brown);
+            line-height: 1.5;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 1rem;
+            background: white;
+            border: 2px solid rgba(74, 124, 89, 0.3);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-container:hover {
+            border-color: var(--old-gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .checkbox-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--deep-green);
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .first-light-fields {
+            background: rgba(26, 77, 46, 0.02);
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            animation: slideDown 0.4s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .first-light-intro {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(74, 124, 89, 0.2);
+        }
+
+        .first-light-intro p {
+            font-size: 0.95rem;
+            color: var(--deep-green);
+            margin: 0;
+        }
+
         @media (min-width: 600px) {
             body {
                 padding: 3rem 1.5rem;
@@ -299,7 +432,7 @@
 
         <div class="form-section">
             <p class="intro-text">
-                Tell us about your family and get exclusive pre-launch updates as we count down to opening day! Stay in the know about our grand opening plans, early event announcements, personalized book recommendations for your little readers, and special invitations just for First Light members.
+                Stay in the know as Cleveland's first children's bookstore comes to life! Get early announcements about our grand opening, special events, and all the magical happenings at The Wandering Lantern.
             </p>
 
             <!-- MAILCHIMP FORM -->
@@ -325,27 +458,64 @@
                     <input type="text" id="mce-PHONE" name="PHONE">
                 </div>
 
-                <div class="form-group">
-                    <label for="mce-KIDS">Number of Kids in Household</label>
-                    <input type="number" id="mce-KIDS" name="KIDS" min="0" max="10">
+                <!-- First Light Upgrade Option -->
+                <div class="first-light-divider">
+                    <div class="divider-line"></div>
+                    <div class="divider-text">Want More?</div>
+                    <div class="divider-line"></div>
                 </div>
 
-                <!-- Dynamic child fields will be generated here -->
-                <div id="children-container"></div>
+                <div class="first-light-offer">
+                    <div class="offer-content">
+                        <div class="offer-icon">✨</div>
+                        <div class="offer-text">
+                            <h3>Join The First Light</h3>
+                            <p>Our exclusive pre-launch community gets access to:</p>
+                            <ul>
+                                <li>🎟️ Private VIP events and soft opening invitations</li>
+                                <li>📚 Personalized book recommendations based on your children's ages & interests</li>
+                                <li>⭐ Special story hours designed for your family</li>
+                                <li>🔔 Early announcements before the general public</li>
+                            </ul>
+                        </div>
+                    </div>
 
-                <!-- Hidden fields that will be populated before submission -->
-                <input type="hidden" id="mce-AGES" name="AGES">
-                <input type="hidden" id="mce-BOOKINTS" name="BOOKINTS">
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="join-first-light" name="join-first-light">
+                            <span class="checkbox-label">Yes! Join me to The First Light</span>
+                        </label>
+                    </div>
+                </div>
 
-                <!-- Newsletter Signup tag -->
-                <input type="hidden" name="tags" value="3728680">
+                <!-- First Light Fields (hidden by default) -->
+                <div id="first-light-fields" class="first-light-fields" style="display: none;">
+                    <div class="first-light-intro">
+                        <p><strong>Tell us about your young readers:</strong></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mce-KIDS">Number of Kids</label>
+                        <input type="number" id="mce-KIDS" name="KIDS" min="1" max="10" value="1">
+                    </div>
+
+                    <!-- Dynamic child fields will be generated here -->
+                    <div id="children-container"></div>
+
+                    <!-- Hidden fields that will be populated before submission -->
+                    <input type="hidden" id="mce-AGES" name="AGES">
+                    <input type="hidden" id="mce-BOOKINTS" name="BOOKINTS">
+                </div>
+
+                <!-- Hidden tag field (dynamically set based on First Light checkbox) -->
+                <input type="hidden" id="mailchimp-tags" name="tags" value="3728682">
 
                 <!-- Mailchimp bot prevention -->
                 <div style="position: absolute; left: -5000px;" aria-hidden="true">
                     <input type="text" name="b_f5535995545a29ebbdc6de523_f1915b185f" tabindex="-1" value="">
                 </div>
 
-                <button type="submit" name="subscribe" id="mc-embedded-subscribe">Join The First Light</button>
+                <button type="submit" name="subscribe" id="mc-embedded-subscribe">Sign Me Up!</button>
             </form>
 
             <div class="back-link">
@@ -355,15 +525,16 @@
     </div>
 
     <script>
-        // Handle dynamic child fields
+        // Handle First Light checkbox toggle
+        const firstLightCheckbox = document.getElementById('join-first-light');
+        const firstLightFields = document.getElementById('first-light-fields');
+        const mailchimpTags = document.getElementById('mailchimp-tags');
         const kidsInput = document.getElementById('mce-KIDS');
         const childrenContainer = document.getElementById('children-container');
         const form = document.getElementById('mc-embedded-subscribe-form');
 
-        // Generate child fields when number of kids changes
-        kidsInput.addEventListener('input', function() {
-            const numKids = parseInt(this.value) || 0;
-
+        // Function to generate child fields
+        function generateChildFields(numKids) {
             // Clear existing fields
             childrenContainer.innerHTML = '';
 
@@ -388,36 +559,73 @@
                             <input type="text"
                                    id="child-${i}-interests"
                                    class="child-interests"
-                                   placeholder="e.g., Fantasy, Animals">
+                                   placeholder="e.g., Fantasy, Animals, Science">
                         </div>
                     </div>
                 `;
                 childrenContainer.appendChild(childCard);
             }
+        }
+
+        // Auto-expand First Light if coming from homepage CTA
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('expand') === 'true') {
+            firstLightCheckbox.checked = true;
+            firstLightFields.style.display = 'block';
+            mailchimpTags.value = '3728680';
+            generateChildFields(1);
+        }
+
+        // Toggle First Light fields when checkbox is checked
+        firstLightCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                // Show First Light fields with animation
+                firstLightFields.style.display = 'block';
+                // Set First Light tag (3728680)
+                mailchimpTags.value = '3728680';
+                // Generate initial child field (default to 1 kid)
+                generateChildFields(1);
+            } else {
+                // Hide First Light fields
+                firstLightFields.style.display = 'none';
+                // Set Newsletter Only tag (3728682)
+                mailchimpTags.value = '3728682';
+                // Clear children container
+                childrenContainer.innerHTML = '';
+            }
+        });
+
+        // Generate child fields when number of kids changes
+        kidsInput.addEventListener('input', function() {
+            const numKids = parseInt(this.value) || 0;
+            generateChildFields(numKids);
         });
 
         // Before form submission, collect all child data
         form.addEventListener('submit', function(e) {
-            // Get all ages
-            const ageInputs = document.querySelectorAll('.child-age');
-            const ages = Array.from(ageInputs)
-                .map(input => input.value)
-                .filter(val => val !== '')
-                .join(', ');
+            // Only collect child data if First Light is checked
+            if (firstLightCheckbox.checked) {
+                // Get all ages
+                const ageInputs = document.querySelectorAll('.child-age');
+                const ages = Array.from(ageInputs)
+                    .map(input => input.value)
+                    .filter(val => val !== '')
+                    .join(', ');
 
-            // Get all interests
-            const interestInputs = document.querySelectorAll('.child-interests');
-            const interests = Array.from(interestInputs)
-                .map(input => input.value)
-                .filter(val => val !== '')
-                .join(' | ');
+                // Get all interests
+                const interestInputs = document.querySelectorAll('.child-interests');
+                const interests = Array.from(interestInputs)
+                    .map(input => input.value)
+                    .filter(val => val !== '')
+                    .join(' | ');
 
-            // Set hidden fields
-            const agesField = document.getElementById('mce-AGES');
-            const bookintsField = document.getElementById('mce-BOOKINTS');
+                // Set hidden fields
+                const agesField = document.getElementById('mce-AGES');
+                const bookintsField = document.getElementById('mce-BOOKINTS');
 
-            agesField.value = ages;
-            bookintsField.value = interests;
+                agesField.value = ages;
+                bookintsField.value = interests;
+            }
 
             // Prevent default form submission
             e.preventDefault();

@@ -1,9 +1,10 @@
 {
   "navigation": {
-    "showEventsInMainNav": false,
+    "showEventsInMainNav": true,
     "showNewsletterInMainNav": true,
     "showPressInMainNav": false,
-    "showContactInMainNav": true
+    "showContactInMainNav": true,
+    "showPressInFooter": false
   },
   "footer": {
     "showFooterNav": true,
