@@ -1,25 +1,3 @@
-// Countdown Timer
-function updateCountdown() {
-    const openingDay = new Date('2025-11-29T00:00:00');
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const daysLeft = Math.ceil((openingDay - today) / (1000 * 60 * 60 * 24));
-    const countdownEl = document.getElementById('countdown');
-
-    if (!countdownEl) return;
-
-    if (daysLeft > 0) {
-        countdownEl.textContent = daysLeft;
-    } else if (daysLeft === 0) {
-        countdownEl.textContent = 'TODAY!';
-        countdownEl.style.fontSize = 'clamp(3rem, 7vw, 5rem)';
-    } else {
-        countdownEl.textContent = "We're Open!";
-        countdownEl.style.fontSize = 'clamp(3rem, 7vw, 5rem)';
-    }
-}
-
 // Sticky bars on scroll (desktop only, all pages except forms)
 function initStickyBars() {
     const taglineBar = document.getElementById('tagline-bar');
@@ -124,13 +102,70 @@ function initEventRegistrationRedirect() {
     });
 }
 
+// Google Analytics Event Tracking
+function initGATracking() {
+    // Track CTA button clicks
+    const ctaButtons = document.querySelectorAll('.cta-button, .primary-cta, .secondary-cta, .secondary-outline');
+    ctaButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const buttonText = e.target.textContent.trim();
+            const buttonHref = e.target.getAttribute('href');
+
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'cta_click', {
+                    'event_category': 'engagement',
+                    'event_label': buttonText,
+                    'value': buttonHref
+                });
+            }
+        });
+    });
+
+    // Track contact form submission
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', () => {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_submission', {
+                    'event_category': 'engagement',
+                    'event_label': 'contact_form'
+                });
+            }
+        });
+    }
+
+    // Track event registration form submission
+    const eventForm = document.getElementById('mc-embedded-subscribe-form');
+    if (eventForm) {
+        eventForm.addEventListener('submit', () => {
+            const eventTitle = document.querySelector('h1')?.textContent || 'unknown_event';
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'event_registration', {
+                    'event_category': 'conversion',
+                    'event_label': eventTitle
+                });
+            }
+        });
+    }
+
+    // Track newsletter signups
+    const newsletterButtons = document.querySelectorAll('a[href*="signup"]');
+    newsletterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'newsletter_click', {
+                    'event_category': 'engagement',
+                    'event_label': 'newsletter_signup_link'
+                });
+            }
+        });
+    });
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
-    updateCountdown();
-    // Update countdown daily (every 24 hours)
-    setInterval(updateCountdown, 24 * 60 * 60 * 1000);
-
     initStickyBars(); // Homepage-specific sticky tagline bar
     initContactForm();
     initEventRegistrationRedirect(); // Event form redirects
+    initGATracking(); // Google Analytics event tracking
 });

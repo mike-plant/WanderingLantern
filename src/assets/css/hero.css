@@ -1,68 +1,16 @@
-/* Hero Section with Storefront Image */
+/* Hero Section with Store Interior Image */
 .hero {
   height: 75vh;
   min-height: 525px;
   background:
-    linear-gradient(to bottom, rgba(245, 238, 220, 0.3), rgba(245, 238, 220, 0.6)),
-    url('/storefront-temp.webp') center center / cover no-repeat;
+    linear-gradient(to bottom, rgba(245, 238, 220, 0.25), rgba(245, 238, 220, 0.5)),
+    url('/store-interior-bw-compressed.jpg') center center / cover no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-}
-
-.hero-opening-banner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  background: rgba(245, 238, 220, 0.95);
-  padding: 3rem 5rem;
-  border-radius: 8px;
-  box-shadow: 0 8px 30px rgba(58, 47, 39, 0.3);
-  border: 3px solid var(--aged-gold);
-  max-width: 90%;
-  margin-top: 2em;
-}
-
-.hero-opening-banner h1 {
-  font-family: var(--font-display);
-  font-size: clamp(0.9rem, 2vw, 1.2rem);
-  color: var(--warm-brown);
-  margin: 0 0 0.75rem 0;
-  font-weight: 500;
-  letter-spacing: 1px;
-  opacity: 0.8;
-}
-
-.hero-opening-banner .countdown {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 6vw, 4.5rem);
-  color: var(--old-gold);
-  font-weight: 700;
-  margin: 0.5rem 0 0.5rem 0;
-  line-height: 0.85;
-}
-
-.hero-opening-banner .countdown-label {
-  font-family: var(--font-display);
-  font-size: clamp(1rem, 2.5vw, 1.4rem);
-  color: var(--warm-brown);
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-}
-
-.hero-opening-banner .date {
-  font-family: var(--font-display);
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-  color: var(--warm-brown);
-  font-style: italic;
-  font-weight: 400;
-  opacity: 0.85;
-  margin: 0;
 }
 
 .hero-logo {
@@ -81,4 +29,65 @@
   font-weight: 400;
   opacity: 0.8;
   transition: all 0.3s ease;
+}
+
+/* Hero Welcome State (Now Open) */
+.hero-welcome {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(245, 238, 220, 0.95);
+  padding: 2rem 3rem 2.5rem 3rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(58, 47, 39, 0.3);
+  border: 3px solid var(--aged-gold);
+  max-width: 90%;
+  max-height: 85vh;
+  overflow: visible;
+}
+
+.hero-welcome h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  color: var(--deep-brown);
+  margin: 0 0 0.75rem 0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.hero-welcome .subtitle {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: var(--warm-brown);
+  font-weight: 500;
+  margin: 0.5rem 0 1rem 0;
+  letter-spacing: 0.5px;
+}
+
+.hero-welcome .hero-tagline {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  color: var(--dark-text);
+  font-style: italic;
+  font-weight: 400;
+  margin: 0 0 2rem 0;
+  opacity: 0.9;
+}
+
+.store-hours-hero {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  margin: 1rem 0 1.5rem 0;
+  border: 1px solid var(--muted-gold);
+}
+
+.store-hours-hero p {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  color: var(--dark-text);
+  margin: 0.25rem 0;
+  line-height: 1.5;
 }

@@ -13,7 +13,6 @@
     "showSocialLinks": true
   },
   "homepage": {
-    "showCountdown": true,
     "showFirstLight": true
   },
   "events": {
