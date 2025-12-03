@@ -45,6 +45,43 @@
     font-weight: 400;
   }
 
+  /* Hero Welcome (Now Open) - Mobile */
+  .hero-welcome {
+    position: static;
+    transform: none;
+    padding: 0 1.5rem;
+    margin: 0;
+    max-width: 100%;
+    width: 100%;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    max-height: none;
+  }
+
+  .hero-welcome h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-welcome .hero-tagline {
+    font-size: 0.95rem !important;
+    margin: 0.5rem 0 1rem !important;
+    opacity: 0.85;
+  }
+
+  .store-hours-hero {
+    background: transparent !important;
+    border: none !important;
+    padding: 1rem 0 !important;
+    margin: 1rem 0 1.5rem 0 !important;
+  }
+
+  .store-hours-hero p {
+    font-size: 1rem !important;
+    margin: 0.25rem 0 !important;
+  }
+
   /* Mobile: Make tagline more subtle */
   .hero-tagline {
     font-size: 0.95rem !important;
@@ -91,21 +128,31 @@
     font-size: 0.85rem;
   }
 
-  /* Make info bar static on mobile */
+  /* Make info bar compact on mobile */
   .info-bar {
     position: relative;
     top: 0 !important;
-    padding: 0.75rem 1rem;
-    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.7rem;
+    text-align: center;
+    line-height: 1.4;
   }
 
   .info-bar-content {
-    flex-direction: column;
-    gap: 0.5rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    justify-content: center;
+  }
+
+  .info-bar-content span,
+  .info-bar-content a {
+    white-space: nowrap;
   }
 
   .info-separator {
-    display: none;
+    display: inline;
+    opacity: 0.4;
   }
 
   /* Make nav static on mobile */
