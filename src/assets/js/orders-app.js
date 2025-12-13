@@ -316,27 +316,29 @@ async function loadOrders() {
 
         const rows = response.result.values || [];
 
-        // Convert rows to order objects
-        orders = rows.map((row, index) => ({
-            orderId: row[COLUMNS.orderId] || '',
-            requestDate: row[COLUMNS.requestDate] || '',
-            customerName: row[COLUMNS.customerName] || '',
-            phone: row[COLUMNS.phone] || '',
-            email: row[COLUMNS.email] || '',
-            bookTitle: row[COLUMNS.bookTitle] || '',
-            author: row[COLUMNS.author] || '',
-            isbn: row[COLUMNS.isbn] || '',
-            neededBy: row[COLUMNS.neededBy] || '',
-            status: row[COLUMNS.status] || 'Requested',
-            preferredSupplier: row[COLUMNS.preferredSupplier] || '',
-            actualSupplier: row[COLUMNS.actualSupplier] || '',
-            orderDate: row[COLUMNS.orderDate] || '',
-            trackingInfo: row[COLUMNS.trackingInfo] || '',
-            cost: row[COLUMNS.cost] || '',
-            notes: row[COLUMNS.notes] || '',
-            lastUpdated: row[COLUMNS.lastUpdated] || '',
-            rowIndex: index + 2 // +2 because: 0-indexed + skip header
-        }));
+        // Convert rows to order objects, filtering out empty rows
+        orders = rows
+            .map((row, index) => ({
+                orderId: row[COLUMNS.orderId] || '',
+                requestDate: row[COLUMNS.requestDate] || '',
+                customerName: row[COLUMNS.customerName] || '',
+                phone: row[COLUMNS.phone] || '',
+                email: row[COLUMNS.email] || '',
+                bookTitle: row[COLUMNS.bookTitle] || '',
+                author: row[COLUMNS.author] || '',
+                isbn: row[COLUMNS.isbn] || '',
+                neededBy: row[COLUMNS.neededBy] || '',
+                status: row[COLUMNS.status] || 'Requested',
+                preferredSupplier: row[COLUMNS.preferredSupplier] || '',
+                actualSupplier: row[COLUMNS.actualSupplier] || '',
+                orderDate: row[COLUMNS.orderDate] || '',
+                trackingInfo: row[COLUMNS.trackingInfo] || '',
+                cost: row[COLUMNS.cost] || '',
+                notes: row[COLUMNS.notes] || '',
+                lastUpdated: row[COLUMNS.lastUpdated] || '',
+                rowIndex: index + 2 // +2 because: 0-indexed + skip header
+            }))
+            .filter(order => order.customerName && order.customerName.trim() !== ''); // Only include rows with customer data
 
         console.log('Loaded orders:', orders);
         renderOrders();
