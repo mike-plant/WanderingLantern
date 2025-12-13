@@ -393,9 +393,6 @@ function renderOrders() {
                     <button class="btn-icon" onclick="editOrder('${order.orderId}')" title="Edit">
                         ✏️
                     </button>
-                    <button class="btn-icon" onclick="deleteOrder('${order.orderId}')" title="Delete">
-                        🗑️
-                    </button>
                 </td>
             </tr>
         `;
@@ -610,14 +607,16 @@ async function createOrder(orderData) {
         now // LastUpdated (generate ourselves instead of relying on formula)
     ];
 
-    // Find next empty row by getting all data first
+    // Find next empty row by checking column C (CustomerName) for actual data
     const response = await gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: CONFIG.SPREADSHEET_ID,
-        range: `${CONFIG.SHEET_NAME}!A:A`, // Just get column A to find next row
+        range: `${CONFIG.SHEET_NAME}!C:C`, // Check CustomerName column to find rows with real data
     });
 
     const existingRows = response.result.values || [];
-    const nextRow = existingRows.length + 1; // +1 because arrays are 0-indexed but sheets are 1-indexed
+    // Filter out empty cells (formulas return empty string, not undefined)
+    const nonEmptyRows = existingRows.filter(row => row && row[0] && row[0].trim() !== '');
+    const nextRow = nonEmptyRows.length + 1; // +1 for header row
 
     // Write directly to the specific row
     await gapi.client.sheets.spreadsheets.values.update({
