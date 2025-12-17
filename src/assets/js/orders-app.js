@@ -234,6 +234,9 @@ function setupEventListeners() {
     document.getElementById('order-modal').addEventListener('click', (e) => {
         if (e.target.id === 'order-modal') closeModal();
     });
+
+    // Initialize inventory tab
+    initInventoryTab();
 }
 
 /**
@@ -780,4 +783,521 @@ function handleSort(column) {
     if (sortedTh) {
         sortedTh.classList.add(`sort-${currentSort.direction}`);
     }
+}
+
+/**
+ * ==================== INVENTORY MANAGEMENT ====================
+ */
+
+// Inventory state
+let inventory = []; // Array of inventory items from Google Sheets
+
+// Add Inventory sheet name to config
+const INVENTORY_SHEET_NAME = 'Inventory';
+
+// Inventory column mapping
+const INV_COLUMNS = {
+    po: 0,          // A - PO Number
+    orderDate: 1,   // B - Order Date
+    isbn: 2,        // C - ISBN
+    title: 3,       // D - Title
+    author: 4,      // E - Author
+    price: 5,       // F - Price
+    status: 6,      // G - Status (Shipped/Backordered/InStock)
+    receivedDate: 7 // H - Received Date
+};
+
+/**
+ * Initialize inventory tab functionality
+ */
+function initInventoryTab() {
+    // Tab switching
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', () => {
+            const tab = button.dataset.tab;
+            switchTab(tab);
+        });
+    });
+
+    // Import button
+    document.getElementById('import-ingram-button').addEventListener('click', handleIngramImport);
+
+    // Search
+    const searchInput = document.getElementById('inventory-search');
+    searchInput.addEventListener('input', debounce(handleInventorySearch, 300));
+
+    // PO filter
+    document.getElementById('po-filter').addEventListener('change', loadReceivingList);
+    document.getElementById('shipment-status-filter').addEventListener('change', loadReceivingList);
+
+    // Export button
+    document.getElementById('export-shopify-button').addEventListener('click', exportToShopify);
+
+    // Load inventory on startup
+    loadInventory();
+}
+
+/**
+ * Switch between tabs
+ */
+function switchTab(tabName) {
+    // Update tab buttons
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabName);
+    });
+
+    // Update tab content
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.toggle('active', content.id === `${tabName}-tab`);
+    });
+
+    // Load data for inventory tab
+    if (tabName === 'inventory') {
+        loadInventory();
+    }
+}
+
+/**
+ * Parse Ingram order confirmation text
+ */
+function parseIngramOrder(text) {
+    const lines = text.split('\n');
+    const books = [];
+    let poNumber = null;
+    let orderDate = null;
+    let currentSection = null;
+
+    // Extract PO number
+    const poMatch = text.match(/Purchase Order\s*:?\s*(\d+)/i);
+    if (poMatch) {
+        poNumber = poMatch[1];
+    }
+
+    // Extract order date
+    const dateMatch = text.match(/Date Ordered:\s*(.+)/i);
+    if (dateMatch) {
+        orderDate = new Date(dateMatch[1].trim()).toISOString().split('T')[0];
+    }
+
+    // Parse books by section
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+
+        // Detect section headers
+        if (line.match(/^STOCKED & SHIPPED/)) {
+            currentSection = 'Shipped';
+        } else if (line.match(/^OUT OF STOCK, B\/O/)) {
+            currentSection = 'Backordered';
+        } else if (line.match(/^SECD, STOCKED & SHIPPED/)) {
+            currentSection = 'Shipped';
+        } else if (line.match(/^SECD, B\/O/)) {
+            currentSection = 'Backordered';
+        } else if (line.match(/^NYR - B\/O/)) {
+            currentSection = 'Backordered';
+        } else if (line.match(/^Secondary standard service/)) {
+            currentSection = 'Shipped';
+        } else if (line.match(/^-{10,}/) || line.match(/^={10,}/) || line.match(/^Totals for Purchase/)) {
+            // Section dividers - skip
+            continue;
+        }
+
+        // Parse book lines (format: "Title - Author")
+        if (currentSection && line.includes(' - ') && !line.startsWith('EAN') && !line.startsWith('Order') && !line.startsWith('Notes')) {
+            const parts = line.split(' - ');
+            if (parts.length >= 2) {
+                const title = parts[0].trim();
+                const author = parts.slice(1).join(' - ').trim();
+
+                // Next line should have ISBN and price
+                if (i + 1 < lines.length) {
+                    const nextLine = lines[i + 1];
+                    const eanMatch = nextLine.match(/EAN\/Product Code\s*:\s*(\d+)/);
+                    const priceMatch = nextLine.match(/US SRP\s*:\s*\$?([\d.]+)/);
+
+                    const isbn = eanMatch ? eanMatch[1] : '';
+                    const price = priceMatch ? priceMatch[1] : '';
+
+                    books.push({
+                        po: poNumber,
+                        orderDate,
+                        isbn,
+                        title,
+                        author,
+                        price,
+                        status: currentSection
+                    });
+                }
+            }
+        }
+    }
+
+    return {
+        poNumber,
+        orderDate,
+        books,
+        totalBooks: books.length
+    };
+}
+
+/**
+ * Handle Ingram import
+ */
+async function handleIngramImport() {
+    const textarea = document.getElementById('ingram-import-text');
+    const statusDiv = document.getElementById('import-status');
+    const text = textarea.value.trim();
+
+    if (!text) {
+        showImportStatus('Please paste Ingram order confirmation text.', 'error');
+        return;
+    }
+
+    try {
+        // Parse the text
+        const parsed = parseIngramOrder(text);
+
+        if (!parsed.poNumber) {
+            showImportStatus('Could not find PO number in text. Please check the format.', 'error');
+            return;
+        }
+
+        if (parsed.books.length === 0) {
+            showImportStatus('No books found in order. Please check the format.', 'error');
+            return;
+        }
+
+        // Save to Google Sheets
+        await saveInventoryToSheets(parsed.books);
+
+        // Clear textarea
+        textarea.value = '';
+
+        // Show success
+        showImportStatus(`Successfully imported ${parsed.books.length} books from PO #${parsed.poNumber}`, 'success');
+
+        // Reload inventory
+        await loadInventory();
+        loadReceivingList();
+
+    } catch (err) {
+        console.error('Error importing order:', err);
+        showImportStatus('Failed to import order: ' + err.message, 'error');
+    }
+}
+
+/**
+ * Show import status message
+ */
+function showImportStatus(message, type) {
+    const statusDiv = document.getElementById('import-status');
+    statusDiv.textContent = message;
+    statusDiv.className = `import-status ${type}`;
+    statusDiv.style.display = 'block';
+
+    if (type === 'success') {
+        setTimeout(() => {
+            statusDiv.style.display = 'none';
+        }, 5000);
+    }
+}
+
+/**
+ * Save inventory items to Google Sheets
+ */
+async function saveInventoryToSheets(books) {
+    // Prepare rows for Google Sheets
+    const rows = books.map(book => [
+        book.po,
+        book.orderDate,
+        book.isbn,
+        book.title,
+        book.author,
+        book.price,
+        book.status,
+        '' // receivedDate - empty initially
+    ]);
+
+    // Append to Inventory sheet
+    await gapi.client.sheets.spreadsheets.values.append({
+        spreadsheetId: CONFIG.SPREADSHEET_ID,
+        range: `${INVENTORY_SHEET_NAME}!A:H`,
+        valueInputOption: 'USER_ENTERED',
+        resource: {
+            values: rows
+        }
+    });
+}
+
+/**
+ * Load inventory from Google Sheets
+ */
+async function loadInventory() {
+    try {
+        const response = await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: CONFIG.SPREADSHEET_ID,
+            range: `${INVENTORY_SHEET_NAME}!A2:H`, // Skip header
+        });
+
+        const rows = response.result.values || [];
+
+        inventory = rows.map((row, index) => ({
+            po: row[INV_COLUMNS.po] || '',
+            orderDate: row[INV_COLUMNS.orderDate] || '',
+            isbn: row[INV_COLUMNS.isbn] || '',
+            title: row[INV_COLUMNS.title] || '',
+            author: row[INV_COLUMNS.author] || '',
+            price: row[INV_COLUMNS.price] || '',
+            status: row[INV_COLUMNS.status] || 'Shipped',
+            receivedDate: row[INV_COLUMNS.receivedDate] || '',
+            rowIndex: index + 2
+        }));
+
+        // Update PO filter dropdown
+        updatePOFilter();
+
+    } catch (err) {
+        console.error('Error loading inventory:', err);
+    }
+}
+
+/**
+ * Update PO filter dropdown
+ */
+function updatePOFilter() {
+    const poFilter = document.getElementById('po-filter');
+    const uniquePOs = [...new Set(inventory.map(item => item.po))].filter(po => po);
+
+    // Clear and rebuild
+    poFilter.innerHTML = '<option value="">All POs</option>';
+    uniquePOs.sort((a, b) => b - a).forEach(po => {
+        const option = document.createElement('option');
+        option.value = po;
+        option.textContent = `PO #${po}`;
+        poFilter.appendChild(option);
+    });
+}
+
+/**
+ * Handle inventory search
+ */
+function handleInventorySearch(e) {
+    const query = e.target.value.toLowerCase().trim();
+    const resultsDiv = document.getElementById('inventory-search-results');
+
+    if (!query) {
+        resultsDiv.innerHTML = '';
+        return;
+    }
+
+    // Search across title, author, ISBN
+    const results = inventory.filter(item =>
+        item.title.toLowerCase().includes(query) ||
+        item.author.toLowerCase().includes(query) ||
+        item.isbn.includes(query)
+    );
+
+    if (results.length === 0) {
+        resultsDiv.innerHTML = '<p style="color: var(--muted-gold); padding: 1rem;">No books found matching your search.</p>';
+        return;
+    }
+
+    // Render results
+    const html = results.map(item => `
+        <div class="inventory-result-item">
+            <div class="book-title">${item.title}</div>
+            <div class="book-author">by ${item.author}</div>
+            <div class="book-meta">
+                <span><strong>ISBN:</strong> ${item.isbn}</span>
+                <span><strong>PO #:</strong> ${item.po}</span>
+                <span><strong>Status:</strong> ${item.status}</span>
+                <span><strong>Price:</strong> $${item.price}</span>
+                ${item.receivedDate ? `<span><strong>Received:</strong> ${item.receivedDate}</span>` : ''}
+            </div>
+        </div>
+    `).join('');
+
+    resultsDiv.innerHTML = html;
+}
+
+/**
+ * Load receiving list
+ */
+function loadReceivingList() {
+    const poFilter = document.getElementById('po-filter').value;
+    const statusFilter = document.getElementById('shipment-status-filter').value;
+    const listDiv = document.getElementById('receiving-list');
+
+    // Filter inventory
+    let filtered = inventory;
+
+    if (poFilter) {
+        filtered = filtered.filter(item => item.po === poFilter);
+    }
+
+    if (statusFilter) {
+        if (statusFilter === 'Shipped') {
+            filtered = filtered.filter(item => item.status === 'Shipped' && !item.receivedDate);
+        } else if (statusFilter === 'InStock') {
+            filtered = filtered.filter(item => item.status === 'InStock' || item.receivedDate);
+        }
+    }
+
+    if (filtered.length === 0) {
+        listDiv.innerHTML = '<p style="color: var(--muted-gold); padding: 1rem;">No items to receive.</p>';
+        return;
+    }
+
+    // Render receiving items
+    const html = filtered.map(item => `
+        <div class="receiving-item ${item.receivedDate ? 'received' : ''}" data-row="${item.rowIndex}">
+            <input type="checkbox" ${item.receivedDate ? 'checked' : ''} onchange="toggleReceived('${item.rowIndex}', this.checked)">
+            <div class="receiving-item-content">
+                <div class="book-title">${item.title}</div>
+                <div class="book-author">by ${item.author}</div>
+                <div class="book-meta">
+                    <span><strong>ISBN:</strong> ${item.isbn}</span>
+                    <span><strong>PO #:</strong> ${item.po}</span>
+                    <span><strong>Price:</strong> $${item.price}</span>
+                    ${item.receivedDate ? `<span><strong>Received:</strong> ${item.receivedDate}</span>` : ''}
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    listDiv.innerHTML = html;
+}
+
+/**
+ * Toggle received status
+ */
+window.toggleReceived = async function(rowIndex, isReceived) {
+    try {
+        const today = new Date().toISOString().split('T')[0];
+        const receivedDate = isReceived ? today : '';
+        const status = isReceived ? 'InStock' : 'Shipped';
+
+        // Update Google Sheets
+        await gapi.client.sheets.spreadsheets.values.update({
+            spreadsheetId: CONFIG.SPREADSHEET_ID,
+            range: `${INVENTORY_SHEET_NAME}!G${rowIndex}:H${rowIndex}`,
+            valueInputOption: 'USER_ENTERED',
+            resource: {
+                values: [[status, receivedDate]]
+            }
+        });
+
+        // Reload inventory
+        await loadInventory();
+        loadReceivingList();
+
+    } catch (err) {
+        console.error('Error updating received status:', err);
+        alert('Failed to update status');
+    }
+};
+
+/**
+ * Export to Shopify CSV
+ */
+function exportToShopify() {
+    // Get all items that are InStock or have receivedDate
+    const receivedItems = inventory.filter(item => item.status === 'InStock' || item.receivedDate);
+
+    if (receivedItems.length === 0) {
+        alert('No received books to export. Please mark books as received first.');
+        return;
+    }
+
+    // Create Shopify CSV format
+    const headers = [
+        'Handle', 'Title', 'Body (HTML)', 'Vendor', 'Type', 'Tags',
+        'Published', 'Option1 Name', 'Option1 Value', 'Variant SKU',
+        'Variant Grams', 'Variant Inventory Tracker', 'Variant Inventory Qty',
+        'Variant Inventory Policy', 'Variant Fulfillment Service',
+        'Variant Price', 'Variant Compare At Price', 'Variant Requires Shipping',
+        'Variant Taxable', 'Variant Barcode', 'Image Src', 'Image Position',
+        'Image Alt Text', 'Gift Card', 'SEO Title', 'SEO Description',
+        'Google Shopping / Google Product Category', 'Google Shopping / Gender',
+        'Google Shopping / Age Group', 'Google Shopping / MPN',
+        'Google Shopping / AdWords Grouping', 'Google Shopping / AdWords Labels',
+        'Google Shopping / Condition', 'Google Shopping / Custom Product',
+        'Google Shopping / Custom Label 0', 'Google Shopping / Custom Label 1',
+        'Google Shopping / Custom Label 2', 'Google Shopping / Custom Label 3',
+        'Google Shopping / Custom Label 4', 'Variant Image', 'Variant Weight Unit',
+        'Variant Tax Code', 'Cost per item'
+    ];
+
+    const rows = receivedItems.map(item => {
+        const handle = item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        return [
+            handle,                    // Handle
+            item.title,                // Title
+            `<p>${item.title} by ${item.author}</p>`, // Body
+            item.author,               // Vendor (Author)
+            'Books',                   // Type
+            'books',                   // Tags
+            'TRUE',                    // Published
+            'Title',                   // Option1 Name
+            'Default Title',           // Option1 Value
+            item.isbn,                 // Variant SKU
+            '400',                     // Variant Grams (approx)
+            'shopify',                 // Variant Inventory Tracker
+            '1',                       // Variant Inventory Qty
+            'deny',                    // Variant Inventory Policy
+            'manual',                  // Variant Fulfillment Service
+            item.price,                // Variant Price
+            '',                        // Variant Compare At Price
+            'TRUE',                    // Variant Requires Shipping
+            'TRUE',                    // Variant Taxable
+            item.isbn,                 // Variant Barcode
+            '',                        // Image Src
+            '',                        // Image Position
+            '',                        // Image Alt Text
+            'FALSE',                   // Gift Card
+            item.title,                // SEO Title
+            `${item.title} by ${item.author}`, // SEO Description
+            ...Array(28).fill(''),     // Google Shopping fields
+            'lb',                      // Variant Weight Unit
+            '',                        // Variant Tax Code
+            item.price                 // Cost per item
+        ];
+    });
+
+    // Convert to CSV
+    const csvContent = [
+        headers.join(','),
+        ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    // Download
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `shopify-import-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+
+    // Show stats
+    const statsDiv = document.getElementById('export-stats');
+    statsDiv.textContent = `Exported ${receivedItems.length} books to Shopify CSV`;
+    statsDiv.style.display = 'block';
+
+    setTimeout(() => {
+        statsDiv.style.display = 'none';
+    }, 5000);
+}
+
+/**
+ * Debounce helper
+ */
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }

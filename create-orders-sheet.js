@@ -29,8 +29,9 @@ function createOrdersSheetStructure() {
     ss.deleteSheet(sheets[i]);
   }
 
-  // Create the three required sheets
+  // Create the required sheets
   createOrdersSheet(ss, ordersSheet);
+  createInventorySheet(ss);
   createSuppliersSheet(ss);
   createConfigSheet(ss);
 
@@ -156,6 +157,64 @@ function createOrdersSheet(ss, sheet) {
 }
 
 /**
+ * Create Inventory sheet for tracking incoming shipments
+ */
+function createInventorySheet(ss) {
+  const sheet = ss.insertSheet('Inventory');
+
+  // Set up headers
+  const headers = [
+    'PO',
+    'OrderDate',
+    'ISBN',
+    'Title',
+    'Author',
+    'Price',
+    'Status',
+    'ReceivedDate'
+  ];
+
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+
+  // Format header row
+  const headerRange = sheet.getRange(1, 1, 1, headers.length);
+  headerRange.setFontWeight('bold');
+  headerRange.setBackground('#8b6f47'); // Warm brown
+  headerRange.setFontColor('#ffffff');
+  headerRange.setHorizontalAlignment('center');
+
+  // Freeze header row
+  sheet.setFrozenRows(1);
+
+  // Set column widths
+  sheet.setColumnWidth(1, 80);   // PO
+  sheet.setColumnWidth(2, 110);  // OrderDate
+  sheet.setColumnWidth(3, 140);  // ISBN
+  sheet.setColumnWidth(4, 300);  // Title
+  sheet.setColumnWidth(5, 180);  // Author
+  sheet.setColumnWidth(6, 80);   // Price
+  sheet.setColumnWidth(7, 120);  // Status
+  sheet.setColumnWidth(8, 120);  // ReceivedDate
+
+  // Format date columns
+  sheet.getRange('B:B').setNumberFormat('yyyy-mm-dd'); // OrderDate
+  sheet.getRange('H:H').setNumberFormat('yyyy-mm-dd'); // ReceivedDate
+
+  // Format price column
+  sheet.getRange('F:F').setNumberFormat('$0.00'); // Price
+
+  // Add data validation for Status column
+  const statusValues = ['Shipped', 'Backordered', 'InStock'];
+  const statusRule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(statusValues)
+    .setAllowInvalid(false)
+    .build();
+  sheet.getRange('G2:G10000').setDataValidation(statusRule);
+
+  Logger.log('✅ Inventory sheet created');
+}
+
+/**
  * Create Suppliers reference sheet
  */
 function createSuppliersSheet(ss) {
@@ -251,7 +310,8 @@ function showAbout() {
     'Purchase Orders System',
     'This script sets up your sheet structure for The Wandering Lantern PO system.\n\n' +
     'Created sheets:\n' +
-    '• Orders - Main order tracking\n' +
+    '• Orders - Customer order tracking\n' +
+    '• Inventory - Incoming shipment tracking\n' +
     '• Suppliers - Supplier reference data\n' +
     '• Config - System configuration\n\n' +
     'After running setup, copy the Sheet ID from the URL and continue with Google Cloud setup.',

@@ -43,6 +43,14 @@ permalink: /orders/index.html
             </div>
         </header>
 
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-button active" data-tab="orders">Customer Orders</button>
+            <button class="tab-button" data-tab="inventory">Inventory</button>
+        </div>
+
+        <!-- Orders Tab -->
+        <div id="orders-tab" class="tab-content active">
         <!-- Filters & Stats -->
         <div class="filters-bar">
             <div class="stats">
@@ -113,6 +121,56 @@ permalink: /orders/index.html
                 <button class="btn-primary" onclick="document.getElementById('new-order-button').click()">Create First Order</button>
             </div>
         </div>
+        </div>
+        <!-- End Orders Tab -->
+
+        <!-- Inventory Tab -->
+        <div id="inventory-tab" class="tab-content" style="display: none;">
+            <div class="inventory-container">
+                <!-- Import Section -->
+                <div class="inventory-section">
+                    <h2>Import Ingram Order</h2>
+                    <p class="section-description">Paste the text from your Ingram order confirmation email below:</p>
+                    <textarea id="ingram-import-text" class="ingram-import-textarea" placeholder="Paste Ingram order confirmation here..." rows="15"></textarea>
+                    <button id="import-ingram-button" class="btn-primary">Parse & Import Order</button>
+                    <div id="import-status" class="import-status" style="display: none;"></div>
+                </div>
+
+                <!-- Search Section -->
+                <div class="inventory-section">
+                    <h2>Search Inventory</h2>
+                    <p class="section-description">Search for books across all imported shipments:</p>
+                    <input type="text" id="inventory-search" class="search-input" placeholder="Search by title, author, or ISBN...">
+                    <div id="inventory-search-results" class="inventory-results"></div>
+                </div>
+
+                <!-- Receiving Section -->
+                <div class="inventory-section">
+                    <h2>Receive Shipments</h2>
+                    <p class="section-description">Check off books as you receive them:</p>
+                    <div class="receiving-filters">
+                        <select id="po-filter" class="filter-select">
+                            <option value="">All POs</option>
+                        </select>
+                        <select id="shipment-status-filter" class="filter-select">
+                            <option value="Shipped">Shipped (not received)</option>
+                            <option value="InStock">Received</option>
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                    <div id="receiving-list" class="receiving-list"></div>
+                </div>
+
+                <!-- Export Section -->
+                <div class="inventory-section">
+                    <h2>Export to Shopify</h2>
+                    <p class="section-description">Export received books as Shopify CSV:</p>
+                    <button id="export-shopify-button" class="btn-primary">Export Received Books to CSV</button>
+                    <div id="export-stats" class="export-stats" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+        <!-- End Inventory Tab -->
     </div>
 
     <!-- Modal: New/Edit Order -->
