@@ -811,10 +811,16 @@ const INV_COLUMNS = {
  * Initialize inventory tab functionality
  */
 function initInventoryTab() {
+    console.log('Initializing inventory tab...');
+
     // Tab switching
-    document.querySelectorAll('.tab-button').forEach(button => {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    console.log('Found tab buttons:', tabButtons.length);
+
+    tabButtons.forEach(button => {
         button.addEventListener('click', () => {
             const tab = button.dataset.tab;
+            console.log('Tab clicked:', tab);
             switchTab(tab);
         });
     });
@@ -841,6 +847,8 @@ function initInventoryTab() {
  * Switch between tabs
  */
 function switchTab(tabName) {
+    console.log('Switching to tab:', tabName);
+
     // Update tab buttons
     document.querySelectorAll('.tab-button').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === tabName);
@@ -848,11 +856,14 @@ function switchTab(tabName) {
 
     // Update tab content
     document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.toggle('active', content.id === `${tabName}-tab`);
+        const shouldBeActive = content.id === `${tabName}-tab`;
+        console.log(`Content ${content.id}: ${shouldBeActive ? 'show' : 'hide'}`);
+        content.classList.toggle('active', shouldBeActive);
     });
 
     // Load data for inventory tab
     if (tabName === 'inventory') {
+        console.log('Loading inventory data...');
         loadInventory();
     }
 }
@@ -902,30 +913,66 @@ function parseIngramOrder(text) {
         }
 
         // Parse book lines (format: "Title - Author")
-        if (currentSection && line.includes(' - ') && !line.startsWith('EAN') && !line.startsWith('Order') && !line.startsWith('Notes')) {
-            const parts = line.split(' - ');
-            if (parts.length >= 2) {
-                const title = parts[0].trim();
-                const author = parts.slice(1).join(' - ').trim();
+        // Skip headers and other non-book lines
+        if (currentSection &&
+            line.includes(' - ') &&
+            !line.startsWith('EAN') &&
+            !line.startsWith('Order') &&
+            !line.startsWith('Notes') &&
+            !line.includes('Status') &&
+            !line.includes('Products') &&
+            !line.includes('Units') &&
+            !line.includes('BackOrdered') &&
+            line.length > 10) { // Make sure it's not just a short fragment
 
-                // Next line should have ISBN and price
+            // Split by multiple spaces + dash + multiple spaces (the separator pattern)
+            // Use regex to split by 2+ spaces, dash, 2+ spaces
+            const separatorMatch = line.match(/^(.+?)\s{2,}-\s{2,}(.+)$/);
+            if (separatorMatch) {
+                const title = separatorMatch[1].trim();
+                const author = separatorMatch[2].trim();
+
+                // Skip if title or author is suspiciously short (likely a header)
+                if (title.length < 3 || author.length < 3) {
+                    continue;
+                }
+
+                // Next line should have ISBN, check next 2 lines for price
                 if (i + 1 < lines.length) {
                     const nextLine = lines[i + 1];
                     const eanMatch = nextLine.match(/EAN\/Product Code\s*:\s*(\d+)/);
-                    const priceMatch = nextLine.match(/US SRP\s*:\s*\$?([\d.]+)/);
 
-                    const isbn = eanMatch ? eanMatch[1] : '';
-                    const price = priceMatch ? priceMatch[1] : '';
+                    // Only add if we found ISBN (this is a real book line)
+                    if (eanMatch) {
+                        const isbn = eanMatch[1];
 
-                    books.push({
-                        po: poNumber,
-                        orderDate,
-                        isbn,
-                        title,
-                        author,
-                        price,
-                        status: currentSection
-                    });
+                        // Price might be on the line after EAN
+                        let price = '0.00';
+                        if (i + 2 < lines.length) {
+                            const priceLine = lines[i + 2];
+                            console.log(`Price line for "${title}":`, priceLine);
+                            // Match price with flexible spacing: "US SRP :19.99" or "US SRP: 19.99"
+                            const priceMatch = priceLine.match(/US\s+SRP\s*:\s*\$?([\d.]+)/i);
+                            if (priceMatch) {
+                                price = priceMatch[1];
+                                console.log('  → Found price:', price);
+                            } else {
+                                console.log('  → Price not found on this line');
+                            }
+                        }
+
+                        console.log(`✓ Parsed: ${title} by ${author} - $${price}`);
+
+                        books.push({
+                            po: poNumber,
+                            orderDate,
+                            isbn,
+                            title,
+                            author,
+                            price,
+                            status: currentSection
+                        });
+                    }
                 }
             }
         }
@@ -1052,11 +1099,36 @@ async function loadInventory() {
             rowIndex: index + 2
         }));
 
+        console.log('Loaded inventory items:', inventory.length);
+
         // Update PO filter dropdown
         updatePOFilter();
 
+        // Update receiving list
+        loadReceivingList();
+
     } catch (err) {
         console.error('Error loading inventory:', err);
+
+        // Check if it's a sheet not found error
+        if (err.result && err.result.error && err.result.error.message) {
+            const message = err.result.error.message;
+            if (message.includes('Unable to parse range') || message.includes('not found')) {
+                console.warn('Inventory sheet not found. Please run the Google Apps Script to create it.');
+                // Show a helpful message to the user
+                const statusDiv = document.getElementById('import-status');
+                if (statusDiv) {
+                    statusDiv.innerHTML = '⚠️ Inventory sheet not found. Please run the Google Apps Script setup to add the Inventory sheet to your spreadsheet.';
+                    statusDiv.className = 'import-status error';
+                    statusDiv.style.display = 'block';
+                }
+            }
+        }
+
+        // Set inventory to empty array so UI still works
+        inventory = [];
+        updatePOFilter();
+        loadReceivingList();
     }
 }
 
