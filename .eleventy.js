@@ -122,6 +122,17 @@ module.exports = function(eleventyConfig) {
     return array.slice(0, limit);
   });
 
+  eleventyConfig.addFilter("isPastEvent", (date) => {
+    if (!date) return false;
+    const eventDate = parseDate(date);
+    const now = new Date();
+    // Set both to start of day for comparison
+    now.setHours(0, 0, 0, 0);
+    eventDate.setHours(0, 0, 0, 0);
+    // Event is considered "past" on the day of the event (>= comparison)
+    return eventDate <= now;
+  });
+
   return {
     dir: {
       input: "src",

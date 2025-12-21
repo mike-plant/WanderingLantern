@@ -40,8 +40,12 @@ layout: layouts/base.njk
         {{ content | safe }}
     </div>
 
-    {# Include Mailchimp registration form if form details are provided #}
-    {% if mailchimpFormId and mailchimpTag %}
+    {# Include Mailchimp registration form if form details are provided and event is in the future #}
+    {% if mailchimpFormId and mailchimpTag and not (date | isPastEvent) %}
     {% include "components/mailchimp-event-form.njk" %}
+    {% elif (date | isPastEvent) %}
+    <div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background: rgba(139, 111, 71, 0.08); border: 2px solid var(--aged-gold); border-radius: 8px; text-align: center;">
+        <p style="font-size: 1.1rem; color: var(--deep-brown); margin: 0;"><strong>Registration is now closed.</strong></p>
+    </div>
     {% endif %}
 </div>

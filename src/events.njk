@@ -11,11 +11,17 @@ title: Events & Story Hours - The Wandering Lantern
             and foster a love of reading in children of all ages.
         </p>
 
+        {# Saturday Story Time Banner #}
+        {% include "components/storytime-banner.njk" %}
+
         {% if features.events.showUpcomingEvents and collections.upcomingEvents.length > 0 %}
         <div class="events-grid">
             {% for event in collections.upcomingEvents %}
-                {% set event = event %}
-                {% include "components/event-card.njk" %}
+                {# Skip Saturday Story Time - shown in banner above #}
+                {% if event.data.title != "Saturday Story Time" %}
+                    {% set event = event %}
+                    {% include "components/event-card.njk" %}
+                {% endif %}
             {% endfor %}
         </div>
         {% elif features.events.showUpcomingEvents %}

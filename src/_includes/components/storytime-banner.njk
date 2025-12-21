@@ -1,0 +1,43 @@
+{# Saturday Story Time Banner - Mobile First Design #}
+<div class="storytime-banner">
+  <div class="storytime-banner-content">
+    <div class="storytime-header">
+      <h2 class="storytime-title">Saturday Story Time</h2>
+      <span class="storytime-badge">Every Saturday</span>
+    </div>
+
+    <div class="storytime-info">
+      <div class="storytime-times">
+        <div class="time-slot">
+          <strong>11:00 AM</strong>
+          <span>Ages 0-5</span>
+        </div>
+        <div class="time-slot">
+          <strong>11:30 AM</strong>
+          <span>Ages 6-10</span>
+        </div>
+      </div>
+
+      <p class="storytime-description">Free weekly story time! Drop in, no registration required.</p>
+    </div>
+
+    <div class="storytime-dates">
+      <span class="dates-label">Upcoming Saturdays:</span>
+
+      {# Calendar grid - shown on both mobile and desktop #}
+      <div class="dates-calendar">
+        {% for event in collections.upcomingEvents %}
+          {% if event.data.title == "Saturday Story Time" %}
+            <div class="calendar-date {% if event.data.status == 'cancelled' %}calendar-date--cancelled{% endif %}">
+              <span class="calendar-month">{{ event.data.date | date('MMM') }}</span>
+              <span class="calendar-day">{{ event.data.date | date('D') }}</span>
+              {% if event.data.status == 'cancelled' %}
+                <span class="calendar-status">Cancelled</span>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

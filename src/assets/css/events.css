@@ -1,5 +1,242 @@
 /* Event Page Styles */
 
+/* Saturday Story Time Banner - Mobile First */
+.storytime-banner {
+  background: linear-gradient(135deg, rgba(139, 111, 71, 0.08) 0%, rgba(201, 169, 97, 0.08) 100%);
+  border: 2px solid var(--aged-gold);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.storytime-banner-content {
+  max-width: 100%;
+}
+
+.storytime-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.storytime-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--deep-brown);
+  margin: 0;
+}
+
+.storytime-badge {
+  background: var(--aged-gold);
+  color: white;
+  padding: 0.3rem 0.85rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  align-self: flex-start;
+}
+
+.storytime-times {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.time-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  background: white;
+  padding: 0.6rem 0.85rem;
+  border-radius: 4px;
+  border: 1px solid rgba(139, 111, 71, 0.2);
+  flex: 1;
+  min-width: 120px;
+}
+
+.time-slot strong {
+  color: var(--deep-brown);
+  font-size: 0.95rem;
+}
+
+.time-slot span {
+  color: var(--warm-brown);
+  font-size: 0.8rem;
+}
+
+.storytime-description {
+  color: var(--dark-text);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.storytime-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.dates-label {
+  font-weight: 600;
+  color: var(--warm-brown);
+  font-size: 0.85rem;
+}
+
+.dates-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.date-chip {
+  background: white;
+  border: 2px solid var(--warm-brown);
+  color: var(--deep-brown);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-chip--cancelled {
+  border-color: rgba(220, 38, 38, 0.4);
+  background: rgba(220, 38, 38, 0.05);
+  opacity: 0.7;
+  position: relative;
+}
+
+.chip-status {
+  font-size: 0.7rem;
+  background: rgba(220, 38, 38, 0.95);
+  color: white;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Calendar grid */
+.dates-calendar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.calendar-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 2px solid var(--warm-brown);
+  border-radius: 8px;
+  padding: 0.75rem;
+  min-width: 70px;
+  position: relative;
+}
+
+.calendar-date--cancelled {
+  border-color: rgba(220, 38, 38, 0.4);
+  background: rgba(220, 38, 38, 0.05);
+  opacity: 0.75;
+}
+
+.calendar-month {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--warm-brown);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.calendar-day {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--deep-brown);
+  line-height: 1;
+  margin-top: 0.25rem;
+}
+
+.calendar-date--cancelled .calendar-day {
+  text-decoration: line-through;
+  color: rgba(220, 38, 38, 0.8);
+}
+
+.calendar-status {
+  position: absolute;
+  bottom: -8px;
+  background: rgba(220, 38, 38, 0.95);
+  color: white;
+  font-size: 0.6rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+}
+
+/* Desktop: Two column layout - dates left, info right */
+@media (min-width: 769px) {
+  .storytime-banner {
+    padding: 1.5rem 2rem;
+  }
+
+  .storytime-banner-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .storytime-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    grid-column: 1 / -1;
+    margin-bottom: 1rem;
+  }
+
+  .storytime-title {
+    font-size: 1.85rem;
+  }
+
+  /* Dates section - left column */
+  .storytime-dates {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .dates-calendar {
+    gap: 0.85rem;
+  }
+
+  .calendar-date {
+    min-width: 75px;
+    padding: 0.65rem;
+  }
+
+  /* Info section - right column */
+  .storytime-info {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .storytime-times {
+    gap: 1rem;
+  }
+
+  .time-slot {
+    min-width: 140px;
+  }
+}
+
 /* Event Card Link Wrapper */
 .event-card-link {
   text-decoration: none;
@@ -20,6 +257,51 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
+}
+
+/* Event Status Badge - Diagonal Corner Ribbon */
+.event-status-badge {
+  position: absolute;
+  bottom: 2.5rem;
+  right: -3rem;
+  padding: 0.75rem 4rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 1.5px;
+  z-index: 10;
+  transform: rotate(-45deg);
+  transform-origin: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  width: 14rem;
+  text-align: center;
+}
+
+.event-status-badge--cancelled {
+  background: rgba(220, 38, 38, 0.95);
+  color: white;
+}
+
+.event-status-badge--full {
+  background: rgba(234, 179, 8, 0.95);
+  color: white;
+}
+
+.event-status-badge--closed {
+  background: rgba(107, 114, 128, 0.95);
+  color: white;
+}
+
+.event-card--cancelled {
+  opacity: 0.7;
+}
+
+.event-card--full .event-card-content {
+  opacity: 0.85;
+}
+
+.event-card--closed {
+  opacity: 0.6;
 }
 
 .event-card-link:hover .event-card {

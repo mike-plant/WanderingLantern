@@ -2,7 +2,18 @@
 {# Usage: {% include "components/event-card.njk" %} #}
 
 <a href="{{ event.url }}" class="event-card-link">
-    <div class="event-card">
+    <div class="event-card {% if event.data.status %}event-card--{{ event.data.status }}{% elif event.data.date | isPastEvent %}event-card--closed{% endif %}">
+        {% if event.data.status %}
+        <div class="event-status-badge event-status-badge--{{ event.data.status }}">
+            {% if event.data.status == 'cancelled' %}CANCELLED
+            {% elif event.data.status == 'full' %}FULL
+            {% endif %}
+        </div>
+        {% elif event.data.date | isPastEvent %}
+        <div class="event-status-badge event-status-badge--closed">
+            CLOSED
+        </div>
+        {% endif %}
         <div class="event-card-content">
             <h3 class="event-card-title">{{ event.data.title }}</h3>
             <div class="event-card-meta">
