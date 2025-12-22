@@ -5,7 +5,18 @@
     <div class="events-preview-grid">
         {% for event in collections.previewEvents %}
         <a href="{{ event.url }}" class="event-preview-card-link">
-            <div class="event-preview-card {% if loop.first %}event-card-featured{% endif %}">
+            <div class="event-preview-card {% if loop.first %}event-card-featured{% endif %} {% if event.data.status %}event-preview-card--{{ event.data.status }}{% elif event.data.date | isPastEvent %}event-preview-card--closed{% endif %}">
+                {% if event.data.status %}
+                <div class="event-status-badge event-status-badge--{{ event.data.status }}">
+                    {% if event.data.status == 'cancelled' %}CANCELLED
+                    {% elif event.data.status == 'full' %}FULL
+                    {% endif %}
+                </div>
+                {% elif event.data.date | isPastEvent %}
+                <div class="event-status-badge event-status-badge--closed">
+                    CLOSED
+                </div>
+                {% endif %}
                 <div class="event-preview-date">
                     <span class="date-month">{{ event.data.date | date('MMM') }}</span>
                     <span class="date-day">{{ event.data.date | date('D') }}</span>

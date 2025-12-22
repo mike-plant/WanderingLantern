@@ -101,6 +101,20 @@
   text-align: left;
   width: 100%;
   height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.event-preview-card--cancelled {
+  opacity: 0.7;
+}
+
+.event-preview-card--full .event-preview-content {
+  opacity: 0.85;
+}
+
+.event-preview-card--closed {
+  opacity: 0.6;
 }
 
 .event-preview-card-link:hover .event-preview-card {
