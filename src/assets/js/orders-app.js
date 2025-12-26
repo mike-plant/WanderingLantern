@@ -38,8 +38,12 @@ const COLUMNS = {
     trackingInfo: 13,  // N
     cost: 14,          // O
     notes: 15,         // P
-    lastUpdated: 16    // Q
+    lastUpdated: 16,   // Q
+    type: 17           // R - Order or Suggestion
 };
+
+// Token refresh timer
+let tokenRefreshTimer = null;
 
 /**
  * Save token to localStorage
@@ -48,6 +52,60 @@ function saveToken(token, expiresIn) {
     const expiry = Date.now() + (expiresIn * 1000);
     localStorage.setItem('orders_access_token', token);
     localStorage.setItem('orders_token_expiry', expiry.toString());
+
+    // Schedule token refresh 5 minutes before expiry
+    scheduleTokenRefresh(expiresIn);
+}
+
+/**
+ * Schedule automatic token refresh
+ */
+function scheduleTokenRefresh(expiresIn) {
+    // Clear any existing timer
+    if (tokenRefreshTimer) {
+        clearTimeout(tokenRefreshTimer);
+    }
+
+    // Refresh 5 minutes before expiry (or at half time if less than 10 min)
+    const refreshIn = Math.max((expiresIn - 300) * 1000, (expiresIn / 2) * 1000);
+
+    tokenRefreshTimer = setTimeout(() => {
+        console.log('Refreshing token...');
+        refreshToken();
+    }, refreshIn);
+
+    console.log(`Token refresh scheduled in ${Math.round(refreshIn / 1000 / 60)} minutes`);
+}
+
+/**
+ * Refresh token silently
+ */
+function refreshToken() {
+    if (!tokenClient) return;
+
+    tokenClient.requestAccessToken({ prompt: '' });
+}
+
+/**
+ * Check token on visibility change (handles inactive tabs)
+ */
+function checkTokenOnFocus() {
+    const expiry = localStorage.getItem('orders_token_expiry');
+    if (!expiry) return;
+
+    const expiryTime = parseInt(expiry);
+    const now = Date.now();
+    const remainingMs = expiryTime - now;
+
+    // If expired or expiring within 5 minutes, refresh now
+    if (remainingMs < 300000) {
+        console.log('Token expired or expiring soon, refreshing...');
+        refreshToken();
+    } else {
+        // Reschedule timer in case it was throttled
+        const remainingSeconds = Math.floor(remainingMs / 1000);
+        scheduleTokenRefresh(remainingSeconds);
+    }
 }
 
 /**
@@ -59,10 +117,19 @@ function loadToken() {
 
     if (!token || !expiry) return null;
 
+    const expiryTime = parseInt(expiry);
+    const now = Date.now();
+
     // Check if token is expired
-    if (Date.now() > parseInt(expiry)) {
+    if (now > expiryTime) {
         clearToken();
         return null;
+    }
+
+    // Schedule refresh for remaining time
+    const remainingSeconds = Math.floor((expiryTime - now) / 1000);
+    if (remainingSeconds > 60) {
+        scheduleTokenRefresh(remainingSeconds);
     }
 
     return token;
@@ -89,6 +156,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedToken) {
         accessToken = savedToken;
     }
+
+    // Check token when tab becomes visible (handles inactive tab scenario)
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            checkTokenOnFocus();
+        }
+    });
 
     // Wait for Google APIs to load
     waitForGoogleAPIs();
@@ -120,9 +194,21 @@ function initializeGoogleAPIs() {
         client_id: CONFIG.GOOGLE_CLIENT_ID,
         scope: CONFIG.SCOPES,
         callback: (tokenResponse) => {
+            if (tokenResponse.error) {
+                console.error('Token error:', tokenResponse.error);
+                return;
+            }
             accessToken = tokenResponse.access_token;
+            const expiresIn = tokenResponse.expires_in || 3600;
+
+            // Save token and schedule refresh
+            saveToken(accessToken, expiresIn);
+            gapi.client.setToken({ access_token: accessToken });
+
             gisInited = true;
             maybeEnableButtons();
+
+            console.log('Token refreshed, expires in', Math.round(expiresIn / 60), 'minutes');
         },
     });
 
@@ -206,9 +292,45 @@ function setupEventListeners() {
     document.getElementById('signin-button').addEventListener('click', handleSignIn);
     document.getElementById('signout-button').addEventListener('click', handleSignOut);
 
-    // Main actions
-    document.getElementById('new-order-button').addEventListener('click', openNewOrderModal);
+    // Main actions - refresh button
     document.getElementById('refresh-button').addEventListener('click', loadOrders);
+
+    // Quick Add Form (tablet UI)
+    const quickForm = document.getElementById('quick-order-form');
+    if (quickForm) {
+        quickForm.addEventListener('submit', handleQuickSubmit);
+    }
+
+    // Order/Suggestion toggle buttons
+    document.querySelectorAll('.type-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const type = btn.dataset.type;
+            document.getElementById('order-type').value = type;
+
+            // Hide customer row for suggestions
+            const customerRow = document.getElementById('customer-row');
+            if (customerRow) {
+                customerRow.style.display = type === 'suggestion' ? 'none' : 'flex';
+            }
+        });
+    });
+
+    // More fields expand/collapse
+    const showMoreBtn = document.getElementById('show-more-fields');
+    if (showMoreBtn) {
+        showMoreBtn.addEventListener('click', toggleExtraFields);
+    }
+
+    // Contact type toggle (phone/email)
+    document.querySelectorAll('.contact-type-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.contact-type-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updateContactInput(btn.dataset.contact);
+        });
+    });
 
     // Modal
     document.getElementById('modal-close').addEventListener('click', closeModal);
@@ -218,17 +340,12 @@ function setupEventListeners() {
     // Filters
     document.getElementById('search-input').addEventListener('input', applyFilters);
     document.getElementById('status-filter').addEventListener('change', applyFilters);
-    document.getElementById('supplier-filter').addEventListener('change', applyFilters);
-    document.getElementById('clear-filters').addEventListener('click', clearFilters);
 
     // Needed-by date change for supplier recommendation
-    document.getElementById('needed-by').addEventListener('change', updateSupplierRecommendation);
-
-    // Table sorting
-    document.querySelectorAll('th[data-sort]').forEach(th => {
-        th.addEventListener('click', () => handleSort(th.dataset.sort));
-        th.style.cursor = 'pointer';
-    });
+    const neededByField = document.getElementById('needed-by');
+    if (neededByField) {
+        neededByField.addEventListener('change', updateSupplierRecommendation);
+    }
 
     // Close modal on outside click
     document.getElementById('order-modal').addEventListener('click', (e) => {
@@ -237,6 +354,134 @@ function setupEventListeners() {
 
     // Initialize inventory tab
     initInventoryTab();
+}
+
+/**
+ * Toggle extra fields visibility
+ */
+function toggleExtraFields() {
+    const extra = document.getElementById('extra-fields');
+    const btn = document.getElementById('show-more-fields');
+    if (extra.style.display === 'none') {
+        extra.style.display = 'block';
+        btn.textContent = 'Less Details ▲';
+        btn.classList.add('expanded');
+    } else {
+        extra.style.display = 'none';
+        btn.textContent = 'More Details ▼';
+        btn.classList.remove('expanded');
+    }
+}
+
+// Track current contact type
+let contactType = 'phone';
+
+/**
+ * Update contact input based on type
+ */
+function updateContactInput(type) {
+    contactType = type;
+    const input = document.getElementById('quick-contact');
+
+    if (type === 'email') {
+        input.type = 'email';
+        input.placeholder = 'email@example.com';
+        input.inputMode = 'email';
+    } else {
+        input.type = 'tel';
+        input.placeholder = '(216) 555-1234';
+        input.inputMode = 'tel';
+    }
+}
+
+/**
+ * Handle quick form submission
+ */
+async function handleQuickSubmit(e) {
+    e.preventDefault();
+
+    const customerName = document.getElementById('quick-customer').value.trim();
+    const bookTitle = document.getElementById('quick-title').value.trim();
+    const author = document.getElementById('quick-author').value.trim();
+    const type = document.getElementById('order-type').value || 'order';
+
+    // Get contact from main form (phone or email based on toggle)
+    const contactValue = document.getElementById('quick-contact')?.value.trim() || '';
+    const phone = contactType === 'phone' ? contactValue : '';
+    const email = contactType === 'email' ? contactValue : '';
+
+    // Get extra fields if visible
+    const neededBy = document.getElementById('quick-needed')?.value || '';
+    const notes = document.getElementById('quick-notes')?.value.trim() || '';
+
+    if (!bookTitle) {
+        showSaveFeedback('Book title is required', 'error');
+        return;
+    }
+
+    // For suggestions, customer name is optional
+    if (type === 'order' && !customerName) {
+        showSaveFeedback('Customer name is required for orders', 'error');
+        return;
+    }
+
+    const orderData = {
+        customerName: customerName || 'Suggestion',
+        phone,
+        email,
+        bookTitle,
+        author,
+        isbn: '',
+        neededBy,
+        status: type === 'suggestion' ? 'Suggestion' : 'Requested',
+        preferredSupplier: '',
+        actualSupplier: '',
+        orderDate: '',
+        trackingInfo: '',
+        cost: '',
+        notes,
+        type
+    };
+
+    try {
+        await createOrder(orderData);
+        showSaveFeedback(`${type === 'suggestion' ? 'Suggestion' : 'Order'} saved!`, 'success');
+
+        // Reset form
+        document.getElementById('quick-order-form').reset();
+        document.getElementById('order-type').value = 'order';
+        document.querySelectorAll('.type-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.type === 'order');
+        });
+
+        // Show customer row (in case it was hidden for suggestion)
+        document.getElementById('customer-row').style.display = 'flex';
+
+        // Hide extra fields
+        document.getElementById('extra-fields').style.display = 'none';
+        document.getElementById('show-more-fields').textContent = 'More Details ▼';
+        document.getElementById('show-more-fields').classList.remove('expanded');
+
+        // Reload orders
+        await loadOrders();
+    } catch (err) {
+        console.error('Error saving:', err);
+        showSaveFeedback('Failed to save. Please try again.', 'error');
+    }
+}
+
+/**
+ * Show save feedback message
+ */
+function showSaveFeedback(message, type) {
+    const feedback = document.getElementById('save-feedback');
+    feedback.textContent = message;
+    feedback.className = `save-feedback ${type}`;
+    feedback.style.display = 'block';
+
+    setTimeout(() => {
+        feedback.style.display = 'none';
+    }, 3000);
 }
 
 /**
@@ -314,7 +559,7 @@ async function loadOrders() {
     try {
         const response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: CONFIG.SPREADSHEET_ID,
-            range: `${CONFIG.SHEET_NAME}!A2:Q`, // Skip header row
+            range: `${CONFIG.SHEET_NAME}!A2:R`, // Skip header row, include Type column
         });
 
         const rows = response.result.values || [];
@@ -339,6 +584,7 @@ async function loadOrders() {
             cost: row[COLUMNS.cost] || '',
             notes: row[COLUMNS.notes] || '',
             lastUpdated: row[COLUMNS.lastUpdated] || '',
+            type: row[COLUMNS.type] || 'order',
             rowIndex: index + 2 // +2 because: 0-indexed + skip header
         }));
 
@@ -347,7 +593,8 @@ async function loadOrders() {
 
         console.log('Loaded orders:', orders);
         renderOrders();
-        updateStats();
+        renderSuggestions();
+        updateTabCounts();
 
     } catch (err) {
         console.error('Error loading orders:', err);
@@ -356,53 +603,174 @@ async function loadOrders() {
 }
 
 /**
- * Render orders table
+ * Render orders as cards (tablet-friendly)
  */
-function renderOrders() {
-    const tbody = document.getElementById('orders-tbody');
+function renderOrders(ordersToRender = null) {
+    const container = document.getElementById('orders-list');
     const emptyState = document.getElementById('empty-state');
 
-    if (orders.length === 0) {
-        tbody.innerHTML = '';
+    // Filter to only show active orders (not suggestions, not picked up)
+    const orderItems = (ordersToRender || orders).filter(o =>
+        o.type !== 'suggestion' &&
+        o.status !== 'Suggestion' &&
+        o.status !== 'Picked Up'
+    );
+
+    if (orderItems.length === 0) {
+        container.innerHTML = '';
         emptyState.style.display = 'block';
         return;
     }
 
     emptyState.style.display = 'none';
 
-    const html = orders.map(order => {
+    const html = orderItems.map(order => {
         const isUrgent = isOrderUrgent(order.neededBy);
         const statusClass = order.status.toLowerCase().replace(/\s+/g, '-');
 
         return `
-            <tr data-order-id="${order.orderId}">
-                <td>${order.orderId}</td>
-                <td>
-                    <span class="status-badge status-${statusClass}">${order.status}</span>
-                    ${isUrgent ? '<span class="urgent-badge">URGENT</span>' : ''}
-                </td>
-                <td>
-                    <strong>${order.customerName}</strong><br>
-                    <small>${order.phone}</small>
-                </td>
-                <td>
-                    <strong>${order.bookTitle}</strong>
-                    ${order.author ? `<br><small>by ${order.author}</small>` : ''}
-                </td>
-                <td>${formatDate(order.neededBy)}</td>
-                <td>${order.actualSupplier || order.preferredSupplier || '-'}</td>
-                <td>${formatDate(order.requestDate)}</td>
-                <td class="actions-cell">
-                    <button class="btn-icon" onclick="editOrder('${order.orderId}')" title="Edit">
-                        ✏️
-                    </button>
-                </td>
-            </tr>
+            <div class="order-card" data-id="${order.orderId}" onclick="editOrder('${order.orderId}')">
+                <div class="order-card-header">
+                    <div>
+                        <div class="order-card-title">${order.bookTitle}</div>
+                        <div class="order-card-author">${order.author ? `by ${order.author}` : ''}</div>
+                    </div>
+                    <div class="order-card-status">
+                        <span class="status-badge status-${statusClass}">${order.status}</span>
+                        ${isUrgent ? '<span class="urgent-badge">URGENT</span>' : ''}
+                    </div>
+                </div>
+                <div class="order-card-footer">
+                    <span class="order-card-customer">👤 ${order.customerName}</span>
+                    <span class="order-card-date">${order.neededBy ? '📅 ' + formatDate(order.neededBy) : ''}</span>
+                </div>
+            </div>
         `;
     }).join('');
 
-    tbody.innerHTML = html;
+    container.innerHTML = html;
 }
+
+/**
+ * Render suggestions as cards
+ */
+function renderSuggestions() {
+    const container = document.getElementById('suggestions-list');
+    if (!container) return;
+
+    // Filter to only show suggestions
+    const suggestionItems = orders.filter(o => o.type === 'suggestion' || o.status === 'Suggestion');
+
+    if (suggestionItems.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No suggestions yet. Toggle to "Suggestion" above to add one!</p></div>';
+        return;
+    }
+
+    const html = suggestionItems.map(suggestion => {
+        return `
+            <div class="order-card suggestion-card" data-id="${suggestion.orderId}" onclick="editOrder('${suggestion.orderId}')">
+                <div class="order-card-header">
+                    <div>
+                        <div class="order-card-title">${suggestion.bookTitle}</div>
+                        <div class="order-card-author">${suggestion.author ? `by ${suggestion.author}` : ''}</div>
+                    </div>
+                    <div class="suggestion-actions">
+                        <button class="btn-action btn-convert" onclick="event.stopPropagation(); convertToOrder('${suggestion.orderId}')" title="Convert to Order">
+                            📚 Order It
+                        </button>
+                        <button class="btn-action btn-dismiss" onclick="event.stopPropagation(); dismissSuggestion('${suggestion.orderId}')" title="Dismiss">
+                            ✕
+                        </button>
+                    </div>
+                </div>
+                <div class="order-card-footer">
+                    <span class="order-card-customer">${suggestion.customerName !== 'Suggestion' ? '👤 ' + suggestion.customerName : ''}</span>
+                    <span class="order-card-date">📅 ${formatDate(suggestion.requestDate)}</span>
+                </div>
+                ${suggestion.notes ? `<div class="order-card-notes">💬 ${suggestion.notes}</div>` : ''}
+            </div>
+        `;
+    }).join('');
+
+    container.innerHTML = html;
+}
+
+/**
+ * Update tab counts
+ */
+function updateTabCounts() {
+    const orderCount = orders.filter(o =>
+        o.type !== 'suggestion' &&
+        o.status !== 'Suggestion' &&
+        o.status !== 'Picked Up'
+    ).length;
+    const suggestionCount = orders.filter(o => o.type === 'suggestion' || o.status === 'Suggestion').length;
+
+    const ordersCountEl = document.getElementById('orders-count');
+    const suggestionsCountEl = document.getElementById('suggestions-count');
+
+    if (ordersCountEl) ordersCountEl.textContent = orderCount;
+    if (suggestionsCountEl) suggestionsCountEl.textContent = suggestionCount;
+}
+
+/**
+ * Convert suggestion to order
+ */
+window.convertToOrder = async function(orderId) {
+    const order = orders.find(o => o.orderId === orderId);
+    if (!order) return;
+
+    try {
+        // Update the order type and status
+        const updatedData = {
+            ...order,
+            type: 'order',
+            status: 'Requested'
+        };
+        delete updatedData.rowIndex;
+        delete updatedData.orderId;
+
+        await updateOrder(orderId, updatedData);
+        await loadOrders();
+    } catch (err) {
+        console.error('Error converting suggestion:', err);
+        alert('Failed to convert suggestion to order.');
+    }
+};
+
+/**
+ * Dismiss a suggestion
+ */
+window.dismissSuggestion = async function(orderId) {
+    if (!confirm('Are you sure you want to dismiss this suggestion?')) return;
+
+    const order = orders.find(o => o.orderId === orderId);
+    if (!order) return;
+
+    try {
+        // Delete the row in Google Sheets
+        await gapi.client.sheets.spreadsheets.batchUpdate({
+            spreadsheetId: CONFIG.SPREADSHEET_ID,
+            resource: {
+                requests: [{
+                    deleteDimension: {
+                        range: {
+                            sheetId: 0,
+                            dimension: 'ROWS',
+                            startIndex: order.rowIndex - 1,
+                            endIndex: order.rowIndex
+                        }
+                    }
+                }]
+            }
+        });
+
+        await loadOrders();
+    } catch (err) {
+        console.error('Error dismissing suggestion:', err);
+        alert('Failed to dismiss suggestion.');
+    }
+};
 
 /**
  * Update statistics
@@ -607,7 +975,8 @@ async function createOrder(orderData) {
         orderData.trackingInfo,
         orderData.cost,
         orderData.notes,
-        now // LastUpdated (generate ourselves instead of relying on formula)
+        now, // LastUpdated (generate ourselves instead of relying on formula)
+        orderData.type || 'order' // Type (order or suggestion)
     ];
 
     // Find next empty row by checking column C (CustomerName) for actual data
@@ -621,10 +990,10 @@ async function createOrder(orderData) {
     const nonEmptyRows = existingRows.filter(row => row && row[0] && row[0].trim() !== '');
     const nextRow = nonEmptyRows.length + 1; // +1 for header row
 
-    // Write directly to the specific row
+    // Write directly to the specific row (now includes column R for Type)
     await gapi.client.sheets.spreadsheets.values.update({
         spreadsheetId: CONFIG.SPREADSHEET_ID,
-        range: `${CONFIG.SHEET_NAME}!A${nextRow}:Q${nextRow}`,
+        range: `${CONFIG.SHEET_NAME}!A${nextRow}:R${nextRow}`,
         valueInputOption: 'USER_ENTERED',
         resource: {
             values: [row]
@@ -656,12 +1025,13 @@ async function updateOrder(orderId, orderData) {
         orderData.trackingInfo,
         orderData.cost,
         orderData.notes,
-        new Date().toISOString() // Update timestamp
+        new Date().toISOString(), // Update timestamp
+        orderData.type || order.type || 'order' // Type (preserve or update)
     ];
 
     await gapi.client.sheets.spreadsheets.values.update({
         spreadsheetId: CONFIG.SPREADSHEET_ID,
-        range: `${CONFIG.SHEET_NAME}!A${order.rowIndex}:Q${order.rowIndex}`,
+        range: `${CONFIG.SHEET_NAME}!A${order.rowIndex}:R${order.rowIndex}`,
         valueInputOption: 'USER_ENTERED',
         resource: {
             values: [row]
@@ -703,7 +1073,6 @@ function updateSupplierRecommendation() {
 function applyFilters() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     const statusFilter = document.getElementById('status-filter').value;
-    const supplierFilter = document.getElementById('supplier-filter').value;
 
     const filtered = orders.filter(order => {
         // Search filter
@@ -716,19 +1085,11 @@ function applyFilters() {
         // Status filter
         const matchesStatus = !statusFilter || order.status === statusFilter;
 
-        // Supplier filter
-        const matchesSupplier = !supplierFilter ||
-            order.actualSupplier === supplierFilter ||
-            order.preferredSupplier === supplierFilter;
-
-        return matchesSearch && matchesStatus && matchesSupplier;
+        return matchesSearch && matchesStatus;
     });
 
-    // Temporarily replace orders for rendering
-    const originalOrders = orders;
-    orders = filtered;
-    renderOrders();
-    orders = originalOrders;
+    // Render filtered results
+    renderOrders(filtered);
 }
 
 /**
@@ -737,7 +1098,6 @@ function applyFilters() {
 function clearFilters() {
     document.getElementById('search-input').value = '';
     document.getElementById('status-filter').value = '';
-    document.getElementById('supplier-filter').value = '';
     renderOrders();
 }
 
@@ -813,7 +1173,7 @@ const INV_COLUMNS = {
 function initInventoryTab() {
     console.log('Initializing inventory tab...');
 
-    // Tab switching
+    // Tab switching for all tabs (Orders, Suggestions, Inventory)
     const tabButtons = document.querySelectorAll('.tab-button');
     console.log('Found tab buttons:', tabButtons.length);
 
@@ -826,18 +1186,33 @@ function initInventoryTab() {
     });
 
     // Import button
-    document.getElementById('import-ingram-button').addEventListener('click', handleIngramImport);
+    const importBtn = document.getElementById('import-ingram-button');
+    if (importBtn) {
+        importBtn.addEventListener('click', handleIngramImport);
+    }
 
-    // Search
+    // Inventory search
     const searchInput = document.getElementById('inventory-search');
-    searchInput.addEventListener('input', debounce(handleInventorySearch, 300));
+    if (searchInput) {
+        searchInput.addEventListener('input', debounce(handleInventorySearch, 300));
+    }
 
     // PO filter
-    document.getElementById('po-filter').addEventListener('change', loadReceivingList);
-    document.getElementById('shipment-status-filter').addEventListener('change', loadReceivingList);
+    const poFilter = document.getElementById('po-filter');
+    if (poFilter) {
+        poFilter.addEventListener('change', loadReceivingList);
+    }
+
+    const shipmentFilter = document.getElementById('shipment-status-filter');
+    if (shipmentFilter) {
+        shipmentFilter.addEventListener('change', loadReceivingList);
+    }
 
     // Export button
-    document.getElementById('export-shopify-button').addEventListener('click', exportToShopify);
+    const exportBtn = document.getElementById('export-shopify-button');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', exportToShopify);
+    }
 
     // Load inventory on startup
     loadInventory();
@@ -854,11 +1229,12 @@ function switchTab(tabName) {
         btn.classList.toggle('active', btn.dataset.tab === tabName);
     });
 
-    // Update tab content
+    // Update tab content - show/hide using display property
     document.querySelectorAll('.tab-content').forEach(content => {
         const shouldBeActive = content.id === `${tabName}-tab`;
-        console.log(`Content ${content.id}: ${shouldBeActive ? 'show' : 'hide'}`);
+        content.style.display = shouldBeActive ? 'block' : 'none';
         content.classList.toggle('active', shouldBeActive);
+        console.log(`Content ${content.id}: ${shouldBeActive ? 'show' : 'hide'}`);
     });
 
     // Load data for inventory tab

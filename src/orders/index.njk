@@ -1,6 +1,6 @@
 ---
 layout: layouts/base.njk
-title: Purchase Orders
+title: Customer Orders
 eleventyExcludeFromCollections: true
 permalink: /orders/index.html
 ---
@@ -9,7 +9,7 @@ permalink: /orders/index.html
     <!-- Sign In Screen -->
     <div id="signin-screen" class="signin-screen">
         <div class="signin-box">
-            <h1>Purchase Orders</h1>
+            <h1>Customer Orders</h1>
             <p class="signin-tagline">Internal order management system</p>
             <button id="signin-button" class="btn-signin">
                 <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
@@ -26,112 +26,138 @@ permalink: /orders/index.html
 
     <!-- Main App (hidden until signed in) -->
     <div id="main-app" class="main-app" style="display: none;">
-        <!-- Header -->
+        <!-- Compact Header for Tablet -->
         <header class="orders-header">
             <div class="header-content">
                 <div class="header-left">
-                    <h1>Purchase Orders</h1>
+                    <h1>Customer Orders</h1>
                     <div class="user-info">
-                        Signed in as: <span id="user-email"></span>
+                        <span id="user-email"></span>
                         <button id="signout-button" class="btn-text">Sign Out</button>
                     </div>
                 </div>
                 <div class="header-right">
-                    <button id="new-order-button" class="btn-primary">+ New Order</button>
-                    <button id="refresh-button" class="btn-secondary">↻ Refresh</button>
+                    <button id="refresh-button" class="btn-icon-large" title="Refresh">↻</button>
                 </div>
             </div>
         </header>
 
+        <!-- Quick Add Section - Always Visible on Tablet -->
+        <div class="quick-add-section">
+            <div class="quick-add-header">
+                <h2>Quick Add</h2>
+                <div class="order-type-toggle">
+                    <button class="type-btn active" data-type="order">📚 Order</button>
+                    <button class="type-btn" data-type="suggestion">💡 Suggestion</button>
+                </div>
+            </div>
+
+            <form id="quick-order-form" class="quick-form">
+                <input type="hidden" id="order-type" value="order">
+
+                <!-- Customer/Contact row - hidden for suggestions -->
+                <div class="quick-form-row" id="customer-row">
+                    <div class="quick-field">
+                        <label for="quick-customer">Customer Name</label>
+                        <input type="text" id="quick-customer" placeholder="First name is fine" autocomplete="off" inputmode="text">
+                    </div>
+                    <div class="quick-field contact-field">
+                        <div class="contact-toggle">
+                            <button type="button" class="contact-type-btn active" data-contact="phone">Phone</button>
+                            <button type="button" class="contact-type-btn" data-contact="email">Email</button>
+                        </div>
+                        <input type="tel" id="quick-contact" placeholder="(216) 555-1234" autocomplete="off" inputmode="tel">
+                    </div>
+                </div>
+
+                <div class="quick-form-row">
+                    <div class="quick-field flex-2">
+                        <label for="quick-title">Book Title</label>
+                        <input type="text" id="quick-title" placeholder="Book title" required autocomplete="off" inputmode="text">
+                    </div>
+                    <div class="quick-field flex-1">
+                        <label for="quick-author">Author</label>
+                        <input type="text" id="quick-author" placeholder="Optional" autocomplete="off" inputmode="text">
+                    </div>
+                </div>
+
+                <div class="quick-form-actions">
+                    <button type="submit" class="btn-save-large">
+                        <span class="btn-icon">✓</span>
+                        <span class="btn-text-label">Save</span>
+                    </button>
+                    <button type="button" id="show-more-fields" class="btn-more">
+                        More Details ▼
+                    </button>
+                </div>
+
+                <!-- Expandable Extra Fields -->
+                <div id="extra-fields" class="extra-fields" style="display: none;">
+                    <div class="quick-form-row">
+                        <div class="quick-field">
+                            <label for="quick-needed">Needed By</label>
+                            <input type="date" id="quick-needed">
+                        </div>
+                        <div class="quick-field">
+                            <label for="quick-notes">Notes</label>
+                            <input type="text" id="quick-notes" placeholder="Special requests">
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div id="save-feedback" class="save-feedback" style="display: none;"></div>
+        </div>
+
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab-button active" data-tab="orders">Customer Orders</button>
+            <button class="tab-button active" data-tab="orders">Orders <span id="orders-count" class="tab-count">0</span></button>
+            <button class="tab-button" data-tab="suggestions">Suggestions <span id="suggestions-count" class="tab-count">0</span></button>
             <button class="tab-button" data-tab="inventory">Inventory</button>
         </div>
 
         <!-- Orders Tab -->
         <div id="orders-tab" class="tab-content active">
-        <!-- Filters & Stats -->
-        <div class="filters-bar">
-            <div class="stats">
-                <div class="stat-badge">
-                    <span class="stat-label">Total Orders:</span>
-                    <span id="stat-total" class="stat-value">0</span>
-                </div>
-                <div class="stat-badge urgent">
-                    <span class="stat-label">Urgent:</span>
-                    <span id="stat-urgent" class="stat-value">0</span>
-                </div>
-                <div class="stat-badge pending">
-                    <span class="stat-label">Pending Action:</span>
-                    <span id="stat-pending" class="stat-value">0</span>
-                </div>
-            </div>
-
-            <div class="filters">
-                <input type="text" id="search-input" placeholder="Search orders..." class="search-input">
-
-                <select id="status-filter" class="filter-select">
-                    <option value="">All Statuses</option>
+            <!-- Compact Filters -->
+            <div class="filters-bar-compact">
+                <input type="text" id="search-input" placeholder="Search..." class="search-input-compact">
+                <select id="status-filter" class="filter-select-compact">
+                    <option value="">All</option>
                     <option value="Requested">Requested</option>
-                    <option value="Sourced">Sourced</option>
                     <option value="Ordered">Ordered</option>
                     <option value="Arrived">Arrived</option>
-                    <option value="Notified">Notified</option>
                     <option value="Picked Up">Picked Up</option>
-                    <option value="Cancelled">Cancelled</option>
                 </select>
-
-                <select id="supplier-filter" class="filter-select">
-                    <option value="">All Suppliers</option>
-                    <option value="Faire">Faire</option>
-                    <option value="Ingram">Ingram</option>
-                    <option value="WorldBooks">WorldBooks</option>
-                    <option value="Other">Other</option>
-                </select>
-
-                <button id="clear-filters" class="btn-text">Clear Filters</button>
             </div>
-        </div>
 
-        <!-- Orders Table -->
-        <div class="orders-table-container">
-            <table class="orders-table">
-                <thead>
-                    <tr>
-                        <th data-sort="orderId">ID</th>
-                        <th data-sort="status">Status</th>
-                        <th data-sort="customerName">Customer</th>
-                        <th data-sort="bookTitle">Book</th>
-                        <th data-sort="neededBy">Needed By</th>
-                        <th data-sort="preferredSupplier">Supplier</th>
-                        <th data-sort="requestDate">Requested</th>
-                        <th class="actions-column">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="orders-tbody">
-                    <tr class="loading-row">
-                        <td colspan="8">Loading orders...</td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- Card-based Orders List (Better for Touch) -->
+            <div id="orders-list" class="orders-card-list">
+                <div class="loading-state">Loading orders...</div>
+            </div>
 
             <div id="empty-state" class="empty-state" style="display: none;">
-                <p>No orders found.</p>
-                <button class="btn-primary" onclick="document.getElementById('new-order-button').click()">Create First Order</button>
+                <p>No orders yet. Add one above!</p>
             </div>
         </div>
-        </div>
-        <!-- End Orders Tab -->
 
-        <!-- Inventory Tab -->
+        <!-- Suggestions Tab -->
+        <div id="suggestions-tab" class="tab-content" style="display: none;">
+            <div class="suggestions-intro">
+                <p>Customer book suggestions to review. Decide: order it, or skip it.</p>
+            </div>
+            <div id="suggestions-list" class="orders-card-list">
+                <div class="loading-state">Loading suggestions...</div>
+            </div>
+        </div>
+
+        <!-- Inventory Tab (Existing) -->
         <div id="inventory-tab" class="tab-content" style="display: none;">
             <div class="inventory-container">
                 <!-- Import Section -->
                 <div class="inventory-section">
                     <h2>Import Ingram Order</h2>
                     <p class="section-description">Paste the text from your Ingram order confirmation email below:</p>
-                    <textarea id="ingram-import-text" class="ingram-import-textarea" placeholder="Paste Ingram order confirmation here..." rows="15"></textarea>
+                    <textarea id="ingram-import-text" class="ingram-import-textarea" placeholder="Paste Ingram order confirmation here..." rows="10"></textarea>
                     <button id="import-ingram-button" class="btn-primary">Parse & Import Order</button>
                     <div id="import-status" class="import-status" style="display: none;"></div>
                 </div>
@@ -139,7 +165,6 @@ permalink: /orders/index.html
                 <!-- Search Section -->
                 <div class="inventory-section">
                     <h2>Search Inventory</h2>
-                    <p class="section-description">Search for books across all imported shipments:</p>
                     <input type="text" id="inventory-search" class="search-input" placeholder="Search by title, author, or ISBN...">
                     <div id="inventory-search-results" class="inventory-results"></div>
                 </div>
@@ -147,7 +172,6 @@ permalink: /orders/index.html
                 <!-- Receiving Section -->
                 <div class="inventory-section">
                     <h2>Receive Shipments</h2>
-                    <p class="section-description">Check off books as you receive them:</p>
                     <div class="receiving-filters">
                         <select id="po-filter" class="filter-select">
                             <option value="">All POs</option>
@@ -164,20 +188,18 @@ permalink: /orders/index.html
                 <!-- Export Section -->
                 <div class="inventory-section">
                     <h2>Export to Shopify</h2>
-                    <p class="section-description">Export received books as Shopify CSV:</p>
                     <button id="export-shopify-button" class="btn-primary">Export Received Books to CSV</button>
                     <div id="export-stats" class="export-stats" style="display: none;"></div>
                 </div>
             </div>
         </div>
-        <!-- End Inventory Tab -->
     </div>
 
-    <!-- Modal: New/Edit Order -->
+    <!-- Modal: Edit Order (Full Details) -->
     <div id="order-modal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modal-title">New Order</h2>
+                <h2 id="modal-title">Edit Order</h2>
                 <button class="modal-close" id="modal-close">&times;</button>
             </div>
 
@@ -194,8 +216,8 @@ permalink: /orders/index.html
                         </div>
 
                         <div class="form-group">
-                            <label for="customer-phone">Phone *</label>
-                            <input type="tel" id="customer-phone" required placeholder="(216) 555-1234">
+                            <label for="customer-phone">Phone</label>
+                            <input type="tel" id="customer-phone" placeholder="(216) 555-1234">
                         </div>
                     </div>
 
@@ -231,8 +253,8 @@ permalink: /orders/index.html
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="needed-by">Needed By *</label>
-                            <input type="date" id="needed-by" required>
+                            <label for="needed-by">Needed By</label>
+                            <input type="date" id="needed-by">
                         </div>
 
                         <div class="form-group">
@@ -249,60 +271,33 @@ permalink: /orders/index.html
                         </div>
                     </div>
 
-                    <div class="supplier-recommendation" id="supplier-recommendation" style="display: none;">
-                        <strong>Recommended:</strong> <span id="recommended-supplier"></span>
-                    </div>
-
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="preferred-supplier">Preferred Supplier</label>
+                            <label for="preferred-supplier">Supplier</label>
                             <select id="preferred-supplier">
                                 <option value="">Not yet determined</option>
-                                <option value="Faire">Faire (50% discount, 1-2 weeks)</option>
-                                <option value="Ingram">Ingram (40% discount, 3-5 days)</option>
-                                <option value="WorldBooks">WorldBooks (used/rare)</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="actual-supplier">Actual Supplier Used</label>
-                            <select id="actual-supplier">
-                                <option value="">Not ordered yet</option>
                                 <option value="Faire">Faire</option>
                                 <option value="Ingram">Ingram</option>
-                                <option value="WorldBooks">WorldBooks</option>
+                                <option value="Fuji">Fuji Associates</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="order-date">Order Date</label>
-                            <input type="date" id="order-date">
-                        </div>
 
                         <div class="form-group">
-                            <label for="cost">Cost</label>
-                            <input type="number" id="cost" step="0.01" placeholder="0.00">
+                            <label for="po-number">PO #</label>
+                            <input type="text" id="po-number" placeholder="Shopify PO number">
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tracking-info">Tracking Info</label>
-                        <input type="text" id="tracking-info" placeholder="Tracking number or delivery notes">
                     </div>
 
                     <div class="form-group">
                         <label for="notes">Notes</label>
-                        <textarea id="notes" rows="3" placeholder="Special requests, pricing notes, etc."></textarea>
+                        <textarea id="notes" rows="2" placeholder="Special requests, etc."></textarea>
                     </div>
                 </fieldset>
 
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" id="cancel-button">Cancel</button>
-                    <button type="submit" class="btn-primary">Save Order</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
                 </div>
             </form>
         </div>
