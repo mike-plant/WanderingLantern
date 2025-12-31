@@ -1,0 +1,19 @@
+<nav class="admin-nav">
+    <a href="/admin/" class="admin-nav-brand">Staff Tools</a>
+    <div class="admin-nav-links">
+        <a href="/admin/orders/" class="admin-nav-link {% if page.url == '/admin/orders/' %}active{% endif %}">Orders</a>
+        <a href="/admin/import/" class="admin-nav-link {% if page.url == '/admin/import/' %}active{% endif %}">Import</a>
+        <a href="/admin/audit/" class="admin-nav-link {% if page.url == '/admin/audit/' %}active{% endif %}">Shopify Import</a>
+    </div>
+    <button class="admin-nav-logout" onclick="adminLogout()">Log out</button>
+</nav>
+<script>
+function adminLogout() {
+    localStorage.removeItem('wl_admin_auth');
+    window.location.href = '/admin/';
+}
+// Check admin auth
+if (localStorage.getItem('wl_admin_auth') !== 'true') {
+    window.location.href = '/admin/';
+}
+</script>

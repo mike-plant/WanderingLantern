@@ -1,0 +1,254 @@
+---
+layout: null
+permalink: /admin/index.html
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - The Wandering Lantern</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --warm-brown: #8b6f47;
+            --deep-brown: #5c4d3c;
+            --aged-gold: #c9a961;
+            --muted-gold: #a38b5f;
+            --cream: #faf7f0;
+            --parchment: #f5eedc;
+            --dark-text: #3a2f27;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Libre Baskerville', Georgia, serif;
+            background: var(--parchment);
+            color: var(--dark-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .admin-container {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--deep-brown);
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 1.75rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--muted-gold);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        /* Password Screen */
+        #password-screen {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .password-form label {
+            font-weight: 600;
+            color: var(--deep-brown);
+        }
+
+        .password-form input {
+            padding: 0.875rem 1rem;
+            font-size: 1rem;
+            border: 2px solid var(--muted-gold);
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        .password-form input:focus {
+            outline: none;
+            border-color: var(--warm-brown);
+        }
+
+        .password-form button {
+            background: var(--warm-brown);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .password-form button:hover {
+            background: var(--deep-brown);
+        }
+
+        .error-msg {
+            color: #c44;
+            text-align: center;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        /* Tools Screen */
+        #tools-screen {
+            display: none;
+        }
+
+        .tools-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .tool-card h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--deep-brown);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-card p {
+            color: var(--muted-gold);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .tool-card .arrow {
+            color: var(--aged-gold);
+            float: right;
+            font-size: 1.5rem;
+            margin-top: -1.5rem;
+        }
+
+        .logout-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .logout-link a {
+            color: var(--muted-gold);
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+
+        .logout-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>The Wandering Lantern</h1>
+        <p class="subtitle">Staff Tools</p>
+
+        <!-- Password Screen -->
+        <div id="password-screen">
+            <form class="password-form" onsubmit="checkPassword(event)">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter admin password" autofocus>
+                <p class="error-msg" id="error-msg">Incorrect password</p>
+                <button type="submit">Enter</button>
+            </form>
+        </div>
+
+        <!-- Tools Screen -->
+        <div id="tools-screen">
+            <div class="tools-grid">
+                <a href="/admin/orders/" class="tool-card">
+                    <h2>Customer Orders</h2>
+                    <p>Track special orders and suggestions from customers</p>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="/admin/import/" class="tool-card">
+                    <h2>Import Books</h2>
+                    <p>Convert Edelweiss or Ingram exports to Shopify products</p>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="/admin/audit/" class="tool-card">
+                    <h2>Shopify Import</h2>
+                    <p>Process Ingram orders and generate Shopify product imports</p>
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+            <div class="logout-link">
+                <a href="#" onclick="logout()">Log out</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple password - change this!
+        const ADMIN_PASSWORD = 'lantern2025';
+        const STORAGE_KEY = 'wl_admin_auth';
+
+        function checkPassword(e) {
+            e.preventDefault();
+            const input = document.getElementById('password').value;
+
+            if (input === ADMIN_PASSWORD) {
+                localStorage.setItem(STORAGE_KEY, 'true');
+                showTools();
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        }
+
+        function showTools() {
+            document.getElementById('password-screen').style.display = 'none';
+            document.getElementById('tools-screen').style.display = 'block';
+        }
+
+        function logout() {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        }
+
+        // Check if already authenticated
+        if (localStorage.getItem(STORAGE_KEY) === 'true') {
+            showTools();
+        }
+    </script>
+</body>
+</html>

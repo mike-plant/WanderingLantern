@@ -1,0 +1,595 @@
+---
+layout: null
+permalink: /admin/audit/index.html
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopify Import - Staff Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/variables.css">
+  <link rel="stylesheet" href="/assets/css/orders.css">
+  <style>
+    .audit-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: var(--deep-brown);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .file-input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--deep-brown);
+    }
+
+    input[type="file"] {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px dashed var(--aged-gold);
+      border-radius: 4px;
+      background: var(--cream);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    input[type="file"]:hover {
+      border-color: var(--warm-brown);
+      background: var(--parchment);
+    }
+
+    button {
+      background: var(--warm-brown);
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-right: 1rem;
+      font-family: inherit;
+    }
+
+    button:hover {
+      background: var(--deep-brown);
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .results {
+      margin-top: 1.5rem;
+    }
+
+    .stat {
+      display: inline-block;
+      background: var(--cream);
+      padding: 1rem 1.5rem;
+      margin-right: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      border-left: 4px solid var(--aged-gold);
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--deep-brown);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--warm-brown);
+    }
+
+    .product-list {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-top: 1rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+
+    .product-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f0f0f0;
+      display: grid;
+      grid-template-columns: 100px 1fr 150px 80px;
+      gap: 1rem;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .product-item {
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+      }
+    }
+
+    .product-item:nth-child(even) {
+      background: var(--cream);
+    }
+
+    .product-isbn {
+      font-family: monospace;
+      color: #666;
+    }
+
+    .product-title {
+      font-weight: 600;
+      color: var(--dark-text);
+    }
+
+    .product-author {
+      color: #666;
+    }
+
+    .product-price {
+      text-align: right;
+      font-weight: 600;
+      color: var(--warm-brown);
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+
+    .alert-info {
+      background: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      color: #1976d2;
+    }
+
+    .alert-success {
+      background: #e8f5e9;
+      border-left: 4px solid #4caf50;
+      color: #2e7d32;
+    }
+
+    .alert-warning {
+      background: #fff3e0;
+      border-left: 4px solid #ff9800;
+      color: #e65100;
+    }
+
+    .instructions {
+      background: var(--cream);
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .instructions ol {
+      margin-left: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .instructions li {
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body style="margin:0; background: var(--parchment); font-family: 'Libre Baskerville', Georgia, serif;">
+
+{% include "components/admin-nav.njk" %}
+
+<div class="audit-container">
+  <div class="section">
+    <h2>Instructions</h2>
+    <div class="instructions">
+      <ol>
+        <li>Upload your <strong>Shopify product export</strong> (one time - or when you want to re-sync)</li>
+        <li>Upload one or more <strong>Ingram order CSVs</strong> (can process multiple orders incrementally!)</li>
+        <li>Click <strong>Compare & Generate</strong></li>
+        <li>Review the results and download the import CSV</li>
+        <li>Click <strong>"Mark as Imported"</strong> after importing to Shopify</li>
+        <li>Next time, just upload new Ingram orders - no need to re-export Shopify!</li>
+      </ol>
+    </div>
+    <div id="progress-info" class="alert alert-info" style="margin-top: 1rem; display: none;">
+      <strong>Progress saved:</strong> <span id="progress-count">0</span> products already processed
+      <button id="clear-progress-btn" style="margin-left: 1rem; padding: 0.25rem 0.75rem; font-size: 0.85rem; background: #666;">Clear Progress</button>
+    </div>
+    <div id="backorder-info" class="alert alert-warning" style="margin-top: 1rem; display: none;">
+      <strong>Backorders tracked:</strong> <span id="backorder-count">0</span> items awaiting arrival
+      <button id="view-backorders-btn" style="margin-left: 1rem; padding: 0.25rem 0.75rem; font-size: 0.85rem; background: #ff9800;">View Backorders</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>1. Upload Shopify Export</h2>
+    <div class="file-input-group">
+      <label for="shopify-file">Shopify Products CSV: <span style="font-weight: normal; color: #666;">(optional if you've already uploaded once)</span></label>
+      <input type="file" id="shopify-file" accept=".csv">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>2. Upload Ingram Orders</h2>
+    <div class="file-input-group">
+      <label for="ingram-files">Ingram Order CSVs (can select multiple):</label>
+      <input type="file" id="ingram-files" accept=".csv" multiple>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>3. Generate Import File</h2>
+    <button id="process-btn" disabled>Compare & Generate</button>
+  </div>
+
+  <div id="results" class="section" style="display: none;">
+    <h2>Results</h2>
+    <div id="stats"></div>
+    <div id="product-lists"></div>
+    <div style="margin-top: 1.5rem;">
+      <button id="download-btn">Download Shopify Import CSV</button>
+      <button id="download-inventory-btn" style="background: #ff9800; display: none;">Download Inventory Update List</button>
+      <button id="mark-imported-btn" style="background: #4caf50;">Mark as Imported</button>
+      <button id="reset-btn" style="background: #666;">Start Over</button>
+    </div>
+  </div>
+
+  <div id="backorder-modal" class="section" style="display: none;">
+    <h2>Current Backorders</h2>
+    <p>These items are being tracked as backordered. When they arrive, you can mark them as resolved.</p>
+    <div id="backorder-list"></div>
+    <div style="margin-top: 1.5rem;">
+      <button id="close-backorders-btn" style="background: #666;">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/shopify-import-tool.js"></script>
+<script>
+  const shopifyFileInput = document.getElementById('shopify-file');
+  const ingramFilesInput = document.getElementById('ingram-files');
+  const processBtn = document.getElementById('process-btn');
+  const resultsSection = document.getElementById('results');
+  const statsDiv = document.getElementById('stats');
+  const productListsDiv = document.getElementById('product-lists');
+  const downloadBtn = document.getElementById('download-btn');
+  const downloadInventoryBtn = document.getElementById('download-inventory-btn');
+  const markImportedBtn = document.getElementById('mark-imported-btn');
+  const resetBtn = document.getElementById('reset-btn');
+  const progressInfo = document.getElementById('progress-info');
+  const progressCount = document.getElementById('progress-count');
+  const clearProgressBtn = document.getElementById('clear-progress-btn');
+  const backorderInfo = document.getElementById('backorder-info');
+  const backorderCount = document.getElementById('backorder-count');
+  const viewBackordersBtn = document.getElementById('view-backorders-btn');
+  const backorderModal = document.getElementById('backorder-modal');
+  const backorderList = document.getElementById('backorder-list');
+  const closeBackordersBtn = document.getElementById('close-backorders-btn');
+
+  let tool = new ShopifyImportTool();
+  let shopifyLoaded = false;
+  let ingramLoaded = false;
+  let generatedCSV = '';
+  let inventoryUpdateCSV = '';
+  let currentNewProducts = [];
+  let currentAlreadyInShopify = [];
+
+  // Show progress on load
+  updateProgressDisplay();
+  updateBackorderDisplay();
+
+  shopifyFileInput.addEventListener('change', (e) => {
+    shopifyLoaded = e.target.files.length > 0;
+    updateProcessButton();
+  });
+
+  ingramFilesInput.addEventListener('change', (e) => {
+    ingramLoaded = e.target.files.length > 0;
+    updateProcessButton();
+  });
+
+  function updateProcessButton() {
+    processBtn.disabled = !ingramLoaded;
+  }
+
+  function updateProgressDisplay() {
+    if (tool.processedISBNs.size > 0) {
+      progressInfo.style.display = 'block';
+      progressCount.textContent = tool.processedISBNs.size;
+    } else {
+      progressInfo.style.display = 'none';
+    }
+  }
+
+  function updateBackorderDisplay() {
+    if (tool.backorderedISBNs.size > 0) {
+      backorderInfo.style.display = 'block';
+      backorderCount.textContent = tool.backorderedISBNs.size;
+    } else {
+      backorderInfo.style.display = 'none';
+    }
+  }
+
+  clearProgressBtn.addEventListener('click', () => {
+    if (confirm('Clear all saved progress? This will reset the list of processed products AND backorders.')) {
+      tool.clearProgress();
+      updateProgressDisplay();
+      updateBackorderDisplay();
+    }
+  });
+
+  viewBackordersBtn.addEventListener('click', () => {
+    displayBackorders();
+    backorderModal.style.display = 'block';
+    resultsSection.style.display = 'none';
+  });
+
+  closeBackordersBtn.addEventListener('click', () => {
+    backorderModal.style.display = 'none';
+  });
+
+  function displayBackorders() {
+    const backorders = tool.getBackorders();
+
+    if (backorders.length === 0) {
+      backorderList.innerHTML = '<div class="alert alert-info">No backorders currently tracked.</div>';
+      return;
+    }
+
+    let html = '<div class="product-list">';
+    backorders.forEach(item => {
+      const dateAdded = new Date(item.dateAdded).toLocaleDateString();
+      html += `
+        <div class="product-item">
+          <span class="product-isbn">${item.isbn}</span>
+          <span class="product-title">${item.title}</span>
+          <span class="product-author">${item.author}</span>
+          <span class="product-price" style="color: #666;">Added: ${dateAdded}</span>
+          <button onclick="removeBackorder('${item.isbn}')" style="padding: 0.25rem 0.75rem; font-size: 0.85rem; background: #4caf50;">Mark Arrived</button>
+        </div>
+      `;
+    });
+    html += '</div>';
+    backorderList.innerHTML = html;
+  }
+
+  window.removeBackorder = (isbn) => {
+    if (confirm('Mark this item as arrived? It will be removed from backorder tracking.')) {
+      tool.removeFromBackorders([isbn]);
+      displayBackorders();
+      updateBackorderDisplay();
+    }
+  };
+
+  processBtn.addEventListener('click', async () => {
+    processBtn.disabled = true;
+    processBtn.textContent = 'Processing...';
+
+    try {
+      // Load Shopify export if provided
+      if (shopifyFileInput.files.length > 0) {
+        const shopifyFile = shopifyFileInput.files[0];
+        const shopifyText = await shopifyFile.text();
+        tool.parseShopifyCSV(shopifyText);
+      }
+
+      // Load all Ingram files
+      const ingramFiles = Array.from(ingramFilesInput.files);
+      let allIngramItems = [];
+
+      for (const file of ingramFiles) {
+        const text = await file.text();
+        const items = tool.parseIngramCSV(text);
+        allIngramItems = allIngramItems.concat(items);
+      }
+
+      // Find new products
+      const { newProducts, alreadyInShopify, alreadyProcessed } = tool.findNewProducts(allIngramItems);
+      currentNewProducts = newProducts;
+      currentAlreadyInShopify = alreadyInShopify;
+
+      // Track all backordered items
+      const allBackorders = [...newProducts, ...alreadyInShopify];
+      tool.trackBackorders(allBackorders);
+      updateBackorderDisplay();
+
+      // Generate CSVs
+      generatedCSV = tool.generateShopifyImportCSV();
+      inventoryUpdateCSV = tool.generateInventoryUpdateCSV(alreadyInShopify);
+
+      // Show results
+      displayResults(newProducts, alreadyInShopify, alreadyProcessed, allIngramItems.length);
+
+    } catch (error) {
+      alert('Error processing files: ' + error.message);
+      console.error(error);
+    } finally {
+      processBtn.disabled = false;
+      processBtn.textContent = 'Compare & Generate';
+    }
+  });
+
+  function displayResults(newProducts, alreadyInShopify, alreadyProcessed, totalShipped) {
+    statsDiv.innerHTML = `
+      <div class="stat">
+        <span class="stat-label">Total Shipped Items</span>
+        <span class="stat-value">${totalShipped}</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">New Products</span>
+        <span class="stat-value">${newProducts.length}</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Already in Shopify</span>
+        <span class="stat-value">${alreadyInShopify.length}</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Already Processed</span>
+        <span class="stat-value">${alreadyProcessed.length}</span>
+      </div>
+    `;
+
+    let html = '';
+
+    if (newProducts.length > 0) {
+      const backorderedCount = newProducts.filter(p => p.isBackordered).length;
+
+      html += '<div class="alert alert-success">Found ' + newProducts.length + ' new products to import';
+      if (backorderedCount > 0) {
+        html += ' (' + backorderedCount + ' backordered - will import with Qty: 0)';
+      }
+      html += '</div>';
+
+      html += '<h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">New Products (will be imported):</h3>';
+      html += '<div class="product-list">';
+      newProducts.forEach(p => {
+        const qtyLabel = p.isBackordered ?
+          '<span style="color: #ff9800;">Qty: 0 (backordered)</span>' :
+          'Qty: ' + p.quantity;
+        html += `
+          <div class="product-item">
+            <span class="product-isbn">${p.isbn}</span>
+            <span class="product-title">${p.title}</span>
+            <span class="product-author">${p.author}</span>
+            <span class="product-price">${qtyLabel} | $${p.price.toFixed(2)}</span>
+          </div>
+        `;
+      });
+      html += '</div>';
+    } else {
+      html += '<div class="alert alert-info">No new products found in this batch.</div>';
+    }
+
+    if (alreadyProcessed.length > 0) {
+      html += '<h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Already Processed (skipped - in previous batch):</h3>';
+      html += '<div class="product-list">';
+      alreadyProcessed.forEach(p => {
+        html += `
+          <div class="product-item">
+            <span class="product-isbn">${p.isbn}</span>
+            <span class="product-title">${p.title}</span>
+            <span class="product-author">${p.author}</span>
+            <span class="product-price">$${p.price.toFixed(2)}</span>
+          </div>
+        `;
+      });
+      html += '</div>';
+    }
+
+    if (alreadyInShopify.length > 0) {
+      const backorderedInShopify = alreadyInShopify.filter(p => p.isBackordered);
+      const inStockInShopify = alreadyInShopify.filter(p => !p.isBackordered && p.quantity > 0);
+
+      if (inStockInShopify.length > 0) {
+        html += '<div class="alert alert-warning" style="margin-top: 1.5rem;">' + inStockInShopify.length + ' products already in Shopify - inventory needs manual update!</div>';
+        html += '<h3 style="margin-top: 1rem; margin-bottom: 0.5rem;">Already in Shopify (update inventory manually):</h3>';
+        html += '<div class="product-list">';
+        inStockInShopify.forEach(p => {
+          html += `
+            <div class="product-item">
+              <span class="product-isbn">${p.isbn}</span>
+              <span class="product-title">${p.title}</span>
+              <span class="product-author">${p.author}</span>
+              <span class="product-price">ADD ${p.quantity} to inventory</span>
+            </div>
+          `;
+        });
+        html += '</div>';
+      }
+
+      if (backorderedInShopify.length > 0) {
+        html += '<div class="alert alert-info" style="margin-top: 1.5rem;">' + backorderedInShopify.length + ' backordered items already in Shopify - will update when they arrive</div>';
+      }
+    }
+
+    productListsDiv.innerHTML = html;
+    resultsSection.style.display = 'block';
+
+    const hasInventoryToUpdate = alreadyInShopify.some(p => !p.isBackordered && p.quantity > 0);
+    downloadInventoryBtn.style.display = hasInventoryToUpdate ? 'inline-block' : 'none';
+  }
+
+  downloadBtn.addEventListener('click', () => {
+    const blob = new Blob([generatedCSV], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'shopify-import-' + new Date().toISOString().split('T')[0] + '.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  downloadInventoryBtn.addEventListener('click', () => {
+    const blob = new Blob([inventoryUpdateCSV], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'inventory-update-' + new Date().toISOString().split('T')[0] + '.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  markImportedBtn.addEventListener('click', () => {
+    if (currentNewProducts.length === 0) {
+      alert('No new products to mark as imported!');
+      return;
+    }
+
+    const isbns = currentNewProducts.map(p => p.isbn);
+    tool.markAsProcessed(isbns);
+    updateProgressDisplay();
+
+    alert(`Marked ${isbns.length} products as imported!\n\nNext time you process orders, these will be skipped.`);
+
+    ingramFilesInput.value = '';
+    ingramLoaded = false;
+    updateProcessButton();
+    resultsSection.style.display = 'none';
+    generatedCSV = '';
+    inventoryUpdateCSV = '';
+    currentNewProducts = [];
+    currentAlreadyInShopify = [];
+  });
+
+  resetBtn.addEventListener('click', () => {
+    shopifyFileInput.value = '';
+    ingramFilesInput.value = '';
+    shopifyLoaded = false;
+    ingramLoaded = false;
+    updateProcessButton();
+    resultsSection.style.display = 'none';
+    generatedCSV = '';
+    inventoryUpdateCSV = '';
+    currentNewProducts = [];
+    currentAlreadyInShopify = [];
+  });
+</script>
+</body>
+</html>

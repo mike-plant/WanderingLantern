@@ -1,0 +1,711 @@
+---
+layout: null
+permalink: /admin/import/index.html
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Books - Staff Tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/variables.css">
+    <link rel="stylesheet" href="/assets/css/orders.css">
+    <style>
+        .import-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 1rem;
+        }
+
+        .card h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--deep-brown);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card p {
+            color: var(--muted-gold);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: var(--aged-gold);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* Source toggle */
+        .source-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .source-btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--muted-gold);
+            background: white;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--muted-gold);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .source-btn:hover {
+            border-color: var(--warm-brown);
+            color: var(--warm-brown);
+        }
+
+        .source-btn.active {
+            background: var(--warm-brown);
+            border-color: var(--warm-brown);
+            color: white;
+        }
+
+        .source-btn small {
+            display: block;
+            font-weight: normal;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            opacity: 0.8;
+        }
+
+        /* File upload */
+        .file-drop {
+            border: 2px dashed var(--muted-gold);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .file-drop:hover, .file-drop.dragover {
+            border-color: var(--warm-brown);
+            background: var(--cream);
+        }
+
+        .file-drop input {
+            display: none;
+        }
+
+        .file-drop-text {
+            color: var(--muted-gold);
+            font-size: 0.9rem;
+        }
+
+        .file-name {
+            color: var(--deep-brown);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Options */
+        .options-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .option-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .option-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--deep-brown);
+            margin-bottom: 0.375rem;
+            font-weight: 600;
+        }
+
+        .option-group select {
+            width: 100%;
+            padding: 0.625rem;
+            font-size: 0.9rem;
+            border: 2px solid var(--muted-gold);
+            border-radius: 6px;
+            font-family: inherit;
+            background: white;
+        }
+
+        .option-group select:focus {
+            outline: none;
+            border-color: var(--warm-brown);
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--warm-brown);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: var(--deep-brown);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Preview table */
+        .preview-container {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .preview-count {
+            font-size: 0.85rem;
+            color: var(--muted-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .preview-table th {
+            background: var(--cream);
+            padding: 0.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--deep-brown);
+            border-bottom: 2px solid var(--muted-gold);
+        }
+
+        .preview-table td {
+            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .preview-scroll {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Messages */
+        .message {
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* Instructions */
+        .instructions {
+            font-size: 0.85rem;
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        .instructions ol {
+            margin-left: 1.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.375rem;
+        }
+
+        .instructions code {
+            background: var(--cream);
+            padding: 0.125rem 0.375rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+
+        /* Tag preview */
+        .tag {
+            display: inline-block;
+            background: var(--cream);
+            color: var(--deep-brown);
+            padding: 0.125rem 0.375rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            margin-right: 0.25rem;
+        }
+    </style>
+</head>
+<body style="margin:0; background: var(--parchment); font-family: 'Libre Baskerville', Georgia, serif;">
+
+{% include "components/admin-nav.njk" %}
+
+<div class="import-container">
+    <div id="message-area"></div>
+
+    <!-- Step 1: Choose Source -->
+    <div class="card">
+        <h2><span class="step-number">1</span> Choose Import Source</h2>
+        <div class="source-toggle">
+            <button class="source-btn active" data-source="edelweiss">
+                Edelweiss
+                <small>Collection exports</small>
+            </button>
+            <button class="source-btn" data-source="ingram">
+                Ingram iPage
+                <small>Title search exports</small>
+            </button>
+        </div>
+        <p id="source-hint">Export a collection from Edelweiss as CSV, then upload it here.</p>
+    </div>
+
+    <!-- Step 2: Upload -->
+    <div class="card">
+        <h2><span class="step-number">2</span> Upload CSV File</h2>
+        <div class="file-drop" id="file-drop">
+            <input type="file" id="file-input" accept=".csv,.txt,.xls,.xlsx">
+            <p class="file-drop-text">Drop file here or click to browse</p>
+            <p class="file-name" id="file-name"></p>
+        </div>
+    </div>
+
+    <!-- Step 3: Options -->
+    <div class="card">
+        <h2><span class="step-number">3</span> Set Import Options</h2>
+
+        <div class="options-row">
+            <div class="option-group">
+                <label for="status">Product Status</label>
+                <select id="status">
+                    <option value="draft">Draft (review first)</option>
+                    <option value="active">Active (ready to sell)</option>
+                </select>
+            </div>
+            <div class="option-group">
+                <label for="add-tag">Additional Tags</label>
+                <select id="add-tag">
+                    <option value="needs:order">needs:order (add to next PO)</option>
+                    <option value="">No extra tags</option>
+                    <option value="needs:review">needs:review</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 4: Preview & Download -->
+    <div class="card">
+        <h2><span class="step-number">4</span> Preview & Download</h2>
+
+        <div class="preview-container" id="preview-container">
+            <p class="preview-count" id="preview-count"></p>
+            <div class="preview-scroll">
+                <table class="preview-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>ISBN</th>
+                            <th>Price</th>
+                            <th>Tags</th>
+                        </tr>
+                    </thead>
+                    <tbody id="preview-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn" id="download-btn" disabled>Download Shopify CSV</button>
+        </div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="card">
+        <h2>How to Import to Shopify</h2>
+        <div class="instructions">
+            <ol>
+                <li>Download the Shopify CSV above</li>
+                <li>In Shopify Admin, go to <code>Products</code></li>
+                <li>Click <code>Import</code> at the top</li>
+                <li>Upload the CSV file</li>
+                <li>Check "Overwrite products with matching handles" if updating</li>
+                <li>Click <code>Import products</code></li>
+            </ol>
+            <p style="margin-top: 0.75rem;">Products will be created with the <code>needs:order</code> tag. Filter by this tag when creating POs.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Current source
+    let currentSource = 'edelweiss';
+
+    // Field mappings for different sources
+    const FIELD_MAPS = {
+        edelweiss: {
+            isbn: ['ISBN', 'ISBN13', 'EAN', 'isbn', 'isbn13'],
+            title: ['Title', 'TITLE', 'title', 'Product Title'],
+            author: ['Author', 'AUTHOR', 'author', 'Contributors'],
+            price: ['Price', 'PRICE', 'List Price', 'US Price', 'price'],
+            description: ['Description', 'DESCRIPTION', 'description', 'Marketing Copy'],
+            publisher: ['Publisher', 'PUBLISHER', 'publisher', 'Imprint'],
+            pubDate: ['Pub Date', 'Publication Date', 'pub_date', 'On Sale Date'],
+            ageRange: ['Age Range', 'Ages', 'age_range', 'Interest Age'],
+            category: ['Category', 'BISAC', 'Subject', 'category']
+        },
+        ingram: {
+            isbn: ['ISBN', 'ISBN-13', 'EAN', 'ISBN13', 'Primary ISBN'],
+            title: ['Title', 'Full Title', 'Product Title', 'TITLE'],
+            author: ['Author', 'Primary Author', 'Contributors', 'AUTHOR'],
+            price: ['List Price', 'US List Price', 'Price', 'Retail Price'],
+            description: ['Description', 'Annotation', 'Marketing Copy'],
+            publisher: ['Publisher', 'Imprint', 'Publisher Name'],
+            pubDate: ['Pub Date', 'Publication Date', 'On Sale Date'],
+            ageRange: ['Age Range', 'Interest Age', 'Reading Level'],
+            category: ['BISAC', 'Subject', 'Category']
+        }
+    };
+
+    const SOURCE_HINTS = {
+        edelweiss: 'Export a collection from Edelweiss as CSV, then upload it here.',
+        ingram: 'Export your title search from Ingram iPage as CSV or Excel.'
+    };
+
+    let parsedData = [];
+    let fileName = '';
+
+    // Source toggle
+    document.querySelectorAll('.source-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.source-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentSource = btn.dataset.source;
+            document.getElementById('source-hint').textContent = SOURCE_HINTS[currentSource];
+
+            // Re-parse if we have data
+            if (parsedData.length > 0) {
+                showPreview();
+            }
+        });
+    });
+
+    // File drop handling
+    const fileDrop = document.getElementById('file-drop');
+    const fileInput = document.getElementById('file-input');
+    const fileNameEl = document.getElementById('file-name');
+
+    fileDrop.addEventListener('click', () => fileInput.click());
+
+    fileDrop.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        fileDrop.classList.add('dragover');
+    });
+
+    fileDrop.addEventListener('dragleave', () => {
+        fileDrop.classList.remove('dragover');
+    });
+
+    fileDrop.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileDrop.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
+        if (file) handleFile(file);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) handleFile(file);
+    });
+
+    function handleFile(file) {
+        fileName = file.name;
+        fileNameEl.textContent = fileName;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                parsedData = parseCSV(e.target.result);
+                showPreview();
+                showMessage(`Loaded ${parsedData.length} books from ${fileName}`, 'success');
+            } catch (err) {
+                showMessage(`Error parsing file: ${err.message}`, 'error');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    function parseCSV(text) {
+        const lines = text.split('\n').filter(line => line.trim());
+        if (lines.length < 2) throw new Error('CSV must have header and at least one row');
+
+        // Parse header
+        const header = parseCSVLine(lines[0]);
+        const fieldMap = {};
+        const sourceFields = FIELD_MAPS[currentSource];
+
+        // Map source fields to our fields
+        for (const [ourField, possibleNames] of Object.entries(sourceFields)) {
+            for (let i = 0; i < header.length; i++) {
+                const h = header[i].trim();
+                if (possibleNames.some(name => h.toLowerCase() === name.toLowerCase())) {
+                    fieldMap[ourField] = i;
+                    break;
+                }
+            }
+        }
+
+        // Parse data rows
+        const data = [];
+        for (let i = 1; i < lines.length; i++) {
+            const values = parseCSVLine(lines[i]);
+            if (values.length < 2) continue;
+
+            const row = {};
+            for (const [field, index] of Object.entries(fieldMap)) {
+                row[field] = values[index]?.trim() || '';
+            }
+
+            // Skip rows without title or ISBN
+            if (!row.title && !row.isbn) continue;
+
+            // Clean up ISBN (remove hyphens)
+            if (row.isbn) {
+                row.isbn = row.isbn.replace(/[-\s]/g, '');
+            }
+
+            // Clean up price (remove $ and other symbols)
+            if (row.price) {
+                row.price = row.price.replace(/[$,]/g, '').trim();
+            }
+
+            data.push(row);
+        }
+
+        return data;
+    }
+
+    function parseCSVLine(line) {
+        const values = [];
+        let current = '';
+        let inQuotes = false;
+
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+
+            if (char === '"') {
+                if (inQuotes && line[i + 1] === '"') {
+                    current += '"';
+                    i++;
+                } else {
+                    inQuotes = !inQuotes;
+                }
+            } else if (char === ',' && !inQuotes) {
+                values.push(current);
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+        values.push(current);
+
+        return values;
+    }
+
+    function showPreview() {
+        const container = document.getElementById('preview-container');
+        const body = document.getElementById('preview-body');
+        const count = document.getElementById('preview-count');
+
+        container.style.display = 'block';
+        count.textContent = `${parsedData.length} books from ${currentSource === 'edelweiss' ? 'Edelweiss' : 'Ingram'}`;
+
+        const addTag = document.getElementById('add-tag').value;
+
+        body.innerHTML = parsedData.slice(0, 20).map(row => {
+            const tags = buildTags(row, addTag);
+            return `
+                <tr>
+                    <td title="${row.title}">${row.title || '-'}</td>
+                    <td title="${row.author}">${row.author || '-'}</td>
+                    <td>${row.isbn || '-'}</td>
+                    <td>${row.price ? '$' + row.price : '-'}</td>
+                    <td>${tags.slice(0, 3).map(t => `<span class="tag">${t}</span>`).join('')}${tags.length > 3 ? '...' : ''}</td>
+                </tr>
+            `;
+        }).join('');
+
+        if (parsedData.length > 20) {
+            body.innerHTML += `<tr><td colspan="5" style="text-align:center; color: var(--muted-gold);">... and ${parsedData.length - 20} more</td></tr>`;
+        }
+
+        document.getElementById('download-btn').disabled = false;
+    }
+
+    function buildTags(row, addTag) {
+        const tags = [];
+
+        // Source tag based on current source
+        tags.push(`source:${currentSource}`);
+
+        // Extra tag
+        if (addTag) tags.push(addTag);
+
+        // Age range tag
+        if (row.ageRange) {
+            const age = parseAgeRange(row.ageRange);
+            if (age) tags.push(age);
+        }
+
+        return tags;
+    }
+
+    function parseAgeRange(ageStr) {
+        if (!ageStr) return null;
+        const str = ageStr.toLowerCase();
+
+        if (str.includes('0-3') || str.includes('baby') || str.includes('board')) return 'age:0-3';
+        if (str.includes('4-7') || str.includes('4-8') || str.includes('picture')) return 'age:4-7';
+        if (str.includes('8-12') || str.includes('middle')) return 'age:8-12';
+        if (str.includes('12+') || str.includes('teen') || str.includes('ya')) return 'age:12+';
+
+        // Try to extract numbers
+        const match = ageStr.match(/(\d+)/);
+        if (match) {
+            const num = parseInt(match[1]);
+            if (num <= 3) return 'age:0-3';
+            if (num <= 7) return 'age:4-7';
+            if (num <= 12) return 'age:8-12';
+            return 'age:12+';
+        }
+
+        return null;
+    }
+
+    // Update preview when options change
+    document.getElementById('add-tag').addEventListener('change', () => {
+        if (parsedData.length > 0) showPreview();
+    });
+
+    // Download
+    document.getElementById('download-btn').addEventListener('click', () => {
+        const csv = generateShopifyCSV();
+        downloadCSV(csv, `shopify-import-${currentSource}-${Date.now()}.csv`);
+    });
+
+    function generateShopifyCSV() {
+        const status = document.getElementById('status').value;
+        const addTag = document.getElementById('add-tag').value;
+
+        // Shopify CSV header
+        const header = [
+            'Handle', 'Title', 'Body (HTML)', 'Vendor', 'Product Category', 'Type', 'Tags',
+            'Published', 'Option1 Name', 'Option1 Value', 'Variant SKU', 'Variant Grams',
+            'Variant Inventory Tracker', 'Variant Inventory Qty', 'Variant Inventory Policy',
+            'Variant Fulfillment Service', 'Variant Price', 'Variant Barcode', 'Status'
+        ];
+
+        const rows = [header];
+
+        for (const row of parsedData) {
+            const handle = generateHandle(row.title);
+            const tags = buildTags(row, addTag);
+            const published = status === 'active' ? 'TRUE' : 'FALSE';
+
+            rows.push([
+                handle,                          // Handle
+                row.title || '',                 // Title
+                row.description || '',           // Body (HTML)
+                row.publisher || '',             // Vendor
+                '',                              // Product Category
+                'Book',                          // Type
+                tags.join(', '),                 // Tags
+                published,                       // Published
+                'Title',                         // Option1 Name
+                'Default Title',                 // Option1 Value
+                row.isbn || '',                  // Variant SKU
+                '400',                           // Variant Grams (default)
+                'shopify',                       // Variant Inventory Tracker
+                '0',                             // Variant Inventory Qty
+                'deny',                          // Variant Inventory Policy
+                'manual',                        // Variant Fulfillment Service
+                row.price || '',                 // Variant Price
+                row.isbn || '',                  // Variant Barcode
+                status                           // Status
+            ]);
+        }
+
+        return rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
+    }
+
+    function generateHandle(title) {
+        if (!title) return 'untitled-' + Date.now();
+        return title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-|-$/g, '')
+            .slice(0, 50);
+    }
+
+    function downloadCSV(content, filename) {
+        const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+    }
+
+    function showMessage(text, type) {
+        const area = document.getElementById('message-area');
+        area.innerHTML = `<div class="message ${type}">${text}</div>`;
+        setTimeout(() => { area.innerHTML = ''; }, 5000);
+    }
+</script>
+</body>
+</html>
