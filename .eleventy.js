@@ -31,24 +31,83 @@ module.exports = function(eleventyConfig) {
   // Watch for CSS changes
   eleventyConfig.addWatchTarget("src/assets/css/");
 
+  // Helper function to get current time in EST/EDT (America/New_York)
+  const getNowInEST = () => {
+    const nowUTC = new Date();
+    const estFormatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/New_York',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+
+    const parts = {};
+    estFormatter.formatToParts(nowUTC).forEach(part => {
+      parts[part.type] = part.value;
+    });
+
+    return new Date(
+      `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}`
+    );
+  };
+
+  // Helper function to parse event end time (assumes times are in EST/EDT)
+  const getEventEndTime = (date, time) => {
+    const eventDate = parseDate(date);
+    if (!time) {
+      // If no time specified, consider event over at end of day
+      eventDate.setHours(23, 59, 59, 999);
+      return eventDate;
+    }
+
+    // Parse end time from time string (e.g., "11:00 AM - 12:00 PM")
+    const timeMatch = time.match(/(\d+):(\d+)\s*(AM|PM)?\s*-\s*(\d+):(\d+)\s*(AM|PM)/i);
+    if (timeMatch) {
+      let endHour = parseInt(timeMatch[4]);
+      const endMinute = parseInt(timeMatch[5]);
+      const endPeriod = timeMatch[6];
+
+      if (endPeriod && endPeriod.toUpperCase() === 'PM' && endHour !== 12) {
+        endHour += 12;
+      } else if (endPeriod && endPeriod.toUpperCase() === 'AM' && endHour === 12) {
+        endHour = 0;
+      }
+
+      eventDate.setHours(endHour, endMinute, 0, 0);
+      return eventDate;
+    }
+
+    // If we can't parse the time, default to end of day
+    eventDate.setHours(23, 59, 59, 999);
+    return eventDate;
+  };
+
   // Collections
   eleventyConfig.addCollection("upcomingEvents", collection => {
-    const now = new Date();
-    const fourMonthsFromNow = new Date();
+    const now = getNowInEST();
+    const fourMonthsFromNow = new Date(now);
     fourMonthsFromNow.setMonth(now.getMonth() + 4);
 
     return collection.getFilteredByGlob("src/events/*.md")
       .filter(item => {
+        const eventEndTime = getEventEndTime(item.data.date, item.data.time);
         const eventDate = parseDate(item.data.date);
-        return eventDate >= now && eventDate <= fourMonthsFromNow;
+        return eventEndTime > now && eventDate <= fourMonthsFromNow;
       })
       .sort((a, b) => parseDate(a.data.date) - parseDate(b.data.date));
   });
 
   eleventyConfig.addCollection("pastEvents", collection => {
-    const now = new Date();
+    const now = getNowInEST();
     return collection.getFilteredByGlob("src/events/*.md")
-      .filter(item => parseDate(item.data.date) < now)
+      .filter(item => {
+        const eventEndTime = getEventEndTime(item.data.date, item.data.time);
+        return eventEndTime <= now;
+      })
       .sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
   });
 
@@ -59,23 +118,27 @@ module.exports = function(eleventyConfig) {
 
   // Featured event - next upcoming event only
   eleventyConfig.addCollection("nextEvent", collection => {
-    const now = new Date();
+    const now = getNowInEST();
     const upcoming = collection.getFilteredByGlob("src/events/*.md")
-      .filter(item => parseDate(item.data.date) >= now)
+      .filter(item => {
+        const eventEndTime = getEventEndTime(item.data.date, item.data.time);
+        return eventEndTime > now;
+      })
       .sort((a, b) => parseDate(a.data.date) - parseDate(b.data.date));
     return upcoming.length > 0 ? [upcoming[0]] : [];
   });
 
   // Preview events - next 3 upcoming events within 4 months
   eleventyConfig.addCollection("previewEvents", collection => {
-    const now = new Date();
-    const fourMonthsFromNow = new Date();
+    const now = getNowInEST();
+    const fourMonthsFromNow = new Date(now);
     fourMonthsFromNow.setMonth(now.getMonth() + 4);
 
     return collection.getFilteredByGlob("src/events/*.md")
       .filter(item => {
+        const eventEndTime = getEventEndTime(item.data.date, item.data.time);
         const eventDate = parseDate(item.data.date);
-        return eventDate >= now && eventDate <= fourMonthsFromNow;
+        return eventEndTime > now && eventDate <= fourMonthsFromNow;
       })
       .sort((a, b) => parseDate(a.data.date) - parseDate(b.data.date))
       .slice(0, 3);
@@ -104,6 +167,10 @@ module.exports = function(eleventyConfig) {
         return d.toLocaleDateString('en-US', { month: 'long' });
       case 'D':
         return d.getDate();
+      case 'DD':
+        return String(d.getDate()).padStart(2, '0');
+      case 'MM':
+        return String(d.getMonth() + 1).padStart(2, '0');
       case 'YYYY':
         return d.getFullYear();
       case 'MMMM D, YYYY':
@@ -122,15 +189,13 @@ module.exports = function(eleventyConfig) {
     return array.slice(0, limit);
   });
 
-  eleventyConfig.addFilter("isPastEvent", (date) => {
+  // Add isPastEvent as a global function that can take multiple parameters
+  eleventyConfig.addNunjucksGlobal("isPastEvent", (date, time) => {
     if (!date) return false;
-    const eventDate = parseDate(date);
-    const now = new Date();
-    // Set both to start of day for comparison
-    now.setHours(0, 0, 0, 0);
-    eventDate.setHours(0, 0, 0, 0);
-    // Event is considered "past" on the day of the event (>= comparison)
-    return eventDate <= now;
+    const now = getNowInEST();
+    const eventEndTime = getEventEndTime(date, time);
+    // Event is considered "past" only after the end time has passed (in EST/EDT)
+    return eventEndTime <= now;
   });
 
   return {

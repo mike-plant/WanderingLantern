@@ -149,6 +149,12 @@
   padding-bottom: 0.25rem;
 }
 
+.calendar-date-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .calendar-date {
   display: flex;
   flex-direction: column;
@@ -163,6 +169,14 @@
   position: relative;
   scroll-snap-align: start;
   transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.calendar-date:hover {
+  border-color: var(--aged-gold);
+  background: rgba(201, 169, 97, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(139, 111, 71, 0.2);
 }
 
 .calendar-date:focus-visible {

@@ -30,7 +30,7 @@ The Wandering Lantern joins Lakewood's vibrant Madison Avenue business district,
 
 The grand opening celebration on November 29 will feature extended hours, special promotions, and activities for young readers. The store will be open Tuesday through Saturday from 10 AM to 6 PM, with extended hours on Thursdays until 8 PM.
 
-For more information, visit thewanderinglantern.com or follow @thewanderinglanterncle on Instagram and Facebook.
+For more information, visit thewanderinglantern.com or follow @thewanderinglanterncle on Instagram and @thewanderinglantern on Facebook.
 
 ###
 

@@ -24,10 +24,6 @@
         </div>
         <span class="siblings-tag">Siblings welcome!</span>
       </div>
-
-      <div class="storytime-cta">
-        <a href="/events/saturday-storytime/" class="cta-link">View full schedule & details →</a>
-      </div>
     </div>
 
     {# Dates - right column on desktop #}
@@ -40,21 +36,23 @@
         {% for event in collections.upcomingEvents %}
           {% if event.data.title == "Saturday Story Time" and dateCount < 5 %}
             {% set dateCount = dateCount + 1 %}
-            <div class="calendar-date {% if event.data.status == 'cancelled' %}calendar-date--cancelled{% endif %}"
-                 {% if event.data.status == 'cancelled' %}
-                 role="text"
-                 aria-label="{{ event.data.date | date('MMMM D') }}, cancelled due to holiday break"
-                 {% else %}
-                 role="text"
-                 aria-label="{{ event.data.date | date('MMMM D') }}"
-                 {% endif %}>
-              <span class="calendar-month">{{ event.data.date | date('MMM') }}</span>
-              <span class="calendar-day">{{ event.data.date | date('D') }}</span>
-              {% if event.data.status == 'cancelled' %}
-                <span class="cancelled-icon" aria-hidden="true">✕</span>
-                {% set cancelledDates = (cancelledDates.push(event.data.date | date('MMM D')), cancelledDates) %}
-              {% endif %}
-            </div>
+            <a href="{{ event.url }}" class="calendar-date-link">
+              <div class="calendar-date {% if event.data.status == 'cancelled' %}calendar-date--cancelled{% endif %}"
+                   {% if event.data.status == 'cancelled' %}
+                   role="text"
+                   aria-label="{{ event.data.date | date('MMMM D') }}, cancelled due to holiday break"
+                   {% else %}
+                   role="text"
+                   aria-label="{{ event.data.date | date('MMMM D') }}"
+                   {% endif %}>
+                <span class="calendar-month">{{ event.data.date | date('MMM') }}</span>
+                <span class="calendar-day">{{ event.data.date | date('D') }}</span>
+                {% if event.data.status == 'cancelled' %}
+                  <span class="cancelled-icon" aria-hidden="true">✕</span>
+                  {% set cancelledDates = (cancelledDates.push(event.data.date | date('MMM D')), cancelledDates) %}
+                {% endif %}
+              </div>
+            </a>
           {% endif %}
         {% endfor %}
       </div>
