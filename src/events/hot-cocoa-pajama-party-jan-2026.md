@@ -5,9 +5,10 @@ date: 2026-01-23
 time: "6:30 PM - 8:00 PM"
 ageRange: "All ages"
 excerpt: "Wear cozy clothes, bring mats, a pillow, blankets, and your favorite winter stories to cuddle up and read with your friends and family."
-mailchimpFormId: "f1915b185f"
-mailchimpTag: "3728725"
+mailchimpFormId: ""
+mailchimpTag: ""
 showChildFields: true
+status: full
 ---
 
 ## About This Event
@@ -31,4 +32,8 @@ Join us for a magical winter evening at our Hot Cocoa Pajama Party! Wear your co
 
 This is a special evening event perfect for families to slow down, get cozy, and enjoy the simple pleasure of reading together. Create warm winter memories while discovering new favorite books!
 
-**Please register so we can prepare enough hot cocoa and cozy spaces for everyone.**
+### Registration
+
+**This event is now at full capacity.** Thank you for your interest!
+
+For questions, contact us at [hello@thewanderinglantern.com](mailto:hello@thewanderinglantern.com) or call (216) 999-4462.
