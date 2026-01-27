@@ -86,7 +86,8 @@ module.exports = function(eleventyConfig) {
     return eventDate;
   };
 
-  // Collections
+  // Collections — recurring events (e.g. Saturday Story Time) are excluded
+  // from standard collections so they don't crowd out special events
   eleventyConfig.addCollection("upcomingEvents", collection => {
     const now = getNowInEST();
     const fourMonthsFromNow = new Date(now);
@@ -94,6 +95,7 @@ module.exports = function(eleventyConfig) {
 
     return collection.getFilteredByGlob("src/events/*.md")
       .filter(item => {
+        if (item.data.recurring) return false;
         const eventEndTime = getEventEndTime(item.data.date, item.data.time);
         const eventDate = parseDate(item.data.date);
         return eventEndTime > now && eventDate <= fourMonthsFromNow;
@@ -105,6 +107,7 @@ module.exports = function(eleventyConfig) {
     const now = getNowInEST();
     return collection.getFilteredByGlob("src/events/*.md")
       .filter(item => {
+        if (item.data.recurring) return false;
         const eventEndTime = getEventEndTime(item.data.date, item.data.time);
         return eventEndTime <= now;
       })
@@ -116,11 +119,12 @@ module.exports = function(eleventyConfig) {
       .sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
   });
 
-  // Featured event - next upcoming event only
+  // Featured event - next upcoming non-recurring event only
   eleventyConfig.addCollection("nextEvent", collection => {
     const now = getNowInEST();
     const upcoming = collection.getFilteredByGlob("src/events/*.md")
       .filter(item => {
+        if (item.data.recurring) return false;
         const eventEndTime = getEventEndTime(item.data.date, item.data.time);
         return eventEndTime > now;
       })
@@ -128,20 +132,39 @@ module.exports = function(eleventyConfig) {
     return upcoming.length > 0 ? [upcoming[0]] : [];
   });
 
-  // Preview events - next 3 upcoming events within 4 months
-  eleventyConfig.addCollection("previewEvents", collection => {
+  // Preview events - next 3 upcoming non-recurring events within 4 months (homepage)
+  eleventyConfig.addCollection("previewSpecialEvents", collection => {
     const now = getNowInEST();
     const fourMonthsFromNow = new Date(now);
     fourMonthsFromNow.setMonth(now.getMonth() + 4);
 
     return collection.getFilteredByGlob("src/events/*.md")
       .filter(item => {
+        if (item.data.recurring) return false;
         const eventEndTime = getEventEndTime(item.data.date, item.data.time);
         const eventDate = parseDate(item.data.date);
         return eventEndTime > now && eventDate <= fourMonthsFromNow;
       })
       .sort((a, b) => parseDate(a.data.date) - parseDate(b.data.date))
       .slice(0, 3);
+  });
+
+  // Upcoming Saturdays — programmatically generated for storytime date squares
+  eleventyConfig.addNunjucksGlobal("upcomingSaturdays", () => {
+    const now = getNowInEST();
+    const saturdays = [];
+    const d = new Date(now);
+    // Find next Saturday
+    d.setDate(d.getDate() + ((6 - d.getDay() + 7) % 7 || 7));
+    d.setHours(0, 0, 0, 0);
+    for (let i = 0; i < 5; i++) {
+      saturdays.push({
+        month: d.toLocaleDateString('en-US', { month: 'short' }),
+        day: d.getDate()
+      });
+      d.setDate(d.getDate() + 7);
+    }
+    return saturdays;
   });
 
   // Filters

@@ -1,9 +1,12 @@
 ---
 layout: layouts/event.njk
 title: "Saturday Story Time"
-date: 2025-12-13
+date: 2099-12-31
 time: "11:00 AM - 12:00 PM"
 ageRange: "0-10"
+recurring: true
+recurringSchedule: "Every Saturday"
+permalink: /events/saturday-storytime/
 excerpt: "Join us every Saturday morning for story time! Two sessions: 11:00am for ages 0-5 and 11:30am for ages 6-10."
 mailchimpFormId: "f1915b185f"
 mailchimpTag: "3728684"
@@ -21,7 +24,7 @@ Come hang out and hear a couple stories for different ages **every Saturday morn
 - Perfect for toddlers and preschoolers
 - Engaging read-alouds with songs and movement
 - Parent participation encouraged
-### 
+
 #### **11:30 AM - Early Readers (Ages 6-10)**
 - Chapter book excerpts and longer stories
 - Books for developing readers
@@ -37,4 +40,6 @@ Come hang out and hear a couple stories for different ages **every Saturday morn
 
 ### Details
 
-This is a **recurring weekly event** - come every Saturday or drop in when you can! No registration necessary, though we always love to see familiar faces return week after week.
+This is a **recurring weekly event** — come every Saturday or drop in when you can! No registration necessary, though we always love to see familiar faces return week after week.
+
+For questions, contact us at [hello@thewanderinglantern.com](mailto:hello@thewanderinglantern.com) or call (216) 999-4462.

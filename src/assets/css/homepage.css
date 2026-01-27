@@ -2,7 +2,7 @@
 
 /* ===== HERO COMPACT REDESIGN ===== */
 .hero {
-  height: 65vh;
+  height: 55vh;
   min-height: 500px;
 }
 
@@ -36,7 +36,7 @@
 /* Desktop hero */
 @media (min-width: 768px) {
   .hero {
-    height: 60vh;
+    height: 50vh;
     min-height: 500px;
   }
 
@@ -201,6 +201,149 @@
 
 .events-preview-cta {
   margin-top: 2rem;
+}
+
+/* ===== COMPACT STORY TIME CARD (Homepage) ===== */
+.storytime-compact-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.storytime-compact {
+  background: linear-gradient(135deg, rgba(139, 111, 71, 0.06) 0%, rgba(201, 169, 97, 0.06) 100%);
+  border: 2px solid var(--aged-gold);
+  border-radius: 8px;
+  padding: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.storytime-compact-link:hover .storytime-compact {
+  border-color: var(--warm-brown);
+  box-shadow: 0 4px 12px rgba(139, 111, 71, 0.12);
+}
+
+.storytime-compact-main {
+  flex: 1;
+  min-width: 200px;
+}
+
+.storytime-compact-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.storytime-compact-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--deep-brown);
+  font-weight: 700;
+}
+
+.storytime-compact .storytime-badge {
+  font-size: 0.65rem;
+  padding: 0.2rem 0.6rem;
+}
+
+.storytime-compact-details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.storytime-compact-times {
+  font-size: 0.9rem;
+  color: var(--dark-text);
+}
+
+.storytime-compact-free {
+  font-size: 0.85rem;
+  color: var(--warm-brown);
+  font-weight: 600;
+}
+
+/* Date squares in compact card */
+.storytime-compact-dates {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.compact-date-square {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 2px solid var(--warm-brown);
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  min-width: 48px;
+  transition: all 0.2s ease;
+}
+
+.storytime-compact-link:hover .compact-date-square {
+  border-color: var(--aged-gold);
+  background: rgba(201, 169, 97, 0.1);
+}
+
+.compact-date-month {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--warm-brown);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.compact-date-day {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--deep-brown);
+  line-height: 1;
+  margin-top: 0.15rem;
+}
+
+.storytime-compact-arrow {
+  color: var(--aged-gold);
+  font-size: 1.25rem;
+  font-weight: 700;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.storytime-compact-link:hover .storytime-compact-arrow {
+  transform: translateX(4px);
+}
+
+/* Mobile compact card */
+@media (max-width: 767px) {
+  .storytime-compact {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-right: 2.5rem;
+  }
+
+  .storytime-compact-dates {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .storytime-compact-arrow {
+    position: absolute;
+    right: 1rem;
+    top: 1.25rem;
+  }
 }
 
 /* Desktop events preview - featured card spans full width */

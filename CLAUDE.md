@@ -44,6 +44,7 @@ src/
 ├── thankyou/          # Thank you page (passthrough)
 ├── index.njk          # Homepage template
 ├── events.njk         # Events listing page
+├── reservations.njk   # Event space rental page
 └── press.njk          # Press room page
 ```
 
@@ -110,6 +111,22 @@ Content here...
 ```
 
 2. Press release automatically appears on `/press/` and gets own page
+
+### Event Space Reservations
+
+The `/reservations/` page offers three event packages for private bookstore space rental:
+
+1. **Basic Gathering**: Self-service space rental with optional story time add-on
+2. **Story + Creative Experience**: Includes guided story time and craft activity
+3. **Full Hosted Celebration**: Complete turnkey experience with snacks, activities, and full setup/cleanup
+
+**Inquiry Form**: Collects guest details, preferred package, event type, date, and guest count. Submits to Formspree (form ID: `xkgqdarv`) with subject line identifying it as an event rental inquiry.
+
+**Customization**: Edit `src/reservations.njk` to update:
+- Package descriptions and offerings
+- Venue capacity and amenities
+- FAQ answers
+- Pricing information
 
 ## Forms & Mailchimp
 

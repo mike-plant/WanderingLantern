@@ -100,30 +100,39 @@
   font-weight: 600;
 }
 
-/* CTA link */
-.storytime-cta {
-  margin-top: 0.75rem;
-}
-
-.cta-link {
-  display: inline-flex;
-  align-items: center;
-  color: var(--aged-gold);
-  font-weight: 600;
-  font-size: 0.9rem;
+/* Banner link wrapper */
+.storytime-banner-link {
   text-decoration: none;
-  transition: all 0.2s ease;
+  color: inherit;
+  display: block;
 }
 
-.cta-link:hover {
-  color: var(--deep-brown);
-  text-decoration: underline;
+.storytime-banner-link:hover .storytime-banner {
+  border-color: var(--warm-brown);
+  box-shadow: 0 4px 12px rgba(139, 111, 71, 0.12);
 }
 
-.cta-link:focus-visible {
-  outline: 2px solid var(--aged-gold);
-  outline-offset: 4px;
-  border-radius: 2px;
+/* Details link footer */
+.storytime-details-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(139, 111, 71, 0.15);
+  font-size: 0.9rem;
+  color: var(--warm-brown);
+  font-weight: 600;
+}
+
+.storytime-arrow {
+  color: var(--aged-gold);
+  font-size: 1.1rem;
+  font-weight: 700;
+  transition: transform 0.2s ease;
+}
+
+.storytime-banner-link:hover .storytime-arrow {
+  transform: translateX(4px);
 }
 
 /* Dates section */
@@ -149,12 +158,6 @@
   padding-bottom: 0.25rem;
 }
 
-.calendar-date-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
 .calendar-date {
   display: flex;
   flex-direction: column;
@@ -166,28 +169,13 @@
   padding: 0.5rem 0.6rem;
   min-width: 60px;
   flex-shrink: 0;
-  position: relative;
   scroll-snap-align: start;
   transition: all 0.2s ease;
-  cursor: pointer;
 }
 
-.calendar-date:hover {
+.storytime-banner-link:hover .calendar-date {
   border-color: var(--aged-gold);
   background: rgba(201, 169, 97, 0.1);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(139, 111, 71, 0.2);
-}
-
-.calendar-date:focus-visible {
-  outline: 3px solid var(--aged-gold);
-  outline-offset: 2px;
-}
-
-.calendar-date--cancelled {
-  border-color: rgba(220, 38, 38, 0.4);
-  background: rgba(220, 38, 38, 0.05);
-  opacity: 0.8;
 }
 
 .calendar-month {
@@ -204,48 +192,6 @@
   color: var(--deep-brown);
   line-height: 1;
   margin-top: 0.25rem;
-}
-
-.calendar-date--cancelled .calendar-day {
-  text-decoration: line-through;
-  color: rgba(220, 38, 38, 0.8);
-}
-
-.calendar-date--cancelled .calendar-month {
-  color: rgba(220, 38, 38, 0.7);
-}
-
-/* Cancelled icon - clear visual indicator */
-.cancelled-icon {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: rgba(220, 38, 38, 0.95);
-  color: white;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  font-weight: 700;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* Cancelled explanation text */
-.cancelled-note {
-  margin-top: 0.75rem;
-  padding: 0.75rem;
-  background: rgba(220, 38, 38, 0.08);
-  border-left: 3px solid rgba(220, 38, 38, 0.6);
-  border-radius: 4px;
-  font-size: 0.85rem;
-  color: var(--dark-text);
-}
-
-.cancelled-note strong {
-  color: rgba(220, 38, 38, 0.9);
 }
 
 /* Desktop: Two column layout - INFO left (60%), DATES right (40%) */
@@ -283,7 +229,7 @@
     font-size: 1.5rem;
   }
 
-  /* Info section - LEFT column (primary) */
+  /* Info section - LEFT column */
   .storytime-info {
     grid-column: 1;
     grid-row: 2;
@@ -294,7 +240,7 @@
     font-size: 0.95rem;
   }
 
-  /* Dates section - RIGHT column (secondary) */
+  /* Dates section - RIGHT column */
   .storytime-dates {
     grid-column: 2;
     grid-row: 2;

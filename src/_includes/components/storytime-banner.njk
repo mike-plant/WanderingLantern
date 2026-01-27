@@ -1,68 +1,46 @@
-{# Saturday Story Time Banner - UX Optimized Layout #}
-<div class="storytime-banner">
-  <div class="storytime-banner-content">
-    {# Header - spans full width on both mobile and desktop #}
-    <div class="storytime-header">
-      <h2 class="storytime-title">Saturday Story Time</h2>
-      <span class="storytime-badge">Every Saturday</span>
-    </div>
-
-    {# Main Info - left column on desktop #}
-    <div class="storytime-info">
-      <p class="storytime-description">Drop in any Saturday for free story time! Meet other families, hear great stories, and spark imagination together.</p>
-
-      <div class="storytime-times">
-        <div class="time-option">
-          <strong>11:00 AM</strong>
-          <span class="time-arrow">→</span>
-          <span class="time-ages">Ages 0-5</span>
-        </div>
-        <div class="time-option">
-          <strong>11:30 AM</strong>
-          <span class="time-arrow">→</span>
-          <span class="time-ages">Ages 6-10</span>
-        </div>
-        <span class="siblings-tag">Siblings welcome!</span>
-      </div>
-    </div>
-
-    {# Dates - right column on desktop #}
-    <div class="storytime-dates">
-      <span class="dates-label">Upcoming Saturdays:</span>
-
-      <div class="dates-calendar">
-        {% set cancelledDates = [] %}
-        {% set dateCount = 0 %}
-        {% for event in collections.upcomingEvents %}
-          {% if event.data.title == "Saturday Story Time" and dateCount < 5 %}
-            {% set dateCount = dateCount + 1 %}
-            <a href="{{ event.url }}" class="calendar-date-link">
-              <div class="calendar-date {% if event.data.status == 'cancelled' %}calendar-date--cancelled{% endif %}"
-                   {% if event.data.status == 'cancelled' %}
-                   role="text"
-                   aria-label="{{ event.data.date | date('MMMM D') }}, cancelled due to holiday break"
-                   {% else %}
-                   role="text"
-                   aria-label="{{ event.data.date | date('MMMM D') }}"
-                   {% endif %}>
-                <span class="calendar-month">{{ event.data.date | date('MMM') }}</span>
-                <span class="calendar-day">{{ event.data.date | date('D') }}</span>
-                {% if event.data.status == 'cancelled' %}
-                  <span class="cancelled-icon" aria-hidden="true">✕</span>
-                  {% set cancelledDates = (cancelledDates.push(event.data.date | date('MMM D')), cancelledDates) %}
-                {% endif %}
-              </div>
-            </a>
-          {% endif %}
-        {% endfor %}
+{# Saturday Story Time Banner - Events Page #}
+<a href="/events/saturday-storytime/" class="storytime-banner-link">
+  <div class="storytime-banner">
+    <div class="storytime-banner-content">
+      {# Header - spans full width on both mobile and desktop #}
+      <div class="storytime-header">
+        <h2 class="storytime-title">Saturday Story Time</h2>
+        <span class="storytime-badge">Every Saturday</span>
       </div>
 
-      {# Show cancelled date explanation if any exist #}
-      {% if cancelledDates.length > 0 %}
-      <p class="cancelled-note">
-        <strong>Cancelled:</strong> {{ cancelledDates | join(', ') }} - Holiday break
-      </p>
-      {% endif %}
+      {# Main Info - left column on desktop #}
+      <div class="storytime-info">
+        <p class="storytime-description">Drop in any Saturday for free story time! Meet other families, hear great stories, and spark imagination together.</p>
+
+        <div class="storytime-times">
+          <div class="time-option">
+            <strong>11:00 AM</strong>
+            <span class="time-arrow">&rarr;</span>
+            <span class="time-ages">Ages 0-5</span>
+          </div>
+          <div class="time-option">
+            <strong>11:30 AM</strong>
+            <span class="time-arrow">&rarr;</span>
+            <span class="time-ages">Ages 6-10</span>
+          </div>
+          <span class="siblings-tag">Siblings welcome!</span>
+        </div>
+      </div>
+
+      {# Dates - right column on desktop #}
+      <div class="storytime-dates">
+        <span class="dates-label">Upcoming Saturdays:</span>
+
+        <div class="dates-calendar">
+          {% set saturdays = upcomingSaturdays() %}
+          {% for sat in saturdays %}
+            <div class="calendar-date">
+              <span class="calendar-month">{{ sat.month }}</span>
+              <span class="calendar-day">{{ sat.day }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</a>

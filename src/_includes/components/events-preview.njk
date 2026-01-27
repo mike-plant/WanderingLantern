@@ -1,20 +1,47 @@
-<!-- Upcoming Events Preview - Next 3 Events -->
-{% if collections.previewEvents.length > 0 %}
+<!-- Upcoming Events Preview -->
+{% if collections.previewSpecialEvents.length > 0 %}
 <section id="upcoming-events-preview">
     <h2>Upcoming Events</h2>
+
+    {# Compact Saturday Story Time card — shown first #}
+    <a href="/events/saturday-storytime/" class="storytime-compact-link">
+        <div class="storytime-compact">
+            <div class="storytime-compact-main">
+                <div class="storytime-compact-header">
+                    <span class="storytime-compact-title">Saturday Story Time</span>
+                    <span class="storytime-badge">Every Saturday</span>
+                </div>
+                <div class="storytime-compact-details">
+                    <span class="storytime-compact-times">11:00 AM Ages 0-5 &middot; 11:30 AM Ages 6-10</span>
+                    <span class="storytime-compact-free">Free, just drop in!</span>
+                </div>
+            </div>
+            <div class="storytime-compact-dates">
+                {% set saturdays = upcomingSaturdays() %}
+                {% for sat in saturdays %}
+                <div class="compact-date-square">
+                    <span class="compact-date-month">{{ sat.month }}</span>
+                    <span class="compact-date-day">{{ sat.day }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <span class="storytime-compact-arrow" aria-hidden="true">&rarr;</span>
+        </div>
+    </a>
+
     <div class="events-preview-grid">
-        {% for event in collections.previewEvents %}
+        {% for event in collections.previewSpecialEvents %}
         <a href="{{ event.url }}" class="event-preview-card-link">
-            <div class="event-preview-card {% if loop.first %}event-card-featured{% endif %} {% if event.data.status %}event-preview-card--{{ event.data.status }}{% elif isPastEvent(event.data.date, event.data.time) %}event-preview-card--closed{% endif %}">
-                {% if event.data.status %}
+            <div class="event-preview-card {% if loop.first %}event-card-featured{% endif %} {% if isPastEvent(event.data.date, event.data.time) %}event-preview-card--closed{% elif event.data.status %}event-preview-card--{{ event.data.status }}{% endif %}">
+                {% if isPastEvent(event.data.date, event.data.time) %}
+                <div class="event-status-badge event-status-badge--closed">
+                    CLOSED
+                </div>
+                {% elif event.data.status %}
                 <div class="event-status-badge event-status-badge--{{ event.data.status }}">
                     {% if event.data.status == 'cancelled' %}CANCELLED
                     {% elif event.data.status == 'full' %}FULL
                     {% endif %}
-                </div>
-                {% elif isPastEvent(event.data.date, event.data.time) %}
-                <div class="event-status-badge event-status-badge--closed">
-                    CLOSED
                 </div>
                 {% endif %}
                 <div class="event-preview-date">
@@ -37,6 +64,7 @@
         </a>
         {% endfor %}
     </div>
+
     <div class="events-preview-cta">
         <a href="/events/" class="cta-button secondary">View All Events</a>
     </div>
