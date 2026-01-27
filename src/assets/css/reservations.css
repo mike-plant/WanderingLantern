@@ -1,0 +1,136 @@
+/* Reservations Page Styles */
+
+/* Submit button hover effect */
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(201, 169, 97, 0.4);
+}
+
+.cta-button:active {
+  transform: translateY(0);
+}
+
+/* Form input focus states */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--aged-gold) !important;
+  box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.2);
+}
+
+/* Event type badges */
+.event-type-badge {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.event-type-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(201, 169, 97, 0.4);
+}
+
+/* Mobile responsiveness for reservations page */
+@media (max-width: 768px) {
+  .reservations-hero h1 {
+    font-size: 2rem !important;
+  }
+
+  .reservations-hero p {
+    font-size: 1rem !important;
+  }
+
+  /* Stack grid items on mobile */
+  div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Reduce padding on mobile */
+  section {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  div[style*="padding: 2.5rem"] {
+    padding: 1.5rem !important;
+  }
+
+  div[style*="padding: 3rem 2rem"] {
+    padding: 2rem 1.5rem !important;
+  }
+
+  /* Event type badges wrap nicely */
+  div[style*="flex-wrap: wrap"] {
+    gap: 1rem !important;
+  }
+
+  div[style*="padding: 1rem 2rem; border-radius: 50px"] {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1rem !important;
+  }
+
+  /* Form fields stack properly */
+  div[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* FAQ items */
+  div[style*="border-left: 4px solid"] {
+    padding: 1.5rem !important;
+  }
+
+  /* Headings */
+  h2[style*="font-size: 2.5rem"] {
+    font-size: 2rem !important;
+  }
+
+  h3[style*="font-size: 1.4rem"],
+  h3[style*="font-size: 2rem"] {
+    font-size: 1.3rem !important;
+  }
+}
+
+/* Smooth scrolling to form anchor */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Form validation styling */
+input:invalid:not(:placeholder-shown),
+textarea:invalid:not(:placeholder-shown),
+select:invalid:not(:placeholder-shown) {
+  border-color: #d9534f;
+}
+
+input:valid:not(:placeholder-shown),
+textarea:valid:not(:placeholder-shown),
+select:valid:not(:placeholder-shown) {
+  border-color: #5cb85c;
+}
+
+/* Loading state for form submission */
+form[data-submitting="true"] button {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Success message styling (if Formspree returns inline) */
+.formspree-success {
+  background: #d4edda;
+  border: 2px solid #c3e6cb;
+  color: #155724;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* Error message styling */
+.formspree-error {
+  background: #f8d7da;
+  border: 2px solid #f5c6cb;
+  color: #721c24;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  text-align: center;
+}

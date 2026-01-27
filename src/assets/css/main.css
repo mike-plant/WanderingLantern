@@ -16,6 +16,7 @@
 /* Page-specific styles */
 @import 'homepage.css';
 @import 'events.css';
+@import 'reservations.css';
 @import 'press.css';
 @import 'about.css';
 @import 'orders.css';

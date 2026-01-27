@@ -1,6 +1,7 @@
 {
   "navigation": {
     "showEventsInMainNav": true,
+    "showReservationsInMainNav": true,
     "showAboutInMainNav": true,
     "showNewsletterInMainNav": true,
     "showPressInMainNav": false,

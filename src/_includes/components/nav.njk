@@ -4,21 +4,23 @@
     <a href="/">Home</a>
     {% endif %}
 
-    <a href="/#contact">Visit</a>
-
     {% if features.navigation.showEventsInMainNav %}
-    <a href="/events/">Events</a>
+    <a href="/events/">Our Events</a>
+    {% endif %}
+
+    {% if features.navigation.showReservationsInMainNav %}
+    <a href="/reservations/">Book Our Space</a>
     {% endif %}
 
     {% if features.navigation.showAboutInMainNav %}
-    <a href="/about/">About</a>
+    <a href="/about/">Our Story</a>
     {% endif %}
 
     {% if features.navigation.showNewsletterInMainNav %}
-    <a href="/signup/">Newsletter</a>
+    <a href="/signup/">Join Our List</a>
     {% endif %}
 
     {% if features.navigation.showContactInMainNav %}
-    <a href="/#contact">Contact</a>
+    <a href="/#contact">Contact Us</a>
     {% endif %}
 </nav>
