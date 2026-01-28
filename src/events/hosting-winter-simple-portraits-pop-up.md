@@ -14,7 +14,7 @@ flyerImage: "https://static.wixstatic.com/media/df4294_e76d7acfd79c49af9cc59826c
 
 We’re excited to host **A Little Bit Perfect** at The Wandering Lantern for a winter portrait pop-up.
 
-These are simple, timeless portraits focused on connection. Natural light, soft styling, and a calm pace that lets kids and families be themselves. Perfect for updating family photos, capturing this season, or getting ahead on gifts without the stress of a full photo session.
+These are simple, timeless portraits focused on connection. Natural light, soft styling, and a calm pace that lets kids be themselves. The focus is just on the kids and highlighting their personalities at their current age.
 
 Sessions take place right here in the warmth of the shop, with a relaxed, welcoming vibe. Feel free to arrive early or linger after your session to browse books and enjoy the space.
 
