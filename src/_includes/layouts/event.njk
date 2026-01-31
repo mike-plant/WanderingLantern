@@ -44,8 +44,14 @@ layout: layouts/base.njk
         {{ content | safe }}
     </div>
 
+    {# Shopify ticket link #}
+    {% if ticketUrl and (recurring or not isPastEvent(date, time)) %}
+    <div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background: rgba(139, 111, 71, 0.08); border: 2px solid var(--aged-gold); border-radius: 8px; text-align: center;">
+        <p style="font-size: 1.1rem; color: var(--deep-brown); margin-bottom: 1.5rem;"><strong>Secure your spot before time runs out!</strong></p>
+        <a href="{{ ticketUrl }}" target="_blank" rel="noopener noreferrer" class="cta-button" style="display: inline-block; padding: 1rem 2.5rem; font-size: 1.1rem; text-decoration: none;">Purchase Tickets</a>
+    </div>
     {# Include Mailchimp registration form if form details are provided and event is in the future #}
-    {% if mailchimpFormId and mailchimpTag and (recurring or not isPastEvent(date, time)) %}
+    {% elif mailchimpFormId and mailchimpTag and (recurring or not isPastEvent(date, time)) %}
     {% include "components/mailchimp-event-form.njk" %}
     {% elif not recurring and isPastEvent(date, time) %}
     <div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background: rgba(139, 111, 71, 0.08); border: 2px solid var(--aged-gold); border-radius: 8px; text-align: center;">
