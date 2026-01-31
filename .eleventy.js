@@ -196,6 +196,8 @@ module.exports = function(eleventyConfig) {
         return String(d.getMonth() + 1).padStart(2, '0');
       case 'YYYY':
         return d.getFullYear();
+      case 'YYYY-MM-DD':
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       case 'MMMM D, YYYY':
         return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
       default:
