@@ -8,6 +8,7 @@ excerpt: "Join us for a night of creativity to make Valentine's cards and boxes 
 mailchimpFormId: "f1915b185f"
 mailchimpTag: "3728726"
 showChildFields: true
+ticketUrl: "https://thewanderinglantern.store/products/valentine-craft-event"
 ---
 
 ## About This Event
