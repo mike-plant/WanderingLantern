@@ -5,10 +5,10 @@ date: 2026-02-10
 time: "6:00 PM - 7:00 PM"
 ageRange: "All ages"
 excerpt: "Join us for a night of creativity to make Valentine's cards and boxes for your little loved ones. $10 per person to cover craft supplies."
-mailchimpFormId: "f1915b185f"
-mailchimpTag: "3728726"
+mailchimpFormId: ""
+mailchimpTag: ""
 showChildFields: true
-ticketUrl: "https://thewanderinglantern.store/products/valentine-craft-event"
+status: full
 ---
 
 ## About This Event
@@ -37,3 +37,9 @@ This fee helps us provide quality materials including cardstock, decorative pape
 ### Details
 
 Perfect for parents and children to work together, or for crafty adults to create special Valentines for their little loved ones. Space is limited to ensure everyone has plenty of room to create, so please register in advance!
+
+### Registration
+
+**This event is now at full capacity.** Thank you for your interest!
+
+For questions, contact us at [hello@thewanderinglantern.com](mailto:hello@thewanderinglantern.com) or call (216) 999-4462.
