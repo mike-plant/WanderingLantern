@@ -6,8 +6,7 @@
     </p>
     <div class="form-container">
         <form action="https://formspree.io/f/xkgqdarv" method="POST" id="contact-form">
-            <!-- Redirect to thank you page after submission -->
-            <input type="hidden" name="_next" value="https://thewanderinglantern.com/thankyou/?source=contact">
+            <input type="hidden" name="_subject" id="contact-subject" value="New Contact Form Submission">
 
             <div class="form-group">
                 <label for="name">Your Name</label>
@@ -32,5 +31,25 @@
             <button type="submit">Send Message</button>
         </form>
     </div>
+
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var form = this;
+            var name = document.getElementById('name').value.trim();
+            if (name) {
+                document.getElementById('contact-subject').value = 'New Contact Form Submission from ' + name;
+            }
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            }).then(function() {
+                window.location.href = '/thankyou/?source=contact';
+            }).catch(function() {
+                window.location.href = '/thankyou/?source=contact';
+            });
+        });
+    </script>
 
 </section>

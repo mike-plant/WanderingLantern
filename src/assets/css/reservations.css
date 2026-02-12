@@ -94,16 +94,16 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Form validation styling */
-input:invalid:not(:placeholder-shown),
-textarea:invalid:not(:placeholder-shown),
-select:invalid:not(:placeholder-shown) {
+/* Form validation styling - only show after user interaction */
+input:user-invalid,
+textarea:user-invalid,
+select:user-invalid {
   border-color: #d9534f;
 }
 
-input:valid:not(:placeholder-shown),
-textarea:valid:not(:placeholder-shown),
-select:valid:not(:placeholder-shown) {
+input:user-valid:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+textarea:user-valid,
+select:user-valid {
   border-color: #5cb85c;
 }
 

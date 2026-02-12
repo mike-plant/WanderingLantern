@@ -196,7 +196,7 @@ title: Event Space Rental - The Wandering Lantern
             style="background: var(--cream); padding: 2.5rem; border-radius: 12px; border: 1px solid rgba(201, 169, 97, 0.3);"
         >
             {# Hidden field to identify this as a rental inquiry #}
-            <input type="hidden" name="_subject" value="Event Space Rental Inquiry - The Wandering Lantern">
+            <input type="hidden" name="_subject" id="rental-subject" value="Event Space Rental Inquiry - The Wandering Lantern">
             <input type="hidden" name="form_type" value="event_rental_inquiry">
 
             {# Contact Information #}
@@ -345,6 +345,15 @@ title: Event Space Rental - The Wandering Lantern
             <p style="margin-top: 1.5rem; font-size: 1rem; color: var(--deep-brown); text-align: center; line-height: 1.7;">
                 After you submit, we'll follow up to confirm availability, walk through options, and share pricing. Final details are confirmed in your event agreement.
             </p>
+
+            <script>
+                document.querySelector('#inquiry-form form').addEventListener('submit', function() {
+                    var name = document.getElementById('name').value.trim();
+                    if (name) {
+                        document.getElementById('rental-subject').value = 'Event Space Rental Inquiry from ' + name + ' - The Wandering Lantern';
+                    }
+                });
+            </script>
         </form>
     </section>
 
