@@ -7,6 +7,7 @@ ageRange: "All ages"
 excerpt: "Cozy, natural winter portraits by A Little Bit Perfect, hosted at The Wandering Lantern."
 enableEventFlyers: true
 flyerImage: "https://static.wixstatic.com/media/df4294_e76d7acfd79c49af9cc59826c0e3ed2b~mv2.jpeg/v1/fill/w_1366,h_770,fp_0.50_0.50,q_85,enc_auto/df4294_e76d7acfd79c49af9cc59826c0e3ed2b~mv2.jpeg"
+status: full
 ---
 
 ## About This Event
