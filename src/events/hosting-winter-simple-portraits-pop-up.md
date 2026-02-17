@@ -21,6 +21,8 @@ Sessions take place right here in the warmth of the shop, with a relaxed, welcom
 **Note:**
 All session details, pricing, and scheduling are handled directly by A Little Bit Perfect. Registration is required in advance.
 
-👉 **Register here:** [Winter Simple Portraits Pop Up - A Little Bit Perfect](https://www.alittlebitperfect.com/event-details/winter-simple-portraits-pop-up)
+### Registration
 
-Spots are limited and tend to fill quickly. We’re so glad to host this one and can’t wait to see familiar and new faces in the shop.
+**This event is now at full capacity.** Thank you for your interest!
+
+For questions, contact us at [hello@thewanderinglantern.com](mailto:hello@thewanderinglantern.com) or call (216) 999-4462.
