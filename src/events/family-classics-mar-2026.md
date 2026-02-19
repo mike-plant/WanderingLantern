@@ -4,10 +4,12 @@ title: "Family Classics Book Club"
 date: 2026-03-17
 time: "6:00 PM - 7:00 PM"
 ageRange: "6-12"
-excerpt: "Join us this month for 'Pollyanna' by Eleanor H. Porter."
+excerpt: "Join us this month for 'Pollyanna' by Eleanor H. Porter — a timeless story of optimism and joy that parents and kids can enjoy together."
 mailchimpFormId: "f1915b185f"
 mailchimpTag: "3728683"
 showChildFields: true
+enableEventFlyers: true
+flyerImage: "/assets/images/pollyanna-book-cover.png"
 ---
 
 ## About This Event
@@ -16,7 +18,7 @@ Join us for our Family Classics Book Club, held on the **third Tuesday of every 
 
 ### About the Book
 
-Meet Pollyanna, an orphan who transforms her stern aunt's household and an entire town with her "Glad Game" - finding something to be glad about in every situation. A timeless story about optimism, kindness, and the power of a positive attitude.
+When young Pollyanna comes to live with her stern Aunt Polly, she brings with her one extraordinary gift: the ability to find something to be glad about in every situation. Her irrepressible optimism transforms everyone around her in ways no one expected. A beloved classic that has charmed readers for over a century.
 
 ### What to Expect
 
