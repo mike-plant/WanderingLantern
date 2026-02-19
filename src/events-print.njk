@@ -213,6 +213,10 @@ permalink: /events-print/
             border-radius: 8px;
         }
 
+        .qr-main-section.full-width {
+            margin-top: 2rem;
+        }
+
         .qr-main-section img {
             width: 150px;
             height: 150px;
@@ -289,6 +293,10 @@ permalink: /events-print/
             color: var(--dark-text);
         }
 
+        .social-item.reversed {
+            flex-direction: row-reverse;
+        }
+
         .social-item img {
             width: 100px;
             height: 100px;
@@ -299,6 +307,10 @@ permalink: /events-print/
 
         .social-info {
             text-align: left;
+        }
+
+        .social-item.reversed .social-info {
+            text-align: right;
         }
 
         .social-label {
@@ -345,9 +357,61 @@ permalink: /events-print/
         .hidden {
             display: none;
         }
+
+        .month-picker {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            border: 2px solid var(--aged-gold);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Playfair Display', serif;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .month-picker label {
+            color: var(--deep-brown);
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .month-picker select {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--aged-gold);
+            border-radius: 4px;
+            color: var(--dark-text);
+            background: var(--cream);
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+
+    <div class="month-picker no-print">
+        <label for="month-select">Month:</label>
+        <select id="month-select">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+        <select id="year-select"></select>
+    </div>
 
     <button class="print-button no-print" onclick="window.print()">🖨️ Print This Page</button>
 
@@ -381,7 +445,7 @@ permalink: /events-print/
         </div>
 
         <div class="qr-main-section" id="qr-section">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://thewanderinglantern.com/events/" alt="Events QR">
+            <img src="/assets/images/qrcode_thewanderinglantern_events.png" alt="Events QR">
             <div class="qr-main-label">VIEW ALL OUR EVENTS & REGISTER ONLINE</div>
         </div>
 
@@ -400,14 +464,14 @@ permalink: /events-print/
             <div class="footer-right">
                 <div class="footer-social">
                     <div class="social-item">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.instagram.com/thewanderinglanterncle/" alt="Instagram QR">
+                        <img src="/assets/images/qrcode_instagram.png" alt="Instagram QR">
                         <div class="social-info">
                             <span class="social-label">INSTAGRAM</span>
                             <span class="social-url">@thewanderinglanterncle</span>
                         </div>
                     </div>
-                    <div class="social-item">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=http://www.facebook.com/thewanderinglantern" alt="Facebook QR">
+                    <div class="social-item reversed">
+                        <img src="/assets/images/qrcode_facebook.png" alt="Facebook QR">
                         <div class="social-info">
                             <span class="social-label">FACEBOOK</span>
                             <span class="social-url">@thewanderinglantern</span>
@@ -419,61 +483,65 @@ permalink: /events-print/
     </div>
 
     <script>
-        // Display current month/year in header
-        // Set to February 2026 (month 1 in 0-indexed, so February)
-        const currentMonth = 1; // 0-11 (0=January, 1=February)
-        const currentYear = 2026;
-
-        const monthYear = new Date(currentYear, currentMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-        document.getElementById('current-month').textContent = monthYear;
-
-        const eventElements = document.querySelectorAll('.print-event');
-        let visibleCount = 0;
-
-        // Target month/year for filtering
-        const targetMonth = currentMonth + 1; // Convert to 1-12 for comparison
-        const targetYear = currentYear;
-
-        console.log('Filtering for month:', targetMonth, 'year:', targetYear);
-
-        eventElements.forEach((eventEl) => {
-            const dateStr = eventEl.getAttribute('data-event-date');
-
-            if (!dateStr) {
-                eventEl.style.display = 'none';
-                return;
-            }
-
-            // Parse the date string (YYYY-MM-DD format)
-            const parts = dateStr.split('-');
-            const eventYear = parseInt(parts[0]);
-            const eventMonth = parseInt(parts[1]); // This is 1-12, not 0-indexed
-
-            console.log('Event date:', dateStr, 'Month:', eventMonth, 'Year:', eventYear);
-
-            // Compare month (1-12) and year directly
-            if (eventMonth === targetMonth && eventYear === targetYear) {
-                console.log('  ✓ Showing event');
-                eventEl.style.display = 'block';
-                visibleCount++;
-            } else {
-                console.log('  ✗ Hiding event');
-                eventEl.style.display = 'none';
-            }
+        // Populate year dropdown
+        const yearSelect = document.getElementById('year-select');
+        [2025, 2026, 2027].forEach(y => {
+            const opt = document.createElement('option');
+            opt.value = y;
+            opt.textContent = y;
+            yearSelect.appendChild(opt);
         });
 
-        // Show "no events" message if no events this month
-        if (visibleCount === 0) {
-            document.getElementById('no-events-message').classList.remove('hidden');
+        // Default to current month/year
+        const monthSelect = document.getElementById('month-select');
+        const today = new Date();
+        monthSelect.value = today.getMonth() + 1;
+        yearSelect.value = today.getFullYear();
+
+        function filterEvents() {
+            const targetMonth = parseInt(monthSelect.value); // 1-12
+            const targetYear = parseInt(yearSelect.value);
+
+            const monthYear = new Date(targetYear, targetMonth - 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            document.getElementById('current-month').textContent = monthYear;
+
+            const eventElements = document.querySelectorAll('.print-event');
+            let visibleCount = 0;
+
+            eventElements.forEach((eventEl) => {
+                const dateStr = eventEl.getAttribute('data-event-date');
+                if (!dateStr) { eventEl.style.display = 'none'; return; }
+                const parts = dateStr.split('-');
+                const eventYear = parseInt(parts[0]);
+                const eventMonth = parseInt(parts[1]);
+                if (eventMonth === targetMonth && eventYear === targetYear) {
+                    eventEl.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    eventEl.style.display = 'none';
+                }
+            });
+
+            const noEventsMsg = document.getElementById('no-events-message');
+            noEventsMsg.classList.toggle('hidden', visibleCount > 0);
+
+            // Move QR into grid if odd number of events, otherwise full-width below
+            const qrSection = document.getElementById('qr-section');
+            const container = document.getElementById('events-container');
+            if (visibleCount % 2 !== 0) {
+                container.appendChild(qrSection);
+                qrSection.classList.remove('full-width');
+            } else {
+                container.parentNode.insertBefore(qrSection, container.nextSibling);
+                qrSection.classList.add('full-width');
+            }
         }
 
-        // Make QR section part of grid if odd number of events
-        const qrSection = document.getElementById('qr-section');
-        if (visibleCount % 2 !== 0) {
-            // Odd number - add QR to grid
-            const container = document.getElementById('events-container');
-            container.appendChild(qrSection);
-        }
+        monthSelect.addEventListener('change', filterEvents);
+        yearSelect.addEventListener('change', filterEvents);
+
+        // Run on load
+        filterEvents();
     </script>
 </body>
 </html>
