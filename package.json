@@ -7,10 +7,18 @@
     "build": "eleventy",
     "clean": "rm -rf _site"
   },
-  "keywords": ["bookstore", "children", "cleveland", "lakewood"],
+  "keywords": [
+    "bookstore",
+    "children",
+    "cleveland",
+    "lakewood"
+  ],
   "author": "The Wandering Lantern",
   "license": "MIT",
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1"
+  },
+  "dependencies": {
+    "@11ty/eleventy-plugin-rss": "^1.2.0"
   }
 }

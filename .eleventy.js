@@ -1,4 +1,7 @@
+const pluginRss = require("@11ty/eleventy-plugin-rss");
+
 module.exports = function(eleventyConfig) {
+  eleventyConfig.addPlugin(pluginRss);
   // Helper function to parse dates as local time
   const parseDate = (date) => {
     if (!date) return new Date();
@@ -263,6 +266,66 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addFilter("limit", (array, limit) => {
     return array.slice(0, limit);
+  });
+
+  // ISO datetime filters for Event JSON-LD schema
+  // Approximate DST for Eastern Time: EDT (UTC-4) Apr–Oct, EST (UTC-5) otherwise
+  const toEasternISO = (d) => {
+    const pad = n => String(n).padStart(2, '0');
+    const month = d.getMonth();
+    const isDST = month >= 3 && month <= 9;
+    const offset = isDST ? '-04:00' : '-05:00';
+    return `${d.getFullYear()}-${pad(month + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:00${offset}`;
+  };
+
+  eleventyConfig.addFilter("eventStartISO", (date, time) => {
+    const d = parseDate(date);
+    if (time) {
+      const m = time.match(/(\d+):(\d+)\s*(AM|PM)/i);
+      if (m) {
+        let h = parseInt(m[1]);
+        const min = parseInt(m[2]);
+        const p = m[3].toUpperCase();
+        if (p === 'PM' && h !== 12) h += 12;
+        else if (p === 'AM' && h === 12) h = 0;
+        d.setHours(h, min, 0, 0);
+      }
+    } else {
+      d.setHours(0, 0, 0, 0);
+    }
+    return toEasternISO(d);
+  });
+
+  eleventyConfig.addFilter("eventEndISO", (date, time) => {
+    const d = parseDate(date);
+    if (time) {
+      const m = time.match(/(\d+):(\d+)\s*(AM|PM)?\s*-\s*(\d+):(\d+)\s*(AM|PM)/i);
+      if (m) {
+        let h = parseInt(m[4]);
+        const min = parseInt(m[5]);
+        const p = m[6].toUpperCase();
+        if (p === 'PM' && h !== 12) h += 12;
+        else if (p === 'AM' && h === 12) h = 0;
+        d.setHours(h, min, 0, 0);
+      } else {
+        d.setHours(23, 59, 0, 0);
+      }
+    } else {
+      d.setHours(23, 59, 0, 0);
+    }
+    return toEasternISO(d);
+  });
+
+  // RFC 2822 date filter for RSS <pubDate>, timezone-aware using parseDate
+  eleventyConfig.addFilter("toRssDate", (date) => {
+    const d = parseDate(date);
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const pad = n => String(n).padStart(2, '0');
+    const month = d.getMonth();
+    const isDST = month >= 3 && month <= 9;
+    const offset = isDST ? '-0400' : '-0500';
+    return `${days[d.getDay()]}, ${pad(d.getDate())} ${months[month]} ${d.getFullYear()} 00:00:00 ${offset}`;
   });
 
   // Add isPastEvent as a global function that can take multiple parameters

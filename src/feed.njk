@@ -1,0 +1,25 @@
+---
+permalink: /feed.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>The Wandering Lantern — Upcoming Events</title>
+    <link>https://thewanderinglantern.com</link>
+    <description>Upcoming events at The Wandering Lantern, a children's bookstore in Lakewood, OH.</description>
+    <language>en-us</language>
+    <atom:link href="https://thewanderinglantern.com/feed.xml" rel="self" type="application/rss+xml"/>
+    {% for event in collections.upcomingEvents %}
+    <item>
+      <title>{{ event.data.title | escape }}</title>
+      <link>{{ event.url | absoluteUrl('https://thewanderinglantern.com') }}</link>
+      <guid isPermaLink="true">{{ event.url | absoluteUrl('https://thewanderinglantern.com') }}</guid>
+      <pubDate>{{ event.data.date | toRssDate }}</pubDate>
+      <description><![CDATA[<p><strong>{{ event.data.date | date('MMMM D, YYYY') }}</strong>{% if event.data.time %} &middot; {{ event.data.time }}{% endif %}{% if event.data.ageRange %} &middot; Ages: {{ event.data.ageRange }}{% endif %}</p>
+<p>{{ event.data.excerpt }}</p>
+<p><a href="{{ event.url | absoluteUrl('https://thewanderinglantern.com') }}">Learn more &amp; register &rarr;</a></p>]]></description>
+    </item>
+    {% endfor %}
+  </channel>
+</rss>
