@@ -1,0 +1,148 @@
+/* Press/Media Page Styles */
+
+/* Press Card for Listings */
+.press-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(90, 75, 60, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.press-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(90, 75, 60, 0.15);
+}
+
+.press-card-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.press-card-content {
+  padding: 1.5rem;
+}
+
+.press-card-date {
+  font-size: 0.85rem;
+  color: var(--warm-brown);
+  margin-bottom: 0.5rem;
+}
+
+.press-card-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--deep-brown);
+  margin-bottom: 0.75rem;
+}
+
+.press-card-publication {
+  font-style: italic;
+  color: var(--aged-gold);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.press-card-excerpt {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--dark-text);
+}
+
+/* Press Grid Layout */
+.press-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Press Kit Page */
+.press-kit-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(90, 75, 60, 0.1);
+  margin-bottom: 2rem;
+}
+
+.press-kit-section h3 {
+  color: var(--deep-brown);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--aged-gold);
+  padding-bottom: 0.5rem;
+}
+
+.press-kit-downloads {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.download-item {
+  background: var(--parchment);
+  padding: 1rem;
+  border-radius: 6px;
+  text-align: center;
+  border: 1px solid rgba(139, 111, 71, 0.2);
+  transition: all 0.3s ease;
+}
+
+.download-item:hover {
+  border-color: var(--aged-gold);
+  background: white;
+}
+
+.download-button {
+  display: inline-block;
+  background: var(--warm-brown);
+  color: var(--cream);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  transition: background 0.3s ease;
+}
+
+.download-button:hover {
+  background: var(--deep-brown);
+}
+
+.boilerplate-text {
+  background: var(--parchment);
+  padding: 1.5rem;
+  border-radius: 6px;
+  border-left: 4px solid var(--aged-gold);
+  margin: 1rem 0;
+}
+
+.fact-sheet {
+  background: var(--parchment);
+  padding: 1.5rem;
+  border-radius: 6px;
+  line-height: 1.8;
+}
+
+.fact-sheet dt {
+  font-weight: 700;
+  color: var(--deep-brown);
+  margin-top: 0.5rem;
+}
+
+.fact-sheet dd {
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .press-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .press-kit-downloads {
+    grid-template-columns: 1fr;
+  }
+}

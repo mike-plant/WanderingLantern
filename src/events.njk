@@ -6,7 +6,7 @@ title: Events & Story Hours - The Wandering Lantern
 <div class="container">
     <section id="events">
         <h2>Upcoming Events</h2>
-        <p style="text-align: center; max-width: 700px; margin: 0 auto 3rem;">
+        <p style="text-align: center; max-width: 700px; margin: 0 auto 2rem;">
             Join us for storytimes, author visits, and special celebrations. Each event is designed to spark imagination
             and foster a love of reading in children of all ages.
         </p>
@@ -15,15 +15,48 @@ title: Events & Story Hours - The Wandering Lantern
         {% include "components/storytime-banner.njk" %}
 
         {% if features.events.showUpcomingEvents and collections.upcomingEvents.length > 0 %}
-        <div class="events-grid">
-            {% for event in collections.upcomingEvents %}
-                {# Skip Saturday Story Time - shown in banner above #}
-                {% if event.data.title != "Saturday Story Time" %}
-                    {% set event = event %}
-                    {% include "components/event-card.njk" %}
-                {% endif %}
+
+        {# View toggle toolbar #}
+        <div class="events-toolbar">
+            <div class="view-toggle" role="group" aria-label="Event view style">
+                <button class="view-btn" data-view="list" aria-label="List view">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                        <rect x="0" y="1" width="15" height="2" rx="1" fill="currentColor"/>
+                        <rect x="0" y="6.5" width="15" height="2" rx="1" fill="currentColor"/>
+                        <rect x="0" y="12" width="15" height="2" rx="1" fill="currentColor"/>
+                    </svg>
+                    List
+                </button>
+                <button class="view-btn" data-view="grid" aria-label="Grid view">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                        <rect x="0" y="0" width="6.5" height="6.5" rx="1" fill="currentColor"/>
+                        <rect x="8.5" y="0" width="6.5" height="6.5" rx="1" fill="currentColor"/>
+                        <rect x="0" y="8.5" width="6.5" height="6.5" rx="1" fill="currentColor"/>
+                        <rect x="8.5" y="8.5" width="6.5" height="6.5" rx="1" fill="currentColor"/>
+                    </svg>
+                    Grid
+                </button>
+            </div>
+        </div>
+
+        {# Events grouped by month #}
+        <div class="events-view-container" data-view="list">
+            {% set monthGroups = collections.upcomingEvents | groupByMonth %}
+            {% for group in monthGroups %}
+            <div class="month-group">
+                <div class="month-group-header">
+                    <h3>{{ group.month }}</h3>
+                </div>
+                <div class="month-events events-grid">
+                    {% for event in group.events %}
+                        {% set event = event %}
+                        {% include "components/event-card.njk" %}
+                    {% endfor %}
+                </div>
+            </div>
             {% endfor %}
         </div>
+
         {% elif features.events.showUpcomingEvents %}
         <div style="text-align: center; padding: 3rem 2rem; background: var(--parchment); border-radius: 8px; margin-top: 2rem;">
             <p style="font-size: 1.1rem; color: var(--warm-brown); margin: 0;">

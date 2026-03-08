@@ -1,0 +1,237 @@
+<h1>Launch Dashboard - File Structure</h1>
+<p>All your launch planning tools, organized and ready to use!</p>
+<hr>
+<h2>📁 File Organization</h2>
+<pre><code>WanderingLantern/
+├── index.html                          # Main website (keep as-is)
+├── email-signatures.html               # Email signature tool
+├── qr-code.html                       # QR code generator
+├── README-How-to-Use-These-Tools.md   # Instructions (updated)
+│
+└── launch-dashboard/                   # 👈 All launch tools here!
+    │
+    ├── index.html                      # Main dashboard (start here!)
+    ├── week-by-week.html              # Week-by-week task lists
+    ├── modular-plan.html              # Marketing modules (keep/skip)
+    ├── progress.html                  # Progress tracker
+    ├── quick-ref.html                 # Quick reference guide
+    │
+    ├── poc-sheets.html                # Google Sheets integration POC
+    ├── google-apps-script.js          # Backend for Google Sheets
+    │
+    ├── README.md                      # Dashboard overview
+    └── SETUP-GOOGLE-SHEETS.md         # Setup instructions
+</code></pre>
+<hr>
+<h2>✅ What Changed</h2>
+<h3>Cleaned Up</h3>
+<ul>
+<li>❌ Removed <code>FRIDGE-CALENDAR-Week-by-Week.html</code> (now <code>week-by-week.html</code>)</li>
+<li>❌ Removed <code>MARKETING-PLAN-Modular.html</code> (now <code>modular-plan.html</code>)</li>
+<li>❌ Removed <code>PROGRESS-TRACKER-Print-and-Mark.html</code> (now <code>progress.html</code>)</li>
+<li>❌ Removed <code>index-new.html</code> (old file)</li>
+<li>❌ Removed <code>Wandering-Lantern-Complete-Redesign-and-Launch-Plan.html</code> (archived)</li>
+</ul>
+<h3>Organized</h3>
+<ul>
+<li>✅ All launch tools moved to <code>launch-dashboard/</code> folder</li>
+<li>✅ Files renamed for easier linking (kebab-case)</li>
+<li>✅ Added <code>quick-ref.html</code> with contacts, dates, checklists</li>
+<li>✅ Updated README-How-to-Use-These-Tools.md with new locations</li>
+</ul>
+<h3>Added</h3>
+<ul>
+<li>✅ <code>index.html</code> - Main dashboard landing page</li>
+<li>✅ <code>quick-ref.html</code> - Quick reference guide</li>
+<li>✅ <code>poc-sheets.html</code> - Google Sheets integration</li>
+<li>✅ <code>google-apps-script.js</code> - Backend script</li>
+<li>✅ <code>README.md</code> - Dashboard documentation</li>
+<li>✅ <code>SETUP-GOOGLE-SHEETS.md</code> - Setup guide</li>
+</ul>
+<hr>
+<h2>🚀 How to Use</h2>
+<h3>Option 1: Interactive Dashboard (Recommended)</h3>
+<ol>
+<li>Open <code>launch-dashboard/index.html</code> in your browser</li>
+<li>Click on any of the four main cards:
+<ul>
+<li>📅 Week-by-Week Plan</li>
+<li>🎯 Modular Plan</li>
+<li>📊 Progress Tracker</li>
+<li>📞 Quick Reference</li>
+</ul>
+</li>
+<li>All links work! No broken links!</li>
+</ol>
+<h3>Option 2: Google Sheets Integration (Cross-Device)</h3>
+<ol>
+<li>Open <code>launch-dashboard/poc-sheets.html</code></li>
+<li>Click &quot;Load Demo&quot; to test</li>
+<li>Follow <code>SETUP-GOOGLE-SHEETS.md</code> to connect real data</li>
+<li>Use on phone, tablet, laptop - syncs via Google Sheets!</li>
+</ol>
+<h3>Option 3: Print-Friendly (Classic)</h3>
+<ol>
+<li>Open any file in <code>launch-dashboard/</code></li>
+<li>Press Cmd+P (Mac) or Ctrl+P (Windows)</li>
+<li>Print or save as PDF</li>
+<li>Put on fridge, mark with pen!</li>
+</ol>
+<hr>
+<h2>📋 What Each File Does</h2>
+<h3>Main Dashboard</h3>
+<p><strong><code>index.html</code></strong></p>
+<ul>
+<li>Landing page with countdown to opening</li>
+<li>Stats overview (tasks completed, emails sent)</li>
+<li>Today's priority task</li>
+<li>Navigation to all other tools</li>
+</ul>
+<h3>Task Management</h3>
+<p><strong><code>week-by-week.html</code></strong></p>
+<ul>
+<li>Daily tasks for all 4 weeks (Nov 4 - Nov 29)</li>
+<li>Color-coded by category</li>
+<li>Print one week at a time</li>
+<li>Checklist format</li>
+</ul>
+<p><strong><code>modular-plan.html</code></strong></p>
+<ul>
+<li>10 marketing initiatives</li>
+<li>Keep/Skip buttons</li>
+<li>Time estimates and impact levels</li>
+<li>Decision matrix (bare minimum vs. recommended vs. everything)</li>
+</ul>
+<p><strong><code>progress.html</code></strong></p>
+<ul>
+<li>All tasks in simple checkbox format</li>
+<li>Space for notes</li>
+<li>Print, mark up, photograph, send back to Claude</li>
+<li>Metrics tracking for opening weekend</li>
+</ul>
+<h3>Reference</h3>
+<p><strong><code>quick-ref.html</code></strong></p>
+<ul>
+<li>Key dates (email schedule, opening dates)</li>
+<li>Contact info (store, media, partners)</li>
+<li>Quick links (Mailchimp, image optimizer, etc.)</li>
+<li>Opening day checklist</li>
+<li>Your story/talking points</li>
+<li>Emergency contacts</li>
+</ul>
+<h3>Google Sheets Integration</h3>
+<p><strong><code>poc-sheets.html</code></strong></p>
+<ul>
+<li>Proof-of-concept task tracker</li>
+<li>Reads from Google Sheets</li>
+<li>Writes to Google Sheets (with Apps Script)</li>
+<li>Auto-syncs every 30 seconds</li>
+<li>Demo mode for testing</li>
+</ul>
+<p><strong><code>google-apps-script.js</code></strong></p>
+<ul>
+<li>Backend code for Google Sheets writes</li>
+<li>Deploy once, works forever</li>
+<li>Step-by-step instructions included</li>
+</ul>
+<h3>Documentation</h3>
+<p><strong><code>README.md</code></strong></p>
+<ul>
+<li>Overview of dashboard</li>
+<li>Quick start options</li>
+<li>Architecture explanation</li>
+<li>Next steps</li>
+</ul>
+<p><strong><code>SETUP-GOOGLE-SHEETS.md</code></strong></p>
+<ul>
+<li>Complete setup guide (10-15 min)</li>
+<li>Step-by-step with examples</li>
+<li>Troubleshooting section</li>
+<li>How to use across devices</li>
+</ul>
+<hr>
+<h2>✨ All Links Work!</h2>
+<p>The dashboard now has working links:</p>
+<ul>
+<li><code>index.html</code> → Links to all 4 main tools ✅</li>
+<li><code>week-by-week.html</code> → Back to dashboard ✅</li>
+<li><code>modular-plan.html</code> → Back to dashboard ✅</li>
+<li><code>progress.html</code> → Back to dashboard ✅</li>
+<li><code>quick-ref.html</code> → Back to dashboard ✅</li>
+</ul>
+<hr>
+<h2>🎯 What to Open First</h2>
+<p><strong>Start Here:</strong></p>
+<pre><code>launch-dashboard/index.html
+</code></pre>
+<p>This gives you:</p>
+<ul>
+<li>Overview of your campaign</li>
+<li>Countdown to opening</li>
+<li>Links to everything else</li>
+<li>Today's priority task</li>
+</ul>
+<p><strong>Then Explore:</strong></p>
+<ol>
+<li>Click through each section</li>
+<li>Bookmark the dashboard in your browser</li>
+<li>Try the Google Sheets POC if you want cross-device sync</li>
+<li>Print what you need, keep the rest digital</li>
+</ol>
+<hr>
+<h2>📱 Mobile-Friendly</h2>
+<p>All pages are responsive:</p>
+<ul>
+<li>Works on phone, tablet, laptop</li>
+<li>Touch-friendly buttons</li>
+<li>Readable on small screens</li>
+<li>Print-optimized too</li>
+</ul>
+<hr>
+<h2>🔄 Cross-Device Options</h2>
+<p><strong>Option A: Google Sheets (Recommended)</strong></p>
+<ul>
+<li>Follow <code>SETUP-GOOGLE-SHEETS.md</code></li>
+<li>Real-time sync across all devices</li>
+<li>10-15 minute one-time setup</li>
+</ul>
+<p><strong>Option B: Email the Dashboard</strong></p>
+<ul>
+<li>Email <code>launch-dashboard/</code> folder to yourself</li>
+<li>Open on any device</li>
+<li>Progress saved per-device (localStorage)</li>
+</ul>
+<p><strong>Option C: Host on Website</strong></p>
+<ul>
+<li>Upload <code>launch-dashboard/</code> to your website</li>
+<li>Access from anywhere via URL</li>
+<li>Share with Emily/Michael</li>
+</ul>
+<p><strong>Option D: Shared Device</strong></p>
+<ul>
+<li>Use one iPad/laptop as command center</li>
+<li>Everyone updates the same device</li>
+<li>No sync needed</li>
+</ul>
+<hr>
+<h2>💡 Tips</h2>
+<ol>
+<li><strong>Bookmark the dashboard</strong> - Add to browser favorites on all devices</li>
+<li><strong>Start with demo mode</strong> - Try <code>poc-sheets.html</code> → &quot;Load Demo&quot; to see how it works</li>
+<li><strong>Print Week 1 today</strong> - Open <code>week-by-week.html</code>, print this week's tasks</li>
+<li><strong>Use Quick Reference often</strong> - Contacts, dates, checklists all in one place</li>
+<li><strong>Don't overthink it</strong> - Pick what works for you, skip the rest!</li>
+</ol>
+<hr>
+<h2>🆘 Need Help?</h2>
+<p>If something isn't working:</p>
+<ol>
+<li>Check this file for the correct path</li>
+<li>Make sure you're opening files from <code>launch-dashboard/</code> folder</li>
+<li>Try refreshing your browser (Cmd+R or Ctrl+R)</li>
+<li>Let Claude know what's broken!</li>
+</ol>
+<hr>
+<p><strong>Everything is organized and ready to go!</strong> 🎉</p>
+<p>Open <code>launch-dashboard/index.html</code> to get started!</p>
+<p><em>Updated Nov 3, 2025 - 25 days until grand opening!</em></p>

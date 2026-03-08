@@ -34,9 +34,11 @@
         <div class="dates-calendar">
           {% set saturdays = upcomingSaturdays() %}
           {% for sat in saturdays %}
-            <div class="calendar-date">
+            {% set satGuest = getSpecialGuestForDate(sat.isoDate, collections.upcomingEvents) %}
+            <div class="calendar-date{% if satGuest %} has-special-guest{% endif %}">
               <span class="calendar-month">{{ sat.month }}</span>
               <span class="calendar-day">{{ sat.day }}</span>
+              {% if satGuest %}<span class="special-guest-star" aria-label="Special guest: {{ satGuest }}">★</span>{% endif %}
             </div>
           {% endfor %}
         </div>

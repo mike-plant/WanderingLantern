@@ -149,6 +149,22 @@ module.exports = function(eleventyConfig) {
       .slice(0, 3);
   });
 
+  // This week's events — for homepage "This Week" section
+  eleventyConfig.addCollection("thisWeekEvents", collection => {
+    const now = getNowInEST();
+    const sevenDaysFromNow = new Date(now);
+    sevenDaysFromNow.setDate(now.getDate() + 7);
+
+    return collection.getFilteredByGlob("src/events/*.md")
+      .filter(item => {
+        if (item.data.recurring) return false;
+        const eventDate = parseDate(item.data.date);
+        const eventEndTime = getEventEndTime(item.data.date, item.data.time);
+        return eventEndTime > now && eventDate <= sevenDaysFromNow;
+      })
+      .sort((a, b) => parseDate(a.data.date) - parseDate(b.data.date));
+  });
+
   // Upcoming Saturdays — programmatically generated for storytime date squares
   eleventyConfig.addNunjucksGlobal("upcomingSaturdays", () => {
     const now = getNowInEST();
@@ -158,13 +174,32 @@ module.exports = function(eleventyConfig) {
     d.setDate(d.getDate() + ((6 - d.getDay() + 7) % 7 || 7));
     d.setHours(0, 0, 0, 0);
     for (let i = 0; i < 5; i++) {
+      const isoDate = d.getFullYear() + '-' +
+        String(d.getMonth() + 1).padStart(2, '0') + '-' +
+        String(d.getDate()).padStart(2, '0');
       saturdays.push({
         month: d.toLocaleDateString('en-US', { month: 'short' }),
-        day: d.getDate()
+        day: d.getDate(),
+        isoDate
       });
       d.setDate(d.getDate() + 7);
     }
     return saturdays;
+  });
+
+  // Special guest lookup for storytime banner — returns guest name if an event
+  // with specialGuest falls on the given date, otherwise null
+  eleventyConfig.addNunjucksGlobal("getSpecialGuestForDate", (isoDate, events) => {
+    if (!events || !isoDate) return null;
+    const match = events.find(e => {
+      if (!e.data.specialGuest) return false;
+      const d = parseDate(e.data.date);
+      const eventIso = d.getFullYear() + '-' +
+        String(d.getMonth() + 1).padStart(2, '0') + '-' +
+        String(d.getDate()).padStart(2, '0');
+      return eventIso === isoDate;
+    });
+    return match ? match.data.specialGuest : null;
   });
 
   // Filters
@@ -208,6 +243,22 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addFilter("formatTime", (time) => {
     if (!time) return '';
     return time;
+  });
+
+  // Group an event collection by month for the events listing page
+  eleventyConfig.addFilter("groupByMonth", (events) => {
+    const groups = [];
+    for (const event of (events || [])) {
+      const d = parseDate(event.data.date);
+      const monthKey = d.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+      const last = groups[groups.length - 1];
+      if (!last || last.month !== monthKey) {
+        groups.push({ month: monthKey, events: [event] });
+      } else {
+        last.events.push(event);
+      }
+    }
+    return groups;
   });
 
   eleventyConfig.addFilter("limit", (array, limit) => {

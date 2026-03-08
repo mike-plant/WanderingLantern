@@ -95,6 +95,21 @@ Event description here...
    - Gets own page at `/events/my-event/`
    - Shows in "Upcoming" or "Past" based on date
 
+### Writing Event Excerpts
+
+Every excerpt must feel like it could only describe *that one event* — never reuse structural patterns across events, even for similar formats like author visits.
+
+**Don't:** "Author [Name] brings their book — and the real [animal] — to The Wandering Lantern for a special storytime."
+
+**Do:** Lead with the most specific, unusual, or emotionally charged detail about that event.
+
+Rules:
+- Start with action, surprise, or the sharpest hook — not the author's name or a generic intro
+- Each excerpt should have a distinct rhythm and angle from every other excerpt
+- For author visits with animals: lean into what makes *this* animal's story unique (trained detective vs. therapy dog vs. something else)
+- For book launches: the timing/newness can be the hook ("The book comes out March 10th — Nola arrives March 21st")
+- Read all existing excerpts before writing a new one — if the structure feels familiar, rewrite it
+
 ### Adding Press Releases
 
 1. Create file in `src/press/my-release.md`:

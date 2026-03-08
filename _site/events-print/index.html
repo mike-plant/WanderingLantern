@@ -1,0 +1,1028 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Monthly Events - The Wandering Lantern</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --warm-brown: #8b6f47;
+            --deep-brown: #5c4d3c;
+            --aged-gold: #c9a961;
+            --muted-gold: #a38b5f;
+            --cream: #faf7f0;
+            --parchment: #f5eedc;
+            --dark-text: #3a2f27;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: white;
+            font-family: 'Libre Baskerville', 'Georgia', serif;
+            color: var(--dark-text);
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+            }
+            .print-page {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 8mm !important;
+            }
+            @page {
+                size: letter;
+                margin: 8mm;
+            }
+            /* Minimize all spacing */
+            .print-header {
+                padding-bottom: 0.5rem !important;
+                margin-bottom: 0.75rem !important;
+                border-bottom-width: 1px !important;
+            }
+            #events-container {
+                gap: 1.25rem !important;
+            }
+
+            .print-event {
+                padding: 0.85rem !important;
+                border-width: 1px !important;
+            }
+            .print-event-title {
+                font-size: 1.1rem !important;
+                margin-bottom: 0.25rem !important;
+            }
+            .print-event-meta {
+                padding: 0.4rem 0.6rem !important;
+                margin-bottom: 0.4rem !important;
+                font-size: 0.85rem !important;
+                line-height: 1.4 !important;
+            }
+            .print-event-description {
+                font-size: 0.8rem !important;
+                line-height: 1.4 !important;
+                margin-top: 0.25rem !important;
+            }
+            .print-footer {
+                margin-top: 1rem !important;
+                padding-top: 1rem !important;
+                border-top-width: 1px !important;
+            }
+            .footer-branding h2 {
+                font-size: 1.2rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+            .footer-branding .tagline {
+                font-size: 0.8rem !important;
+                margin-bottom: 0.25rem !important;
+            }
+            .footer-info {
+                font-size: 0.75rem !important;
+                line-height: 1.4 !important;
+            }
+            .footer-right {
+                gap: 0.5rem !important;
+            }
+            .qr-main-section {
+                padding: 0.75rem !important;
+                border-width: 1px !important;
+            }
+            .qr-main-section img {
+                width: 100px !important;
+                height: 100px !important;
+                margin-bottom: 0.5rem !important;
+            }
+            .qr-main-label {
+                font-size: 0.9rem !important;
+            }
+            .month-highlight {
+                font-size: 1.5rem !important;
+                padding: 0.5rem 1.5rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            .social-item img {
+                width: 70px !important;
+                height: 70px !important;
+            }
+            .footer-social {
+                gap: 0.5rem !important;
+            }
+            .social-item {
+                font-size: 0.7rem !important;
+            }
+        }
+
+        .print-page {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+            background: white;
+        }
+
+        .print-header {
+            text-align: center;
+            padding-bottom: 2rem;
+            margin-bottom: 5rem;
+            border-bottom: 2px solid var(--aged-gold);
+        }
+
+        .month-highlight {
+            color: var(--deep-brown);
+            display: inline-block;
+            padding: 0.5rem 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        #events-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .print-event {
+            margin-bottom: 0;
+            padding: 1.25rem;
+            border: 2px solid var(--aged-gold);
+            border-radius: 8px;
+            page-break-inside: avoid;
+            background: var(--cream);
+        }
+
+        .print-event-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--deep-brown);
+            font-size: 1.5rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .print-event-meta {
+            background: var(--aged-gold);
+            color: var(--dark-text);
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .print-event-meta div {
+            margin-bottom: 0.25rem;
+        }
+
+        .print-event-meta div:last-child {
+            margin-bottom: 0;
+        }
+
+        .print-event-meta strong {
+            color: var(--dark-text);
+            font-weight: normal;
+        }
+
+        .print-event-description {
+            color: var(--dark-text);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+
+        .qr-main-section {
+            text-align: center;
+            padding: 1rem;
+            background: var(--cream);
+            border: 2px solid var(--aged-gold);
+            border-radius: 8px;
+        }
+
+        .qr-main-section.full-width {
+            margin-top: 2rem;
+        }
+
+        .qr-main-section img {
+            width: 150px;
+            height: 150px;
+            border: 3px solid var(--aged-gold);
+            padding: 0.5rem;
+            background: white;
+            margin: 0 auto 0.75rem auto;
+        }
+
+        .qr-main-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--deep-brown);
+            font-weight: bold;
+            max-width: 250px;
+            margin: 0 auto;
+            line-height: 1.3;
+        }
+
+        .print-footer {
+            margin-top: 5rem;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-top: 2px solid var(--aged-gold);
+            border-bottom: 2px solid var(--aged-gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .footer-left {
+            flex: 1;
+        }
+
+        .footer-branding h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--deep-brown);
+            font-size: 1.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .footer-branding .tagline {
+            color: var(--warm-brown);
+            font-style: italic;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-info {
+            color: var(--dark-text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .footer-right {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: flex-end;
+        }
+
+        .footer-social {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--dark-text);
+        }
+
+        .social-item.reversed {
+            flex-direction: row-reverse;
+        }
+
+        .social-item img {
+            width: 100px;
+            height: 100px;
+            border: 2px solid var(--aged-gold);
+            padding: 0.5rem;
+            background: white;
+        }
+
+        .social-info {
+            text-align: left;
+        }
+
+        .social-item.reversed .social-info {
+            text-align: right;
+        }
+
+        .social-label {
+            font-weight: bold;
+            color: var(--deep-brown);
+            display: block;
+            margin-bottom: 0.125rem;
+        }
+
+        .social-url {
+            color: var(--warm-brown);
+            font-size: 0.8rem;
+        }
+
+        .no-events-message {
+            text-align: center;
+            padding: 3rem;
+            color: var(--warm-brown);
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--aged-gold);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Playfair Display', serif;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .print-button:hover {
+            background: var(--warm-brown);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .month-picker {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            border: 2px solid var(--aged-gold);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Playfair Display', serif;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .month-picker label {
+            color: var(--deep-brown);
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .month-picker select {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--aged-gold);
+            border-radius: 4px;
+            color: var(--dark-text);
+            background: var(--cream);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="month-picker no-print">
+        <label for="month-select">Month:</label>
+        <select id="month-select">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+        <select id="year-select"></select>
+    </div>
+
+    <button class="print-button no-print" onclick="window.print()">🖨️ Print This Page</button>
+
+    <div class="print-page">
+        <div class="print-header">
+            <div class="month-highlight" id="current-month"></div>
+        </div>
+
+        <div id="events-container">
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+                <div class="print-event" data-event-date="2025-12-16">
+                    <h2 class="print-event-title">Family Classics Book Club</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> December 16, 2025</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 6-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us this month for &#39;The Family Under the Bridge&#39; by Natalie Savage Carlson.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2025-12-30">
+                    <h2 class="print-event-title">Build Our Mouse Mansion With Us!</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> December 30, 2025</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 4-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Come help us build the furniture for our in-store Mouse Mansion to be a part of the fun! Build and paint little die-cut wooden furniture that will remain in the store for the community to see and play with.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-01-02">
+                    <h2 class="print-event-title">Cut-and-Play Story and Craft Night</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> January 2, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 5-10</div>
+                        
+                    </div>
+                    <p class="print-event-description">Cut out artistically rendered, articulating characters from a fairy tale to make the story come to life! Join Emily for crafting and stories using materials from artist Emma R-C.</p>
+                </div>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+                <div class="print-event" data-event-date="2026-01-20">
+                    <h2 class="print-event-title">Family Classics Book Club</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> January 20, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 6-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us this month for &#39;The Phantom Tollbooth&#39; by Norton Juster.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-01-23">
+                    <h2 class="print-event-title">Hot Cocoa Pajama Party</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> January 23, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:30 PM - 8:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> All ages</div>
+                        
+                    </div>
+                    <p class="print-event-description">Wear cozy clothes, bring mats, a pillow, blankets, and your favorite winter stories to cuddle up and read with your friends and family.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-01-31">
+                    <h2 class="print-event-title">Live Music with Congito Jaffe</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> January 31, 2026</div>
+                        
+                        <div><strong>Time:</strong> 2:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> All ages</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us for an afternoon including live music by our very own local singer-songwriter Congito Jaffe.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-02-10">
+                    <h2 class="print-event-title">Valentine Craft Event</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> February 10, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> All ages</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us for a night of creativity to make Valentine&#39;s cards and boxes for your little loved ones. $10 per person to cover craft supplies.</p>
+                </div>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+                <div class="print-event" data-event-date="2026-02-19">
+                    <h2 class="print-event-title">Camp Sunshine Kids Yoga Pop-Up</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> February 19, 2026</div>
+                        
+                        <div><strong>Time:</strong> 5:00 PM - 6:45 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 0-7</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join Jena from Camp Sunshine Kids Yoga for a fun and mindful evening of yoga, music, games, and stories. Two sessions: Mommy &amp; Me (ages 0-3) at 5 PM and Kids Yoga (ages 4-7) at 6 PM.</p>
+                </div>
+                
+            
+                
+            
+                
+                <div class="print-event" data-event-date="2026-02-24">
+                    <h2 class="print-event-title">Family Classics Book Club</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> February 24, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 6-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us this month for &#39;Dear Mr. Henshaw&#39; by Beverly Cleary.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-02-28">
+                    <h2 class="print-event-title">Winter Simple Portraits Pop Up</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> February 28, 2026</div>
+                        
+                        <div><strong>Time:</strong> By appointment</div>
+                        
+                        
+                        <div><strong>Ages:</strong> All ages</div>
+                        
+                    </div>
+                    <p class="print-event-description">Cozy, natural winter portraits by A Little Bit Perfect, hosted at The Wandering Lantern.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-03-07">
+                    <h2 class="print-event-title">Learn to Play Chess</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> March 7, 2026</div>
+                        
+                        <div><strong>Time:</strong> 2:00 PM - 4:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> All ages</div>
+                        
+                    </div>
+                    <p class="print-event-description">A free chess afternoon for kids of all ages! Learn the game, practice with other kids, and join a mini tournament if you&#39;re feeling competitive.</p>
+                </div>
+                
+            
+                
+            
+                
+                <div class="print-event" data-event-date="2026-03-12">
+                    <h2 class="print-event-title">Postcard Pen Pals</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> March 12, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> All ages</div>
+                        
+                    </div>
+                    <p class="print-event-description">Design, color, and create a stack of one-of-a-kind postcards, then get matched with your very own pen pal to keep the letters going! A crafting and writing event for all ages. $12 per person.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-03-17">
+                    <h2 class="print-event-title">Family Classics Book Club</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> March 17, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 6-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us this month for &#39;Pollyanna&#39; by Eleanor H. Porter — a timeless story of optimism and joy that parents and kids can enjoy together.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-03-21">
+                    <h2 class="print-event-title">Meet Matthew Swinehart &amp; Nola the Noble Corgi!</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> March 21, 2026</div>
+                        
+                        <div><strong>Time:</strong> 11:00 AM &amp; 11:30 AM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> All ages</div>
+                        
+                    </div>
+                    <p class="print-event-description">The book comes out March 10th — Nola arrives March 21st. Celebrate the brand-new release with author Matthew Swinehart and the real Nola, a certified therapy dog whose job is visiting hospital patients to bring them comfort and calm.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-04-02">
+                    <h2 class="print-event-title">Once Upon a Dime</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> April 2, 2026</div>
+                        
+                        <div><strong>Time:</strong> During Store Hours</div>
+                        
+                        
+                        <div><strong>Ages:</strong> All ages</div>
+                        
+                    </div>
+                    <p class="print-event-description">Celebrate Children&#39;s Book Day with us! Select books priced at just 10 cents — only on Thursday, April 2nd.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-04-03">
+                    <h2 class="print-event-title">Cardboard Maker&#39;s Space</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> April 3, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 8:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 10+</div>
+                        
+                    </div>
+                    <p class="print-event-description">A night of creativity and invention! Design a robot, build an architectural structure, or create a piece of art — all out of cardboard. $12 per child.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-04-11">
+                    <h2 class="print-event-title">Meet Charlotte the Perching Detective!</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> April 11, 2026</div>
+                        
+                        <div><strong>Time:</strong> 11:00 AM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> All ages</div>
+                        
+                    </div>
+                    <p class="print-event-description">Charlotte the golden Cocker Spaniel is a trained detective — and she&#39;s coming to prove it. Kids hide the scent tins, she finds them every time. Author Kristine Sheppard will be here to read the book that started it all.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-04-11">
+                    <h2 class="print-event-title">Layered Paper Art Workshop</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> April 11, 2026</div>
+                        
+                        <div><strong>Time:</strong> 3:00 PM - 6:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 12+</div>
+                        
+                    </div>
+                    <p class="print-event-description">Create a stunning layered paper art shadow box that tells the story of your choice. A creative workshop for teens ages 12+. $12 per person.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-04-18">
+                    <h2 class="print-event-title">Storytime with Kellie DuBay Gillis</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> April 18, 2026</div>
+                        
+                        <div><strong>Time:</strong> 11:00 AM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> All ages</div>
+                        
+                    </div>
+                    <p class="print-event-description">A Fairview Park scientist who writes picture books. Two nature stories. Two days before Earth Day. Kellie DuBay Gillis is your neighbor — and she&#39;s coming to story time.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-04-21">
+                    <h2 class="print-event-title">Family Classics Book Club</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> April 21, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 6-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us this month for &#39;Winnie the Pooh&#39; by A.A. Milne.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-05-19">
+                    <h2 class="print-event-title">Family Classics Book Club</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> May 19, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 6-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us this month for &#39;The Secret Garden&#39; by Frances Hodgson Burnett.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-06-16">
+                    <h2 class="print-event-title">Family Classics Book Club</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> June 16, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 6-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us this month for &#39;The Wind in the Willows&#39; by Kenneth Grahame.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-08-18">
+                    <h2 class="print-event-title">Family Classics Book Club</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> August 18, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 6-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us this month for &#39;Stuart Little&#39; by E.B. White.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-09-15">
+                    <h2 class="print-event-title">Family Classics Book Club</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> September 15, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 6-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us this month for &#39;The Penderwicks&#39; by Jeanne Birdsall.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-10-20">
+                    <h2 class="print-event-title">Family Classics Book Club</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> October 20, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 8-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us this month for &#39;The Legend of Sleepy Hollow&#39; by Washington Irving.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-11-17">
+                    <h2 class="print-event-title">Family Classics Book Club</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> November 17, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 8-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us this month for &#39;Anne of Green Gables&#39; by L.M. Montgomery.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2026-12-15">
+                    <h2 class="print-event-title">Family Classics Book Club</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> December 15, 2026</div>
+                        
+                        <div><strong>Time:</strong> 6:00 PM - 7:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 7-12</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us this month for &#39;The Lion, The Witch, and The Wardrobe&#39; by C.S. Lewis.</p>
+                </div>
+                
+            
+                
+                <div class="print-event" data-event-date="2099-12-31">
+                    <h2 class="print-event-title">Saturday Story Time</h2>
+                    <div class="print-event-meta">
+                        <div><strong>Date:</strong> December 31, 2099</div>
+                        
+                        <div><strong>Time:</strong> 11:00 AM - 12:00 PM</div>
+                        
+                        
+                        <div><strong>Ages:</strong> 0-10</div>
+                        
+                    </div>
+                    <p class="print-event-description">Join us every Saturday morning for story time! Two sessions: 11:00am for ages 0-5 and 11:30am for ages 6-10.</p>
+                </div>
+                
+            
+        </div>
+
+        <div id="no-events-message" class="no-events-message hidden">
+            No events scheduled for this month. Check back soon for upcoming events!
+        </div>
+
+        <div class="qr-main-section" id="qr-section">
+            <img src="/assets/images/qrcode_thewanderinglantern_events.png" alt="Events QR">
+            <div class="qr-main-label">VIEW ALL OUR EVENTS & REGISTER ONLINE</div>
+        </div>
+
+        <div class="print-footer">
+            <div class="footer-left">
+                <div class="footer-branding">
+                    <h2>The Wandering Lantern</h2>
+                    <div class="tagline">"Follow the light, find the wonder"</div>
+                </div>
+                <div class="footer-info">
+                    15729 Madison Ave, Lakewood, OH 44107<br>
+                    (216) 999-4462<br>
+                    hello@thewanderinglantern.com
+                </div>
+            </div>
+            <div class="footer-right">
+                <div class="footer-social">
+                    <div class="social-item">
+                        <img src="/assets/images/qrcode_instagram.png" alt="Instagram QR">
+                        <div class="social-info">
+                            <span class="social-label">INSTAGRAM</span>
+                            <span class="social-url">@thewanderinglanterncle</span>
+                        </div>
+                    </div>
+                    <div class="social-item reversed">
+                        <img src="/assets/images/qrcode_facebook.png" alt="Facebook QR">
+                        <div class="social-info">
+                            <span class="social-label">FACEBOOK</span>
+                            <span class="social-url">@thewanderinglantern</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Populate year dropdown
+        const yearSelect = document.getElementById('year-select');
+        [2025, 2026, 2027].forEach(y => {
+            const opt = document.createElement('option');
+            opt.value = y;
+            opt.textContent = y;
+            yearSelect.appendChild(opt);
+        });
+
+        // Default to current month/year
+        const monthSelect = document.getElementById('month-select');
+        const today = new Date();
+        monthSelect.value = today.getMonth() + 1;
+        yearSelect.value = today.getFullYear();
+
+        function filterEvents() {
+            const targetMonth = parseInt(monthSelect.value); // 1-12
+            const targetYear = parseInt(yearSelect.value);
+
+            const monthYear = new Date(targetYear, targetMonth - 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            document.getElementById('current-month').textContent = monthYear;
+
+            const eventElements = document.querySelectorAll('.print-event');
+            let visibleCount = 0;
+
+            eventElements.forEach((eventEl) => {
+                const dateStr = eventEl.getAttribute('data-event-date');
+                if (!dateStr) { eventEl.style.display = 'none'; return; }
+                const parts = dateStr.split('-');
+                const eventYear = parseInt(parts[0]);
+                const eventMonth = parseInt(parts[1]);
+                if (eventMonth === targetMonth && eventYear === targetYear) {
+                    eventEl.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    eventEl.style.display = 'none';
+                }
+            });
+
+            const noEventsMsg = document.getElementById('no-events-message');
+            noEventsMsg.classList.toggle('hidden', visibleCount > 0);
+
+            // Move QR into grid if odd number of events, otherwise full-width below
+            const qrSection = document.getElementById('qr-section');
+            const container = document.getElementById('events-container');
+            if (visibleCount % 2 !== 0) {
+                container.appendChild(qrSection);
+                qrSection.classList.remove('full-width');
+            } else {
+                container.parentNode.insertBefore(qrSection, container.nextSibling);
+                qrSection.classList.add('full-width');
+            }
+        }
+
+        monthSelect.addEventListener('change', filterEvents);
+        yearSelect.addEventListener('change', filterEvents);
+
+        // Run on load
+        filterEvents();
+    </script>
+</body>
+</html>
