@@ -98,13 +98,20 @@ Removes the `_site` directory.
    ---
    layout: layouts/event.njk
    title: "Your Event Title"
-   date: 2026-01-15
+   date: 2026-04-15
    time: "10:00 AM - 11:30 AM"
    ageRange: "3-7"
+   category: "workshop"          # workshop | author-visit | story-time | special-event
    excerpt: "Short description for event cards"
    mailchimpFormId: "f1915b185f"
    mailchimpTag: "3728680"
    showChildFields: true
+   # Author visit fields (optional — see Author Visits section below):
+   # specialGuest: "Author Name"
+   # specialGuestRole: "Author & Illustrator"
+   # specialGuestBook: "Book Title"
+   # Mark as recurring to exclude from all collections:
+   # recurring: true
    ---
 
    ## About This Event
@@ -113,10 +120,38 @@ Removes the `_site` directory.
    ```
 
 3. The event will automatically:
-   - Appear on `/events/` listing page
+   - Appear on `/events/` listing page, grouped under its month header
    - Get its own page at `/events/my-new-event/`
    - Show in "Upcoming Events" if the date is in the future
    - Move to "Past Events" automatically after the date passes
+   - If `category: "author-visit"` with `specialGuest` set on a Saturday: gold ★ appears on that date in the Saturday Story Time banner automatically
+
+### Author Visit Events
+
+For events with a visiting author or special guest, add these fields:
+
+```yaml
+category: "author-visit"
+specialGuest: "Kellie DuBay Gillis"
+specialGuestRole: "Author & Environmental Scientist"
+specialGuestBook: "Big Bike, Little Bike"
+```
+
+- The **AUTHOR VISIT** gold badge appears on the event card automatically
+- If the event date is a **Saturday**, the corresponding date square in the Saturday Story Time banner gets a **gold ★** — powered by `getSpecialGuestForDate()` in `.eleventy.js`, no manual steps needed
+
+### Recurring Events
+
+Saturday Story Time is marked `recurring: true` to exclude it from the standard collections (so it doesn't crowd out special events in listings). It has its own banner component instead.
+
+### Adding New Events: Incremental Build Warning
+
+When you add a new `.md` file while `npm run dev` is running, Eleventy only rebuilds that file's individual page — it **skips** collection-dependent pages like `events/index.html`. Fix:
+
+```bash
+touch src/events.njk    # Force collection rebuild
+# or restart the dev server entirely
+```
 
 ### Adding a Press Release
 
@@ -199,12 +234,12 @@ To modify styles, edit the relevant CSS file in `src/assets/css/`.
 
 ## JavaScript
 
-JavaScript has been extracted to `src/assets/js/main.js` and includes:
-- Countdown timer for grand opening
-- Sticky navigation bars on scroll
-- Contact form Mailchimp integration
+JavaScript lives in `src/assets/js/main.js`. All functions are modular and initialize on `DOMContentLoaded`:
 
-Functions are modular and initialize on DOM ready.
+- `updateCountdown()` — Grand opening countdown timer in hero
+- `initStickyBars()` — Sticky navigation on scroll (desktop only)
+- `initContactForm()` — Mailchimp integration for contact form
+- `initEventsViewToggle()` — List/grid toggle on `/events/`. Reads/writes `localStorage` key `eventsView` (default: `list`). Fires GA events `events_view_toggle` and `event_card_click` with `view_type` property.
 
 ## Deployment
 
@@ -234,14 +269,33 @@ The site is configured to deploy to GitHub Pages. To update:
 
 ## Collections
 
-### Upcoming Events
-Events with dates in the future, sorted chronologically.
+All event collections exclude items with `recurring: true`.
 
-### Past Events
-Events with dates in the past, sorted reverse chronologically.
+### upcomingEvents
+Non-recurring events with future dates within the next 4 months, sorted chronologically. Used in `/events/` listing (grouped by month) and homepage.
 
-### Press
+### pastEvents
+Non-recurring past events, reverse chronological. Used in `/events/` past section.
+
+### nextEvent
+The single next upcoming event. Used in the homepage hero.
+
+### previewSpecialEvents
+The next 3 upcoming events. Used in the homepage events preview section.
+
+### thisWeekEvents
+Non-recurring events within the next 7 days. Powers the "This Week" section on the homepage — section only renders when this collection is non-empty.
+
+### press
 All press releases, sorted by date (newest first).
+
+## Nunjucks Globals
+
+### upcomingSaturdays()
+Returns an array of the next 5 Saturdays as `[{ month, day, isoDate }]`. Used in the Saturday Story Time banner. The `isoDate` field (`YYYY-MM-DD`) is used to cross-reference event dates.
+
+### getSpecialGuestForDate(isoDate, events)
+Given an ISO date string and the `upcomingEvents` collection, returns the `specialGuest` name if an event with that field falls on the given date, otherwise `null`. Used in the Saturday Story Time banner to show the gold ★ on dates with author visits.
 
 ## Troubleshooting
 

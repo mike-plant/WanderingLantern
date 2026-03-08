@@ -77,13 +77,20 @@ src/
 ---
 layout: layouts/event.njk
 title: "Event Title"
-date: 2026-01-15
+date: 2026-04-15
 time: "10:00 AM - 11:30 AM"
 ageRange: "3-7"
+category: "workshop"           # workshop | author-visit | story-time | special-event
 excerpt: "Short description"
 mailchimpFormId: "f1915b185f"
 mailchimpTag: "3728680"
 showChildFields: true
+# For author visits with a special guest (human or animal):
+# specialGuest: "Author Name"
+# specialGuestRole: "Author & Environmental Scientist"
+# specialGuestBook: "Book Title"
+# For recurring events (excluded from all collections):
+# recurring: true
 ---
 
 ## About This Event
@@ -91,9 +98,33 @@ Event description here...
 ```
 
 2. Event automatically:
-   - Appears on `/events/` listing
+   - Appears on `/events/` listing grouped under its month
    - Gets own page at `/events/my-event/`
    - Shows in "Upcoming" or "Past" based on date
+   - If `category: "author-visit"` and falls on a Saturday, a **gold ★** appears on that date in the Saturday Story Time banner (fully automatic — no extra steps needed)
+
+### Event Categories
+
+Set `category` in frontmatter. Controls the badge color on event cards:
+
+| Value | Label | Badge Style | Use For |
+|---|---|---|---|
+| `workshop` | WORKSHOP | Brown outline | Craft, creative, skill-based events |
+| `author-visit` | AUTHOR VISIT | **Gold filled** | Author readings, book signings, special guests |
+| `story-time` | STORY TIME | Gold outline | Storytime instances (non-recurring) |
+| `special-event` | SPECIAL EVENT | Red outline | Seasonal, one-of-a-kind celebrations |
+
+### Author Visit Events
+
+Author visits use three optional frontmatter fields to identify the special guest:
+
+```yaml
+specialGuest: "Kristine Sheppard"
+specialGuestRole: "Author"               # displayed on event page
+specialGuestBook: "Charlotte the Perching Detective"
+```
+
+**Gold star on Saturday Story Time banner:** When an event with `specialGuest` falls on a Saturday, the Saturday Story Time date square automatically gets a gold ★ and a gold border. This is driven by `getSpecialGuestForDate()` in `.eleventy.js` — no manual configuration needed. Just set `specialGuest` in the frontmatter and it works.
 
 ### Writing Event Excerpts
 
@@ -167,20 +198,37 @@ showChildFields: true
 ## Eleventy Configuration (.eleventy.js)
 
 ### Collections
-- **upcomingEvents**: Events with future dates, sorted chronologically
-- **pastEvents**: Events with past dates, reverse chronological
-- **press**: All press releases, newest first
+
+All collections exclude events with `recurring: true` (e.g. Saturday Story Time).
+
+| Collection | Contents | Used In |
+|---|---|---|
+| `upcomingEvents` | Future non-recurring events, next 4 months, chronological | `/events/` listing |
+| `pastEvents` | Past non-recurring events, reverse chronological | `/events/` past section |
+| `nextEvent` | Single next upcoming event | Homepage hero |
+| `previewSpecialEvents` | Next 3 upcoming events | Homepage events preview |
+| `thisWeekEvents` | Events within next 7 days (non-recurring) | Homepage "This Week" section |
+| `press` | All press releases, newest first | `/press/` listing |
 
 ### Custom Filters
-- `date(format)`: Format dates (MMM, MMMM, D, YYYY, MMMM D, YYYY)
+- `date(format)`: Format dates — supported formats: `MMM`, `MMMM`, `D`, `DD`, `YYYY`, `MMMM D, YYYY`, `YYYY-MM-DD`
 - `formatDate()`: Full date formatting
 - `limit(n)`: Limit array to n items
+- `groupByMonth(events)`: Groups event array into `[{ month: "April 2026", events: [...] }]` — used in `/events/` for month-group headers
+
+### Nunjucks Globals
+
+- `upcomingSaturdays()`: Returns next 5 Saturdays as `[{ month, day, isoDate }]`. The `isoDate` field (`YYYY-MM-DD`) is used to match against event dates for the special guest star.
+- `getSpecialGuestForDate(isoDate, events)`: Given a date string and the `upcomingEvents` collection, returns the `specialGuest` name if an author-visit event falls on that date, or `null`. Powers the gold ★ on Saturday Story Time date squares.
 
 ### Passthrough Copy
 Static files copied as-is:
 - `src/assets/` → `_site/assets/`
 - `src/root-files/` → `_site/` (root level)
 - `src/signup/`, `src/newsletter/`, `src/thankyou/`, `src/launch-dashboard/`
+
+### Incremental Build Note
+When adding a **new event `.md` file** in dev (`npm run dev`), Eleventy's watch mode only rebuilds that event's individual page — it does **not** automatically recompute collection-dependent pages like `events/index.html`. Fix: `touch src/events.njk` (or `.eleventy.js` for a full restart) to force a collection rebuild.
 
 ## Styling
 
@@ -209,6 +257,7 @@ Modular functions:
 - `updateCountdown()`: Grand opening countdown timer
 - `initStickyBars()`: Sticky navigation on scroll (desktop only)
 - `initContactForm()`: Mailchimp integration for contact form
+- `initEventsViewToggle()`: List/grid view toggle on `/events/`. Persists choice in `localStorage` key `eventsView`. Default: `list`. Fires GA events `events_view_toggle` (on toggle) and `event_card_click` (on card click, with `view_type` property).
 
 All functions initialize on DOMContentLoaded.
 
