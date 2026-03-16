@@ -570,40 +570,73 @@ The system extracts patterns from feedback without model training:
 
 ---
 
-## 7. Inline Editing & Last-Mile Review
+## 7. Inline Editing & Cascading Re-Adaptation
 
-Users often want to tweak a word or sentence right before publishing — especially on mobile while multitasking. The system needs to make this fast and frictionless without requiring the user to re-enter a full editing workflow.
+Users often want to tweak a word or sentence right before publishing — especially on mobile while multitasking. The key insight: **edits should happen on the primary content draft, and platform adaptations should automatically re-generate from the edited source.** The user doesn't edit each platform post individually — they fix the source of truth once, and everything downstream updates.
 
 ### 7.1 Design Principles
 
-1. **Tap-to-edit, not rewrite** — The user sees the final content as rendered text, not a form. Tapping any sentence makes just that sentence editable inline.
-2. **Edits are the canonical version** — The user's tweaked text becomes the final published version and the stored example. The AI-generated original is kept as a prior version for diff/learning purposes.
-3. **Minimal interaction on mobile** — One-thumb friendly. No modal dialogs, no page transitions.
+1. **Edit the source, cascade the rest** — The primary draft is the single source of truth. Edit it, and all platform adaptations re-generate automatically.
+2. **Tap-to-edit, not rewrite** — The user sees the final content as rendered text. Tapping any sentence makes just that sentence editable inline. No full-screen editor, no starting over.
+3. **Edits are the canonical version** — The user's tweaked text becomes the published version and the stored example. The AI original is kept for diff/learning.
+4. **Minimal interaction on mobile** — One-thumb friendly. No modals, no page transitions.
 
-### 7.2 UX Pattern: Inline Touch Editing
+### 7.2 The Edit → Cascade Flow
+
+```
+┌──────────────────────────────────────────────────────────┐
+│                                                          │
+│  PRIMARY DRAFT (source of truth)                         │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │ Remote teams don't need more meetings — they need  │  │
+│  │ better async rituals. Here's how three companies   │  │
+│  │ replaced their daily standup with a 2-minute Loom  │  │
+│  │ update. The results: fewer interruptions, better   │  │
+│  │ documentation, and happier engineers.              │  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                          │
+│  User taps "2-minute Loom update" and changes it         │
+│  to "90-second video check-in"                           │
+│           │                                              │
+│           ▼                                              │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │ ...replaced their daily standup with a             │  │
+│  │ ┌────────────────────────────────┐                 │  │
+│  │ │ 90-second video check-in      │                 │  │
+│  │ │                  [Done] [Undo] │                 │  │
+│  │ └────────────────────────────────┘                 │  │
+│  │ The results: fewer interruptions...                │  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                          │
+│           │  User taps [Done]                            │
+│           ▼                                              │
+│  ┌─ CASCADING RE-ADAPTATION ──────────────────────────┐  │
+│  │                                                    │  │
+│  │  "Updating platform posts..."                      │  │
+│  │                                                    │  │
+│  │  Twitter  ░░░░░░░░██████████  ✓ Updated            │  │
+│  │  LinkedIn ░░░░░░░░░░████████  ✓ Updated            │  │
+│  │  Instagram░░░░░░░░░░░░██████  ✓ Updated            │  │
+│  │                                                    │  │
+│  │  Only the changed portion is re-adapted.           │  │
+│  │  Surrounding context is preserved.                 │  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                          │
+│        [Review Platform Posts]   [Approve All & Post]    │
+└──────────────────────────────────────────────────────────┘
+```
+
+**Why this works better than editing per-platform:**
+- User makes ONE edit, not 3-5 edits across platforms
+- Platform adaptations stay internally consistent (the same change reflected everywhere)
+- The LLM handles the translation work — e.g., "90-second video check-in" might become "90s video standup" on Twitter for brevity, while LinkedIn keeps the full phrase
+- User can still review individual platform posts after cascade if they want, but most of the time they'll trust the adaptation
+
+### 7.3 Inline Touch Editing (the edit mechanism)
 
 ```
 ┌──────────────────────────────────────────────────┐
-│  FINAL REVIEW (before publish)                   │
-│                                                  │
-│  ┌────────────────────────────────────────────┐  │
-│  │ Remote teams don't need more meetings —    │  │
-│  │ they need better async rituals. Here's     │  │
-│  │ how three companies replaced their daily   │  │
-│  │ standup with a 2-minute Loom update.       │  │
-│  └────────────────────────────────────────────┘  │
-│                                                  │
-│  Tap any sentence to edit it                     │
-│                                                  │
-│        [Approve & Post]   [Back]                 │
-└──────────────────────────────────────────────────┘
-
-         User taps "2-minute Loom update"
-                     │
-                     ▼
-
-┌──────────────────────────────────────────────────┐
-│  FINAL REVIEW                                    │
+│  PRIMARY DRAFT                                   │
 │                                                  │
 │  Remote teams don't need more meetings —         │
 │  they need better async rituals. Here's          │
@@ -612,28 +645,38 @@ Users often want to tweak a word or sentence right before publishing — especia
 │                 │ 90-second video check-in │     │
 │                 │            [Done] [Undo] │     │
 │                 └──────────────────────────┘     │
+│  The results: fewer interruptions, better        │
+│  documentation, and happier engineers.           │
 │                                                  │
-│        [Approve & Post]   [Back]                 │
+│  ┌─ Platform preview (live, read-only) ────────┐ │
+│  │ 🐦 "Ditch the daily standup. 3 teams swit- │ │
+│  │     ched to 90-second video check-ins..."   │ │
+│  │ 💼 "Remote teams are discovering that a     │ │
+│  │     90-second video check-in replaces..."   │ │
+│  └─────────────────────────────────────────────┘ │
+│                                                  │
+│  [Done Editing → Re-adapt All]                   │
 └──────────────────────────────────────────────────┘
 ```
 
 **Key interactions:**
-- **Tap a word or phrase** → highlights the containing sentence, opens inline editor
+- **Tap a word or phrase** → highlights the containing sentence, opens inline editor just for that sentence
 - **Type replacement** → only that phrase changes, surrounding text stays locked
-- **[Done]** → saves edit, collapses editor, shows updated text with a subtle highlight on changed words
+- **[Done]** → saves edit, triggers cascade re-adaptation of all platform posts
 - **[Undo]** → reverts to AI-generated version for that sentence
 - **Swipe down on editor** → dismiss without saving (mobile gesture)
+- **Platform preview panel** → shows a live (read-only) preview of how platform posts will update — updates after [Done]
 
-### 7.3 Smart Assist During Edits
+### 7.4 Smart Assist During Edits
 
-When the user makes an inline edit, the system can optionally offer quick AI suggestions:
+When the user makes an inline edit, the system can optionally offer quick AI alternatives:
 
 ```
 ┌──────────────────────────────────────────────────┐
-│  User changed: "2-minute Loom update"            │
-│            to: "90-second video check-in"        │
+│  You changed: "2-minute Loom update"             │
+│           to: "90-second video check-in"         │
 │                                                  │
-│  ┌─ Quick suggestions ─────────────────────────┐ │
+│  ┌─ Suggestions ───────────────────────────────┐ │
 │  │ "90-second async check-in"                  │ │
 │  │ "quick video standup"                       │ │
 │  │                          [Use mine instead] │ │
@@ -641,11 +684,11 @@ When the user makes an inline edit, the system can optionally offer quick AI sug
 └──────────────────────────────────────────────────┘
 ```
 
-- Suggestions appear below the edit field, non-blocking
-- User can tap a suggestion to use it, or tap "Use mine instead" to keep their edit
-- This is optional and can be toggled off in settings for users who find it noisy
+- Non-blocking — appears below the edit, doesn't prevent the user from continuing
+- User taps a suggestion or taps "Use mine instead"
+- Can be toggled off in settings
 
-### 7.4 Voice-to-Edit (Mobile Convenience)
+### 7.5 Voice-to-Edit (Mobile / Hands-Free)
 
 For users who are driving or hands-busy:
 
@@ -654,65 +697,122 @@ User holds microphone button and says:
 "Change 2-minute Loom update to 90-second video check-in"
 
 System:
-1. Parses intent: find "2-minute Loom update", replace with "90-second video check-in"
-2. Shows the diff for confirmation
+1. Parses intent via LLM: find phrase, apply replacement
+2. Shows diff on screen for confirmation
 3. User taps [Accept] or says "yes"
+4. Cascade re-adaptation triggers automatically
 ```
 
-This uses the same natural language → edit mapping that the LLM is good at. The system sends the full post text + voice transcript to the LLM and asks it to return the edited version with a diff.
+The LLM receives the full draft + voice transcript and returns a structured edit (position, old text, new text). This means the user can also say vague things like "make the ending more punchy" and the LLM will interpret that as a content edit, show the proposed change, and wait for confirmation before cascading.
 
-### 7.5 Data Model Impact
+### 7.6 Cascade Re-Adaptation: How It Works
 
-Edits create a version chain, not a replacement:
+When the user edits the primary draft, re-adaptation is **incremental, not full regeneration:**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  EDIT-AWARE RE-ADAPTATION                                │
+│                                                          │
+│  1. System computes diff between original and edited     │
+│     draft (structured: which sentences changed)          │
+│                                                          │
+│  2. For each platform adaptation:                        │
+│     ┌─────────────────────────────────────────────┐      │
+│     │ LLM receives:                               │      │
+│     │  - The edited primary draft                  │      │
+│     │  - The specific diff (what changed)          │      │
+│     │  - The previous platform adaptation          │      │
+│     │  - Instruction: "Update only the portions    │      │
+│     │    affected by the user's edit. Preserve     │      │
+│     │    everything else."                         │      │
+│     └─────────────────────────────────────────────┘      │
+│                                                          │
+│  3. Result: platform posts update surgically, not        │
+│     from scratch. The hook you loved on Twitter           │
+│     doesn't get rewritten just because you changed       │
+│     one phrase in the body.                               │
+│                                                          │
+│  4. If the edit is substantial (>30% of content),        │
+│     system flags it and offers full regeneration          │
+│     instead: "Big change detected — re-adapt from        │
+│     scratch or just update the changed parts?"           │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Platform-specific intelligence during cascade:**
+- Twitter: if the edited phrase is longer, the system may abbreviate differently to stay under character limits
+- Instagram: if the meaning shifted, the system may flag that the image prompt needs updating too
+- LinkedIn: preserves professional framing while incorporating the edit
+
+### 7.7 Data Model Impact
+
+Edits create a version chain on the primary draft. Platform re-adaptations link back to the draft version they were generated from:
 
 ```sql
+-- Version history for any generated item (drafts AND adaptations)
 CREATE TABLE content_versions (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     item_id         UUID REFERENCES generated_items(id) ON DELETE CASCADE,
     version_number  INT NOT NULL DEFAULT 1,
     content         TEXT NOT NULL,
-    edit_type       VARCHAR(20),    -- 'ai_generated', 'user_edited', 'voice_edited'
+    edit_type       VARCHAR(20),    -- 'ai_generated', 'user_edited', 'voice_edited', 'cascade'
+    source_version  UUID REFERENCES content_versions(id),  -- for cascades: which draft version triggered this
     diff_from_prev  JSONB,          -- structured diff: [{ position, old, new }]
     is_final        BOOLEAN DEFAULT false,
     created_at      TIMESTAMPTZ DEFAULT now()
 );
 ```
 
-**What gets stored as the example:** The `is_final = true` version (the one actually published).
+**Version chain example:**
+```
+Draft v1 (ai_generated) ──► Twitter v1 (ai_generated)
+    │                        LinkedIn v1 (ai_generated)
+    │                        Instagram v1 (ai_generated)
+    │
+Draft v2 (user_edited: changed "2-min Loom" → "90s video check-in")
+    │                    ──► Twitter v2 (cascade, source=draft_v2)
+    │                        LinkedIn v2 (cascade, source=draft_v2)
+    │                        Instagram v2 (cascade, source=draft_v2)
+    │
+Draft v2 is_final=true  ──► These cascade versions become the published examples
+```
 
-**What feeds the learning loop:** The diff between AI-generated and user-edited versions. Over time, the system can detect patterns like:
+**What gets stored as the example:** The `is_final = true` draft version AND its corresponding cascade adaptations.
+
+**What feeds the learning loop:** The diff between AI-generated draft and user-edited draft. Over time, the system detects patterns like:
 - "User always softens superlatives" → stop generating them
 - "User replaces brand jargon with plain language" → adjust tone
 - "User shortens sentences on Twitter but not LinkedIn" → platform-specific length preference
 
-### 7.6 Review Screen Modes
+### 7.8 Review Screen Modes
 
-The final review screen supports three modes depending on context:
+After edits and cascade, the final review supports three modes:
 
 | Mode | When | Behavior |
 |---|---|---|
-| **Quick glance** | User swiped right on everything | Shows all platform posts in a scrollable stack. Tap [Post All] or tap any post to edit. |
-| **Individual review** | Default | Card-per-platform, swipe through each. Tap to inline edit. |
-| **Batch edit** | User taps "Edit all" | Full editor view with all platforms visible, tab between them. |
+| **Quick approve** | User trusts the cascade | Shows primary draft (edited) + summary of platform adaptations. One tap: [Post All]. |
+| **Spot check** | Default | Primary draft on top, platform cards below. Tap any platform card to expand and review (read-only unless they want a platform-specific override). |
+| **Deep review** | User taps "Review each" | Step through each platform post individually with swipe approve/reject per platform. Rejecting triggers a single-platform re-adaptation. |
 
-### 7.7 Edit-Aware Feedback
+### 7.9 Edit-Aware Feedback
 
-When the user edits content before publishing, this generates **implicit feedback** that's more valuable than a simple swipe:
+User edits generate **implicit feedback** that's richer than a simple swipe:
 
 ```
-┌─────────────────────────────────────────────────┐
-│ Signal              │ What it tells us           │
-├─────────────────────┼────────────────────────────┤
-│ No edits + publish  │ Strong positive signal     │
-│ Minor word swap     │ Mostly good, tone tweak    │
-│ Sentence rewrite    │ Right direction, wrong      │
-│                     │ execution                   │
-│ Paragraph rewrite   │ Topic OK, voice is off     │
-│ Delete + regenerate │ Strong negative signal     │
-└─────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────┐
+│ Signal                │ What it tells the system       │
+├───────────────────────┼────────────────────────────────┤
+│ No edits + publish    │ Strong positive — nailed it    │
+│ Minor word swap       │ Mostly good, tone tweak needed │
+│ Sentence rewrite      │ Right direction, wrong phrasing│
+│ Multiple edits        │ Structure OK, voice is off     │
+│ Edit + cascade accept │ User trusts the re-adaptation  │
+│ Edit + cascade reject │ Cascade logic needs tuning     │
+│ Delete + regenerate   │ Strong negative — start over   │
+└───────────────────────────────────────────────────────┘
 ```
 
-The system automatically logs edit distances and uses them to weight feedback — a post published with zero edits is a stronger positive signal than one that needed heavy revision.
+The system logs edit distance and uses it to weight feedback — a post published with zero edits is a much stronger positive signal than one that needed heavy revision. Cascade acceptance/rejection is tracked separately to improve the re-adaptation quality over time.
 
 ---
 
@@ -734,6 +834,9 @@ The system automatically logs edit distances and uses them to weight feedback �
 | POST | `/content/adapt` | Content | Platform adaptations |
 | POST | `/content/generate-images` | Content | Generate images |
 | POST | `/content/regenerate` | Content | Regenerate any step |
+| PATCH | `/content/draft/:id` | Content | Inline edit primary draft |
+| POST | `/content/cascade/:draftId` | Content | Re-adapt all platforms from edited draft |
+| POST | `/content/voice-edit` | Content | Apply voice-to-edit on draft |
 | POST | `/feedback` | Feedback | Submit swipe rating |
 | GET | `/feedback/summary` | Feedback | Preference patterns |
 | GET | `/examples` | Examples | Get published examples |
