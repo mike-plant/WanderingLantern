@@ -570,7 +570,153 @@ The system extracts patterns from feedback without model training:
 
 ---
 
-## 7. API Summary
+## 7. Inline Editing & Last-Mile Review
+
+Users often want to tweak a word or sentence right before publishing — especially on mobile while multitasking. The system needs to make this fast and frictionless without requiring the user to re-enter a full editing workflow.
+
+### 7.1 Design Principles
+
+1. **Tap-to-edit, not rewrite** — The user sees the final content as rendered text, not a form. Tapping any sentence makes just that sentence editable inline.
+2. **Edits are the canonical version** — The user's tweaked text becomes the final published version and the stored example. The AI-generated original is kept as a prior version for diff/learning purposes.
+3. **Minimal interaction on mobile** — One-thumb friendly. No modal dialogs, no page transitions.
+
+### 7.2 UX Pattern: Inline Touch Editing
+
+```
+┌──────────────────────────────────────────────────┐
+│  FINAL REVIEW (before publish)                   │
+│                                                  │
+│  ┌────────────────────────────────────────────┐  │
+│  │ Remote teams don't need more meetings —    │  │
+│  │ they need better async rituals. Here's     │  │
+│  │ how three companies replaced their daily   │  │
+│  │ standup with a 2-minute Loom update.       │  │
+│  └────────────────────────────────────────────┘  │
+│                                                  │
+│  Tap any sentence to edit it                     │
+│                                                  │
+│        [Approve & Post]   [Back]                 │
+└──────────────────────────────────────────────────┘
+
+         User taps "2-minute Loom update"
+                     │
+                     ▼
+
+┌──────────────────────────────────────────────────┐
+│  FINAL REVIEW                                    │
+│                                                  │
+│  Remote teams don't need more meetings —         │
+│  they need better async rituals. Here's          │
+│  how three companies replaced their daily        │
+│  standup with a ┌──────────────────────────┐     │
+│                 │ 90-second video check-in │     │
+│                 │            [Done] [Undo] │     │
+│                 └──────────────────────────┘     │
+│                                                  │
+│        [Approve & Post]   [Back]                 │
+└──────────────────────────────────────────────────┘
+```
+
+**Key interactions:**
+- **Tap a word or phrase** → highlights the containing sentence, opens inline editor
+- **Type replacement** → only that phrase changes, surrounding text stays locked
+- **[Done]** → saves edit, collapses editor, shows updated text with a subtle highlight on changed words
+- **[Undo]** → reverts to AI-generated version for that sentence
+- **Swipe down on editor** → dismiss without saving (mobile gesture)
+
+### 7.3 Smart Assist During Edits
+
+When the user makes an inline edit, the system can optionally offer quick AI suggestions:
+
+```
+┌──────────────────────────────────────────────────┐
+│  User changed: "2-minute Loom update"            │
+│            to: "90-second video check-in"        │
+│                                                  │
+│  ┌─ Quick suggestions ─────────────────────────┐ │
+│  │ "90-second async check-in"                  │ │
+│  │ "quick video standup"                       │ │
+│  │                          [Use mine instead] │ │
+│  └─────────────────────────────────────────────┘ │
+└──────────────────────────────────────────────────┘
+```
+
+- Suggestions appear below the edit field, non-blocking
+- User can tap a suggestion to use it, or tap "Use mine instead" to keep their edit
+- This is optional and can be toggled off in settings for users who find it noisy
+
+### 7.4 Voice-to-Edit (Mobile Convenience)
+
+For users who are driving or hands-busy:
+
+```
+User holds microphone button and says:
+"Change 2-minute Loom update to 90-second video check-in"
+
+System:
+1. Parses intent: find "2-minute Loom update", replace with "90-second video check-in"
+2. Shows the diff for confirmation
+3. User taps [Accept] or says "yes"
+```
+
+This uses the same natural language → edit mapping that the LLM is good at. The system sends the full post text + voice transcript to the LLM and asks it to return the edited version with a diff.
+
+### 7.5 Data Model Impact
+
+Edits create a version chain, not a replacement:
+
+```sql
+CREATE TABLE content_versions (
+    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    item_id         UUID REFERENCES generated_items(id) ON DELETE CASCADE,
+    version_number  INT NOT NULL DEFAULT 1,
+    content         TEXT NOT NULL,
+    edit_type       VARCHAR(20),    -- 'ai_generated', 'user_edited', 'voice_edited'
+    diff_from_prev  JSONB,          -- structured diff: [{ position, old, new }]
+    is_final        BOOLEAN DEFAULT false,
+    created_at      TIMESTAMPTZ DEFAULT now()
+);
+```
+
+**What gets stored as the example:** The `is_final = true` version (the one actually published).
+
+**What feeds the learning loop:** The diff between AI-generated and user-edited versions. Over time, the system can detect patterns like:
+- "User always softens superlatives" → stop generating them
+- "User replaces brand jargon with plain language" → adjust tone
+- "User shortens sentences on Twitter but not LinkedIn" → platform-specific length preference
+
+### 7.6 Review Screen Modes
+
+The final review screen supports three modes depending on context:
+
+| Mode | When | Behavior |
+|---|---|---|
+| **Quick glance** | User swiped right on everything | Shows all platform posts in a scrollable stack. Tap [Post All] or tap any post to edit. |
+| **Individual review** | Default | Card-per-platform, swipe through each. Tap to inline edit. |
+| **Batch edit** | User taps "Edit all" | Full editor view with all platforms visible, tab between them. |
+
+### 7.7 Edit-Aware Feedback
+
+When the user edits content before publishing, this generates **implicit feedback** that's more valuable than a simple swipe:
+
+```
+┌─────────────────────────────────────────────────┐
+│ Signal              │ What it tells us           │
+├─────────────────────┼────────────────────────────┤
+│ No edits + publish  │ Strong positive signal     │
+│ Minor word swap     │ Mostly good, tone tweak    │
+│ Sentence rewrite    │ Right direction, wrong      │
+│                     │ execution                   │
+│ Paragraph rewrite   │ Topic OK, voice is off     │
+│ Delete + regenerate │ Strong negative signal     │
+└─────────────────────────────────────────────────┘
+```
+
+The system automatically logs edit distances and uses them to weight feedback — a post published with zero edits is a stronger positive signal than one that needed heavy revision.
+
+---
+
+## 8. API Summary
 
 | Method | Endpoint | Service | Description |
 |---|---|---|---|
@@ -596,7 +742,7 @@ The system extracts patterns from feedback without model training:
 
 ---
 
-## 8. Security Considerations
+## 9. Security Considerations
 
 1. **Social tokens:** AES-256 encrypted at rest, never returned in API responses, decrypted only at publish time
 2. **User auth:** bcrypt password hashing, short-lived JWTs, refresh token rotation
@@ -606,7 +752,7 @@ The system extracts patterns from feedback without model training:
 
 ---
 
-## 9. Scaling Considerations
+## 10. Scaling Considerations
 
 **Phase 1 (MVP — single-digit users):**
 - Monolith API (all services in one Node.js app)
@@ -627,7 +773,7 @@ The system extracts patterns from feedback without model training:
 
 ---
 
-## 10. Future Considerations
+## 11. Future Considerations
 
 - **Role-based templates:** Pre-built brand profiles for common roles (e.g., "SaaS Founder", "Real Estate Agent") as starting points
 - **Analytics dashboard:** Pull engagement data from platforms back into the system to close the feedback loop with real performance data
