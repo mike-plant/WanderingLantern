@@ -485,101 +485,294 @@ export const PLATFORM_CONFIGS: Record<SocialPlatform, PlatformConfig> = {
 
 ```
 Package: @anthropic-ai/sdk
-Model:   claude-sonnet-4-6 (fast, cost-effective for content generation)
-         claude-opus-4-6 (for preference analysis batch jobs)
+Model:   claude-sonnet-4-6 (daily content generation — $3/$15 per MTok)
+         claude-haiku-4-5  (high-volume formatting, classification — $0.80/$4 per MTok)
+         claude-opus-4-6   (preference analysis batch jobs — $15/$75 per MTok, 50% off via Batch API)
 ```
 
-**Integration pattern (`apps/api/src/shared/llm/client.ts`):**
+**Structured output** (constrained decoding, not just prompting):
 
 ```typescript
 import Anthropic from '@anthropic-ai/sdk';
-import { z } from 'zod';
 
-const anthropic = new Anthropic({
-  apiKey: config.ANTHROPIC_API_KEY,
+const anthropic = new Anthropic(); // reads ANTHROPIC_API_KEY from env
+
+// Approach 1: Strict tool use for guaranteed schema compliance
+const response = await anthropic.messages.create({
+  model: 'claude-sonnet-4-6',
+  max_tokens: 1024,
+  tools: [{
+    name: 'generate_social_posts',
+    description: 'Generate platform-specific social media posts',
+    strict: true,
+    input_schema: {
+      type: 'object',
+      properties: {
+        twitter: { type: 'object', properties: {
+          text: { type: 'string', description: 'Tweet text, max 280 chars' },
+          hashtags: { type: 'array', items: { type: 'string' } },
+        }, required: ['text', 'hashtags'], additionalProperties: false },
+        linkedin: { type: 'object', properties: {
+          text: { type: 'string' },
+        }, required: ['text'], additionalProperties: false },
+      },
+      required: ['twitter', 'linkedin'],
+      additionalProperties: false,
+    },
+  }],
+  tool_choice: { type: 'tool', name: 'generate_social_posts' },
+  messages: [{ role: 'user', content: userPrompt }],
 });
 
-// Structured output with Zod parsing
-export async function generateContent<T>(
-  systemPrompt: string,
-  userMessage: string,
-  outputSchema: z.ZodType<T>,
-  options?: { maxTokens?: number; temperature?: number }
-): Promise<T> {
-  const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: options?.maxTokens ?? 4096,
-    temperature: options?.temperature ?? 0.7,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: userMessage }],
-  });
+const toolUseBlock = response.content.find(b => b.type === 'tool_use');
+const posts = toolUseBlock?.input; // Guaranteed to match schema
+```
 
-  const text = response.content
-    .filter((block) => block.type === 'text')
-    .map((block) => block.text)
-    .join('');
+**Prompt caching:** Use `cache_control` on the system prompt (brand guidelines + examples) — stays constant across pipeline steps for the same user.
+- Cache **read**: 0.1x input price (90% savings)
+- Cache **write**: 1.25x (5-min TTL) or 2x (1-hour TTL)
 
-  // Parse JSON from response and validate with Zod
-  const jsonMatch = text.match(/```json\n?([\s\S]*?)\n?```/) || [null, text];
-  return outputSchema.parse(JSON.parse(jsonMatch[1] ?? text));
+```typescript
+// Prompt caching example
+const response = await anthropic.messages.create({
+  model: 'claude-sonnet-4-6',
+  max_tokens: 1024,
+  system: [{
+    type: 'text',
+    text: longBrandGuidelinesAndExamples, // large, repeated context
+    cache_control: { type: 'ephemeral' },
+  }],
+  messages: [{ role: 'user', content: 'Write today\'s post.' }],
+});
+// Check: response.usage.cache_read_input_tokens
+
+// Streaming for real-time UI updates
+const stream = anthropic.messages.stream({
+  model: 'claude-sonnet-4-6',
+  max_tokens: 1024,
+  system: systemPrompt,
+  messages: [{ role: 'user', content: userPrompt }],
+});
+for await (const event of stream) {
+  if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+    emitToClient(event.delta.text); // SSE or WebSocket to frontend
+  }
 }
 ```
 
-**Prompt caching:** Use `cache_control` on the system prompt (brand guidelines + examples) since it stays constant across pipeline steps for the same user. Saves ~90% on input tokens for subsequent calls in a session.
+**Batch API** for preference analysis: 50% discount on both input and output tokens, processed within 24 hours. Use for the periodic job that analyzes feedback corpus to extract preference summaries.
 
 ### 4.2 Social Media Platform APIs
 
 #### Twitter/X API v2
 
 ```
-Package:  twitter-api-v2 (npm)
+Package:  twitter-api-v2 (npm, v1.29+)
 Auth:     OAuth 2.0 with PKCE (user-context)
-Scopes:   tweet.read, tweet.write, users.read, offline.access
-Pricing:  Basic tier ($100/mo) — 50,000 tweets/mo read, 10,000 tweets write
-          Pro tier ($5,000/mo) — full access
+Scopes:   tweet.read, tweet.write, media.write, users.read, offline.access
+Pricing:  Free ($0) — ~500 posts/mo, write-only, no read
+          Basic ($200/mo) — 50K posts/mo
+          Pro ($5,000/mo) — full access
 Post:     POST /2/tweets  { "text": "...", "media": { "media_ids": ["..."] } }
-Media:    POST /1.1/media/upload (chunked upload, still v1.1)
-Limits:   300 tweets / 15 min (user context), media < 15MB (images)
+Media:    POST /2/media/upload (v2 as of mid-2025; v1.1 deprecated)
+Limits:   15-min windows on Basic/Pro; 24-hour windows on Free (very restrictive)
+Tokens:   Access tokens expire in 2 hours; refresh tokens are long-lived
 ```
 
-**Key gotcha:** Media upload is still v1.1 API, requires separate OAuth 1.0a or v2 with user context. The `twitter-api-v2` package handles both.
+```typescript
+import { TwitterApi } from 'twitter-api-v2';
+
+// OAuth 2.0 PKCE flow
+const client = new TwitterApi({ clientId: config.X_CLIENT_ID, clientSecret: config.X_CLIENT_SECRET });
+const { url, codeVerifier, state } = client.generateOAuth2AuthLink(
+  config.X_CALLBACK_URL,
+  { scope: ['tweet.read', 'tweet.write', 'media.write', 'users.read', 'offline.access'] }
+);
+// Store codeVerifier + state in session, redirect user to `url`
+
+// Callback: exchange code for tokens
+const { accessToken, refreshToken } = await client.loginWithOAuth2({
+  code: callbackCode, codeVerifier: storedCodeVerifier, redirectUri: config.X_CALLBACK_URL,
+});
+
+// Post with media
+const authedClient = new TwitterApi(accessToken);
+const mediaId = await authedClient.v2.uploadMedia(imageBuffer, { mimeType: 'image/png' });
+await authedClient.v2.tweet({ text: 'Hello!', media: { media_ids: [mediaId] } });
+
+// Refresh (2-hour access token lifetime)
+const { accessToken: newToken, refreshToken: newRefresh } =
+  await client.refreshOAuth2Token(refreshToken);
+```
+
+**Gotchas:**
+- `media.write` scope is required for image upload — often missed, causes silent failures
+- Authorization URL changed from `twitter.com` to `x.com` — old URL fails
+- Free tier cannot read tweets at all; Basic ($200/mo) is minimum for production
+- App-only Bearer tokens **cannot** post — must use User Context auth
 
 #### LinkedIn API
 
 ```
-Package:  No official SDK — use undici/fetch directly
-Auth:     OAuth 2.0 (3-legged, authorization code flow)
-Scopes:   openid, profile, w_member_social (posting), r_basicprofile
-Post:     POST /v2/posts (new Posts API, replaces UGC/Shares)
-Media:    Register upload → upload binary → reference in post
-Limits:   100 posts/day per member, rate limit headers
+Package:  No official SDK — use undici/axios directly
+Auth:     OAuth 2.0 (3-legged, authorization code)
+Scopes:   w_member_social (personal posting), w_organization_social (company pages)
+Post:     POST /rest/posts (versioned API — replaces deprecated ugcPosts)
+Headers:  Linkedin-Version: 202504, X-Restli-Protocol-Version: 2.0.0 (mandatory)
+Media:    3-step: initializeUpload → PUT binary → reference URN in post
+Limits:   100 posts/day per member
+Tokens:   Access tokens last 60 days; refresh tokens ONLY with Community Management API
+          (requires legally registered business entity)
 ```
 
-**Key gotcha:** LinkedIn's API changes frequently. The Posts API (v2) replaced the older Shares/UGC API. Image posting requires a 3-step flow: register upload, upload binary to the URL they give you, then reference the asset URN in your post.
+```typescript
+const LINKEDIN_VERSION = '202504';
+const headers = {
+  Authorization: `Bearer ${accessToken}`,
+  'Linkedin-Version': LINKEDIN_VERSION,
+  'X-Restli-Protocol-Version': '2.0.0',
+};
+
+// Image upload: 3-step flow
+const initRes = await axios.post(
+  'https://api.linkedin.com/rest/images?action=initializeUpload',
+  { initializeUploadRequest: { owner: `urn:li:person:${personId}` } },
+  { headers }
+);
+const { uploadUrl, image } = initRes.data.value;
+await axios.put(uploadUrl, imageBuffer, { headers: { 'Content-Type': 'image/png' } });
+
+// Create post with image
+await axios.post('https://api.linkedin.com/rest/posts', {
+  author: `urn:li:person:${personId}`,
+  lifecycleState: 'PUBLISHED',
+  visibility: 'PUBLIC',
+  commentary: 'Post text here',
+  distribution: { feedDistribution: 'MAIN_FEED' },
+  content: { media: { id: image, title: 'Post image' } },
+}, { headers });
+```
+
+**Gotchas:**
+- API versioning is **mandatory** — unversioned requests fail
+- No refresh tokens without Community Management API product (business entity required) — must re-auth before 60-day expiry
+- Cannot pass external image URLs — must upload through LinkedIn's 3-step process
+- Company page posting requires `w_organization_social` + user must be page admin
 
 #### Instagram Graph API (via Meta)
 
 ```
-Package:  No official SDK — use undici/fetch directly
-Auth:     Facebook Login (OAuth 2.0) → exchange for long-lived token (60 days)
-Scopes:   instagram_basic, instagram_content_publish, pages_read_engagement
-Post:     2-step: POST /media (create container) → POST /media_publish (publish)
-Limits:   25 published posts per 24 hours, business/creator accounts ONLY
+Package:  No official SDK — use undici/axios directly
+Auth:     Facebook Login (OAuth 2.0) → exchange short-lived (~1hr) for long-lived (60 days)
+Scopes:   instagram_basic, instagram_content_publish, pages_show_list
+Post:     2-step: POST /{ig-user-id}/media → POST /{ig-user-id}/media_publish
+Limits:   ~25 API publishing calls per 24 hours
+Requires: Business or Creator account linked to a Facebook Page
 ```
 
-**Key gotcha:** Instagram API requires a Facebook Page linked to an Instagram Business or Creator account. Personal accounts cannot use the API. Image URLs must be publicly accessible (pre-upload to S3/R2 first).
+```typescript
+const BASE = 'https://graph.facebook.com/v21.0';
+
+// Single image post (2-step)
+const container = await axios.post(`${BASE}/${igUserId}/media`, {
+  image_url: 'https://your-s3-bucket.com/image.jpg', // must be publicly accessible
+  caption: 'Post caption here #hashtag',
+  alt_text: 'Accessibility description',
+  access_token: longLivedToken,
+});
+await axios.post(`${BASE}/${igUserId}/media_publish`, {
+  creation_id: container.data.id,
+  access_token: longLivedToken,
+});
+
+// Carousel post
+const item1 = await axios.post(`${BASE}/${igUserId}/media`, {
+  image_url: 'https://example.com/img1.jpg', is_carousel_item: true, access_token: longLivedToken,
+});
+const item2 = await axios.post(`${BASE}/${igUserId}/media`, {
+  image_url: 'https://example.com/img2.jpg', is_carousel_item: true, access_token: longLivedToken,
+});
+const carousel = await axios.post(`${BASE}/${igUserId}/media`, {
+  media_type: 'CAROUSEL', children: [item1.data.id, item2.data.id],
+  caption: 'Swipe through!', access_token: longLivedToken,
+});
+await axios.post(`${BASE}/${igUserId}/media_publish`, {
+  creation_id: carousel.data.id, access_token: longLivedToken,
+});
+
+// Token refresh (before 60-day expiry)
+const refreshRes = await axios.get(`${BASE}/oauth/access_token`, {
+  params: { grant_type: 'fb_exchange_token', client_id: config.META_APP_ID,
+    client_secret: config.META_APP_SECRET, fb_exchange_token: longLivedToken },
+});
+```
+
+**Gotchas:**
+- **Cannot upload binary data directly** — images must be at a publicly accessible URL that Meta fetches (upload to S3/R2 first)
+- Personal accounts cannot use the API — Business or Creator account required
+- Basic Display API was fully removed December 2024
+- Stories and Reels are publishable via API (since 2022-2023)
+- Meta App Review is required for production use with `instagram_content_publish`
 
 #### Facebook Graph API
 
 ```
-Package:  No official SDK — use undici/fetch directly
-Auth:     Facebook Login (OAuth 2.0), same flow as Instagram
+Package:  No official SDK — use undici/axios directly
+Auth:     Same Meta OAuth 2.0 flow as Instagram
 Scopes:   pages_manage_posts, pages_read_engagement
-Post:     POST /{page-id}/feed (text) or POST /{page-id}/photos (with image)
+Post:     POST /{page-id}/feed (text) or POST /{page-id}/photos (image)
 Limits:   200 posts/hour per page
 ```
 
-**Key gotcha:** Posting is to Pages, not personal profiles (personal profile posting was removed from the API years ago). Users need to be a Page admin.
+```typescript
+// Get page access token from user token
+const pagesRes = await axios.get(`${BASE}/me/accounts`, {
+  params: { access_token: userAccessToken },
+});
+const page = pagesRes.data.data.find((p: any) => p.id === targetPageId);
+const pageAccessToken = page.access_token;
+
+// Post with image
+await axios.post(`${BASE}/${targetPageId}/photos`, {
+  url: 'https://example.com/image.jpg',
+  message: 'Post text here',
+  access_token: pageAccessToken,
+});
+```
+
+**Gotchas:**
+- **Personal profile posting via API is dead** — Meta removed this years ago. Posting is to Pages only.
+- Users must be Page admins
+- Page tokens derived from user tokens inherit the user token's expiry unless you get a "never-expiring" page token
+- App Review required for production use with `pages_manage_posts`
+
+#### TikTok Content Posting API
+
+```
+Package:  No official SDK — use undici/axios directly
+Auth:     OAuth 2.0 with user authorization
+Scopes:   video.publish (requires app approval)
+Post:     POST /v2/post/publish/video/init/ or /content/init/
+Status:   GET /v2/post/publish/status/fetch/
+```
+
+**Gotchas:**
+- App review takes 5-10 business days — cannot start posting immediately
+- Unaudited apps may be restricted to **private visibility**
+- Photo/carousel posting is newer and less documented than video
+- Content violating TikTok guidelines is rejected at the API level
+- No mature community SDK — raw HTTP only
+
+**Recommendation:** Deprioritize TikTok to Phase 7+ given the gated access and immature API.
+
+#### Token Lifetime Summary
+
+| Platform | Access Token | Refresh Token | Notes |
+|---|---|---|---|
+| X/Twitter | 2 hours | Long-lived | Refresh before expiry via cron |
+| LinkedIn | 60 days | Only with Community Management product | Re-auth flow needed without refresh |
+| Meta (IG + FB) | ~1 hour (short), 60 days (long-lived) | Refreshable via token exchange | Exchange short → long immediately |
+| TikTok | Varies by scope | Available | Standard OAuth refresh |
 
 #### Social Platform Adapter Interface
 
@@ -608,34 +801,34 @@ export interface SocialAdapter {
 }
 ```
 
-### 4.3 Image Generation (DALL-E 3)
+### 4.3 Image Generation
 
-```
-Package:  openai (npm)
-Model:    dall-e-3
-Sizes:    1024x1024, 1024x1792, 1792x1024
-Pricing:  $0.040/image (standard), $0.080/image (HD)
-Limits:   5 images/min (can request increase)
-```
+| Provider | Model | Cost/Image | Quality | API Maturity | Best For |
+|---|---|---|---|---|---|
+| **OpenAI** | GPT Image 1 | $0.005-$0.04 | Good | Stable, official SDK | Default choice — reliable, affordable |
+| **Stability AI** | SD 3.5 Large | ~$0.01-$0.03 (via Replicate) | Good | Stable | Fine-tuning, LoRA, custom styles |
+| **Flux** | Flux 2 Pro | $0.055 (via Replicate) | Top scores | Newer | Highest quality when cost isn't primary |
+| **Midjourney** | — | Subscription only | Best artistic | **No official API** | Avoid for programmatic use |
+
+**Recommendation:** Start with **OpenAI GPT Image 1** ($0.005-$0.04/image). Best balance of cost, quality, prompt adherence, and API reliability. Consider Stability AI later if you need brand-specific fine-tuning.
 
 ```typescript
 import OpenAI from 'openai';
 
-const openai = new OpenAI({ apiKey: config.OPENAI_API_KEY });
+const openai = new OpenAI(); // reads OPENAI_API_KEY from env
 
 export async function generateImage(
   prompt: string,
   size: '1024x1024' | '1024x1792' | '1792x1024' = '1024x1024',
 ): Promise<string> {
   const response = await openai.images.generate({
-    model: 'dall-e-3',
+    model: 'gpt-image-1',
     prompt,
     n: 1,
     size,
-    quality: 'standard',
-    response_format: 'url',
+    quality: 'medium',       // 'low' | 'medium' | 'high'
   });
-  // Download image URL → upload to our S3/R2 → return our URL
+  // Download image URL → upload to our S3/R2 → return our permanent URL
   return uploadToStorage(response.data[0].url!);
 }
 ```
@@ -732,17 +925,27 @@ app.post('/ideate', {
 
 ## 6. Mobile App Strategy: Expo (React Native)
 
+### Why Expo Over Alternatives
+
+| Approach | Verdict | Why Not |
+|---|---|---|
+| **PWA** | Disqualified | Swipe gesture performance limited by browser JS thread — can't match native. iOS push notifications remain second-class (no badge counts, unreliable background delivery). No App Store presence. |
+| **Capacitor (Ionic)** | Disqualified | Same WebView gesture limitations as PWA. Good for wrapping dashboards, not for gesture-heavy interactive UX. |
+| **Bare React Native** | Overkill | Same capabilities as Expo but you own Xcode/Android Studio config, CocoaPods, Gradle — solo devs lose weeks. No OTA updates without third-party services. |
+| **Flutter** | Wrong fit | Excellent framework, but team knows TS not Dart. Can't share types, API clients, or validation schemas with Next.js web app. Maintaining two type systems doubles bug surface. |
+| **Expo** | **Winner** | File-based routing (Expo Router) mirrors Next.js. EAS Build handles Xcode/Gradle in the cloud. OTA updates for JS-only fixes. Native-thread gestures via gesture-handler + reanimated. Full TypeScript sharing via monorepo. |
+
 ### Why Expo
 
 | Consideration | Expo Wins |
 |---|---|
 | **JS/TS knowledge** | Same language as API and web app |
-| **Swipe gestures** | `react-native-gesture-handler` + `react-native-reanimated` — 60fps native gestures, exact same libraries Tinder/Bumble use |
-| **Voice input** | `expo-speech` for TTS, `expo-av` + Web Speech API or `@react-native-voice/voice` for speech-to-text |
-| **Push notifications** | `expo-notifications` — handles both APNs (iOS) and FCM (Android) with a unified API |
-| **Offline support** | `@tanstack/react-query` with persistence, `expo-sqlite` for local queue |
+| **Swipe gestures** | `react-native-gesture-handler` + `react-native-reanimated` — 60fps native-thread gestures, same libraries Tinder/Bumble use |
+| **Voice input** | `@react-native-voice/voice` for on-device STT (short commands); Whisper/Deepgram server-side for longer dictation |
+| **Push notifications** | `expo-notifications` — handles both APNs (iOS) and FCM (Android) with unified API |
+| **Offline support** | `expo-sqlite` for local drafts, `@tanstack/react-query` with persistence, `NetInfo` for connectivity-aware sync |
 | **Type sharing** | Monorepo — mobile imports from `packages/shared` directly |
-| **Deployment** | EAS Build (cloud builds, no local Xcode/Android Studio), TestFlight + Play Console beta, OTA updates for JS-only changes |
+| **Deployment** | EAS Build (cloud builds, no local Xcode/Android Studio), TestFlight + Play Console beta, OTA updates bypass store review |
 | **File-based routing** | Expo Router — same mental model as Next.js App Router |
 
 ### Shared Code Between Web and Mobile
@@ -753,7 +956,7 @@ The monorepo structure means all three apps (API, web, mobile) share:
 - **Platform constants** (char limits, image sizes)
 - **API client types** (request/response shapes)
 
-The UI components are NOT shared (React DOM vs React Native), but the hooks and business logic can be similar.
+The UI components are NOT shared (React DOM vs React Native), but the hooks and business logic can be similar. The API client uses plain `fetch` — works in both Next.js and React Native without polyfills.
 
 ### Swipe UX Implementation
 
@@ -769,28 +972,55 @@ import Animated, {
   withSpring,
   runOnJS,
 } from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
 
-// Pan gesture with spring physics
-// Swipe right > 120px → approve
-// Swipe left > 120px → reject
+// Pan gesture with spring physics (damping: 15, stiffness: 100)
+// Swipe right > 120px → approve + haptic feedback
+// Swipe left > 120px → reject + haptic feedback
 // Release within threshold → spring back to center
+// Render 3 cards in absolute-positioned stack with decreasing scale for depth
 ```
 
 ### Offline Mode
 
-1. Content drafts saved locally (expo-sqlite)
-2. Feedback queue — swipes stored locally, synced when online
-3. `@tanstack/react-query` persisted cache — previously loaded content available offline
-4. Background sync via `expo-background-fetch`
+1. **Local drafts** — `expo-sqlite` stores content drafts that work without connectivity
+2. **Feedback queue** — swipes stored locally, synced when online via `NetInfo` connection listener
+3. **Persisted cache** — `@tanstack/react-query` with persistence — previously loaded content available offline
+4. **Background sync** — `expo-background-fetch` pushes pending changes when connectivity returns
+5. **Visual sync status** — synced / pending / conflict indicators so user always knows state
 
 ### Push Notifications
 
 ```
 User starts content generation → API kicks off BullMQ job →
-Job completes → API sends push via expo-server-sdk →
+Job completes → API sends push via expo-server-sdk (Node.js) →
 User's phone shows "Your content is ready for review" →
-Tap → opens review screen with swipe cards
+Tap → deep link via Expo Router → opens review screen with swipe cards
 ```
+
+### Deployment Strategy
+
+| Stage | Command | Delivers To |
+|---|---|---|
+| Development | `npx expo start` (Expo Go) | Local device/simulator |
+| Beta | `eas build --profile preview` + `eas submit` | TestFlight (iOS), Play internal track (Android) |
+| Production | `eas build --profile production` + `eas submit` | App Store + Google Play |
+| Hot fix | `eas update --branch production` | OTA push, bypasses store review |
+
+### Mobile MVP Effort Estimate
+
+| Component | Time |
+|---|---|
+| Monorepo setup, Expo config, EAS | 2-3 days |
+| Core screens (leveraging shared types/logic) | 2-3 weeks |
+| Swipe UX polish (spring physics, haptics, card stacking) | 1-2 weeks |
+| Voice input with permissions handling | 3-5 days |
+| Push notifications end-to-end | 2-3 days |
+| Offline storage and sync | 1-2 weeks |
+| First store submission (accounts, signing, review) | 1 week |
+| **Total MVP** | **6-10 weeks** |
+
+Ongoing maintenance is ~1.4x the web-only cost. Shared packages (types, API client, validation) are the key factor keeping this manageable.
 
 ---
 
