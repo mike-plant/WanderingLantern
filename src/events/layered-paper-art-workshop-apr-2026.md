@@ -1,27 +1,27 @@
 ---
 layout: layouts/event.njk
-title: "Layered Paper Art Workshop"
-date: 2026-04-11
-time: "3:00 PM - 6:00 PM"
+title: "Layered Paper Art Workshop with Marina Papercuts"
+date: 2026-04-17
+time: "6:00 PM - 8:00 PM"
 ageRange: "12+"
-excerpt: "Create a stunning layered paper art shadow box that tells the story of your choice. A creative workshop for teens ages 12+. $12 per person."
-ticketUrl: "https://thewanderinglantern.store/products/layered-paper-art-shadow-box-april-11th-2026"
+excerpt: "Artist Marina Papercuts guides you through creating a layered paper art piece — cutting, stacking, and building depth one sheet at a time. A hands-on evening workshop for ages 12+. $15 per person."
+ticketUrl: "https://thewanderinglantern.store/products/layered-paper-art-shadow-box-april-17th-2026"
 showChildFields: false
 ---
 
 ## About This Event
 
-Teens ages 12+ are invited to create a **layered paper art shadow box** that tells the story of their choice. Using layers of cut paper, you'll build a dimensional scene with depth, color, and meaning — a beautiful piece of art you'll be proud to take home.
+Join artist **Marina Papercuts** ([@marinapapercuts](https://www.instagram.com/marinapapercuts)) for a hands-on evening of layered paper art. You'll learn to cut, layer, and arrange sheets of paper to create a piece with real depth and dimension — a beautiful work of art you'll be proud to take home.
 
 ### What You'll Create
 
-- A **layered paper art shadow box** — your own original design
+- A **layered paper art piece** — guided step-by-step by Marina
 - **Multiple layers of cut paper** that create a sense of depth and dimension
 - A finished piece that **tells a story** through imagery and color
 
 ### Cost
 
-**$12 per person** — all materials provided.
+**$15 per person** — all materials provided.
 
 ### Details
 

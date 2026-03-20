@@ -203,6 +203,110 @@
   margin-top: 2rem;
 }
 
+/* ===== THIS WEEK SECTION (Homepage) ===== */
+.this-week-section {
+  background: linear-gradient(135deg, rgba(201, 169, 97, 0.1) 0%, rgba(139, 111, 71, 0.06) 100%);
+  border: 1.5px solid var(--aged-gold);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+.this-week-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--warm-brown);
+  margin-bottom: 0.75rem;
+}
+
+.this-week-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.this-week-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(139, 111, 71, 0.1);
+  transition: opacity 0.15s ease;
+}
+
+.this-week-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.this-week-item:first-child {
+  padding-top: 0;
+}
+
+.this-week-item:hover {
+  opacity: 0.7;
+}
+
+.this-week-date-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  border: 1px solid rgba(139, 111, 71, 0.25);
+  border-radius: 5px;
+  padding: 0.25rem 0.55rem;
+  min-width: 40px;
+  flex-shrink: 0;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.this-week-date-chip span:first-child {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--warm-brown);
+}
+
+.this-week-date-chip span:last-child {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--deep-brown);
+}
+
+.this-week-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  flex-grow: 1;
+}
+
+.this-week-title {
+  font-weight: 600;
+  color: var(--deep-brown);
+  font-size: 0.9rem;
+}
+
+.this-week-time {
+  font-size: 0.8rem;
+  color: var(--warm-brown);
+}
+
+.this-week-arrow {
+  color: var(--aged-gold);
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
 /* ===== COMPACT STORY TIME CARD (Homepage) ===== */
 .storytime-compact-link {
   text-decoration: none;

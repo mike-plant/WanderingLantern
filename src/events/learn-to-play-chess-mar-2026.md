@@ -4,7 +4,7 @@ title: "Learn to Play Chess"
 date: 2026-03-07
 time: "2:00 PM - 4:00 PM"
 ageRange: "All ages"
-excerpt: "A free afternoon of chess for kids of all ages! Join us for a short intro lesson, open play, and a mini tournament for more experienced players."
+excerpt: "A free chess afternoon for kids of all ages! Learn the game, practice with other kids, and join a mini tournament if you're feeling competitive."
 mailchimpFormId: "f1915b185f"
 mailchimpTag: "3728739"
 showChildFields: true
@@ -14,9 +14,7 @@ flyerImage: "/assets/images/chess-event.png"
 
 ## About This Event
 
-Come hang out, learn some moves, and play some chess! This is a fun, relaxed afternoon for kids of all ages — whether you're just getting started or already know your way around the board. Parents, use your best judgment on whether your little one is ready to join in!
-
-We'll kick things off with a quick intro to the game, then open things up to just play, hang out, and enjoy. For the more experienced players, we'll also have a little tournament with prizes!
+Join us for a short introductory chess lesson followed by time to practice and play each other as you learn to play! Bring a chess set if you have one, or borrow one of ours. This is a free event, open to all ages — and for more experienced players, we'll also have a mini tournament with prizes!
 
 ### What's Happening
 

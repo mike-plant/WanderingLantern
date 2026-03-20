@@ -3,15 +3,15 @@ layout: layouts/event.njk
 title: "Cardboard Maker's Space"
 date: 2026-04-03
 time: "6:00 PM - 8:00 PM"
-ageRange: "10+"
-excerpt: "A night of creativity and invention! Design a robot, build an architectural structure, or create a piece of art — all out of cardboard. $12 per child."
+ageRange: "All ages"
+excerpt: "A night of creativity and invention! Design a robot, build an architectural structure, or create a piece of art — all out of cardboard. $10 per person for supplies."
 ticketUrl: "https://thewanderinglantern.store/products/cardboard-makers-space-april-3rd-2026"
 showChildFields: true
 ---
 
 ## About This Event
 
-Join us for a **night of creativity and invention**! Children ages 10+ (and their helpful adults) are invited to come be creative with cardboard. Design a robot, construct an architectural structure, or create a piece of art — the possibilities are endless.
+Join us for a **night of creativity and invention**! All ages are invited to come be creative with cardboard. Design a robot, construct an architectural structure, or create a piece of art — the possibilities are endless.
 
 ### What You'll Do
 
@@ -21,11 +21,11 @@ Join us for a **night of creativity and invention**! Children ages 10+ (and thei
 
 ### Cost
 
-**$12 per child** — all materials provided.
+**$10 per person** — all supplies provided.
 
 ### Details
 
-- **Ages 10+** — helpful adults welcome to join in!
+- **All ages** — projects for everyone!
 - Space is limited, so register early to secure your spot.
 
 ### Registration
