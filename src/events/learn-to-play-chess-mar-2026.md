@@ -5,6 +5,7 @@ date: 2026-03-07
 time: "2:00 PM - 4:00 PM"
 ageRange: "All ages"
 excerpt: "A free chess afternoon for kids of all ages! Learn the game, practice with other kids, and join a mini tournament if you're feeling competitive."
+price: "Free"
 mailchimpFormId: "f1915b185f"
 mailchimpTag: "3728739"
 showChildFields: true

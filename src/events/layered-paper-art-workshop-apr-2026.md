@@ -5,6 +5,7 @@ date: 2026-04-17
 time: "6:00 PM - 8:00 PM"
 ageRange: "12+"
 excerpt: "Artist Marina Papercuts guides you through creating a layered paper art piece — cutting, stacking, and building depth one sheet at a time. A hands-on evening workshop for ages 12+. $15 per person."
+price: "$15"
 ticketUrl: "https://thewanderinglantern.store/products/layered-paper-art-shadow-box-april-17th-2026"
 showChildFields: false
 ---

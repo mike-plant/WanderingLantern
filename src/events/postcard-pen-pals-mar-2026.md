@@ -5,6 +5,7 @@ date: 2026-03-12
 time: "6:00 PM - 7:00 PM"
 ageRange: "All ages"
 excerpt: "Design, color, and create a stack of one-of-a-kind postcards, then get matched with your very own pen pal to keep the letters going! A crafting and writing event for all ages. $12 per person."
+price: "$12"
 ticketUrl: "https://thewanderinglantern.store/products/pen-pal-event-march-7th-2026"
 showChildFields: true
 enableEventFlyers: true

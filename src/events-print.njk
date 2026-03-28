@@ -51,81 +51,41 @@ permalink: /events-print/
                 size: letter;
                 margin: 8mm;
             }
-            /* Minimize all spacing */
             .print-header {
                 padding-bottom: 0.5rem !important;
-                margin-bottom: 0.75rem !important;
-                border-bottom-width: 1px !important;
-            }
-            #events-container {
-                gap: 1.25rem !important;
-            }
-
-            .print-event {
-                padding: 0.85rem !important;
-                border-width: 1px !important;
-            }
-            .print-event-title {
-                font-size: 1.1rem !important;
-                margin-bottom: 0.25rem !important;
-            }
-            .print-event-meta {
-                padding: 0.4rem 0.6rem !important;
-                margin-bottom: 0.4rem !important;
-                font-size: 0.85rem !important;
-                line-height: 1.4 !important;
-            }
-            .print-event-description {
-                font-size: 0.8rem !important;
-                line-height: 1.4 !important;
-                margin-top: 0.25rem !important;
-            }
-            .print-footer {
-                margin-top: 1rem !important;
-                padding-top: 1rem !important;
-                border-top-width: 1px !important;
-            }
-            .footer-branding h2 {
-                font-size: 1.2rem !important;
-                margin-bottom: 0.1rem !important;
-            }
-            .footer-branding .tagline {
-                font-size: 0.8rem !important;
-                margin-bottom: 0.25rem !important;
-            }
-            .footer-info {
-                font-size: 0.75rem !important;
-                line-height: 1.4 !important;
-            }
-            .footer-right {
-                gap: 0.5rem !important;
-            }
-            .qr-main-section {
-                padding: 0.75rem !important;
-                border-width: 1px !important;
-            }
-            .qr-main-section img {
-                width: 100px !important;
-                height: 100px !important;
                 margin-bottom: 0.5rem !important;
-            }
-            .qr-main-label {
-                font-size: 0.9rem !important;
+                border-bottom-width: 1px !important;
             }
             .month-highlight {
                 font-size: 1.5rem !important;
-                padding: 0.5rem 1.5rem !important;
-                margin-bottom: 0.5rem !important;
+                margin-bottom: 0.25rem !important;
             }
-            .social-item img {
-                width: 70px !important;
-                height: 70px !important;
+            .print-event {
+                padding: 0.4rem 0 !important;
             }
-            .footer-social {
-                gap: 0.5rem !important;
+            .print-event-date {
+                font-size: 0.75rem !important;
+                padding: 0.25rem 0.4rem !important;
             }
-            .social-item {
+            .print-event-title {
+                font-size: 0.95rem !important;
+            }
+            .print-event-meta {
                 font-size: 0.7rem !important;
+            }
+            .print-event-excerpt {
+                font-size: 0.65rem !important;
+            }
+            .print-event-price {
+                font-size: 0.7rem !important;
+            }
+            .print-footer {
+                margin-top: 0.75rem !important;
+                padding-top: 0.75rem !important;
+            }
+            .qr-compact img {
+                width: 65px !important;
+                height: 65px !important;
             }
         }
 
@@ -138,113 +98,109 @@ permalink: /events-print/
 
         .print-header {
             text-align: center;
-            padding-bottom: 2rem;
-            margin-bottom: 5rem;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
             border-bottom: 2px solid var(--aged-gold);
         }
 
         .month-highlight {
             color: var(--deep-brown);
             display: inline-block;
-            padding: 0.5rem 0;
+            padding: 0;
             font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: bold;
-            margin-bottom: 1rem;
+            margin-bottom: 0.25rem;
         }
 
         #events-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
         }
 
         .print-event {
-            margin-bottom: 0;
-            padding: 1.25rem;
-            border: 2px solid var(--aged-gold);
-            border-radius: 8px;
-            page-break-inside: avoid;
-            background: var(--cream);
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e0d5c0;
+        }
+
+        .print-event:last-child {
+            border-bottom: none;
+        }
+
+        .print-event-date {
+            font-family: 'Playfair Display', serif;
+            color: white;
+            background: var(--deep-brown);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            white-space: nowrap;
+            width: 65px;
+            text-align: center;
+            flex: 0 0 65px;
+        }
+
+        .print-event-details {
+            flex: 1 1 auto;
+        }
+
+        .print-event-title-row {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
         }
 
         .print-event-title {
             font-family: 'Playfair Display', serif;
             color: var(--deep-brown);
-            font-size: 1.5rem;
-            margin: 0 0 0.5rem 0;
+            font-size: 1.05rem;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .print-event-price {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--warm-brown);
+            background: var(--cream);
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            border: 1px solid var(--aged-gold);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .print-event-meta {
-            background: var(--aged-gold);
-            color: var(--dark-text);
-            padding: 0.75rem 1rem;
-            margin-bottom: 0.75rem;
-            border-radius: 4px;
-            font-size: 1rem;
-            line-height: 1.6;
+            color: var(--warm-brown);
+            font-size: 0.8rem;
+            margin-top: 0.1rem;
         }
 
-        .print-event-meta div {
-            margin-bottom: 0.25rem;
+        .print-event-meta span + span::before {
+            content: " · ";
+            color: var(--aged-gold);
         }
 
-        .print-event-meta div:last-child {
-            margin-bottom: 0;
-        }
-
-        .print-event-meta strong {
-            color: var(--dark-text);
-            font-weight: normal;
-        }
-
-        .print-event-description {
-            color: var(--dark-text);
-            line-height: 1.6;
-            font-size: 0.95rem;
-            margin-top: 0.5rem;
-        }
-
-        .qr-main-section {
-            text-align: center;
-            padding: 1rem;
-            background: var(--cream);
-            border: 2px solid var(--aged-gold);
-            border-radius: 8px;
-        }
-
-        .qr-main-section.full-width {
-            margin-top: 2rem;
-        }
-
-        .qr-main-section img {
-            width: 150px;
-            height: 150px;
-            border: 3px solid var(--aged-gold);
-            padding: 0.5rem;
-            background: white;
-            margin: 0 auto 0.75rem auto;
-        }
-
-        .qr-main-label {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            color: var(--deep-brown);
-            font-weight: bold;
-            max-width: 250px;
-            margin: 0 auto;
-            line-height: 1.3;
+        .print-event-excerpt {
+            color: #6b5d4f;
+            font-size: 0.75rem;
+            line-height: 1.35;
+            margin-top: 0.15rem;
         }
 
         .print-footer {
-            margin-top: 5rem;
-            padding-top: 1.5rem;
-            padding-bottom: 1.5rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
             border-top: 2px solid var(--aged-gold);
-            border-bottom: 2px solid var(--aged-gold);
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
         }
 
         .footer-left {
@@ -254,75 +210,47 @@ permalink: /events-print/
         .footer-branding h2 {
             font-family: 'Playfair Display', serif;
             color: var(--deep-brown);
-            font-size: 1.8rem;
-            margin-bottom: 0.25rem;
+            font-size: 1.4rem;
+            margin-bottom: 0.15rem;
         }
 
         .footer-branding .tagline {
             color: var(--warm-brown);
             font-style: italic;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            margin-bottom: 0.35rem;
         }
 
         .footer-info {
             color: var(--dark-text);
-            font-size: 0.95rem;
-            line-height: 1.6;
+            font-size: 0.8rem;
+            line-height: 1.5;
         }
 
         .footer-right {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            align-items: flex-end;
+            flex-shrink: 0;
         }
 
-        .footer-social {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            align-items: flex-start;
-        }
-
-        .social-item {
+        .qr-compact {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            color: var(--dark-text);
+            gap: 0.6rem;
         }
 
-        .social-item.reversed {
-            flex-direction: row-reverse;
-        }
-
-        .social-item img {
-            width: 100px;
-            height: 100px;
+        .qr-compact img {
+            width: 80px;
+            height: 80px;
             border: 2px solid var(--aged-gold);
-            padding: 0.5rem;
+            padding: 0.25rem;
             background: white;
         }
 
-        .social-info {
-            text-align: left;
-        }
-
-        .social-item.reversed .social-info {
-            text-align: right;
-        }
-
-        .social-label {
-            font-weight: bold;
-            color: var(--deep-brown);
-            display: block;
-            margin-bottom: 0.125rem;
-        }
-
-        .social-url {
-            color: var(--warm-brown);
+        .qr-label {
+            font-family: 'Playfair Display', serif;
             font-size: 0.8rem;
+            color: var(--deep-brown);
+            font-weight: bold;
+            line-height: 1.3;
         }
 
         .no-events-message {
@@ -413,7 +341,7 @@ permalink: /events-print/
         <select id="year-select"></select>
     </div>
 
-    <button class="print-button no-print" onclick="window.print()">🖨️ Print This Page</button>
+    <button class="print-button no-print" onclick="scaleAndPrint()">🖨️ Print This Page</button>
 
     <div class="print-page">
         <div class="print-header">
@@ -424,17 +352,18 @@ permalink: /events-print/
             {% for event in collections.all %}
                 {% if event.inputPath.includes('/events/') and event.inputPath.endsWith('.md') %}
                 <div class="print-event" data-event-date="{{ event.data.date | date('YYYY-MM-DD') }}">
-                    <h2 class="print-event-title">{{ event.data.title }}</h2>
-                    <div class="print-event-meta">
-                        <div><strong>Date:</strong> {{ event.data.date | date('MMMM D, YYYY') }}</div>
-                        {% if event.data.time %}
-                        <div><strong>Time:</strong> {{ event.data.time }}</div>
-                        {% endif %}
-                        {% if event.data.ageRange %}
-                        <div><strong>Ages:</strong> {{ event.data.ageRange }}</div>
-                        {% endif %}
+                    <div class="print-event-date">{{ event.data.date | date('MMM') }} {{ event.data.date | date('D') }}</div>
+                    <div class="print-event-details">
+                        <div class="print-event-title-row">
+                            <span class="print-event-title">{{ event.data.title }}</span>
+                            {% if event.data.price %}<span class="print-event-price">{{ event.data.price }}</span>{% endif %}
+                        </div>
+                        <div class="print-event-meta">
+                            {% if event.data.time %}<span>{{ event.data.time }}</span>{% endif %}
+                            {% if event.data.ageRange %}<span>Ages {{ event.data.ageRange }}</span>{% endif %}
+                        </div>
+                        {% if event.data.excerpt %}<div class="print-event-excerpt">{{ event.data.excerpt }}</div>{% endif %}
                     </div>
-                    <p class="print-event-description">{{ event.data.excerpt }}</p>
                 </div>
                 {% endif %}
             {% endfor %}
@@ -444,11 +373,6 @@ permalink: /events-print/
             No events scheduled for this month. Check back soon for upcoming events!
         </div>
 
-        <div class="qr-main-section" id="qr-section">
-            <img src="/assets/images/qrcode_thewanderinglantern_events.png" alt="Events QR">
-            <div class="qr-main-label">VIEW ALL OUR EVENTS & REGISTER ONLINE</div>
-        </div>
-
         <div class="print-footer">
             <div class="footer-left">
                 <div class="footer-branding">
@@ -456,27 +380,14 @@ permalink: /events-print/
                     <div class="tagline">"Follow the light, find the wonder"</div>
                 </div>
                 <div class="footer-info">
-                    15729 Madison Ave, Lakewood, OH 44107<br>
-                    (216) 999-4462<br>
-                    hello@thewanderinglantern.com
+                    15729 Madison Ave, Lakewood, OH 44107 · (216) 999-4462<br>
+                    @thewanderinglanterncle
                 </div>
             </div>
             <div class="footer-right">
-                <div class="footer-social">
-                    <div class="social-item">
-                        <img src="/assets/images/qrcode_instagram.png" alt="Instagram QR">
-                        <div class="social-info">
-                            <span class="social-label">INSTAGRAM</span>
-                            <span class="social-url">@thewanderinglanterncle</span>
-                        </div>
-                    </div>
-                    <div class="social-item reversed">
-                        <img src="/assets/images/qrcode_facebook.png" alt="Facebook QR">
-                        <div class="social-info">
-                            <span class="social-label">FACEBOOK</span>
-                            <span class="social-url">@thewanderinglantern</span>
-                        </div>
-                    </div>
+                <div class="qr-compact">
+                    <img src="/assets/images/qrcode_thewanderinglantern_events.png" alt="Events QR">
+                    <div class="qr-label">Scan for events<br>& registration</div>
                 </div>
             </div>
         </div>
@@ -515,7 +426,7 @@ permalink: /events-print/
                 const eventYear = parseInt(parts[0]);
                 const eventMonth = parseInt(parts[1]);
                 if (eventMonth === targetMonth && eventYear === targetYear) {
-                    eventEl.style.display = 'block';
+                    eventEl.style.display = 'flex';
                     visibleCount++;
                 } else {
                     eventEl.style.display = 'none';
@@ -524,21 +435,31 @@ permalink: /events-print/
 
             const noEventsMsg = document.getElementById('no-events-message');
             noEventsMsg.classList.toggle('hidden', visibleCount > 0);
-
-            // Move QR into grid if odd number of events, otherwise full-width below
-            const qrSection = document.getElementById('qr-section');
-            const container = document.getElementById('events-container');
-            if (visibleCount % 2 !== 0) {
-                container.appendChild(qrSection);
-                qrSection.classList.remove('full-width');
-            } else {
-                container.parentNode.insertBefore(qrSection, container.nextSibling);
-                qrSection.classList.add('full-width');
-            }
         }
 
         monthSelect.addEventListener('change', filterEvents);
         yearSelect.addEventListener('change', filterEvents);
+
+        // Scale content to fit one printed page
+        function scaleAndPrint() {
+            const page = document.querySelector('.print-page');
+            // Letter page: 11in minus 16mm margins ≈ 9.37in
+            const maxHeight = 9.37 * 96; // ~900px
+            const contentHeight = page.scrollHeight;
+            if (contentHeight > maxHeight) {
+                const scale = maxHeight / contentHeight;
+                page.style.transform = `scale(${scale})`;
+                page.style.transformOrigin = 'top left';
+                page.style.width = `${100 / scale}%`;
+            }
+            setTimeout(() => {
+                window.print();
+                // Reset after print
+                page.style.transform = '';
+                page.style.transformOrigin = '';
+                page.style.width = '';
+            }, 100);
+        }
 
         // Run on load
         filterEvents();
