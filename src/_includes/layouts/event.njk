@@ -51,7 +51,7 @@ layout: layouts/base.njk
             </div>
             {% elif date %}
             <div>
-                <strong>Date:</strong> {{ date | date('MMMM D, YYYY') }}
+                <strong>Date:</strong> {{ date | date('dddd') }}, {{ date | date('MMMM D, YYYY') }}
             </div>
             {% endif %}
 

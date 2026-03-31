@@ -6,6 +6,7 @@ time: "1:00 PM - 4:00 PM"
 ageRange: "All ages"
 category: "special-event"
 excerpt: "A real silhouette artist, right here in the bookstore. Chris Casey cuts your child's profile in minutes — a keepsake that lasts forever. Book your slot ahead of time."
+ticketUrl: "https://www.eventbrite.com/e/the-wandering-lantern-lakewood-oh-hosting-silhouettes-by-chris-tickets-1985390264727"
 ---
 
 ## A Lost Art, Live in the Bookstore
@@ -21,5 +22,5 @@ Silhouette artist **Chris Casey** is setting up shop at The Wandering Lantern fo
 ### Details
 
 - **1:00 PM - 4:00 PM**
-- **Book your time slot in advance** — Eventbrite link coming soon!
+- **Book your time slot in advance** — reserve through Eventbrite!
 - Walk-ins welcome if slots are available.

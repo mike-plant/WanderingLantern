@@ -4,8 +4,8 @@ title: "Cardboard Maker's Space"
 date: 2026-04-03
 time: "6:00 PM - 8:00 PM"
 ageRange: "All ages"
-excerpt: "A night of creativity and invention! Design a robot, build an architectural structure, or create a piece of art — all out of cardboard. $10 per person for supplies."
-price: "$10"
+excerpt: "A night of creativity and invention! Design a robot, build an architectural structure, or create a piece of art — all out of cardboard. $12 per person for supplies."
+price: "$12"
 ticketUrl: "https://thewanderinglantern.store/products/cardboard-makers-space-april-3rd-2026"
 showChildFields: true
 ---
@@ -22,7 +22,7 @@ Join us for a **night of creativity and invention**! All ages are invited to com
 
 ### Cost
 
-**$10 per person** — all supplies provided.
+**$12 per person** — all supplies provided.
 
 ### Details
 

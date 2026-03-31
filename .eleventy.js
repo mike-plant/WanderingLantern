@@ -222,6 +222,10 @@ module.exports = function(eleventyConfig) {
     const d = parseDate(date);
 
     switch(format) {
+      case 'dddd':
+        return d.toLocaleDateString('en-US', { weekday: 'long' });
+      case 'ddd':
+        return d.toLocaleDateString('en-US', { weekday: 'short' });
       case 'MMM':
         return d.toLocaleDateString('en-US', { month: 'short' });
       case 'MMMM':

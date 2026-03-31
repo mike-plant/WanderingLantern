@@ -609,6 +609,14 @@
   display: none;
 }
 
+.event-card-date-weekday {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted-gold);
+}
+
 .event-card-date-month {
   font-size: 0.65rem;
   font-weight: 700;
@@ -660,6 +668,12 @@
   background: var(--warm-brown);
   padding: 1.25rem 1rem;
   border-radius: 2px 0 0 2px;
+}
+
+[data-view="list"] .event-card-date-weekday {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.6rem;
+  letter-spacing: 1.5px;
 }
 
 [data-view="list"] .event-card-date-month {

@@ -3,28 +3,6 @@
 <section id="upcoming-events-preview">
     <h2>Upcoming Events</h2>
 
-    {# This Week highlight — only shown when events are happening in the next 7 days #}
-    {% if collections.thisWeekEvents and collections.thisWeekEvents.length > 0 %}
-    <div class="this-week-section">
-        <div class="this-week-label">This Week</div>
-        <div class="this-week-list">
-            {% for event in collections.thisWeekEvents %}
-            <a href="{{ event.url }}" class="this-week-item">
-                <div class="this-week-date-chip">
-                    <span>{{ event.data.date | date('MMM') }}</span>
-                    <span>{{ event.data.date | date('D') }}</span>
-                </div>
-                <div class="this-week-info">
-                    <span class="this-week-title">{{ event.data.title }}</span>
-                    {% if event.data.time %}<span class="this-week-time">{{ event.data.time }}</span>{% endif %}
-                </div>
-                <span class="this-week-arrow" aria-hidden="true">&rarr;</span>
-            </a>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
-
     {# Compact Saturday Story Time card — shown first #}
     <a href="/events/saturday-storytime/" class="storytime-compact-link">
         <div class="storytime-compact">
