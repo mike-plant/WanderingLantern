@@ -42,47 +42,64 @@
             .print-page {
                 max-width: 100% !important;
                 margin: 0 !important;
-                padding: 8mm !important;
+                padding: 6mm !important;
             }
             @page {
                 size: letter;
-                margin: 8mm;
+                margin: 6mm;
             }
             .print-header {
-                padding-bottom: 0.5rem !important;
-                margin-bottom: 0.5rem !important;
+                padding-bottom: 0.3rem !important;
+                margin-bottom: 0.3rem !important;
                 border-bottom-width: 1px !important;
             }
             .month-highlight {
-                font-size: 1.5rem !important;
-                margin-bottom: 0.25rem !important;
+                font-size: 1.3rem !important;
+                margin-bottom: 0.15rem !important;
             }
             .print-event {
-                padding: 0.4rem 0 !important;
+                padding: 0.25rem 0 !important;
+                gap: 0.6rem !important;
             }
             .print-event-date {
-                font-size: 0.75rem !important;
-                padding: 0.25rem 0.4rem !important;
+                font-size: 0.65rem !important;
+                padding: 0.2rem 0.3rem !important;
+                width: 55px !important;
+                flex: 0 0 55px !important;
             }
             .print-event-title {
-                font-size: 0.95rem !important;
+                font-size: 0.85rem !important;
             }
             .print-event-meta {
-                font-size: 0.7rem !important;
-            }
-            .print-event-excerpt {
                 font-size: 0.65rem !important;
             }
+            .print-event-excerpt {
+                font-size: 0.6rem !important;
+                line-height: 1.25 !important;
+            }
             .print-event-price {
-                font-size: 0.7rem !important;
+                font-size: 0.65rem !important;
+                padding: 0.05rem 0.3rem !important;
             }
             .print-footer {
-                margin-top: 0.75rem !important;
-                padding-top: 0.75rem !important;
+                margin-top: 0.5rem !important;
+                padding-top: 0.5rem !important;
+            }
+            .print-footer .footer-branding h2 {
+                font-size: 1.1rem !important;
+            }
+            .print-footer .tagline {
+                font-size: 0.75rem !important;
+            }
+            .print-footer .footer-info {
+                font-size: 0.7rem !important;
             }
             .qr-compact img {
-                width: 65px !important;
-                height: 65px !important;
+                width: 55px !important;
+                height: 55px !important;
+            }
+            .qr-label {
+                font-size: 0.7rem !important;
             }
         }
 
@@ -636,8 +653,6 @@
                 
             
                 
-            
-                
                 <div class="print-event" data-event-date="2026-04-02">
                     <div class="print-event-date">Apr 2</div>
                     <div class="print-event-details">
@@ -652,6 +667,8 @@
                         <div class="print-event-excerpt">Celebrate Children&#39;s Book Day with us! Select books priced at just 10 cents — only on Thursday, April 2nd.</div>
                     </div>
                 </div>
+                
+            
                 
             
                 
@@ -1053,11 +1070,11 @@
         // Scale content to fit one printed page
         function scaleAndPrint() {
             const page = document.querySelector('.print-page');
-            // Letter page: 11in minus 16mm margins ≈ 9.37in
-            const maxHeight = 9.37 * 96; // ~900px
+            // Letter page: 11in minus 12mm margins ≈ 10.06in = 965px
+            const maxHeight = 10.06 * 96;
             const contentHeight = page.scrollHeight;
             if (contentHeight > maxHeight) {
-                const scale = maxHeight / contentHeight;
+                const scale = Math.floor((maxHeight / contentHeight) * 1000) / 1000;
                 page.style.transform = `scale(${scale})`;
                 page.style.transformOrigin = 'top left';
                 page.style.width = `${100 / scale}%`;
