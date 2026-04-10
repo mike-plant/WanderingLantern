@@ -6,6 +6,8 @@ time: "5:00 PM - 7:00 PM"
 ageRange: "1-10"
 category: "special-event"
 excerpt: "Stretch, breathe, and celebrate the Earth. Jena from Camp Sunshine Kids Yoga leads two sessions — little ones at 5 PM, bigger kids at 6 — with an Earth Day twist."
+price: "Free"
+host: "Camp Sunshine"
 mailchimpFormId: "f1915b185f"
 mailchimpTag: "3728680"
 showChildFields: true
