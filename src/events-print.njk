@@ -375,9 +375,11 @@ permalink: /events-print/
                             <span class="print-event-title">{{ event.data.title }}</span>
                             {% if event.data.price %}<span class="print-event-price">{{ event.data.price }}</span>{% endif %}
                         </div>
+                        {% if event.data.host %}<div style="font-size: 0.7rem; color: var(--muted-gold); font-style: italic; margin-top: 0.05rem;">with {{ event.data.host }}</div>{% endif %}
                         <div class="print-event-meta">
                             {% if event.data.time %}<span>{{ event.data.time }}</span>{% endif %}
                             {% if event.data.ageRange %}<span>Ages {{ event.data.ageRange }}</span>{% endif %}
+                            {% if event.data.location %}<span>📍 {{ event.data.location }}</span>{% endif %}
                         </div>
                         {% if event.data.excerpt %}<div class="print-event-excerpt">{{ event.data.excerpt }}</div>{% endif %}
                     </div>

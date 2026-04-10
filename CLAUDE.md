@@ -85,6 +85,12 @@ excerpt: "Short description"
 mailchimpFormId: "f1915b185f"
 mailchimpTag: "3728680"
 showChildFields: true
+# Optional display fields:
+# price: "Free"                  # Ticket/registration fee, shown in event meta and card
+# location: "Lakewood Library"  # Only for off-site events; omit for store events
+# host: "Camp Sunshine"         # Partner/co-host organization name
+# registrationUrl: "https://..." # External registration link (only when not using Mailchimp)
+# draft: true                    # Hides from all listings; page still accessible by URL
 # For author visits with a special guest (human or animal):
 # specialGuest: "Author Name"
 # specialGuestRole: "Author & Environmental Scientist"
@@ -199,7 +205,7 @@ showChildFields: true
 
 ### Collections
 
-All collections exclude events with `recurring: true` (e.g. Saturday Story Time).
+All collections exclude events with `recurring: true` (e.g. Saturday Story Time) and `draft: true`. Draft events still generate their individual page but are hidden from all listings.
 
 | Collection | Contents | Used In |
 |---|---|---|

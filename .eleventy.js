@@ -29,6 +29,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/newsletter");
   eleventyConfig.addPassthroughCopy("src/thankyou");
   eleventyConfig.addPassthroughCopy("src/launch-dashboard");
+  eleventyConfig.addPassthroughCopy("src/cms");
   eleventyConfig.addPassthroughCopy({ "src/root-files": "/" });
 
   // Watch for CSS changes
@@ -99,6 +100,7 @@ module.exports = function(eleventyConfig) {
     return collection.getFilteredByGlob("src/events/*.md")
       .filter(item => {
         if (item.data.recurring) return false;
+        if (item.data.draft === true) return false;
         const eventEndTime = getEventEndTime(item.data.date, item.data.time);
         const eventDate = parseDate(item.data.date);
         return eventEndTime > now && eventDate <= fourMonthsFromNow;
@@ -111,6 +113,7 @@ module.exports = function(eleventyConfig) {
     return collection.getFilteredByGlob("src/events/*.md")
       .filter(item => {
         if (item.data.recurring) return false;
+        if (item.data.draft === true) return false;
         const eventEndTime = getEventEndTime(item.data.date, item.data.time);
         return eventEndTime <= now;
       })
@@ -128,6 +131,7 @@ module.exports = function(eleventyConfig) {
     const upcoming = collection.getFilteredByGlob("src/events/*.md")
       .filter(item => {
         if (item.data.recurring) return false;
+        if (item.data.draft === true) return false;
         const eventEndTime = getEventEndTime(item.data.date, item.data.time);
         return eventEndTime > now;
       })
@@ -144,6 +148,7 @@ module.exports = function(eleventyConfig) {
     return collection.getFilteredByGlob("src/events/*.md")
       .filter(item => {
         if (item.data.recurring) return false;
+        if (item.data.draft === true) return false;
         const eventEndTime = getEventEndTime(item.data.date, item.data.time);
         const eventDate = parseDate(item.data.date);
         return eventEndTime > now && eventDate <= fourMonthsFromNow;
@@ -161,6 +166,7 @@ module.exports = function(eleventyConfig) {
     return collection.getFilteredByGlob("src/events/*.md")
       .filter(item => {
         if (item.data.recurring) return false;
+        if (item.data.draft === true) return false;
         const eventDate = parseDate(item.data.date);
         const eventEndTime = getEventEndTime(item.data.date, item.data.time);
         return eventEndTime > now && eventDate <= sevenDaysFromNow;
