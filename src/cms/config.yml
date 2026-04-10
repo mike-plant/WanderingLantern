@@ -15,8 +15,8 @@ media_folder: "src/root-files/event-images"
 public_folder: "/event-images"
 
 # Site URL (used in preview links)
-site_url: "https://mike-plant.github.io/WanderingLantern/"
-display_url: "https://mike-plant.github.io/WanderingLantern/"
+site_url: "https://thewanderinglantern.com/"
+display_url: "https://thewanderinglantern.com/"
 
 collections:
   - name: "events"
