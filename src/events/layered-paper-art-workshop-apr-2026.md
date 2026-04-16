@@ -7,6 +7,7 @@ ageRange: "12+"
 excerpt: "Cut, stack, and build — layer by layer, you'll create a paper art piece with real depth and dimension. A hands-on evening workshop inspired by the intricate papercut art of Marina Papercuts. $15 per person."
 price: "$15"
 ticketUrl: "https://thewanderinglantern.store/products/layered-paper-art-workshop"
+flyerImage: "/assets/images/layered_paper_art.png"
 showChildFields: false
 ---
 
