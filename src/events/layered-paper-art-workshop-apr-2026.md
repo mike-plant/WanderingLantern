@@ -8,6 +8,7 @@ excerpt: "Cut, stack, and build — layer by layer, you'll create a paper art pi
 price: "$15"
 ticketUrl: "https://thewanderinglantern.store/products/layered-paper-art-workshop"
 showChildFields: false
+status: cancelled
 ---
 
 ## About This Event

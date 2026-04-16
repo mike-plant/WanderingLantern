@@ -10,7 +10,7 @@ layout: layouts/base.njk
   "description": {{ excerpt | dump | safe }},
   "startDate": "{{ date | eventStartISO(time) }}",
   "endDate": "{{ date | eventEndISO(time) }}",
-  "eventStatus": "https://schema.org/EventScheduled",
+  "eventStatus": "{% if status == 'cancelled' %}https://schema.org/EventCancelled{% else %}https://schema.org/EventScheduled{% endif %}",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "location": {% if location %}{
     "@type": "Place",
@@ -99,8 +99,14 @@ layout: layouts/base.njk
         {{ content | safe }}
     </div>
 
+    {# Cancelled notice — shown instead of registration #}
+    {% if status == 'cancelled' %}
+    <div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background: rgba(180, 60, 60, 0.07); border: 2px solid #b43c3c; border-radius: 8px; text-align: center;">
+        <p style="font-size: 1.2rem; color: #b43c3c; font-weight: bold; margin: 0 0 0.5rem;">This event has been cancelled.</p>
+        <p style="font-size: 1rem; color: var(--deep-brown); margin: 0;">We're sorry for the inconvenience. Check back for future events!</p>
+    </div>
     {# Shopify ticket link #}
-    {% if ticketUrl and (recurring or not isPastEvent(date, time)) %}
+    {% elif ticketUrl and (recurring or not isPastEvent(date, time)) %}
     <div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background: rgba(139, 111, 71, 0.08); border: 2px solid var(--aged-gold); border-radius: 8px; text-align: center;">
         <p style="font-size: 1.1rem; color: var(--deep-brown); margin-bottom: 1.5rem;"><strong>Secure your spot before time runs out!</strong></p>
         <a href="{{ ticketUrl }}" target="_blank" rel="noopener noreferrer" class="cta-button" style="display: inline-block; padding: 1rem 2.5rem; font-size: 1.1rem; text-decoration: none;">Purchase Tickets</a>
