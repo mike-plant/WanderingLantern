@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Use - Launch Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .content {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+        }
+
+        .content h2 {
+            color: #1a4d2e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #d4af37;
+        }
+
+        .content h2:first-child {
+            margin-top: 0;
+        }
+
+        .content h3 {
+            color: #2d5f3f;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .content p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .content ul, .content ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .content li {
+            margin-bottom: 10px;
+        }
+
+        .highlight-box {
+            background: #e8f5e9;
+            border-left: 4px solid #2e7d32;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .highlight-box.orange {
+            background: #fff3e0;
+            border-color: #f0ad4e;
+        }
+
+        .highlight-box.blue {
+            background: #e3f2fd;
+            border-color: #1976d2;
+        }
+
+        .highlight-box strong {
+            color: #1a4d2e;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .tool-card {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .tool-card h4 {
+            color: #1a4d2e;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .tool-card .file-path {
+            font-family: monospace;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .workflow-step {
+            background: white;
+            border-left: 4px solid #d4af37;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .workflow-step strong {
+            color: #1a4d2e;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .quick-start {
+            background: linear-gradient(135deg, #d4af37 0%, #f0c674 100%);
+            color: #1a4d2e;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .quick-start h2 {
+            color: #1a4d2e;
+            border: none;
+            margin: 0 0 20px 0;
+            padding: 0;
+        }
+
+        .quick-start .steps {
+            text-align: left;
+            max-width: 600px;
+            margin: 20px auto 0;
+        }
+
+        .quick-start .steps div {
+            background: rgba(255,255,255,0.3);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-link">← Back to Dashboard</a>
+
+    <div class="header">
+        <h1>📖 How to Use Your Launch Dashboard</h1>
+        <div style="font-style: italic; opacity: 0.9;">Everything you need to know in one place</div>
+    </div>
+
+    <div class="content">
+        <div class="quick-start">
+            <h2>🚀 Quick Start (30 Seconds)</h2>
+            <div class="steps">
+                <div><strong>1.</strong> Click "← Back to Dashboard" above</div>
+                <div><strong>2.</strong> Check today's priority task</div>
+                <div><strong>3.</strong> Click through the 4 main sections</div>
+                <div><strong>4.</strong> Bookmark this page for daily use!</div>
+            </div>
+        </div>
+
+        <h2>What Is This Dashboard?</h2>
+        <p>This is your complete launch campaign management system for The Wandering Lantern's grand opening (Nov 28-29, 2025). Everything you need is in this folder - no external tools required (except email/Instagram).</p>
+
+        <div class="highlight-box">
+            <strong>🎯 Your Goal:</strong>
+            Successfully launch Cleveland's first independent children's bookstore with maximum buzz, minimum stress. You have 25 days!
+        </div>
+
+        <h2>The Dashboard Has 5 Main Tools</h2>
+
+        <div class="tool-card">
+            <h4>📅 Week-by-Week Plan</h4>
+            <div class="file-path">week-by-week.html</div>
+            <p><strong>What it does:</strong> Shows every task for all 4 weeks (Nov 4-29), organized by day.</p>
+            <p><strong>When to use:</strong> Daily! Check what's on your plate today.</p>
+            <p><strong>Best for:</strong> Quick daily reference, dividing tasks between Emily & Michael.</p>
+        </div>
+
+        <div class="tool-card">
+            <h4>🎯 Modular Marketing Plan</h4>
+            <div class="file-path">modular-plan.html</div>
+            <p><strong>What it does:</strong> 10 independent marketing initiatives. Each can be KEPT or SKIPPED without affecting others.</p>
+            <p><strong>When to use:</strong> Making decisions about what to prioritize or cut.</p>
+            <p><strong>Best for:</strong> Understanding the full scope, removing things that feel like too much.</p>
+        </div>
+
+        <div class="tool-card">
+            <h4>📊 Progress Tracker</h4>
+            <div class="file-path">progress.html</div>
+            <p><strong>What it does:</strong> Simple checkbox lists for all tasks. Print, mark with pen, track your wins.</p>
+            <p><strong>When to use:</strong> Weekly planning sessions, progress check-ins.</p>
+            <p><strong>Best for:</strong> Seeing the big picture, celebrating what you've accomplished.</p>
+        </div>
+
+        <div class="tool-card">
+            <h4>📞 Quick Reference</h4>
+            <div class="file-path">quick-ref.html</div>
+            <p><strong>What it does:</strong> All your contacts, dates, checklists in one place.</p>
+            <p><strong>When to use:</strong> When you need a phone number, media contact, or opening day checklist.</p>
+            <p><strong>Best for:</strong> Fast lookups, opening day preparation.</p>
+        </div>
+
+        <div class="tool-card">
+            <h4>🔄 Google Sheets Integration (Optional)</h4>
+            <div class="file-path">poc-sheets.html</div>
+            <p><strong>What it does:</strong> Syncs tasks across all your devices via Google Sheets.</p>
+            <p><strong>When to use:</strong> If you want Emily's phone, Michael's laptop, and your tablet all in sync.</p>
+            <p><strong>Best for:</strong> Cross-device collaboration, real-time updates.</p>
+        </div>
+
+        <h2>Three Ways to Use This Dashboard</h2>
+
+        <h3>Option 1: Digital Dashboard (Easiest)</h3>
+        <ul>
+            <li>Open <code>index.html</code> in your browser daily</li>
+            <li>Bookmark it for quick access</li>
+            <li>Check today's task and click through sections as needed</li>
+            <li>Progress saves to your browser automatically</li>
+        </ul>
+        <p><strong>Pros:</strong> No printing, always accessible, works on phone/tablet/laptop<br>
+        <strong>Cons:</strong> Progress is device-specific unless you use Google Sheets option</p>
+
+        <h3>Option 2: Print-Friendly (Classic)</h3>
+        <ul>
+            <li>Print <code>week-by-week.html</code> (one week at a time)</li>
+            <li>Put it on your fridge with a magnet</li>
+            <li>Check off tasks with a pen</li>
+            <li>Print next week when done</li>
+        </ul>
+        <p><strong>Pros:</strong> Visible daily reminder, satisfying to check off tasks, low-tech<br>
+        <strong>Cons:</strong> Uses paper, need to print each week</p>
+
+        <h3>Option 3: Google Sheets (Cross-Device)</h3>
+        <ul>
+            <li>Follow setup guide in <code>SETUP-GOOGLE-SHEETS.md</code></li>
+            <li>Open <code>poc-sheets.html</code> on all your devices</li>
+            <li>Tasks sync automatically every 30 seconds</li>
+            <li>Emily, Michael, you - all see the same data</li>
+        </ul>
+        <p><strong>Pros:</strong> True cross-device sync, real-time collaboration, see progress from anywhere<br>
+        <strong>Cons:</strong> 10-15 min one-time setup required</p>
+
+        <div class="highlight-box orange">
+            <strong>💡 Recommendation:</strong>
+            Start with Option 1 (digital dashboard) TODAY. Try the Google Sheets option this weekend if you want cross-device sync. Keep a printed week on your fridge as a backup visual reminder.
+        </div>
+
+        <h2>Your Weekly Workflow</h2>
+
+        <div class="workflow-step">
+            <strong>Sunday Evening (5 minutes)</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Open dashboard, review the coming week</li>
+                <li>Check which email goes out (Sundays 6-8pm)</li>
+                <li>Note any big tasks (press releases, pre-order launch, etc.)</li>
+            </ul>
+        </div>
+
+        <div class="workflow-step">
+            <strong>Daily (2 minutes)</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Open dashboard, check "Today's Priority"</li>
+                <li>Do that one task</li>
+                <li>Check it off, feel accomplished!</li>
+            </ul>
+        </div>
+
+        <div class="workflow-step">
+            <strong>Friday Planning (15 minutes)</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Review what got done this week</li>
+                <li>Mark progress in Progress Tracker</li>
+                <li>Celebrate wins!</li>
+                <li>Preview next week</li>
+            </ul>
+        </div>
+
+        <div class="workflow-step">
+            <strong>Decision Points (As Needed)</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Feeling overwhelmed? Open Modular Plan</li>
+                <li>Review modules, decide what to SKIP</li>
+                <li>No guilt - focus on what matters most!</li>
+            </ul>
+        </div>
+
+        <h2>Key Dates to Remember</h2>
+        <ul>
+            <li><strong>Nov 10, 17, 24:</strong> Email campaign Sundays (6-8pm)</li>
+            <li><strong>Nov 21 (Thu):</strong> Pre-orders launch (optional - your decision)</li>
+            <li><strong>Nov 27 (Thu):</strong> Thanksgiving - Store closed, rest day!</li>
+            <li><strong>Nov 28 (Fri):</strong> VIP Soft Opening 4-7pm (optional - your decision)</li>
+            <li><strong>Nov 29 (Sat):</strong> GRAND OPENING 10am-6pm 🎉 (Small Business Saturday!)</li>
+            <li><strong>Nov 30 (Sun):</strong> Thank you email + rest!</li>
+        </ul>
+
+        <h2>If You're Feeling Overwhelmed</h2>
+
+        <div class="highlight-box blue">
+            <strong>🎯 Bare Minimum Opening (16-19 hours total):</strong>
+            <p>If you only do THREE things, do these:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>Email Campaign</strong> - Your 100+ subscribers are your best asset (2-3 hours)</li>
+                <li><strong>Website Hero Image Fix</strong> - Convert to WebP, huge performance win (45 min)</li>
+                <li><strong>Grand Opening Day</strong> - Show up, be amazing, sell books (8-10 hours)</li>
+            </ul>
+            <p style="margin-top: 15px;">Everything else is a bonus. You can still have a successful opening with just these three!</p>
+        </div>
+
+        <h2>Tips for Success</h2>
+        <ul>
+            <li><strong>Start small:</strong> Don't try to do everything today. One task per day adds up!</li>
+            <li><strong>Divide & conquer:</strong> Emily handles Instagram, Michael handles press, you coordinate</li>
+            <li><strong>Use the Quick Reference:</strong> Bookmark it for fast access to contacts and dates</li>
+            <li><strong>Celebrate wins:</strong> Checked off a task? High five! Sent a press release? Celebrate!</li>
+            <li><strong>Adjust as you go:</strong> Falling behind? Open Modular Plan and skip something</li>
+            <li><strong>Done > Perfect:</strong> A good Instagram post today beats a perfect one next week</li>
+        </ul>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>How do I save my progress?</h3>
+        <p>If using the digital dashboard, progress saves automatically to your browser. If using Google Sheets option, it syncs across all devices. If printing, mark with a pen!</p>
+
+        <h3>Can I use this on my phone?</h3>
+        <p>Yes! All pages are mobile-friendly. Bookmark the dashboard on your phone's home screen for quick access.</p>
+
+        <h3>What if I skip a task?</h3>
+        <p>That's totally fine! Open the Modular Plan to see what you can safely skip. Most things are optional.</p>
+
+        <h3>Do I need the Google Sheets integration?</h3>
+        <p>No! It's optional. Use it if you want cross-device sync. The dashboard works great without it.</p>
+
+        <h3>Can I share this with Emily and Michael?</h3>
+        <p>Absolutely! Email them the <code>launch-dashboard</code> folder, or use the Google Sheets option to share tasks.</p>
+
+        <h3>What if I want to print everything?</h3>
+        <p>Each page has print styles. Press Cmd+P (Mac) or Ctrl+P (Windows) on any page to print or save as PDF.</p>
+
+        <h3>How often should I check the dashboard?</h3>
+        <p>Daily for 2 minutes to see today's task. Weekly on Sundays/Fridays for planning. That's it!</p>
+
+        <h2>Getting Help</h2>
+        <p>If something isn't working or you need adjustments:</p>
+        <ul>
+            <li>Check <code>FILE-STRUCTURE.md</code> for file locations</li>
+            <li>Read <code>SETUP-GOOGLE-SHEETS.md</code> for sync issues</li>
+            <li>Read <code>README.md</code> for dashboard overview</li>
+            <li>Send a message to Claude with what you're stuck on</li>
+        </ul>
+
+        <h2>Your Competitive Advantages</h2>
+        <div class="highlight-box">
+            <p><strong>Remember why you're doing this:</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>✨ <strong>Cleveland's FIRST & ONLY</strong> independent children's bookstore</li>
+                <li>✨ <strong>Emily's expertise:</strong> Former teacher + mom of 4</li>
+                <li>✨ <strong>Perfect timing:</strong> Opening on Small Business Saturday</li>
+                <li>✨ <strong>Engaged audience:</strong> 100+ email subscribers already</li>
+                <li>✨ <strong>Beautiful space:</strong> Hand-curated, age-appropriate selection</li>
+            </ul>
+            <p style="margin-top: 15px;">You're not just opening a store. You're creating a community space for literacy and imagination. This dashboard helps you get there!</p>
+        </div>
+
+        <div class="quick-start" style="margin-top: 40px;">
+            <h2>🎯 Next Step: Do This Now</h2>
+            <div class="steps">
+                <div>1. Click "← Back to Dashboard" at the top</div>
+                <div>2. Look at "Today's Priority" - do that ONE task</div>
+                <div>3. Check it off - you're making progress!</div>
+                <div>4. Come back tomorrow and repeat</div>
+            </div>
+            <p style="margin-top: 20px; font-size: 1.2em;"><strong>That's it. You've got this! 🎉</strong></p>
+        </div>
+
+    </div>
+
+    <div style="text-align: center; color: rgba(255,255,255,0.8); padding: 20px;">
+        <p>The Wandering Lantern Launch Dashboard</p>
+        <p style="font-style: italic; margin-top: 5px;">"Follow the light, find the wonder"</p>
+        <p style="margin-top: 15px;">25 days until grand opening! 📚✨</p>
+    </div>
+</div>
+
+</body>
+</html>

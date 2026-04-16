@@ -1,0 +1,100 @@
+backend:
+  name: github
+  repo: mike-plant/WanderingLantern
+  branch: main
+  # OAuth proxy will be added in a later task. For local development:
+  # Run `npx @sveltia/cms-proxy-server` in the repo root and Sveltia will
+  # auto-detect it and use the local backend instead.
+
+# Use editorial workflow so saves create PRs, not direct commits
+publish_mode: editorial_workflow
+
+# Where uploaded images go in the repo
+media_folder: "src/root-files/event-images"
+# The URL path that corresponds to media_folder on the deployed site
+public_folder: "/event-images"
+
+# Site URL (used in preview links)
+site_url: "https://thewanderinglantern.com/"
+display_url: "https://thewanderinglantern.com/"
+
+collections:
+  - name: "events"
+    label: "Events"
+    label_singular: "Event"
+    folder: "src/events"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "events/{{slug}}/"
+    summary: "{{title}} — {{date | date('YYYY-MM-DD')}}"
+    sortable_fields: ["date", "title"]
+    view_filters:
+      - label: "Upcoming"
+        field: "date"
+        pattern: "2026"
+      - label: "Recurring"
+        field: "recurring"
+        pattern: true
+    fields:
+      - { name: "layout", label: "Layout", widget: "hidden", default: "layouts/event.njk" }
+      - { name: "draft", label: "Draft (not published)", widget: "boolean", required: false, default: false, hint: "Check this to save your work without publishing. Drafts are hidden from the public site but still accessible by direct URL." }
+      - { name: "title", label: "Event Title", widget: "string" }
+      - { name: "date", label: "Date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: false }
+      - { name: "time", label: "Time", widget: "string", hint: "e.g. '10:00 AM - 11:30 AM' or '11:00 AM'" }
+      - { name: "ageRange", label: "Age Range", widget: "string", hint: "e.g. 'All ages', '3-7', '0-5'", default: "All ages" }
+      - { name: "location", label: "Location", widget: "string", required: false, hint: "Leave blank for events at the store. Only set for off-site events, e.g. 'Lakewood Public Library Main Branch'." }
+      - name: "category"
+        label: "Category"
+        widget: "select"
+        required: false
+        options:
+          - { label: "Workshop", value: "workshop" }
+          - { label: "Author Visit", value: "author-visit" }
+          - { label: "Story Time", value: "story-time" }
+          - { label: "Special Event", value: "special-event" }
+      - { name: "excerpt", label: "Short Description (Excerpt)", widget: "text", hint: "One or two sentences that will appear on event cards and previews. Lead with the most specific, unusual, or emotionally charged detail about this event — not a generic intro." }
+      - { name: "price", label: "Price", widget: "string", required: false, hint: "e.g. 'Free', '$15 per family', '$5 per child'. Leave blank if free." }
+      - { name: "host", label: "Partner / Host", widget: "string", required: false, hint: "If this event is co-hosted with a partner organization, enter their name here. e.g. 'Camp Sunshine', 'Holistic Lakewood'." }
+      - name: "status"
+        label: "Status"
+        widget: "select"
+        required: false
+        options:
+          - { label: "Normal (no badge)", value: "" }
+          - { label: "Full", value: "full" }
+          - { label: "Cancelled", value: "cancelled" }
+      # Registration fields
+      - { name: "registrationUrl", label: "External Registration URL", widget: "string", required: false, hint: "Only set this if registration is handled by an outside site (e.g. Eventbrite). If you're using the Mailchimp form below, leave this blank." }
+      # Special guest fields (all optional, top-level)
+      - { name: "specialGuest", label: "Special Guest Name", widget: "string", required: false, hint: "Author or guest name. When set on a Saturday author-visit event, adds a gold star to the Saturday Story Time banner." }
+      - { name: "specialGuestRole", label: "Guest Role", widget: "string", required: false, hint: "e.g. 'Author', 'Illustrator', 'Author & Environmental Scientist'" }
+      - { name: "specialGuestBook", label: "Featured Book", widget: "string", required: false }
+      # Mailchimp registration fields (all top-level)
+      - { name: "mailchimpFormId", label: "Mailchimp Form ID", widget: "string", required: false, default: "f1915b185f" }
+      - { name: "mailchimpTag", label: "Mailchimp Tag ID", widget: "string", required: false, default: "3728680" }
+      - { name: "showChildFields", label: "Show child-age fields in registration form", widget: "boolean", required: false, default: true }
+      # Flyer fields (top-level)
+      - { name: "enableEventFlyers", label: "Show Flyer Image", widget: "boolean", required: false, default: false }
+      - { name: "flyerImage", label: "Flyer Image URL", widget: "string", required: false, hint: "Paste a full image URL, or upload an image in the media library and paste its path here." }
+      # Recurring event fields (advanced, top-level)
+      - { name: "recurring", label: "This is a recurring event", widget: "boolean", required: false, default: false }
+      - { name: "recurringSchedule", label: "Recurring schedule description", widget: "string", required: false, hint: "e.g. 'Every Saturday'" }
+      - { name: "permalink", label: "Custom URL path (recurring only)", widget: "string", required: false, hint: "Only set this for recurring events. e.g. /events/saturday-storytime/" }
+      # Body
+      - { name: "body", label: "Event Details (long description)", widget: "markdown" }
+
+  - name: "press"
+    label: "Press Releases"
+    label_singular: "Press Release"
+    folder: "src/press"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} — {{date | date('YYYY-MM-DD')}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { name: "layout", label: "Layout", widget: "hidden", default: "layouts/press-release.njk" }
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "date", label: "Date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: false }
+      - { name: "excerpt", label: "Brief Summary", widget: "text" }
+      - { name: "type", label: "Type", widget: "hidden", default: "press-release" }
+      - { name: "body", label: "Press Release Content", widget: "markdown" }

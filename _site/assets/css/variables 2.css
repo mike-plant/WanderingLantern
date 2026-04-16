@@ -1,0 +1,20 @@
+/* CSS Variables - Color Palette & Typography */
+:root {
+  /* Vintage color palette */
+  --warm-brown: #8b6f47;
+  --deep-brown: #5c4d3c;
+  --aged-gold: #c9a961;
+  --muted-gold: #a38b5f;
+  --old-gold: #d4af37;
+  --warm-gold: #f0c674;
+  --cream: #faf7f0;
+  --parchment: #f5eedc;
+  --dark-text: #3a2f27;
+  --soft-green: #7a8b6f;
+  --deep-green: #1a4d2e;
+  --accent-rust: #a67c52;
+
+  /* Typography */
+  --font-serif: 'Libre Baskerville', 'Georgia', serif;
+  --font-display: 'Playfair Display', serif;
+}
