@@ -270,25 +270,15 @@ All functions initialize on DOMContentLoaded.
 ## Deployment
 
 ### Current Setup
-GitHub Pages deploys from `main` branch.
+GitHub Actions builds and deploys automatically on every push to `main`. Workflow: `.github/workflows/deploy.yml`.
 
 ### To Deploy
+Push source changes to `main` — GitHub Actions handles the build and deploys to GitHub Pages automatically.
 
-**Option A: Manual Build (Current)**
-1. Build site: `npm run build`
-2. Commit `_site/` directory
-3. Push to GitHub
-4. Configure GitHub Pages to serve from `_site/`
-
-**Option B: GitHub Actions (Recommended)**
-Set up automated build/deploy workflow:
-1. Create `.github/workflows/deploy.yml`
-2. Configure to build on push and deploy `_site/`
-3. Don't commit `_site/` to repo
+**Do NOT manually build or commit `_site/`** — GitHub Actions builds its own copy. Committing `_site/` adds noise with no benefit.
 
 ### Deployment Notes
-- `_site/` contains built site
-- Never edit `_site/` directly - changes will be overwritten
+- Never edit `_site/` directly — it is built by CI
 - All source files are in `src/`
 
 ## Common Updates
