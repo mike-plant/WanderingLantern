@@ -9,6 +9,7 @@ price: "$15"
 ticketUrl: "https://thewanderinglantern.store/products/layered-paper-art-workshop"
 flyerImage: "/assets/images/layered_paper_art.png"
 showChildFields: false
+status: cancelled
 ---
 
 ## About This Event

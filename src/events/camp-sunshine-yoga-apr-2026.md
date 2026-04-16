@@ -10,6 +10,7 @@ price: "$10"
 host: "Camp Sunshine"
 ticketUrl: "https://thewanderinglantern.store/products/kids-yoga-event-earth-day"
 showChildFields: true
+status: cancelled
 ---
 
 ## About This Event
