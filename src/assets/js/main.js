@@ -207,6 +207,37 @@ function initGATracking() {
     });
 }
 
+// Homepage promo modal — shows once per session, expires after the event date
+function initPromoModal() {
+    const modal = document.getElementById('promo-modal');
+    if (!modal) return;
+
+    // Auto-hide after April 25, 2026
+    if (new Date() >= new Date('2026-04-26T00:00:00')) return;
+
+    // Show once per browser session
+    if (sessionStorage.getItem('promoModalSeen')) return;
+
+    setTimeout(() => {
+        modal.classList.add('active');
+        sessionStorage.setItem('promoModalSeen', '1');
+    }, 700);
+
+    modal.querySelector('.promo-modal-close').addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        modal.classList.remove('active');
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.remove('active');
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') modal.classList.remove('active');
+    });
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     initStickyBars(); // Homepage-specific sticky tagline bar
@@ -214,4 +245,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initEventRegistrationRedirect(); // Event form redirects
     initEventsViewToggle(); // Events page list/grid toggle
     initGATracking(); // Google Analytics event tracking
+    initPromoModal(); // Homepage promo modal (expires after event date)
 });

@@ -33,6 +33,9 @@
         {% for event in collections.previewSpecialEvents %}
         <a href="{{ event.url }}" class="event-preview-card-link">
             <div class="event-preview-card {% if loop.first %}event-card-featured{% endif %} {% if isPastEvent(event.data.date, event.data.time) %}event-preview-card--closed{% elif event.data.status %}event-preview-card--{{ event.data.status }}{% endif %}">
+                {% if event.data.category == 'special-event' %}
+                <div class="event-preview-ribbon">Special</div>
+                {% endif %}
                 {% if isPastEvent(event.data.date, event.data.time) %}
                 <div class="event-status-badge event-status-badge--closed">
                     CLOSED

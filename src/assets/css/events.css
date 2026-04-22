@@ -1,5 +1,148 @@
 /* Event Page Styles */
 
+/* Independent Bookstore Day banner */
+.ibd-banner {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  background: linear-gradient(135deg, #f5c518 0%, #3dbfbf 100%);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px rgba(58, 47, 39, 0.15);
+}
+
+.ibd-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(58, 47, 39, 0.22);
+}
+
+.ibd-banner-left {
+  flex-shrink: 0;
+}
+
+.ibd-banner-flyer {
+  width: 90px;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.ibd-banner-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.ibd-banner-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #1a3a3a;
+  background: rgba(255,255,255,0.45);
+  border-radius: 20px;
+  padding: 0.15rem 0.6rem;
+  margin-bottom: 0.35rem;
+}
+
+.ibd-banner-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a3a3a;
+  margin: 0 0 0.2rem;
+  text-align: left;
+}
+
+.ibd-banner-date {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a3a3a;
+  margin: 0 0 0.35rem;
+}
+
+.ibd-banner-desc {
+  font-size: 0.9rem;
+  color: #1a3a3a;
+  margin: 0 0 0.6rem;
+  line-height: 1.5;
+}
+
+.ibd-banner-cta {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1a3a3a;
+  background: rgba(255,255,255,0.5);
+  border-radius: 20px;
+  padding: 0.3rem 0.9rem;
+  display: inline-block;
+}
+
+.ibd-hero-wrap {
+  background: linear-gradient(135deg, #f5c518 0%, #3dbfbf 100%);
+}
+
+.ibd-banner--hero {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.ibd-banner--hero:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.ibd-banner--hero .ibd-banner-flyer {
+  width: 160px;
+}
+
+.ibd-banner--hero .ibd-banner-title {
+  font-size: 2rem;
+}
+
+.ibd-banner--hero .ibd-banner-date {
+  font-size: 1.1rem;
+}
+
+.ibd-banner--hero .ibd-banner-desc {
+  font-size: 1rem;
+}
+
+.ibd-banner--hero .ibd-banner-cta {
+  font-size: 1rem;
+  padding: 0.4rem 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .ibd-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .ibd-banner-left {
+    display: none;
+  }
+
+  .ibd-banner-title {
+    font-size: 1.2rem;
+  }
+
+  .ibd-banner--hero .ibd-banner-title {
+    font-size: 1.4rem;
+  }
+}
+
 /* Saturday Story Time Banner - UX Optimized Mobile First */
 .storytime-banner {
   background: linear-gradient(135deg, rgba(139, 111, 71, 0.08) 0%, rgba(201, 169, 97, 0.08) 100%);
