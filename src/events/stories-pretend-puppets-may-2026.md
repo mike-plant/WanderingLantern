@@ -2,7 +2,8 @@
 layout: layouts/event.njk
 title: "Stories, Pretend, and Puppets"
 date: 2026-05-26
-time: "10:00 AM - 1:00 PM"
+time: "10:00 AM - 1:00 PM daily"
+dateRange: "Tuesday–Friday, May 26–29, 2026"
 ageRange: "Rising kindergarteners"
 category: "workshop"
 excerpt: "Four mornings of fairy tales, pretend play, and puppet-making at The Wandering Lantern and Wagar Park. Your child heads home with a handmade friend and a story to tell."

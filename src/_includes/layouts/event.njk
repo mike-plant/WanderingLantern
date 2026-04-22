@@ -61,6 +61,10 @@ layout: layouts/base.njk
             <div>
                 <strong>Schedule:</strong> {{ recurringSchedule }}
             </div>
+            {% elif dateRange %}
+            <div>
+                <strong>Dates:</strong> {{ dateRange }}
+            </div>
             {% elif date %}
             <div>
                 <strong>Date:</strong> {{ date | date('dddd') }}, {{ date | date('MMMM D, YYYY') }}

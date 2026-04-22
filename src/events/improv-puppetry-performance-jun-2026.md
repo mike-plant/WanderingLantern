@@ -2,7 +2,8 @@
 layout: layouts/event.njk
 title: "Improv, Puppetry, & Performance"
 date: 2026-06-08
-time: "5:30 PM - 8:30 PM"
+time: "5:30 PM - 8:30 PM daily"
+dateRange: "Monday–Friday, June 8–12, 2026"
 ageRange: "Rising 6th–7th graders"
 category: "workshop"
 excerpt: "A week of summer evenings being loud, silly, and expressive at Wagar Park — then walking into the bookstore to turn it all into a performance. Ends with a showcase Friday night."

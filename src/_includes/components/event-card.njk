@@ -40,7 +40,7 @@
             {% endif %}
             <div class="event-card-meta">
                 {% if event.data.date %}
-                <div class="event-meta-date"><strong>{{ event.data.date | date('dddd') }}, {{ event.data.date | date('MMMM D, YYYY') }}</strong></div>
+                <div class="event-meta-date"><strong>{% if event.data.dateRange %}{{ event.data.dateRange }}{% else %}{{ event.data.date | date('dddd') }}, {{ event.data.date | date('MMMM D, YYYY') }}{% endif %}</strong></div>
                 {% endif %}
                 {% if event.data.time %}
                 <div class="event-meta-time">{{ event.data.time }}{% if event.data.price %} · {{ event.data.price }}{% endif %}</div>
