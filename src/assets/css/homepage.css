@@ -105,6 +105,25 @@
   overflow: hidden;
 }
 
+.event-preview-ribbon {
+  position: absolute;
+  top: 14px;
+  right: -26px;
+  background: #8b2222;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  padding: 0.25rem 0;
+  width: 110px;
+  text-align: center;
+  transform: rotate(45deg);
+  transform-origin: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  pointer-events: none;
+}
+
 .event-preview-card--cancelled {
   opacity: 0.7;
 }

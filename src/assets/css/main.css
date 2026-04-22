@@ -21,5 +21,8 @@
 @import 'about.css';
 @import 'orders.css';
 
+/* Promo modal */
+@import 'modal.css';
+
 /* Mobile must be last to override */
 @import 'mobile.css';

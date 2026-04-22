@@ -166,3 +166,51 @@ footer a {
   color: var(--aged-gold);
   text-decoration: none;
 }
+
+/* Content lists — applies to all prose content areas */
+.event-content ul,
+.event-content ol,
+.container ul,
+.container ol {
+  padding-left: 2.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.event-content li,
+.container li {
+  margin-bottom: 0.35rem;
+}
+
+/* Content tables */
+.event-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.event-content th,
+.event-content td {
+  text-align: left;
+  padding: 0.6rem 1.25rem 0.6rem 0;
+  border-bottom: 1px solid rgba(139, 111, 71, 0.15);
+  vertical-align: top;
+}
+
+.event-content th {
+  color: var(--warm-brown);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 2px solid var(--aged-gold);
+}
+
+.event-content td:first-child {
+  white-space: nowrap;
+  padding-right: 2rem;
+  color: var(--deep-brown);
+  font-weight: 600;
+  min-width: 11rem;
+}
