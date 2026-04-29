@@ -1,10 +1,11 @@
 ---
 layout: layouts/event.njk
 title: "Silhouettes by Chris Casey"
-date: 2026-04-29
+date: 2026-04-30
 time: "1:00 PM - 4:00 PM"
 ageRange: "All ages"
 category: "special-event"
+status: "full"
 excerpt: "A real silhouette artist, right here in the bookstore. Chris Casey cuts your child's profile in minutes — a keepsake that lasts forever. Book your slot ahead of time."
 ticketUrl: "https://www.eventbrite.com/e/the-wandering-lantern-lakewood-oh-hosting-silhouettes-by-chris-tickets-1985390264727"
 ---
