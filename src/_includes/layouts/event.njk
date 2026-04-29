@@ -104,7 +104,12 @@ layout: layouts/base.njk
     </div>
 
     {# Cancelled notice — shown instead of registration #}
-    {% if status == 'cancelled' %}
+    {% if status == 'full' %}
+    <div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background: rgba(139, 111, 71, 0.08); border: 2px solid var(--aged-gold); border-radius: 8px; text-align: center;">
+        <p style="font-size: 1.2rem; color: var(--deep-brown); font-weight: bold; margin: 0 0 0.5rem;">This event is sold out.</p>
+        <p style="font-size: 1rem; color: var(--warm-brown); margin: 0;">Check back for future events or <a href="/events/" style="color: var(--aged-gold);">browse upcoming events</a>.</p>
+    </div>
+    {% elif status == 'cancelled' %}
     <div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background: rgba(180, 60, 60, 0.07); border: 2px solid #b43c3c; border-radius: 8px; text-align: center;">
         <p style="font-size: 1.2rem; color: #b43c3c; font-weight: bold; margin: 0 0 0.5rem;">This event has been cancelled.</p>
         <p style="font-size: 1rem; color: var(--deep-brown); margin: 0;">We're sorry for the inconvenience. Check back for future events!</p>
