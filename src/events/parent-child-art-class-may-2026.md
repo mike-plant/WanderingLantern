@@ -1,12 +1,19 @@
 ---
 layout: layouts/event.njk
-title: "Parent & Child Painting Class with Ohio City Art House"
+title: Parent & Child Painting Class with Ohio City Art House
 date: 2026-05-02
-time: "12:50 PM - 2:00 PM"
-ageRange: "3+"
-category: "workshop"
-excerpt: "Grab a brush and paint alongside your little one. Ohio City Art House brings a guided painting class to The Wandering Lantern — no experience needed, just show up and create something together."
-ticketUrl: "https://www.eventbrite.com/e/parent-and-child-painting-class-tickets-1986106351562"
+time: 12:50 PM - 2:00 PM
+ageRange: 3+
+location: ''
+category: workshop
+excerpt: Grab a brush and paint alongside your little one. Ohio City Art House brings a guided painting class to The Wandering Lantern — no experience needed, just show up and create something together.
+price: ''
+host: ''
+status: full
+ticketUrl: https://www.eventbrite.com/e/parent-and-child-painting-class-tickets-1986106351562
+registrationUrl: ''
+dateRange: ''
+specialGuest: ''
 ---
 
 ## About This Event
