@@ -281,6 +281,22 @@ Push source changes to `main` — GitHub Actions handles the build and deploys t
 - Never edit `_site/` directly — it is built by CI
 - All source files are in `src/`
 
+### CMS GitHub OAuth Proxy (Cloudflare Worker)
+
+The CMS at `/cms/` requires a small server-side OAuth proxy to authenticate
+users with GitHub. This is a one-time setup.
+
+- **Worker code:** `workers/cms-auth/worker.js`
+- **Deploy config:** `workers/cms-auth/wrangler.toml` (worker name: `wl-cms-auth`)
+- **Setup guide:** `workers/cms-auth/README.md` — follow these 7 steps once to deploy
+- **Secrets:** `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` are stored in the
+  Cloudflare Worker environment (via `wrangler secret put`). They are **not** in
+  the repo.
+- **CMS config:** After deploying, uncomment `base_url` in `src/cms/config.yml`
+  and fill in the Worker URL (`https://wl-cms-auth.<subdomain>.workers.dev`)
+- **Redeploy the Worker** (after editing `worker.js`): `cd workers/cms-auth && wrangler deploy`
+- **Secrets persist** across Worker deploys — no need to re-set them unless rotating
+
 ## Common Updates
 
 ### Update Grand Opening Date

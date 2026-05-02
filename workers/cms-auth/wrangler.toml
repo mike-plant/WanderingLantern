@@ -1,0 +1,8 @@
+name = "wl-cms-auth"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+# Secrets (set via: wrangler secret put GITHUB_CLIENT_ID)
+# Do NOT commit these values:
+#   GITHUB_CLIENT_ID
+#   GITHUB_CLIENT_SECRET
