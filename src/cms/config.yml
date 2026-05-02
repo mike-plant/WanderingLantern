@@ -5,7 +5,7 @@ backend:
   # base_url points to the Cloudflare Worker OAuth proxy.
   # Setup instructions: workers/cms-auth/README.md
   # After deploying the Worker, uncomment and fill in your subdomain:
-  # base_url: https://wl-cms-auth.<your-subdomain>.workers.dev
+  base_url: https://wl-cms-auth.msplant.workers.dev
   #
   # For local development: run `npx @sveltia/cms-proxy-server` in the
   # repo root and Sveltia will auto-detect it and use the local backend.
