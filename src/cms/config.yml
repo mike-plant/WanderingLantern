@@ -68,7 +68,10 @@ collections:
           - { label: "Full", value: "full" }
           - { label: "Cancelled", value: "cancelled" }
       # Registration fields
-      - { name: "registrationUrl", label: "External Registration URL", widget: "string", required: false, hint: "Only set this if registration is handled by an outside site (e.g. Eventbrite). If you're using the Mailchimp form below, leave this blank." }
+      - { name: "ticketUrl", label: "Ticket Purchase URL (Shopify)", widget: "string", required: false, hint: "For events where tickets are sold through the Wandering Lantern Shopify store. Adds a 'Purchase Tickets' button. Leave blank if using Mailchimp registration or Eventbrite." }
+      - { name: "registrationUrl", label: "External Registration URL (Eventbrite etc.)", widget: "string", required: false, hint: "For events registered through an outside site like Eventbrite. Adds a 'Register here' button. Leave blank if using Mailchimp registration or the Shopify ticket URL above." }
+      # Multi-day event fields
+      - { name: "dateRange", label: "Date Range (multi-day events)", widget: "string", required: false, hint: "For camps or multi-day events only. e.g. 'Monday–Friday, June 8–12, 2026'. Leave blank for single-day events." }
       # Special guest fields (all optional, top-level)
       - { name: "specialGuest", label: "Special Guest Name", widget: "string", required: false, hint: "Author or guest name. When set on a Saturday author-visit event, adds a gold star to the Saturday Story Time banner." }
       - { name: "specialGuestRole", label: "Guest Role", widget: "string", required: false, hint: "e.g. 'Author', 'Illustrator', 'Author & Environmental Scientist'" }
@@ -78,8 +81,7 @@ collections:
       - { name: "mailchimpTag", label: "Mailchimp Tag ID", widget: "string", required: false, default: "3728680" }
       - { name: "showChildFields", label: "Show child-age fields in registration form", widget: "boolean", required: false, default: true }
       # Flyer fields (top-level)
-      - { name: "enableEventFlyers", label: "Show Flyer Image", widget: "boolean", required: false, default: false }
-      - { name: "flyerImage", label: "Flyer Image URL", widget: "string", required: false, hint: "Paste a full image URL, or upload an image in the media library and paste its path here." }
+      - { name: "flyerImage", label: "Flyer Image URL", widget: "string", required: false, hint: "Paste a full image URL or a local path (e.g. /assets/images/my-flyer.png). The flyer appears automatically when this field is set — no other toggle needed." }
       # Recurring event fields (advanced, top-level)
       - { name: "recurring", label: "This is a recurring event", widget: "boolean", required: false, default: false }
       - { name: "recurringSchedule", label: "Recurring schedule description", widget: "string", required: false, hint: "e.g. 'Every Saturday'" }
