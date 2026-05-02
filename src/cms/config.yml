@@ -44,46 +44,48 @@ collections:
       - { name: "draft", label: "Draft (not published)", widget: "boolean", required: false, default: false, hint: "Check this to save your work without publishing. Drafts are hidden from the public site but still accessible by direct URL." }
       - { name: "title", label: "Event Title", widget: "string" }
       - { name: "date", label: "Date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: false }
-      - { name: "time", label: "Time", widget: "string", hint: "e.g. '10:00 AM - 11:30 AM' or '11:00 AM'" }
-      - { name: "ageRange", label: "Age Range", widget: "string", hint: "e.g. 'All ages', '3-7', '0-5'", default: "All ages" }
-      - { name: "location", label: "Location", widget: "string", required: false, hint: "Leave blank for events at the store. Only set for off-site events, e.g. 'Lakewood Public Library Main Branch'." }
+      - { name: "time", label: "Time", widget: "string", hint: "Use a range for events with a clear end time: '6:00 PM - 7:00 PM'. Single time if open-ended: '11:00 AM'. Two sessions: '11:00 AM & 11:30 AM'. Multi-day camps: '10:00 AM - 1:00 PM daily'. For hosted pop-ups: 'By appointment' or 'During Store Hours'." }
+      - { name: "ageRange", label: "Age Range", widget: "string", default: "All ages", hint: "Use 'All ages' when parents and children participate together (yoga, book club, author visits, special events). Use a number range for targeted programs: '0-5', '0-7', '1-10', '5-10', '6-12', '8-12', '12+'. For school-age camps: 'Rising kindergarteners' or 'Rising 6th–7th graders'. Use '3+' when there's no real upper limit." }
+      - { name: "location", label: "Location", widget: "string", required: false, hint: "Leave blank for events held at The Wandering Lantern. Only fill in for off-site events, e.g. 'Wagar Park, Lakewood' or 'Lakewood Public Library'." }
       - name: "category"
         label: "Category"
         widget: "select"
         required: false
+        hint: "Controls the badge color on event cards. Workshop (brown) = craft or skill-based programs like Cardboard Maker's Space, Postcard Pen Pals, Layered Paper Art. Author Visit (gold, filled) = any event with a visiting author or special guest with a book. Story Time (gold outline) = one-off storytime sessions. Special Event (red) = seasonal or one-of-a-kind celebrations like IBD, White Rabbit Visit, yoga pop-ups."
         options:
           - { label: "Workshop", value: "workshop" }
           - { label: "Author Visit", value: "author-visit" }
           - { label: "Story Time", value: "story-time" }
           - { label: "Special Event", value: "special-event" }
-      - { name: "excerpt", label: "Short Description (Excerpt)", widget: "text", hint: "One or two sentences that will appear on event cards and previews. Lead with the most specific, unusual, or emotionally charged detail about this event — not a generic intro." }
-      - { name: "price", label: "Price", widget: "string", required: false, hint: "e.g. 'Free', '$15 per family', '$5 per child'. Leave blank if free." }
-      - { name: "host", label: "Partner / Host", widget: "string", required: false, hint: "If this event is co-hosted with a partner organization, enter their name here. e.g. 'Camp Sunshine', 'Holistic Lakewood'." }
+      - { name: "excerpt", label: "Short Description (Excerpt)", widget: "text", hint: "1-2 sentences shown on event cards and the events page. Lead with the sharpest, most specific detail — not the event name or a generic intro. For author visits: what makes this guest or animal unique? For workshops: what will kids make or walk away with? For special events: what's the one thing that makes it unmissable? Read other excerpts before writing to avoid repeating the same structure." }
+      - { name: "price", label: "Price", widget: "string", required: false, hint: "Leave blank if the event is free and registration-only. Use 'Free' if it's worth calling out (like IBD or chess). For paid events: '$10', '$12', '$15 per person', '$135', '$150'. Shown on the event card and event page." }
+      - { name: "host", label: "Partner / Host", widget: "string", required: false, hint: "The outside organization co-hosting or leading this event. e.g. 'Camp Sunshine' (yoga events), 'Ohio City Art House' (painting class). Leave blank for events run entirely by the store." }
       - name: "status"
         label: "Status"
         widget: "select"
         required: false
+        hint: "Leave as 'Normal' for active events. Set to 'Full' when registration is closed and you want a 'Sold out' badge on the card (used for silhouette portrait, hot cocoa party, mouse mansion). Set to 'Cancelled' to show a cancellation notice on the event page instead of a registration form (used for the cancelled yoga and paper art events)."
         options:
           - { label: "Normal (no badge)", value: "" }
           - { label: "Full", value: "full" }
           - { label: "Cancelled", value: "cancelled" }
-      # Registration fields
-      - { name: "ticketUrl", label: "Ticket Purchase URL (Shopify)", widget: "string", required: false, hint: "For events where tickets are sold through the Wandering Lantern Shopify store. Adds a 'Purchase Tickets' button. Leave blank if using Mailchimp registration or Eventbrite." }
-      - { name: "registrationUrl", label: "External Registration URL (Eventbrite etc.)", widget: "string", required: false, hint: "For events registered through an outside site like Eventbrite. Adds a 'Register here' button. Leave blank if using Mailchimp registration or the Shopify ticket URL above." }
+      # Registration — use ONE of: ticketUrl, registrationUrl, or Mailchimp fields below. Not a combination.
+      - { name: "ticketUrl", label: "Ticket Purchase URL", widget: "string", required: false, hint: "For paid events where customers buy tickets — either through the Wandering Lantern Shopify store (thewanderinglantern.store/products/...) or Eventbrite. Adds a 'Purchase Tickets' button. Past examples: Postcard Pen Pals, Cardboard Maker's Space, Improv & Puppetry camp (Shopify); Silhouettes by Chris, Parent & Child Painting (Eventbrite). Leave blank if using Mailchimp registration." }
+      - { name: "registrationUrl", label: "External Registration URL", widget: "string", required: false, hint: "For free events where registration happens on an outside site (not Shopify, not Mailchimp). Adds a 'Register here' button. Leave blank if using Mailchimp registration or a ticket URL above." }
       # Multi-day event fields
-      - { name: "dateRange", label: "Date Range (multi-day events)", widget: "string", required: false, hint: "For camps or multi-day events only. e.g. 'Monday–Friday, June 8–12, 2026'. Leave blank for single-day events." }
-      # Special guest fields (all optional, top-level)
-      - { name: "specialGuest", label: "Special Guest Name", widget: "string", required: false, hint: "Author or guest name. When set on a Saturday author-visit event, adds a gold star to the Saturday Story Time banner." }
-      - { name: "specialGuestRole", label: "Guest Role", widget: "string", required: false, hint: "e.g. 'Author', 'Illustrator', 'Author & Environmental Scientist'" }
-      - { name: "specialGuestBook", label: "Featured Book", widget: "string", required: false }
-      # Mailchimp registration fields (all top-level)
-      - { name: "mailchimpFormId", label: "Mailchimp Form ID", widget: "string", required: false, default: "f1915b185f" }
-      - { name: "mailchimpTag", label: "Mailchimp Tag ID", widget: "string", required: false, default: "3728680" }
-      - { name: "showChildFields", label: "Show child-age fields in registration form", widget: "boolean", required: false, default: true }
-      # Flyer fields (top-level)
-      - { name: "flyerImage", label: "Flyer Image URL", widget: "string", required: false, hint: "Paste a full image URL or a local path (e.g. /assets/images/my-flyer.png). The flyer appears automatically when this field is set — no other toggle needed." }
-      # Recurring event fields (advanced, top-level)
-      - { name: "recurring", label: "This is a recurring event", widget: "boolean", required: false, default: false }
+      - { name: "dateRange", label: "Date Range (multi-day events only)", widget: "string", required: false, hint: "Only for camps or events that span multiple days. Replaces the single date display on the event card. Past examples: 'Tuesday–Friday, May 26–29, 2026' (Stories, Pretend & Puppets), 'Monday–Friday, June 8–12, 2026' (Improv & Puppetry). Leave blank for single-day events." }
+      # Special guest fields — fill in all three for author visits
+      - { name: "specialGuest", label: "Special Guest Name", widget: "string", required: false, hint: "Full name of the visiting author or special guest. Past guests: 'Matthew Swinehart' (Nola the Corgi), 'Kristine Sheppard' (Charlotte the Detective), 'Kellie DuBay Gillis' (Earth Day storytime). When set on a Saturday author-visit event, a gold star appears on the Saturday Story Time banner automatically." }
+      - { name: "specialGuestRole", label: "Guest Role / Title", widget: "string", required: false, hint: "Short description shown on the event page under the guest's name. Past examples: 'Author', 'Author & Environmental Scientist', 'Author & Illustrator'. Keep it brief — one line." }
+      - { name: "specialGuestBook", label: "Featured Book", widget: "string", required: false, hint: "The book being featured or celebrated. If the author has two books: 'Big Bike, Little Bike & If You Find a Fawn'. For a single book: 'Nola the Noble Corgi Visits the Hospital'." }
+      # Mailchimp registration — use these for store-run events with direct signup (most events)
+      - { name: "mailchimpFormId", label: "Mailchimp Form ID", widget: "string", required: false, default: "f1915b185f", hint: "The embedded form ID. Almost always 'f1915b185f' — don't change this unless a new Mailchimp form has been created for a specific event." }
+      - { name: "mailchimpTag", label: "Mailchimp Tag ID", widget: "string", required: false, default: "3728680", hint: "Tags registrants in Mailchimp so you can filter by event. Use the right tag: 3728680 = general events (author visits, workshops, most one-off events); 3728683 = Family Classics Book Club; 3728684 = Saturday Story Time. Leave blank to skip tagging (fine for one-off events where you don't need a separate list)." }
+      - { name: "showChildFields", label: "Show child name & age fields in registration form", widget: "boolean", required: false, default: true, hint: "Leave checked for most events — it collects each child's name and age group. Uncheck for adult-only events (like an evening workshop with no kids) or events where child details aren't needed." }
+      # Flyer image — appears below the event description when set
+      - { name: "flyerImage", label: "Flyer Image URL", widget: "string", required: false, hint: "Paste a URL to display a flyer image on the event page. Can be a local file path (/assets/images/my-flyer.jpg) or an external URL from Google Drive, Wix, etc. The flyer appears automatically when this field is set. Past examples: IBD flyer, Postcard Pen Pals flyer, Layered Paper Art flyer." }
+      # Recurring event fields — only for Saturday Story Time and similar standing events
+      - { name: "recurring", label: "This is a recurring event", widget: "boolean", required: false, default: false, hint: "Check only for standing weekly or monthly events like Saturday Story Time. Recurring events are excluded from the main events listings and handled separately." }
       - { name: "recurringSchedule", label: "Recurring schedule description", widget: "string", required: false, hint: "e.g. 'Every Saturday'" }
       - { name: "permalink", label: "Custom URL path (recurring only)", widget: "string", required: false, hint: "Only set this for recurring events. e.g. /events/saturday-storytime/" }
       # Body
