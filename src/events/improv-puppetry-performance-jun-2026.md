@@ -1,14 +1,19 @@
 ---
 layout: layouts/event.njk
-title: "Improv, Puppetry, & Performance"
+title: Improv, Puppetry, & Performance
 date: 2026-06-08
-time: "5:30 PM - 8:30 PM daily"
-dateRange: "Monday–Friday, June 8–12, 2026"
-ageRange: "Rising 6th–7th graders"
-category: "workshop"
-excerpt: "A week of summer evenings being loud, silly, and expressive at Wagar Park — then walking into the bookstore to turn it all into a performance. Ends with a showcase Friday night."
-price: "$135"
-ticketUrl: "https://thewanderinglantern.store/products/improv-puppetry-performance"
+time: 5:30 PM - 8:30 PM daily
+ageRange: Rising 6th–7th graders
+location: ''
+category: workshop
+excerpt: A week of summer evenings being loud, silly, and expressive at Wagar Park — then walking into the bookstore to turn it all into a performance. Ends with a showcase Friday night.
+price: $135
+host: ''
+status: cancelled
+ticketUrl: https://thewanderinglantern.store/products/improv-puppetry-performance
+registrationUrl: ''
+dateRange: Monday–Friday, June 8–12, 2026
+specialGuest: ''
 ---
 
 ## Make Something. Perform It.
