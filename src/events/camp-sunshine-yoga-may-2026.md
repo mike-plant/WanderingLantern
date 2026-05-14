@@ -9,7 +9,7 @@ category: special-event
 excerpt: Two yoga sessions, one cozy bookstore. Jena from Camp Sunshine leads Parent & Tot at 5 PM and Kids Yoga at 6 — movement, music, games, and stories.
 price: ''
 host: ''
-ticketUrl: https://thewanderinglantern.com/events/camp-sunshine-yoga-may-2026/
+ticketUrl: https://thewanderinglantern.store/products/kids-yoga-event-may-2026
 registrationUrl: ''
 dateRange: ''
 specialGuest: ''
