@@ -1,14 +1,26 @@
 ---
 layout: layouts/event.njk
-title: "Camp Sunshine Kids Yoga"
+title: Camp Sunshine Kids Yoga
 date: 2026-05-21
-time: "5:00 PM - 7:00 PM"
-ageRange: "1-10"
-category: "special-event"
-excerpt: "Two yoga sessions, one cozy bookstore. Jena from Camp Sunshine leads Parent & Tot at 5 PM and Kids Yoga at 6 — movement, music, games, and stories."
-mailchimpFormId: "f1915b185f"
-mailchimpTag: "3728680"
+time: 5:00 PM - 7:00 PM
+ageRange: 1-10
+location: ''
+category: special-event
+excerpt: Two yoga sessions, one cozy bookstore. Jena from Camp Sunshine leads Parent & Tot at 5 PM and Kids Yoga at 6 — movement, music, games, and stories.
+price: ''
+host: ''
+ticketUrl: https://thewanderinglantern.com/events/camp-sunshine-yoga-may-2026/
+registrationUrl: ''
+dateRange: ''
+specialGuest: ''
+specialGuestRole: ''
+specialGuestBook: ''
+mailchimpFormId: f1915b185f
+mailchimpTag: ''
 showChildFields: true
+flyerImage: ''
+recurringSchedule: ''
+permalink: ''
 ---
 
 ## About This Event
