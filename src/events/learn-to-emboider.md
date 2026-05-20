@@ -1,7 +1,7 @@
 ---
 layout: layouts/event.njk
 draft: false
-title: Learn to Emboider
+title: Learn to Embroider
 date: 2026-06-11
 time: 4:00 PM-5:00 PM
 ageRange: 10+
