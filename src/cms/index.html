@@ -96,7 +96,7 @@ permalink: /cms/index.html
     // ------------------------------------------------------------------
     (function () {
       const WORKER_URL = "https://wl-cms-auth.msplant.workers.dev";
-      const TARGET_LABEL = "Mailchimp Tag ID";
+      const TARGET_KEY_PATH = "mailchimpTag";
 
       let cachedTags = null;
 
@@ -131,30 +131,24 @@ permalink: /cms/index.html
         input.dispatchEvent(new Event("change", { bubbles: true }));
       }
 
-      // Find the Mailchimp Tag ID input by walking labels in the DOM
-      function findTagInputs() {
+      // Find Mailchimp Tag ID field(s). Sveltia tags each field section
+      // with data-key-path matching the field name in config.yml.
+      function findTagFields() {
+        const sections = document.querySelectorAll(
+          `section[data-key-path="${TARGET_KEY_PATH}"]`
+        );
         const found = [];
-        const labels = document.querySelectorAll("label");
-        for (const label of labels) {
-          const text = (label.textContent || "").trim();
-          if (!text.startsWith(TARGET_LABEL)) continue;
-          // Walk up to find a likely field wrapper
-          let wrapper = label.parentElement;
-          for (let i = 0; i < 4 && wrapper; i++) {
-            const input = wrapper.querySelector('input[type="text"], input:not([type])');
-            if (input && !input.dataset.mcTagPickerInjected) {
-              found.push(input);
-              break;
-            }
-            wrapper = wrapper.parentElement;
-          }
+        for (const section of sections) {
+          if (section.dataset.mcTagPickerInjected) continue;
+          const input = section.querySelector('input[type="text"]');
+          if (input) found.push({ section, input });
         }
         return found;
       }
 
-      function injectPicker(input) {
-        if (input.dataset.mcTagPickerInjected) return;
-        input.dataset.mcTagPickerInjected = "1";
+      function injectPicker(section, input) {
+        if (section.dataset.mcTagPickerInjected) return;
+        section.dataset.mcTagPickerInjected = "1";
 
         const panel = document.createElement("details");
         panel.className = "mc-tag-picker";
@@ -172,10 +166,8 @@ permalink: /cms/index.html
           <div class="mc-status"></div>
         `;
 
-        // Insert the picker right after the input's containing wrapper if possible,
-        // otherwise immediately after the input itself.
-        const insertAfter = input.closest("div") || input;
-        insertAfter.parentElement.insertBefore(panel, insertAfter.nextSibling);
+        // Append to the end of the field section (after the hint footer)
+        section.appendChild(panel);
 
         const select = panel.querySelector(".mc-select");
         const nameInput = panel.querySelector(".mc-name");
@@ -256,7 +248,9 @@ permalink: /cms/index.html
         scheduled = true;
         requestAnimationFrame(() => {
           scheduled = false;
-          for (const input of findTagInputs()) injectPicker(input);
+          for (const { section, input } of findTagFields()) {
+            injectPicker(section, input);
+          }
         });
       }
 
