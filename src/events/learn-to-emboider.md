@@ -14,7 +14,7 @@ status: ''
 ticketUrl: ''
 registrationUrl: https://thewanderinglantern.store/products/learn-to-embroider
 dateRange: ''
-specialGuest: Heather Roberts, Jackie
+specialGuest: Heather, Jackie
 specialGuestRole: ''
 specialGuestBook: ''
 mailchimpFormId: f1915b185f
