@@ -41,15 +41,22 @@ Log in with your GitHub account.
 
 ---
 
-## Mailchimp Tag ID — Which One?
+## Mailchimp Tag ID — Pick from the Built-in Picker
 
-| Tag ID | Use for |
+Below the Mailchimp Tag ID field you'll see a panel: **"Browse all tags or create a new one"**. Click it to expand.
+
+- **Picking an existing tag:** use the **Existing** dropdown — it lists every tag in Mailchimp by name. Selecting one fills in the ID automatically.
+- **Creating a new tag:** type a name in the **Or create** field and click **Create**. The tag is created in Mailchimp instantly and the ID auto-fills.
+
+**Common choices:**
+
+| Tag name | Use for |
 |---|---|
-| `3728680` | Most events (author visits, workshops, pop-ups) |
-| `3728683` | Family Classics Book Club |
-| `3728684` | Saturday Story Time |
+| General Events (3728680) | Most one-off events |
+| Family Classics Book Club (3728683) | Every month's book club |
+| Saturday Story Time (3728684) | Saturday storytime |
 
-**Starting a brand-new recurring series?** Ask Michael to create a new Mailchimp tag and get the ID before publishing.
+For brand-new recurring series, just type a clear name and click Create — no need to leave the CMS or ask Michael.
 
 ---
 

@@ -1,6 +1,7 @@
 // workers/cms-auth/worker.js
-// GitHub OAuth proxy for Sveltia CMS / Decap CMS
-// Deployed as a Cloudflare Worker
+// GitHub OAuth proxy for Sveltia CMS / Decap CMS,
+// plus Mailchimp tag management endpoints for the in-CMS tag picker.
+// Deployed as a Cloudflare Worker.
 
 const GITHUB_OAUTH_URL = "https://github.com/login/oauth/authorize";
 const GITHUB_TOKEN_URL = "https://github.com/login/oauth/access_token";
@@ -18,6 +19,21 @@ const ALLOWED_ORIGINS = [
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    // CORS preflight — handled for any API endpoint
+    if (request.method === "OPTIONS") {
+      return handleCorsPreflight(request);
+    }
+
+    // --- Mailchimp tag endpoints (called from CMS browser context) ---
+    if (url.pathname === "/list-tags" && request.method === "GET") {
+      return handleListTags(request, env);
+    }
+    if (url.pathname === "/create-tag" && request.method === "POST") {
+      return handleCreateTag(request, env);
+    }
+
+    // --- GitHub OAuth flow ---
 
     // Route: /auth — start the OAuth flow
     if (url.pathname === "/auth" || url.pathname === "/") {
@@ -72,6 +88,145 @@ export default {
     return new Response("Not found", { status: 404 });
   },
 };
+
+// ----- CORS -----
+
+function handleCorsPreflight(request) {
+  const origin = request.headers.get("Origin");
+  if (!ALLOWED_ORIGINS.includes(origin)) {
+    return new Response(null, { status: 403 });
+  }
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": origin,
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Max-Age": "86400",
+    },
+  });
+}
+
+function jsonResponse(body, origin, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": origin,
+    },
+  });
+}
+
+// ----- Mailchimp helpers -----
+
+function mailchimpBaseUrl(env) {
+  // API key format: "abc123def-us12" — data center is the suffix
+  const dc = env.MAILCHIMP_API_KEY.split("-").pop();
+  return `https://${dc}.api.mailchimp.com/3.0`;
+}
+
+function mailchimpHeaders(env) {
+  const auth = btoa(`anystring:${env.MAILCHIMP_API_KEY}`);
+  return {
+    Authorization: `Basic ${auth}`,
+    "Content-Type": "application/json",
+  };
+}
+
+async function mailchimpListTags(env) {
+  const url = `${mailchimpBaseUrl(env)}/lists/${env.MAILCHIMP_LIST_ID}/segments?type=static&count=1000`;
+  const res = await fetch(url, { headers: mailchimpHeaders(env) });
+  if (!res.ok) {
+    let detail = `Mailchimp error: ${res.status}`;
+    try {
+      const err = await res.json();
+      detail = err.detail || detail;
+    } catch (_) {}
+    throw new Error(detail);
+  }
+  const data = await res.json();
+  return (data.segments || [])
+    .map((s) => ({ id: s.id, name: s.name }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+async function mailchimpCreateTag(env, name) {
+  const url = `${mailchimpBaseUrl(env)}/lists/${env.MAILCHIMP_LIST_ID}/segments`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: mailchimpHeaders(env),
+    body: JSON.stringify({ name, static_segment: [] }),
+  });
+  if (!res.ok) {
+    let detail = `Mailchimp error: ${res.status}`;
+    try {
+      const err = await res.json();
+      detail = err.detail || detail;
+    } catch (_) {}
+    // If a tag with this name already exists, return the existing one
+    if (detail.toLowerCase().includes("already exists")) {
+      const existing = (await mailchimpListTags(env)).find((t) => t.name === name);
+      if (existing) return existing;
+    }
+    throw new Error(detail);
+  }
+  const data = await res.json();
+  return { id: data.id, name: data.name };
+}
+
+// ----- Endpoint handlers -----
+
+async function handleListTags(request, env) {
+  const origin = request.headers.get("Origin");
+  if (!ALLOWED_ORIGINS.includes(origin)) {
+    return new Response("Forbidden", { status: 403 });
+  }
+  if (!env.MAILCHIMP_API_KEY || !env.MAILCHIMP_LIST_ID) {
+    return jsonResponse(
+      { error: "Mailchimp secrets not configured on the Worker" },
+      origin,
+      500
+    );
+  }
+  try {
+    const tags = await mailchimpListTags(env);
+    return jsonResponse(tags, origin);
+  } catch (e) {
+    return jsonResponse({ error: e.message }, origin, 500);
+  }
+}
+
+async function handleCreateTag(request, env) {
+  const origin = request.headers.get("Origin");
+  if (!ALLOWED_ORIGINS.includes(origin)) {
+    return new Response("Forbidden", { status: 403 });
+  }
+  if (!env.MAILCHIMP_API_KEY || !env.MAILCHIMP_LIST_ID) {
+    return jsonResponse(
+      { error: "Mailchimp secrets not configured on the Worker" },
+      origin,
+      500
+    );
+  }
+  let body;
+  try {
+    body = await request.json();
+  } catch (_) {
+    return jsonResponse({ error: "Invalid JSON body" }, origin, 400);
+  }
+  const name = body && typeof body.name === "string" ? body.name.trim() : "";
+  if (!name) {
+    return jsonResponse({ error: "Tag name is required" }, origin, 400);
+  }
+  try {
+    const tag = await mailchimpCreateTag(env, name);
+    return jsonResponse(tag, origin);
+  } catch (e) {
+    return jsonResponse({ error: e.message }, origin, 500);
+  }
+}
+
+// ----- OAuth helpers (unchanged) -----
 
 function htmlResponse(html) {
   return new Response(html, {

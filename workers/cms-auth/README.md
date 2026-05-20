@@ -57,7 +57,7 @@ Copy this URL — you need it for Steps 4 and 5.
 
 ## Step 4: Set the secrets
 
-Run these two commands. You'll be prompted to paste each value:
+Run these commands. You'll be prompted to paste each value:
 
 ```bash
 wrangler secret put GITHUB_CLIENT_ID
@@ -66,6 +66,29 @@ wrangler secret put GITHUB_CLIENT_ID
 wrangler secret put GITHUB_CLIENT_SECRET
 # Paste the Client Secret from Step 1, then press Enter
 ```
+
+### Step 4b: Mailchimp secrets (for the in-CMS tag picker)
+
+The CMS event editor includes a Mailchimp tag picker — a dropdown of
+existing tags + a "Create new tag" form. It's powered by two extra
+endpoints on this Worker that talk to the Mailchimp API. You need to
+set two more secrets:
+
+```bash
+wrangler secret put MAILCHIMP_API_KEY
+# Paste a Mailchimp API key with Audience access.
+# Get one at: Mailchimp → Profile → Extras → API keys → Create A Key
+# Format looks like: abc123def456-us12
+
+wrangler secret put MAILCHIMP_LIST_ID
+# Paste the Mailchimp Audience (List) ID.
+# Get it at: Mailchimp → Audience → All contacts →
+#            Settings → Audience name and defaults → "Audience ID"
+# Format looks like: abc123def4
+```
+
+If you skip this step, the OAuth login still works — only the in-CMS
+tag picker will be disabled.
 
 Secrets are stored encrypted in Cloudflare — they are never in the repo.
 

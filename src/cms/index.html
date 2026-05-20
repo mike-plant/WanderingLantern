@@ -9,8 +9,264 @@ permalink: /cms/index.html
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Content Manager — The Wandering Lantern</title>
   <link rel="icon" href="/favicon.ico" />
+  <style>
+    /* Mailchimp tag picker — injected into the CMS by the script below */
+    .mc-tag-picker {
+      margin-top: 0.5rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid #d6cdb8;
+      border-radius: 6px;
+      background: #faf7f0;
+      font-size: 0.9em;
+      font-family: inherit;
+      color: #3a2f27;
+    }
+    .mc-tag-picker > summary {
+      cursor: pointer;
+      user-select: none;
+      color: #8b6f47;
+      font-weight: 600;
+      list-style: none;
+    }
+    .mc-tag-picker > summary::-webkit-details-marker { display: none; }
+    .mc-tag-picker > summary::before {
+      content: "▸ ";
+      display: inline-block;
+      transition: transform 0.15s;
+    }
+    .mc-tag-picker[open] > summary::before {
+      content: "▾ ";
+    }
+    .mc-tag-picker[open] > summary { margin-bottom: 0.75rem; }
+    .mc-tag-picker .row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .mc-tag-picker .row:last-of-type { margin-bottom: 0; }
+    .mc-tag-picker .row > label {
+      font-weight: 600;
+      min-width: 90px;
+      color: #5c4d3c;
+    }
+    .mc-tag-picker select,
+    .mc-tag-picker input.mc-name {
+      flex: 1;
+      padding: 0.4rem 0.5rem;
+      border: 1px solid #c9b896;
+      border-radius: 4px;
+      background: white;
+      font-family: inherit;
+      font-size: inherit;
+    }
+    .mc-tag-picker button.mc-create {
+      padding: 0.4rem 0.9rem;
+      border: 1px solid #c9a961;
+      background: #c9a961;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 600;
+    }
+    .mc-tag-picker button.mc-create:hover { background: #b89951; }
+    .mc-tag-picker button.mc-create:disabled { opacity: 0.5; cursor: not-allowed; }
+    .mc-tag-picker .mc-status {
+      margin-top: 0.5rem;
+      font-size: 0.85em;
+      color: #5c4d3c;
+      min-height: 1em;
+    }
+    .mc-tag-picker .mc-status.error { color: #b43c3c; }
+    .mc-tag-picker .mc-status.success { color: #2d7a3a; }
+  </style>
 </head>
 <body>
   <script type="module" src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+
+  <script>
+    // ------------------------------------------------------------------
+    // Mailchimp Tag Picker — injects a dropdown + create-new UI below
+    // the "Mailchimp Tag ID" field in the CMS event editor.
+    //
+    // Uses DOM injection (not the Sveltia widget API) so it's
+    // framework-independent and resilient to CMS version changes.
+    // ------------------------------------------------------------------
+    (function () {
+      const WORKER_URL = "https://wl-cms-auth.msplant.workers.dev";
+      const TARGET_LABEL = "Mailchimp Tag ID";
+
+      let cachedTags = null;
+
+      async function loadTags(force) {
+        if (cachedTags && !force) return cachedTags;
+        const res = await fetch(`${WORKER_URL}/list-tags`, { credentials: "omit" });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        cachedTags = data;
+        return data;
+      }
+
+      async function createTag(name) {
+        const res = await fetch(`${WORKER_URL}/create-tag`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name }),
+          credentials: "omit",
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        cachedTags = null;
+        return data;
+      }
+
+      // Set an input value in a way that React/Svelte-controlled inputs notice
+      function setInputValue(input, value) {
+        const proto = window.HTMLInputElement.prototype;
+        const setter = Object.getOwnPropertyDescriptor(proto, "value").set;
+        setter.call(input, String(value));
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+
+      // Find the Mailchimp Tag ID input by walking labels in the DOM
+      function findTagInputs() {
+        const found = [];
+        const labels = document.querySelectorAll("label");
+        for (const label of labels) {
+          const text = (label.textContent || "").trim();
+          if (!text.startsWith(TARGET_LABEL)) continue;
+          // Walk up to find a likely field wrapper
+          let wrapper = label.parentElement;
+          for (let i = 0; i < 4 && wrapper; i++) {
+            const input = wrapper.querySelector('input[type="text"], input:not([type])');
+            if (input && !input.dataset.mcTagPickerInjected) {
+              found.push(input);
+              break;
+            }
+            wrapper = wrapper.parentElement;
+          }
+        }
+        return found;
+      }
+
+      function injectPicker(input) {
+        if (input.dataset.mcTagPickerInjected) return;
+        input.dataset.mcTagPickerInjected = "1";
+
+        const panel = document.createElement("details");
+        panel.className = "mc-tag-picker";
+        panel.innerHTML = `
+          <summary>Browse all tags or create a new one</summary>
+          <div class="row">
+            <label>Existing:</label>
+            <select class="mc-select"><option>Click to load…</option></select>
+          </div>
+          <div class="row">
+            <label>Or create:</label>
+            <input class="mc-name" type="text" placeholder="e.g. Monthly Craft Night" />
+            <button type="button" class="mc-create">Create</button>
+          </div>
+          <div class="mc-status"></div>
+        `;
+
+        // Insert the picker right after the input's containing wrapper if possible,
+        // otherwise immediately after the input itself.
+        const insertAfter = input.closest("div") || input;
+        insertAfter.parentElement.insertBefore(panel, insertAfter.nextSibling);
+
+        const select = panel.querySelector(".mc-select");
+        const nameInput = panel.querySelector(".mc-name");
+        const createBtn = panel.querySelector(".mc-create");
+        const status = panel.querySelector(".mc-status");
+
+        function setStatus(msg, type) {
+          status.textContent = msg || "";
+          status.className = "mc-status" + (type ? " " + type : "");
+        }
+
+        function renderTags(tags) {
+          select.innerHTML = '<option value="">— Select a tag —</option>';
+          for (const tag of tags) {
+            const opt = document.createElement("option");
+            opt.value = tag.id;
+            opt.textContent = `${tag.name} (${tag.id})`;
+            if (String(input.value) === String(tag.id)) opt.selected = true;
+            select.appendChild(opt);
+          }
+        }
+
+        // Load tags the first time the panel is opened
+        panel.addEventListener("toggle", async () => {
+          if (!panel.open || panel.dataset.loaded) return;
+          panel.dataset.loaded = "1";
+          select.innerHTML = "<option>Loading…</option>";
+          try {
+            const tags = await loadTags();
+            renderTags(tags);
+          } catch (e) {
+            select.innerHTML = "<option>(error)</option>";
+            setStatus(`Could not load tags: ${e.message}`, "error");
+            delete panel.dataset.loaded; // allow retry on next open
+          }
+        });
+
+        select.addEventListener("change", () => {
+          if (!select.value) return;
+          setInputValue(input, select.value);
+          const sel = select.options[select.selectedIndex];
+          setStatus(`✓ Selected: ${sel.textContent}`, "success");
+        });
+
+        createBtn.addEventListener("click", async () => {
+          const name = nameInput.value.trim();
+          if (!name) {
+            setStatus("Enter a tag name first.", "error");
+            return;
+          }
+          createBtn.disabled = true;
+          createBtn.textContent = "Creating…";
+          setStatus("");
+          try {
+            const tag = await createTag(name);
+            setInputValue(input, tag.id);
+            nameInput.value = "";
+            setStatus(`✓ Tag "${tag.name}" ready — ID ${tag.id} filled in above.`, "success");
+            // Refresh the dropdown to include the new tag
+            try {
+              const tags = await loadTags(true);
+              renderTags(tags);
+            } catch (_) {}
+          } catch (e) {
+            setStatus(`Error: ${e.message}`, "error");
+          } finally {
+            createBtn.disabled = false;
+            createBtn.textContent = "Create";
+          }
+        });
+      }
+
+      // The CMS renders forms dynamically — watch the DOM and inject
+      // the picker whenever the Mailchimp Tag ID field appears.
+      let scheduled = false;
+      function scan() {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(() => {
+          scheduled = false;
+          for (const input of findTagInputs()) injectPicker(input);
+        });
+      }
+
+      const observer = new MutationObserver(scan);
+      observer.observe(document.body, { childList: true, subtree: true });
+
+      // Initial scan after the CMS has time to render
+      setTimeout(scan, 1000);
+      setTimeout(scan, 3000);
+    })();
+  </script>
 </body>
 </html>

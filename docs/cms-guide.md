@@ -87,15 +87,19 @@ Almost always: `f1915b185f`
 Leave this exactly as it is unless Michael tells you a new form has been created.
 
 **Mailchimp Tag ID**
-This is how Mailchimp knows which event someone signed up for. Use the right one:
+This is how Mailchimp knows which event someone signed up for. **Don't type the number yourself** — use the **Browse tags or create a new one** panel that appears just below the field.
 
-| Tag ID | Use for |
+- Click to expand the panel
+- **Existing dropdown:** every Mailchimp tag, by name. Pick one and the ID fills in automatically.
+- **Or create:** type a new tag name and click Create. The tag is created in Mailchimp and the ID fills in automatically.
+
+| Tag name | Use for |
 |---|---|
-| `3728680` | General events — author visits, workshops, one-off events |
-| `3728683` | Family Classics Book Club (every month) |
-| `3728684` | Saturday Story Time |
+| General Events (3728680) | Most one-off events — author visits, workshops, pop-ups |
+| Family Classics Book Club (3728683) | Every month's book club |
+| Saturday Story Time (3728684) | Saturday storytime |
 
-**→ If this is a brand-new recurring series** (like a new monthly club), you need to create a new tag in Mailchimp first. See [Creating a New Mailchimp Tag](#creating-a-new-mailchimp-tag) below.
+For a brand-new recurring series, type a clear name like "Monthly Craft Night" and click Create. No need to log into Mailchimp.
 
 **Show child name & age fields in registration form**
 Leave this **checked** for most events — it collects each child's name and age group.
@@ -267,15 +271,17 @@ This is a complete reference of every field that affects the public-facing HTML.
 
 Do this when you're setting up a **new recurring series** (like a new monthly club) and want to track signups separately from everything else.
 
-1. Log into Mailchimp at mailchimp.com
-2. Go to **Audience** → **Tags**
-3. Click **Create Tag**
-4. Name it clearly: "Family Classics Book Club" / "Saturday Story Time" / "Monthly Craft Night"
-5. After saving, click on the tag — the tag ID number is in the URL:
-   `https://us12.admin.mailchimp.com/lists/members/?tagId=`**3728683**
-6. Copy that number and paste it into the **Mailchimp Tag ID** field in the CMS
+**You don't need to leave the CMS.** When you're editing an event:
 
-For one-off events, just use `3728680` (general events) — no new tag needed.
+1. Find the **Mailchimp Tag ID** field
+2. Click the panel below it: **"Browse all tags or create a new one"**
+3. In the **Or create** row, type a clear name: "Monthly Craft Night" / "Teen Book Club"
+4. Click **Create**
+5. The new tag is created in Mailchimp and its ID auto-fills the field above
+
+For one-off events, no new tag is needed — just pick **General Events** from the dropdown.
+
+(If you ever do want to manage tags directly in Mailchimp: log in → **Audience** → **Tags** → **Create Tag**.)
 
 ---
 
