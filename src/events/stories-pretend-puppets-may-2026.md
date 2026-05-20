@@ -1,14 +1,26 @@
 ---
 layout: layouts/event.njk
-title: "Stories, Pretend, and Puppets"
+title: Stories, Pretend, and Puppets
 date: 2026-05-26
-time: "10:00 AM - 1:00 PM daily"
-dateRange: "Tuesday–Friday, May 26–29, 2026"
-ageRange: "Rising kindergarteners"
-category: "workshop"
-excerpt: "Four mornings of fairy tales, pretend play, and puppet-making at The Wandering Lantern and Wagar Park. Your child heads home with a handmade friend and a story to tell."
-price: "$150"
-ticketUrl: "https://thewanderinglantern.store/products/stories-pretend-and-puppets"
+time: 10:00 AM - 1:00 PM daily
+ageRange: Rising kindergarteners
+location: ''
+category: workshop
+excerpt: Four mornings of fairy tales, pretend play, and puppet-making at The Wandering Lantern and Wagar Park. Your child heads home with a handmade friend and a story to tell.
+price: $150
+host: Melissa Vincel
+status: full
+ticketUrl: https://thewanderinglantern.store/products/stories-pretend-and-puppets
+registrationUrl: ''
+dateRange: Tuesday–Friday, May 26–29, 2026
+specialGuest: ''
+specialGuestRole: ''
+specialGuestBook: ''
+mailchimpFormId: ''
+mailchimpTag: ''
+flyerImage: ''
+recurringSchedule: ''
+permalink: ''
 ---
 
 ## Step Inside a Story
