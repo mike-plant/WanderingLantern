@@ -1,13 +1,13 @@
 ---
 layout: layouts/event.njk
-draft: true
+draft: false
 title: Sing Along and Song Writing with Ashley Toussant
 date: 2026-06-20
-time: 12:00 PM - 1:00 PM
+time: 12:00 PM - 1:30 PM
 ageRange: All ages
 location: ''
 category: special-event
-excerpt: Ashley Brooke Toussant is an award-winning soprano turned Cleveland Heights-based folk and children's singer-songwriter. She has a strong local presence in the Greater Cleveland area, playing live gigs that blend folk, country, and pop, and she recently began writing a dedicated children's music inspired by local classrooms.
+excerpt: Ashley Brooke Toussant is an award-winning soprano turned Cleveland Heights-based folk and children's singer-songwriter. She has a strong local presence in the Greater Cleveland area, playing live gigs that blend folk, country, and pop, and she recently began writing a dedicated children's music for kids and their families to enjoy. Join us at The Wandering Lantern for a special interactive concert!
 price: $12
 host: Ashley Brook Toussant
 status: ''
