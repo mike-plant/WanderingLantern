@@ -1,7 +1,7 @@
 ---
 layout: layouts/event.njk
 draft: false
-title: Sing Along and Song Writing with Ashley Toussant
+title: Music and Stories with Ashley Brook Toussant
 date: 2026-06-20
 time: 12:00 PM - 1:30 PM
 ageRange: All ages
