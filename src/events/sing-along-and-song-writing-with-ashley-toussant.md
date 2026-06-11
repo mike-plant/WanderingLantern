@@ -1,7 +1,7 @@
 ---
 layout: layouts/event.njk
 draft: false
-title: Music and Stories with Ashley Brook Toussant
+title: Music and Stories with Ashley Brooke Toussant
 date: 2026-06-20
 time: 12:00 PM - 1:30 PM
 ageRange: All ages
@@ -9,12 +9,12 @@ location: ''
 category: special-event
 excerpt: Ashley Brooke Toussant is an award-winning soprano turned Cleveland Heights-based folk and children's singer-songwriter. She has a strong local presence in the Greater Cleveland area, playing live gigs that blend folk, country, and pop, and she recently began writing a dedicated children's music for kids and their families to enjoy. Join us at The Wandering Lantern for a special interactive concert!
 price: $12
-host: Ashley Brook Toussant
+host: Ashley Brooke Toussant
 status: ''
 ticketUrl: https://thewanderinglantern.store/products/music-and-stories-with-ashley-brook-toussant
 registrationUrl: ''
 dateRange: ''
-specialGuest: Ashley Brook Toussant
+specialGuest: Ashley Brooke Toussant
 specialGuestRole: Singer/Songwriter/Storyteller
 specialGuestBook: ''
 mailchimpFormId: f1915b185f
