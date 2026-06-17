@@ -2,7 +2,7 @@
 layout: layouts/event.njk
 draft: false
 title: Midweek Makers
-date: 2026-06-17
+date: 2026-06-24
 time: 12:00 PM - 1:00 PM
 ageRange: All ages
 location: ''
