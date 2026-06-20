@@ -6,7 +6,7 @@ date: 2026-06-30
 time: During Store Hours
 ageRange: All ages
 location: ''
-category: ''
+category: special-event
 excerpt: 'Join us for **Stars, Stripes & Stories: A 250th Birthday Book Bash** at The Wandering Lantern! All week long, families can stop in for a special discount donated-book table, a festive kids’ craft table, and read-alouds throughout the day featuring stories about amazing Americans. Come celebrate America’s 250th birthday with books, creativity, and patriotic fun!'
 price: ''
 host: ''
