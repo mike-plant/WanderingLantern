@@ -2,7 +2,7 @@
 layout: layouts/event.njk
 draft: false
 title: Family Paint Class
-date: 2026-06-06
+date: 2026-07-11
 time: 1:00 PM- 2:00 PM
 ageRange: 3+
 location: ''
