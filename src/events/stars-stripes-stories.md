@@ -20,7 +20,7 @@ specialGuestBook: ''
 mailchimpFormId: f1915b185f
 mailchimpTag: '3728680'
 showChildFields: true
-flyerImage: ''
+flyerImage: https://mcusercontent.com/f5535995545a29ebbdc6de523/images/70177053-2bb5-a5eb-1720-295fdbbe9954.png
 recurring: false
 recurringSchedule: ''
 permalink: ''
