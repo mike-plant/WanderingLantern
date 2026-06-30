@@ -16,7 +16,7 @@ price: ''
 host: Ohio City Art House
 status: ''
 ticketUrl: ''
-registrationUrl: https://www.eventbrite.com/e/family-painting-class-tickets-1988766510168
+registrationUrl: https://www.eventbrite.com/e/family-painting-class-memories-guaranteed-tickets-1992176780378
 dateRange: ''
 specialGuest: Christina C.
 specialGuestRole: ''
