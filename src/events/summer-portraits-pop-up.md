@@ -20,7 +20,7 @@ specialGuestBook: ''
 mailchimpFormId: f1915b185f
 mailchimpTag: '3728680'
 showChildFields: true
-flyerImage: https://canva.link/yznop3qqwe2mb3r
+flyerImage: ''
 recurring: false
 recurringSchedule: ''
 permalink: ''
