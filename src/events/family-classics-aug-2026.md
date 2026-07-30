@@ -1,6 +1,6 @@
 ---
 layout: layouts/event.njk
-title: Family Classics Book Club
+title: Family Classics Read-Aloud
 date: 2026-08-18
 time: 5:00 PM - 6:00 PM
 ageRange: The Whole Family
