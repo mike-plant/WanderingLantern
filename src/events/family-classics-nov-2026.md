@@ -1,30 +1,39 @@
 ---
 layout: layouts/event.njk
-title: "Family Classics Book Club"
+title: Family Classics Read-Aloud
 date: 2026-11-17
-time: "6:00 PM - 7:00 PM"
-ageRange: "8-12"
-excerpt: "Join us this month for 'Anne of Green Gables' by L.M. Montgomery."
-mailchimpFormId: "f1915b185f"
-mailchimpTag: "3728683"
+time: 5:30 PM - 6:00 PM
+ageRange: The Whole Family
+location: ''
+excerpt: |-
+  Cozy up at The Wandering Lantern for our monthly **Family Classics Read-Aloud**. We’ll begin a beloved classic together, giving families a warm introduction to the story and inspiration to keep reading at home.
+
+  Our November selection is *James and the Giant Peach* by Roald Dahl.
+price: ''
+host: ''
+ticketUrl: ''
+registrationUrl: ''
+dateRange: ''
+specialGuest: ''
+specialGuestRole: ''
+specialGuestBook: James and the Giant Peach
+mailchimpFormId: f1915b185f
+mailchimpTag: '3728683'
 showChildFields: true
+flyerImage: ''
+recurringSchedule: ''
+permalink: ''
 ---
 
 ## About This Event
 
-Join us for our Family Classics Book Club, held on the **third Tuesday of every month**! This month, we'll be reading and discussing *Anne of Green Gables* by L.M. Montgomery.
+Join us for a cozy evening of stories at The Wandering Lantern with our monthly **Family Classics Read-Aloud**.
 
-### About the Book
+Each month, families are invited to settle in and listen as we begin a beloved children’s classic together. We’ll read enough to introduce the characters, spark curiosity, and leave everyone eager to discover what happens next. Families can then continue the book together at home at their own pace.
 
-Spirited, imaginative Anne Shirley arrives at Green Gables by mistake but wins the hearts of Marilla and Matthew Caro. Follow her adventures, mishaps, and triumphs in the picturesque village of Avonlea, Prince Edward Island. A beloved story of belonging and imagination.
+Our November selection is Roald Dahl’s _James and the Giant Peach_, the imaginative story of a lonely boy whose life changes when a giant peach appears and carries him into a strange, funny, and unforgettable adventure.
 
-### What to Expect
+Come get comfortable, enjoy the opening chapters, and begin a new family reading tradition.
 
-- **Group Discussion**: Share your thoughts and favorite moments from the book
-- **Family-Friendly Conversation**: Parents and children discuss together
-- **Literary Exploration**: Learn about the book's themes, characters, and Canadian heritage
-- **Community Building**: Connect with other families who love reading
-
-### Registration
-
-Please register so we can prepare adequate seating and materials for discussion!
+**November 17 at 5:030 PM**
+Bring the whole family!
