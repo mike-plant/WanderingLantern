@@ -1,30 +1,39 @@
 ---
 layout: layouts/event.njk
-title: "Family Classics Book Club"
+title: Family Classics Book Club
 date: 2026-08-18
-time: "6:00 PM - 7:00 PM"
-ageRange: "6-12"
-excerpt: "Join us this month for 'Stuart Little' by E.B. White."
-mailchimpFormId: "f1915b185f"
-mailchimpTag: "3728683"
+time: 5:00 PM - 6:00 PM
+ageRange: The Whole Family
+location: ''
+excerpt: |-
+  Cozy up at The Wandering Lantern for our monthly **Family Classics Read-Aloud**. We’ll begin a beloved classic together, giving families a warm introduction to the story and inspiration to keep reading at home.
+
+  Join us this month for 'Stuart Little' by E.B. White.
+price: ''
+host: ''
+ticketUrl: ''
+registrationUrl: ''
+dateRange: ''
+specialGuest: ''
+specialGuestRole: ''
+specialGuestBook: ''
+mailchimpFormId: f1915b185f
+mailchimpTag: '3728683'
 showChildFields: true
+flyerImage: ''
+recurringSchedule: ''
+permalink: ''
 ---
 
 ## About This Event
 
-Join us for our Family Classics Book Club, held on the **third Tuesday of every month**! This month, we'll be reading and discussing *Stuart Little* by E.B. White.
+Join us for a cozy evening of stories at The Wandering Lantern with our new **Family Classics Read-Aloud**.
 
-### About the Book
+Each month, families are invited to settle in and listen as we begin a beloved children’s classic together. We’ll read enough to introduce the characters, spark curiosity, and leave everyone eager to discover what happens next. Families can then continue the book together at home at their own pace.
 
-Stuart Little is a mouse born to a human family in New York City. Despite his small size, he embarks on big adventures - sailing toy boats, driving miniature cars, and searching for his friend Margalo the bird. A charming tale of courage and determination.
+Our August selection is E. B. White’s _Stuart Little_, the charming story of a small mouse born into a human family and the adventures that follow.
 
-### What to Expect
+Come get comfortable, enjoy the opening chapters, and begin a new family reading tradition.
 
-- **Group Discussion**: Share your thoughts and favorite moments from the book
-- **Family-Friendly Conversation**: Parents and children discuss together
-- **Literary Exploration**: Learn about the book's themes, characters, and E.B. White's storytelling
-- **Community Building**: Connect with other families who love reading
-
-### Registration
-
-Please register so we can prepare adequate seating and materials for discussion!
+**August 18 at 5:30 PM**
+All ages are welcome.
