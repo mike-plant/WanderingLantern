@@ -1,6 +1,6 @@
 ---
 layout: layouts/event.njk
-title: Family Classics Book Read-Aloud
+title: Family Classics Read-Aloud
 date: 2026-09-15
 time: 5:00 PM - 6:00 PM
 ageRange: The Whole Family
