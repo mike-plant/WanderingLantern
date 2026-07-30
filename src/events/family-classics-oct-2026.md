@@ -2,7 +2,7 @@
 layout: layouts/event.njk
 title: Family Classics Read-Aloud
 date: 2026-10-20
-time: 5:00 PM - 6:00 PM
+time: 5:30 PM - 6:00 PM
 ageRange: The Whole Family
 location: ''
 excerpt: |-
@@ -16,7 +16,7 @@ registrationUrl: ''
 dateRange: ''
 specialGuest: ''
 specialGuestRole: ''
-specialGuestBook: ''
+specialGuestBook: The Boxcar Children
 mailchimpFormId: f1915b185f
 mailchimpTag: '3728683'
 showChildFields: true
@@ -35,5 +35,5 @@ Our October selection is Gertrude Chandler Warner’s _The Boxcar Children_, the
 
 Come get comfortable, enjoy the opening chapters, and begin a new family reading tradition.
 
-**October 20 at 5:00 PM**
+**October 20 at 5:30 PM**
 Bring the whole family!
