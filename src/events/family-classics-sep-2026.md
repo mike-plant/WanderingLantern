@@ -2,7 +2,7 @@
 layout: layouts/event.njk
 title: Family Classics Read-Aloud
 date: 2026-09-15
-time: 5:00 PM - 6:00 PM
+time: 5:30 PM - 6:00 PM
 ageRange: The Whole Family
 location: ''
 excerpt: |-
@@ -16,7 +16,7 @@ registrationUrl: ''
 dateRange: ''
 specialGuest: ''
 specialGuestRole: ''
-specialGuestBook: ''
+specialGuestBook: Mary Poppins
 mailchimpFormId: f1915b185f
 mailchimpTag: '3728683'
 showChildFields: true
