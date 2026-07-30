@@ -1,7 +1,7 @@
 ---
 layout: layouts/event.njk
 draft: false
-title: Guest Reader Story Time
+title: Guest Reader Kristen Olsen Story Time
 date: 2026-08-29
 time: 11:00 AM - 11:30 AM
 ageRange: All ages
