@@ -12,7 +12,7 @@ excerpt: |-
   This family class is an easy, joyful way to bond through art. With a thoughtful methodology, you'll spend an hour pleasantly painting and leave with a beautiful piece you’ll both be proud of. No pressure. No perfection. Just fun, connection, and creativity.
 
   The class is adapted to each family's ages and capacities, though it is recommended for ages over 3.
-price: $33.99
+price: ''
 host: Ohio City Art House
 status: ''
 ticketUrl: https://www.eventbrite.com/e/family-bonding-painting-class-tickets-1993939920979?
