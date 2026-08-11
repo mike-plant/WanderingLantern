@@ -16,7 +16,7 @@ price: $33.99
 host: Ohio City Art House
 status: ''
 ticketUrl: https://www.eventbrite.com/e/family-bonding-painting-class-tickets-1993939920979?
-registrationUrl: https://www.eventbrite.com/e/family-painting-class-memories-guaranteed-tickets-1992176780378
+registrationUrl: hhttps://www.eventbrite.com/e/family-bonding-painting-class-tickets-1993939920979?
 dateRange: ''
 specialGuest: Christina C.
 specialGuestRole: Painter/Instructor
