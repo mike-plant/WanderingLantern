@@ -1,16 +1,19 @@
 ---
 layout: layouts/event.njk
+draft: false
 title: Family Classics Read-Aloud
 date: 2026-10-20
 time: 5:30 PM - 6:00 PM
 ageRange: The Whole Family
 location: ''
+category: story-time
 excerpt: |-
   Cozy up at The Wandering Lantern for our monthly **Family Classics Read-Aloud**. We’ll begin a beloved classic together, giving families a warm introduction to the story and inspiration to keep reading at home.
 
   Our October selection is *The Boxcar Children* by Gertrude Chandler Warner.
 price: ''
 host: ''
+status: ''
 ticketUrl: ''
 registrationUrl: ''
 dateRange: ''
@@ -21,7 +24,8 @@ mailchimpFormId: f1915b185f
 mailchimpTag: '3728683'
 showChildFields: true
 flyerImage: ''
-recurringSchedule: ''
+recurring: true
+recurringSchedule: Second Tuesday of each month
 permalink: ''
 ---
 
