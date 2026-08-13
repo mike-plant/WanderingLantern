@@ -25,7 +25,7 @@ mailchimpTag: '3728683'
 showChildFields: true
 flyerImage: ''
 recurring: true
-recurringSchedule: Every second Tuesday every month
+recurringSchedule: Second Tuesday of each month
 permalink: ''
 ---
 
