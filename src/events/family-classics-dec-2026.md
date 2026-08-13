@@ -1,13 +1,29 @@
 ---
 layout: layouts/event.njk
-title: "Family Classics Book Club"
+draft: false
+title: Family Classics Book Club
 date: 2026-12-15
-time: "6:00 PM - 7:00 PM"
-ageRange: "7-12"
-excerpt: "Join us this month for 'The Lion, The Witch, and The Wardrobe' by C.S. Lewis."
-mailchimpFormId: "f1915b185f"
-mailchimpTag: "3728683"
+time: 5:30 PM - 6:00 PM
+ageRange: 7-12
+location: ''
+category: story-time
+excerpt: Join us this month for 'The Lion, The Witch, and The Wardrobe' by C.S. Lewis.
+price: ''
+host: ''
+status: ''
+ticketUrl: ''
+registrationUrl: ''
+dateRange: ''
+specialGuest: ''
+specialGuestRole: ''
+specialGuestBook: ''
+mailchimpFormId: f1915b185f
+mailchimpTag: '3728683'
 showChildFields: true
+flyerImage: ''
+recurring: false
+recurringSchedule: ''
+permalink: ''
 ---
 
 ## About This Event
