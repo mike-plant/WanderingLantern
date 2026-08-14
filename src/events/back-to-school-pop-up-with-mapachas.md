@@ -2,13 +2,13 @@
 layout: layouts/event.njk
 draft: false
 title: Back-to-School Pop Up with Mapachas!
-date: 2026-09-05
+date: 2026-08-29
 time: 1:00 PM - 3:00 PM
 ageRange: All ages
 location: ''
 category: workshop
 excerpt: |-
-  Join local Lakewood boutique Mapachas at The Wandering Lantern on September 5 from 1–3 PM for a special Back-to-School Edit Bar Pop-Up! Kids can choose patches and customize their own backpack, pencil pouch, or other school-ready item to make it completely their own.
+  Join local Lakewood boutique Mapachas at The Wandering Lantern on August 29th from 1–3 PM for a special Back-to-School Edit Bar Pop-Up! Kids can choose patches and customize their own backpack, pencil pouch, or other school-ready item to make it completely their own.
 
   Come create something fun for the new school year and support two local Lakewood businesses at once!
 price: ''
