@@ -1,6 +1,6 @@
 ---
 layout: layouts/event.njk
-draft: true
+draft: false
 title: Creative Writing Workshop
 date: 2026-08-30
 time: 10:00 AM - 3:00 PM
