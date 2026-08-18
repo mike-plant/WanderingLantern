@@ -4,7 +4,7 @@ draft: false
 title: Read-Aloud Book Club
 date: 2026-12-15
 time: 5:30 PM - 6:00 PM
-ageRange: 7-12
+ageRange: School age kids
 location: ''
 category: story-time
 excerpt: Join us this month for 'The Lion, The Witch, and The Wardrobe' by C.S. Lewis.
