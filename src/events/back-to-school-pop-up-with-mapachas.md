@@ -31,7 +31,7 @@ permalink: ''
 
 Make those back-to-school supplies a little more personal!
 
-On **September 5 from 1–3 PM**, we’re welcoming our Lakewood friend **Heather, owner of Mapachas**, to The Wandering Lantern for a special Back-to-School Pop-Up featuring local business and home of **The Edit Bar**.
+On **August** **29th from 1–3 PM**, we’re welcoming our Lakewood friend **Heather, owner of Mapachas**, to The Wandering Lantern for a special Back-to-School Pop-Up featuring local business and home of **The Edit Bar**.
 
 The Edit Bar is Mapachas’ custom patch experience, where kids can choose from fun patches and design something that feels completely their own. For this pop-up, families will be able to customize back-to-school favorites such as backpacks, pencil pouches, and other small accessories.
 
