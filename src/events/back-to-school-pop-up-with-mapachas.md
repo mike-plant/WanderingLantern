@@ -37,6 +37,6 @@ The Edit Bar is Mapachas’ custom patch experience, where kids can choose from 
 
 Stop in, get creative, and make something special for the school year ahead while supporting a wonderful local, family-run business. We’re excited to collaborate with another Lakewood shop and add a little extra personality to back-to-school season!
 
-**Saturday, September 5 | 1:00–3:00 PM**
+**Saturday, August 29th | 1:00–3:00 PM**
 
 More details about available items and pricing coming soon.
