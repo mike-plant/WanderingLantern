@@ -1,16 +1,29 @@
 ---
 layout: layouts/event.njk
-title: "Saturday Story Time"
-date: 2099-12-31
-time: "11:00 AM - 12:00 PM"
-ageRange: "0-10"
-recurring: true
-recurringSchedule: "Every Saturday"
-permalink: /events/saturday-storytime/
-excerpt: "Join us every Saturday morning for story time! Two sessions: 11:00am for ages 0-5 and 11:30am for ages 6-10."
-mailchimpFormId: "f1915b185f"
-mailchimpTag: "3728684"
+draft: false
+title: Saturday Story Time
+date: 2026-08-22
+time: 11:00 AM - 12:00 PM
+ageRange: 0-10
+location: ''
+category: story-time
+excerpt: 'Join us every Saturday morning for story time! Two sessions: 11:00am for ages 0-5 and 11:30am for ages 6-10.'
+price: ''
+host: ''
+status: ''
+ticketUrl: ''
+registrationUrl: ''
+dateRange: ''
+specialGuest: ''
+specialGuestRole: ''
+specialGuestBook: ''
+mailchimpFormId: f1915b185f
+mailchimpTag: '3728684'
 showChildFields: true
+flyerImage: ''
+recurring: true
+recurringSchedule: Every Saturday
+permalink: /events/saturday-storytime/
 ---
 
 ## About This Event
@@ -20,12 +33,14 @@ Come hang out and hear a couple stories for different ages **every Saturday morn
 ### Two Time Slots
 
 #### **11:00 AM - Early Learners (Ages 0-5)**
+
 - Picture books and interactive stories
 - Perfect for toddlers and preschoolers
 - Engaging read-alouds with songs and movement
 - Parent participation encouraged
 
 #### **11:30 AM - Early Readers (Ages 6-10)**
+
 - Chapter book excerpts and longer stories
 - Books for developing readers
 - Discussion and questions encouraged
