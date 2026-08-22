@@ -219,7 +219,13 @@
   aspect-ratio: 3 / 2;
 }
 
-.reservations-page .res-gallery-item--wide { grid-column: span 2; }
+/* A double-width tile at the standard 3:2 ratio would also be double-height,
+   which leaves its row-mates floating against a tall gap. Doubling the ratio
+   instead keeps every tile in a row the same height. */
+.reservations-page .res-gallery-item--wide {
+  grid-column: span 2;
+  aspect-ratio: 3 / 1;
+}
 
 .reservations-page .res-gallery-item:hover,
 .reservations-page .res-gallery-item:focus-visible {
@@ -860,7 +866,7 @@
   }
 
   .reservations-page .res-gallery { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
-  .reservations-page .res-gallery-item--wide { grid-column: span 2; }
+  .reservations-page .res-gallery-item--wide { grid-column: span 2; aspect-ratio: 3 / 2; }
   /* Touch devices never get :hover, so captions must be visible by default. */
   .reservations-page .res-gallery-caption { opacity: 1; }
 

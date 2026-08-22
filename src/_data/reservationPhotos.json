@@ -7,14 +7,16 @@
     "     (target ~1600px wide, WebP or JPEG, under ~300KB each)",
     "  2. Add an entry below. `alt` is required — it is read by screen readers",
     "     AND indexed by Google Image Search, which is real traffic for a venue.",
-    "  3. The first entry with \"hero\": true becomes the hero background.",
+    "  3. Set the top-level \"hero\" object to feature one photo behind the",
+    "     page headline. It is separate from the gallery list, so include it in",
+    "     \"gallery\" too if you also want it clickable.",
     "",
     "Until at least one photo is listed, the page falls back to the existing",
     "storefront image and the gallery section hides itself entirely.",
     "",
     "Fields: src (required), alt (required), caption (optional, shown under the",
-    "photo in the lightbox), hero (optional bool), wide (optional bool - makes",
-    "the tile span two columns for landscape shots you want to feature)."
+    "photo in the lightbox), wide (optional bool - makes the tile span two",
+    "columns for landscape shots you want to feature)."
   ],
 
   "hero": null,
