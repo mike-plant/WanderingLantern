@@ -1,0 +1,63 @@
+---
+permalink: /events.json
+eleventyExcludeFromCollections: true
+---
+{#
+  Machine-readable feed of upcoming events.
+
+  JSON-LD in the page markup is what search engines and AI crawlers read while
+  indexing, but an agent that has been pointed at this site (or a script, or a
+  community calendar wanting to syndicate the listings) is far better served by
+  one clean endpoint than by scraping 25 HTML pages. Linked from /llms.txt and
+  from robots.txt.
+#}
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Upcoming events at {{ site.name }}",
+  "description": "Story times, author visits, workshops, and family events at {{ site.name }}, a children's bookstore at {{ site.street }}, {{ site.city }}, {{ site.region }}.",
+  "url": "{{ site.url }}/events/",
+  "generatedAt": "{{ build.isoTime }}",
+  "venue": {
+    "@type": "BookStore",
+    "name": "{{ site.name }}",
+    "url": "{{ site.url }}",
+    "telephone": "{{ site.phoneRaw }}",
+    "email": "{{ site.email }}",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ site.street }}",
+      "addressLocality": "{{ site.city }}",
+      "addressRegion": "{{ site.region }}",
+      "postalCode": "{{ site.postalCode }}",
+      "addressCountry": "US"
+    }
+  },
+  "numberOfItems": {{ collections.upcomingEvents.length }},
+  "itemListElement": [
+    {%- for event in collections.upcomingEvents %}
+    {%- set e = event.data %}
+    {%- set priceNumber = e.price | eventPriceNumber %}
+    {
+      "@type": "Event",
+      "name": {{ e.title | dump | safe }},
+      "description": {{ e.excerpt | dump | safe }},
+      "url": "{{ site.url }}{{ event.url }}",
+      "startDate": "{{ e.date | eventStartISO(e.time) }}",
+      "endDate": "{{ e.date | eventEndISO(e.time) }}",
+      "displayTime": {{ (e.time or "") | dump | safe }},
+      "eventStatus": "{% if e.status == 'cancelled' %}EventCancelled{% else %}EventScheduled{% endif %}",
+      "category": {{ (e.category or "") | dump | safe }},
+      "typicalAgeRange": {{ (e.ageRange or "") | dump | safe }},
+      "priceText": {{ (e.price or "") | dump | safe }},
+      {% if priceNumber %}"price": "{{ priceNumber }}",
+      "priceCurrency": "USD",
+      {% endif %}"isFree": {% if priceNumber == "0" %}true{% else %}false{% endif %},
+      "location": {{ (e.location or site.name) | dump | safe }},
+      {% if e.specialGuest %}"performer": {{ e.specialGuest | dump | safe }},
+      {% endif %}{% if e.host %}"coHost": {{ e.host | dump | safe }},
+      {% endif %}"registrationUrl": {{ (e.registrationUrl or e.ticketUrl or (site.url + event.url)) | dump | safe }}
+    }{% if not loop.last %},{% endif %}
+    {%- endfor %}
+  ]
+}

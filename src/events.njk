@@ -1,18 +1,29 @@
 ---
 layout: layouts/base.njk
 title: Events & Story Hours - The Wandering Lantern
+seoTitle: "Kids Events & Story Time in Lakewood, OH | Wandering Lantern"
+description: "Free weekly story times, author visits, craft workshops, and family events at Cleveland's children's bookstore in Lakewood, Ohio. See what's coming up."
 ---
 
 <div class="container">
     <section id="events">
-        <h2>Upcoming Events</h2>
+        <h1 class="page-title">Events &amp; Story Hours</h1>
         <p style="text-align: center; max-width: 700px; margin: 0 auto 2rem;">
             Join us for storytimes, author visits, and special celebrations. Each event is designed to spark imagination
             and foster a love of reading in children of all ages.
         </p>
 
+        <p class="events-subscribe">
+            Never miss one:
+            <a href="/events.ics" data-ga="calendar_subscribe">add our calendar</a>
+            to Google, Apple, or Outlook &middot;
+            <a href="/newsletter/" data-ga="events_newsletter">get the newsletter</a>
+        </p>
+
         {# Saturday Story Time Banner #}
         {% include "components/storytime-banner.njk" %}
+
+        <h2>Upcoming Events</h2>
 
         {% if features.events.showUpcomingEvents and collections.upcomingEvents.length > 0 %}
 
@@ -97,3 +108,36 @@ title: Events & Story Hours - The Wandering Lantern
         {% include "components/first-light.njk" %}
     </div>
 </div>
+
+{#
+  ItemList of the upcoming events. The individual event pages carry full Event
+  markup; this tells a crawler (or an assistant) that this URL is the canonical
+  index of them, and in what order.
+#}
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": "{{ site.url }}/events/#upcoming",
+  "name": "Upcoming events at {{ site.name }}",
+  "url": "{{ site.url }}/events/",
+  "numberOfItems": {{ collections.upcomingEvents.length }},
+  "itemListOrder": "https://schema.org/ItemListOrderAscending",
+  "itemListElement": [
+    {%- for event in collections.upcomingEvents %}
+    {
+      "@type": "ListItem",
+      "position": {{ loop.index }},
+      "url": "{{ site.url }}{{ event.url }}",
+      "name": {{ event.data.title | dump | safe }}
+    }{% if not loop.last %},{% endif %}
+    {%- endfor %}
+  ]
+}</script>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Events", "item": "{{ site.url }}/events/" }
+  ]
+}</script>

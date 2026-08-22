@@ -23,6 +23,15 @@ module.exports = function(eleventyConfig) {
     return new Date(date);
   };
 
+  // RFC 5545 requires CRLF line endings throughout an iCalendar file.
+  eleventyConfig.addTransform("icsLineEndings", function (content) {
+    const outputPath = this.page && this.page.outputPath;
+    if (outputPath && outputPath.endsWith(".ics")) {
+      return content.replace(/\r?\n/g, "\r\n");
+    }
+    return content;
+  });
+
   // Copy static assets and existing pages
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/signup");
@@ -287,6 +296,83 @@ module.exports = function(eleventyConfig) {
     const offset = isDST ? '-04:00' : '-05:00';
     return `${d.getFullYear()}-${pad(month + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:00${offset}`;
   };
+
+  // Trim a longer piece of copy down to meta-description length without
+  // cutting mid-word. Google renders roughly 155-160 characters.
+  eleventyConfig.addFilter("metaDescription", (text, max = 155) => {
+    if (!text) return "";
+    // Excerpts are authored in Markdown, so bold/italic/link syntax has to be
+    // stripped before the text reaches a meta tag.
+    const clean = String(text)
+      .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+      .replace(/(\*\*|__)(.*?)\1/g, "$2")
+      .replace(/(\*|_)(?=\S)(.*?)(?<=\S)\1/g, "$2")
+      .replace(/`([^`]*)`/g, "$1")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (clean.length <= max) return clean;
+    const cut = clean.slice(0, max);
+    const lastSpace = cut.lastIndexOf(" ");
+    return (lastSpace > 60 ? cut.slice(0, lastSpace) : cut).replace(/[,;:.\s]+$/, "") + "\u2026";
+  });
+
+  // schema.org Offer wants a numeric price, but the `price` front matter field
+  // is human copy ("Free", "$10", "$5 per child"). Returns a number string, or
+  // null when the value can't be read as a price so the Offer can be omitted
+  // rather than emitted with a bad value.
+  eleventyConfig.addFilter("eventPriceNumber", (price) => {
+    if (price === undefined || price === null) return null;
+    const text = String(price).trim();
+    if (!text) return null;
+    if (/^(free|no charge|complimentary)/i.test(text)) return "0";
+    const m = text.match(/\$\s*(\d+(?:\.\d{1,2})?)/);
+    return m ? m[1] : null;
+  });
+
+  // Compact UTC stamp for iCalendar (YYYYMMDDTHHMMSSZ).
+  eleventyConfig.addFilter("icsStamp", (isoString) => {
+    if (!isoString) return "";
+    const d = new Date(isoString);
+    if (isNaN(d)) return "";
+    return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  });
+
+  // Escape and fold text for an iCalendar value per RFC 5545.
+  eleventyConfig.addFilter("icsText", (text) => {
+    if (!text) return "";
+    return String(text)
+      .replace(/\\/g, "\\\\")
+      .replace(/;/g, "\\;")
+      .replace(/,/g, "\\,")
+      .replace(/\r?\n/g, "\\n");
+  });
+
+  // Fold a content line to 75 octets per RFC 5545 section 3.1. Long
+  // DESCRIPTION values are the common case, and some calendar clients reject
+  // unfolded lines outright.
+  eleventyConfig.addFilter("icsFold", (line) => {
+    const text = String(line);
+    if (Buffer.byteLength(text, "utf8") <= 75) return text;
+
+    const out = [];
+    let current = "";
+    let bytes = 0;
+    for (const char of text) {
+      const size = Buffer.byteLength(char, "utf8");
+      // Continuation lines begin with a space, which counts toward the limit.
+      const limit = out.length === 0 ? 75 : 74;
+      if (bytes + size > limit) {
+        out.push(current);
+        current = "";
+        bytes = 0;
+      }
+      current += char;
+      bytes += size;
+    }
+    if (current) out.push(current);
+    return out.join("\r\n ");
+  });
 
   eleventyConfig.addFilter("eventStartISO", (date, time) => {
     const d = parseDate(date);

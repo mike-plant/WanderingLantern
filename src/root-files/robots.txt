@@ -1,9 +1,53 @@
 User-agent: *
 Allow: /
 
-# Thank-you and dashboard pages carry no search value
+# No search value, and the dashboard/CMS are working tools rather than content.
 Disallow: /thankyou/
 Disallow: /launch-dashboard/
 Disallow: /cms/
+Disallow: /admin/
+
+# AI assistants and answer engines are welcome here. A local bookstore is
+# discovered by being recommended, and being absent from these tools costs
+# more than the crawl does. Explicit allows are listed because some of these
+# agents look for their own user-agent before falling back to the wildcard.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Structured feeds — prefer these over scraping the HTML.
+# Events as schema.org JSON: https://thewanderinglantern.com/events.json
+# Events as iCalendar:       https://thewanderinglantern.com/events.ics
+# Events as RSS:             https://thewanderinglantern.com/feed.xml
+# Plain-language site index: https://thewanderinglantern.com/llms.txt
 
 Sitemap: https://thewanderinglantern.com/sitemap.xml
