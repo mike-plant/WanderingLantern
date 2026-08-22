@@ -166,19 +166,67 @@ Content here...
 
 ### Event Space Reservations
 
-The `/reservations/` page offers three event packages for private bookstore space rental:
+The `/reservations/` page is the site's primary commercial page. It is
+**data-driven** — most updates are JSON edits, not template edits.
 
-1. **Basic Gathering**: Self-service space rental with optional story time add-on
-2. **Story + Creative Experience**: Includes guided story time and craft activity
-3. **Full Hosted Celebration**: Complete turnkey experience with snacks, activities, and full setup/cleanup
+| Data file | Controls | Hides when empty? |
+|---|---|---|
+| `src/_data/reservationPhotos.json` | Hero photo + gallery | Yes — gallery section disappears |
+| `src/_data/reservationPricing.json` | "Starting at $X" anchors + `Offer` schema | Yes — falls back to "request a quote" |
+| `src/_data/reservationTestimonials.json` | Quotes from past events | Yes — section disappears |
+| `src/_data/reservationFaq.json` | FAQ accordions + `FAQPage` schema | n/a |
 
-**Inquiry Form**: Collects guest details, preferred package, event type, date, and guest count. Submits to Formspree (form ID: `xkgqdarv`) with subject line identifying it as an event rental inquiry.
+Each file carries a `_README` array explaining its fields. Sections with no
+data hide themselves rather than rendering a placeholder.
 
-**Customization**: Edit `src/reservations.njk` to update:
-- Package descriptions and offerings
-- Venue capacity and amenities
-- FAQ answers
-- Pricing information
+**Packages:** The Secret Garden (space only), Mad Hatter's Tea Party
+(story + activity), The Royal Ball (fully hosted).
+
+**Inquiry form:** Formspree ID `xnjdroye`. Subject line is rewritten client-side
+to include the sender's name.
+
+**Adding photos:** drop optimized files (~1600px, <300KB) into
+`src/assets/images/reservations/`, then add entries to
+`reservationPhotos.json`. Descriptive filenames and `alt` text both matter —
+they are indexed by Google Images, which is real traffic for a venue page.
+
+**Styling:** `src/assets/css/reservations.css`, entirely scoped under
+`.reservations-page`. Keep new rules inside that wrapper — an earlier version
+used unscoped selectors (`section`, `html`, `div[style*="..."]`) that leaked
+onto every other page.
+
+**Marketing playbook:** `docs/EVENT-SPACE-MARKETING.md` covers SEO targets,
+the social launch sequence, off-site setup (Google Business Profile, Search
+Console), and how to read the GA4 events.
+
+### SEO Conventions
+
+`src/_includes/components/head.njk` reads these optional front matter fields:
+
+| Field | Purpose |
+|---|---|
+| `seoTitle` | Overrides the `<title>` entirely. Use for keyword targeting; keep under ~60 chars. |
+| `description` | Meta description and OG/Twitter description. |
+| `ogTitle` | Social-share title, when it should differ from the page title. |
+| `ogImage` | Share image path (site-root relative). Defaults to the store interior. |
+| `ogImageAlt` | Alt text for the share image. |
+| `preloadImage` | Preloads an LCP image. |
+| `noindex` | Emits `noindex, follow`. Also excludes the page from `sitemap.xml`. |
+
+Titles only get the `- The Wandering Lantern` suffix appended when the page
+title doesn't already contain the store name, so don't remove it from existing
+front matter titles expecting the suffix to appear.
+
+`src/sitemap.njk` generates `/sitemap.xml` from `collections.all`, excluding
+drafts, `noindex` pages, XML outputs, and `/events-print/`. Passthrough-copied
+pages aren't in collections, so they're listed manually at the bottom of that
+file.
+
+`src/root-files/robots.txt` points at the sitemap.
+
+Page-specific structured data (`Service`, `FAQPage`, `BreadcrumbList`) lives in
+the page body — Google reads JSON-LD from the body as well as the head. The
+store-wide `BookStore` schema stays in `head.njk`.
 
 ## Forms & Mailchimp
 
