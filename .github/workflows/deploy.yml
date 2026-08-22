@@ -15,9 +15,10 @@ permissions:
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
+# One run at a time per ref. Keeping the ref in the group name stops a pull
+# request build from cancelling an in-flight deployment of main.
 concurrency:
-  group: "pages"
+  group: "pages-${{ github.ref }}"
   cancel-in-progress: true
 
 jobs:
@@ -46,6 +47,10 @@ jobs:
           path: ./_site
 
   deploy:
+    # The github-pages environment only accepts deployments from main, so on a
+    # pull request this job would be rejected by the environment protection
+    # rules. Pull requests keep the build job as a check and stop there.
+    if: github.event_name != 'pull_request'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
