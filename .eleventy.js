@@ -433,6 +433,57 @@ module.exports = function(eleventyConfig) {
     return eventEndTime <= now;
   });
 
+  /*
+   * CSS bundling.
+   *
+   * The stylesheets stay modular on disk (15 files, imported by main.css), but
+   * shipping them that way costs 15 extra round trips that the browser cannot
+   * even start until it has downloaded and parsed main.css — @import is a
+   * serialised waterfall, and every one of those files is render-blocking.
+   * That was the main reason mobile first-contentful-paint sat at 3.8s while
+   * desktop managed 0.9s.
+   *
+   * So: keep authoring in modules, concatenate at build time. main.css remains
+   * the single source of truth for ORDER (variables first, mobile last) — this
+   * reads the @import list straight out of it rather than duplicating the list
+   * here, so adding a stylesheet is still a one-line change to main.css.
+   */
+  eleventyConfig.on("eleventy.after", async () => {
+    const fs = require("fs");
+    const path = require("path");
+
+    const cssDir = path.join(__dirname, "src", "assets", "css");
+    const entry = path.join(cssDir, "main.css");
+    if (!fs.existsSync(entry)) return;
+
+    const order = [...fs.readFileSync(entry, "utf8")
+      .matchAll(/@import\s+['"]([^'"]+)['"]\s*;/g)].map((m) => m[1]);
+
+    const missing = order.filter((f) => !fs.existsSync(path.join(cssDir, f)));
+    if (missing.length) {
+      throw new Error(`CSS bundle: main.css imports missing file(s): ${missing.join(", ")}`);
+    }
+
+    const bundle = order.map((file) => {
+      const css = fs.readFileSync(path.join(cssDir, file), "utf8").trim();
+      return `/* ===== ${file} ===== */\n${css}`;
+    }).join("\n\n");
+
+    const outFile = path.join(__dirname, "_site", "assets", "css", "main.css");
+    fs.mkdirSync(path.dirname(outFile), { recursive: true });
+    fs.writeFileSync(outFile, bundle + "\n");
+
+    // The individual files were passthrough-copied a moment ago and nothing
+    // links to them now that they are inlined; leaving them would ship ~100KB
+    // of dead bytes and let a stale copy get requested directly.
+    for (const file of order) {
+      const stale = path.join(__dirname, "_site", "assets", "css", file);
+      if (fs.existsSync(stale)) fs.unlinkSync(stale);
+    }
+
+    console.log(`[css] bundled ${order.length} stylesheets -> assets/css/main.css (${(bundle.length / 1024).toFixed(1)}KB)`);
+  });
+
   return {
     dir: {
       input: "src",

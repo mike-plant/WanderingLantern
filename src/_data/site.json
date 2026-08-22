@@ -12,5 +12,20 @@
   "region": "OH",
   "postalCode": "44107",
   "instagram": "https://www.instagram.com/thewanderinglanterncle",
-  "facebook": "https://www.facebook.com/thewanderinglantern"
+  "facebook": "https://www.facebook.com/thewanderinglantern",
+  "hours": {
+    "days": [
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "opens": "10:00",
+    "closes": "18:00",
+    "display": "Tue-Sat: 10am-6pm",
+    "closedDisplay": "Closed Sunday & Monday"
+  },
+  "logo": "/logo.png",
+  "mapUrl": "https://www.google.com/maps/search/?api=1&query=15729+Madison+Ave%2C+Lakewood%2C+OH+44107"
 }

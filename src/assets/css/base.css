@@ -226,3 +226,59 @@ footer a {
   line-height: 1.15;
   margin: 2.5rem 0 1rem;
 }
+
+/* ===== SHARED SECTION UTILITIES =====
+   These replace inline style attributes that were repeated across the events
+   page and the contact block. Inline styles can't be cached, overridden by a
+   later stylesheet, or reused, so the same declarations were being duplicated
+   verbatim in several templates. */
+.section-lede {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+}
+
+.section-lede--narrow {
+  max-width: 600px;
+}
+
+.section-spaced {
+  margin-top: 5rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: var(--parchment);
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  color: var(--warm-brown);
+  margin: 0;
+}
+
+.empty-state a {
+  color: var(--aged-gold);
+  text-decoration: underline;
+}
+
+/* Checkbox rows: the control and its label sit on one line, so the label must
+   drop the block-level margin and bold weight it inherits from .form-group. */
+.form-group--inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-group--inline input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.form-group--inline label {
+  margin: 0;
+  font-weight: 400;
+}

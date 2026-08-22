@@ -8,7 +8,7 @@ description: "Free weekly story times, author visits, craft workshops, and famil
 <div class="container">
     <section id="events">
         <h1 class="page-title">Events &amp; Story Hours</h1>
-        <p style="text-align: center; max-width: 700px; margin: 0 auto 2rem;">
+        <p class="section-lede">
             Join us for storytimes, author visits, and special celebrations. Each event is designed to spark imagination
             and foster a love of reading in children of all ages.
         </p>
@@ -69,18 +69,18 @@ description: "Free weekly story times, author visits, craft workshops, and famil
         </div>
 
         {% elif features.events.showUpcomingEvents %}
-        <div style="text-align: center; padding: 3rem 2rem; background: var(--parchment); border-radius: 8px; margin-top: 2rem;">
-            <p style="font-size: 1.1rem; color: var(--warm-brown); margin: 0;">
+        <div class="empty-state">
+            <p>
                 We're currently planning our upcoming events! Check back soon or
-                <a href="/newsletter/" style="color: var(--aged-gold); text-decoration: underline;">sign up for our newsletter</a>
+                <a href="/newsletter/">sign up for our newsletter</a>
                 to be the first to know when new events are announced.
             </p>
         </div>
         {% else %}
-        <div style="text-align: center; padding: 3rem 2rem; background: var(--parchment); border-radius: 8px; margin-top: 2rem;">
-            <p style="font-size: 1.1rem; color: var(--warm-brown); margin: 0;">
+        <div class="empty-state">
+            <p>
                 We're currently planning our upcoming events! Check back soon or
-                <a href="/newsletter/" style="color: var(--aged-gold); text-decoration: underline;">sign up for our newsletter</a>
+                <a href="/newsletter/">sign up for our newsletter</a>
                 to be the first to know when new events are announced.
             </p>
         </div>
@@ -88,7 +88,7 @@ description: "Free weekly story times, author visits, craft workshops, and famil
     </section>
 
     {% if features.events.showPastEvents and collections.pastEvents.length > 0 %}
-    <section id="past-events" style="margin-top: 5rem;">
+    <section id="past-events" class="section-spaced">
         <h2>Past Events</h2>
         <div class="events-grid">
             {% for event in collections.pastEvents | limit(6) %}
@@ -104,7 +104,7 @@ description: "Free weekly story times, author visits, craft workshops, and famil
     {% include "components/rental-promo.njk" %}
 
     <!-- Join Our Community Section -->
-    <div style="margin-top: 5rem;">
+    <div class="section-spaced">
         {% include "components/first-light.njk" %}
     </div>
 </div>

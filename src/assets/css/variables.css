@@ -5,6 +5,11 @@
   --deep-brown: #5c4d3c;
   --aged-gold: #c9a961;
   --muted-gold: #a38b5f;
+  /* Darkened companion to --muted-gold. The gold tones are decorative-only:
+     --muted-gold clears just 3.1:1 on cream and --aged-gold only 2.1:1, so
+     neither is safe for body or label text. Use this one when gold has to
+     carry actual words (4.9:1 on cream, 4.5:1 on parchment). */
+  --gold-text: #7d6a48;
   --old-gold: #d4af37;
   --warm-gold: #f0c674;
   --cream: #faf7f0;
