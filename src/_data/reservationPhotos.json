@@ -1,0 +1,110 @@
+{
+  "_README": [
+    "Professional photos for the /reservations/ page.",
+    "",
+    "TO ADD PHOTOS:",
+    "  1. Drop optimized files into src/assets/images/reservations/",
+    "     (target ~1600px on the long edge, WebP, under ~200KB each)",
+    "  2. Add an entry below. `alt` is required - it is read by screen readers",
+    "     AND indexed by Google Image Search, which is real traffic for a venue.",
+    "     Describe what is happening in the photo, not just what the room is.",
+    "  3. Set the top-level \"hero\" object to feature one photo behind the",
+    "     page headline. It is separate from the gallery list, so include it in",
+    "     \"gallery\" too if you also want it clickable.",
+    "",
+    "The gallery is a column masonry layout, so portrait and landscape photos",
+    "both display uncropped at their natural shape. No orientation flag needed.",
+    "",
+    "Until at least one photo is listed, the page falls back to the storefront",
+    "image and the gallery section hides itself entirely.",
+    "",
+    "Fields: src (required), alt (required), width/height (recommended - they",
+    "prevent layout shift while images load), caption (optional, shown on hover",
+    "and under the photo in the lightbox)."
+  ],
+  "hero": {
+    "src": "/assets/images/reservations/event-space-tables-set-for-birthday-party.webp",
+    "alt": "Long tables set for a birthday party in the event space at The Wandering Lantern, with white linens, green glassware, and flowers on stacked vintage books",
+    "width": 1600,
+    "height": 1067
+  },
+  "gallery": [
+    {
+      "src": "/assets/images/reservations/event-space-tables-set-for-birthday-party.webp",
+      "alt": "Long banquet tables set for a birthday party with white linens, green goblets, coral plates, and floral centerpieces on stacked books",
+      "width": 1600,
+      "height": 1067,
+      "caption": "The room set for a first birthday"
+    },
+    {
+      "src": "/assets/images/reservations/party-table-once-upon-a-time-banner.webp",
+      "alt": "A set party table beneath an Once Upon a Time banner, with gingham napkins, scalloped plates, and a jar of wildflowers on vintage books",
+      "width": 1067,
+      "height": 1600,
+      "caption": "Every table sits under the storybook banner"
+    },
+    {
+      "src": "/assets/images/reservations/bookstore-event-space-with-guests.webp",
+      "alt": "Guests seated at tables throughout the bookstore event space, under a pressed tin ceiling and pendant chandelier with tall front windows behind them",
+      "width": 1067,
+      "height": 1600,
+      "caption": "Room for about 30 seated guests"
+    },
+    {
+      "src": "/assets/images/reservations/dessert-table-cupcakes-and-cake.webp",
+      "alt": "A dessert table of tiered cupcake stands and a decorated cake, flanked by stained glass lamps and framed vintage artwork",
+      "width": 1600,
+      "height": 1067,
+      "caption": "Dessert table against the front wall"
+    },
+    {
+      "src": "/assets/images/reservations/grazing-table-party-food-spread.webp",
+      "alt": "A long grazing table spread with charcuterie, pastries, fruit, and desserts, with small floral arrangements on stacked books",
+      "width": 1600,
+      "height": 1067,
+      "caption": "Bring your own catering, or let us handle it"
+    },
+    {
+      "src": "/assets/images/reservations/party-drink-station-lemonade.webp",
+      "alt": "A drink station with two glass beverage dispensers of lemonade, stacked glassware, and an antique globe beside a stained glass floor lamp",
+      "width": 1600,
+      "height": 1067,
+      "caption": "A drink station tucked beside the globe"
+    },
+    {
+      "src": "/assets/images/reservations/first-birthday-high-chair-banner.webp",
+      "alt": "A high chair decorated with a One for the Books tassel banner beneath a string of pastel bunting",
+      "width": 1067,
+      "height": 1600,
+      "caption": "Details you bring, room we set up"
+    },
+    {
+      "src": "/assets/images/reservations/book-themed-party-favor-basket.webp",
+      "alt": "A woven basket of picture books tied with ribbon on an antique table, beside a bowl of lemons and a stack of party invitations",
+      "width": 1067,
+      "height": 1600,
+      "caption": "Send guests home with a book instead of a goodie bag"
+    },
+    {
+      "src": "/assets/images/reservations/kids-coloring-activity-table.webp",
+      "alt": "A kids activity table covered with a printed coloring sheet and crayons, surrounded by child sized chairs",
+      "width": 1600,
+      "height": 1067,
+      "caption": "A craft table the kids can take over"
+    },
+    {
+      "src": "/assets/images/reservations/smash-cake-on-dessert-table.webp",
+      "alt": "A small white smash cake on a footed stand surrounded by frosted cupcakes and a framed vintage illustration",
+      "width": 1067,
+      "height": 1600,
+      "caption": "The smash cake, front and center"
+    },
+    {
+      "src": "/assets/images/reservations/flowers-on-vintage-books-detail.webp",
+      "alt": "A jar of wildflowers resting on a stack of vintage hardcover books against a deep rose wall with small star decals",
+      "width": 1067,
+      "height": 1600,
+      "caption": "Centerpieces built from the shelves"
+    }
+  ]
+}

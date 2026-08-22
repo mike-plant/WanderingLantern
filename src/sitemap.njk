@@ -1,0 +1,23 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for item in collections.all %}
+{%- if not item.data.draft and not item.data.noindex and (".xml" not in item.url) and (item.url != "/events-print/") %}
+  <url>
+    <loc>{{ site.url }}{{ item.url }}</loc>
+    <lastmod>{{ item.date | date("YYYY-MM-DD") }}</lastmod>
+    <priority>{% if item.url == "/" %}1.0{% elif item.url == "/reservations/" %}0.9{% elif item.url == "/events/" %}0.8{% else %}0.6{% endif %}</priority>
+  </url>
+{%- endif %}
+{%- endfor %}
+{#- Passthrough-copied pages are not in collections.all, so list them here. -#}
+{%- for extra in ["/signup/", "/newsletter/"] %}
+  <url>
+    <loc>{{ site.url }}{{ extra }}</loc>
+    <priority>0.4</priority>
+  </url>
+{%- endfor %}
+</urlset>

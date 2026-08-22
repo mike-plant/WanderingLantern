@@ -1,0 +1,72 @@
+{
+  "_README": [
+    "FAQs for the /reservations/ page. These render as accordions AND feed the",
+    "FAQPage structured data, which is what makes the page eligible to show",
+    "expandable questions directly in Google results.",
+    "",
+    "Keep answers in the 40-80 word range and lead with the direct answer -",
+    "Google truncates long ones, and a question that opens with hedging reads",
+    "badly in a search result. `a` may contain simple HTML.",
+    "",
+    "Order matters: the first question renders open by default, so put the one",
+    "most likely to block a booking at the top."
+  ],
+  "faqs": [
+    {
+      "q": "How much does it cost to rent the space?",
+      "a": "Pricing depends on which package you choose, your group size, and the day and time. Send us your date through the form and we'll reply with an itemized quote within 24-48 hours. There are no hidden fees, and no deposit is required just to ask."
+    },
+    {
+      "q": "Can I bring my own food and drinks?",
+      "a": "Yes. You're welcome to bring your own catering, food, cake, and non-alcoholic beverages. We're happy to recommend local caterers and bakeries if you'd like a starting point."
+    },
+    {
+      "q": "How far in advance should I book?",
+      "a": "We recommend 4-6 weeks ahead, especially for weekend dates, which fill first. That said, we'll always check - last-minute requests work out more often than people expect, so it's worth asking."
+    },
+    {
+      "q": "Is the space private during my event?",
+      "a": "Outside store hours, always. During store hours you have two options: a semi-private event separated from the shop with curtains, or a full store buyout for complete privacy. We'll walk you through which makes sense for your group."
+    },
+    {
+      "q": "How many people can you fit?",
+      "a": "About 30 seated guests, or up to 50 for events with a mix of seating and standing. Final capacity depends on your layout and what activities you're planning - tell us your headcount and we'll tell you honestly whether it works."
+    },
+    {
+      "q": "Can I decorate the space?",
+      "a": "Absolutely, and we encourage it. We just ask that decorations come down easily and don't damage walls or bookshelves - so no nails, and no tape that might pull paint."
+    },
+    {
+      "q": "Where do guests park?",
+      "a": "There's street parking along Madison Avenue directly outside, plus additional side-street parking within a short walk. We'll flag anything unusual about your date, like a street festival, when we confirm your booking."
+    },
+    {
+      "q": "Do you host adult events, or just children's parties?",
+      "a": "Both. Kids' celebrations are most of our calendar, but the room is well suited to adult book clubs, baby showers, small meetings, workshops, and intimate gatherings. The literary setting works for every age."
+    },
+    {
+      "q": "What's included in the craft activities?",
+      "a": "For the Mad Hatter's Tea Party and Royal Ball packages, crafts are simple, age-appropriate projects that fit your event's theme. We provide all materials and lead the activity. We confirm the specific craft with you ahead of time based on your group's ages."
+    },
+    {
+      "q": "Can I visit the space before booking?",
+      "a": "Please do. Stop in during regular store hours - no appointment needed. If you'd rather have someone walk you through it and talk logistics, just say so in your inquiry and we'll set up a time."
+    },
+    {
+      "q": "Are books available for purchase during my event?",
+      "a": "Yes. We can set out a curated selection of age-appropriate books for browsing and purchase during your event, which works well for party favors or as the gift itself."
+    },
+    {
+      "q": "What if my guest count changes?",
+      "a": "That's expected - RSVPs are unpredictable. Let us know as soon as you can and we'll adjust seating, activity materials, and any catering. Small fluctuations are completely normal and don't affect your booking."
+    },
+    {
+      "q": "What is your cancellation policy?",
+      "a": "Cancellation terms are outlined in your event agreement before you commit to anything. We know plans change, and we'd rather reschedule you than lose you - reach out and we'll find a solution."
+    },
+    {
+      "q": "What if I'm not sure which package fits?",
+      "a": "Leave the package field blank. Most people do. Describe what you're picturing in the details box and we'll recommend the package that actually fits - you can also mix elements from different packages if that works better."
+    }
+  ]
+}

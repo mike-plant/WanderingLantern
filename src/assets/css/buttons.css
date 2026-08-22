@@ -112,3 +112,68 @@
   box-shadow: 0 3px 12px rgba(139, 111, 71, 0.25);
   animation: none;
 }
+
+/* ==========================================================================
+   Rental cross-promo band (components/rental-promo.njk)
+   Appears on the events page and homepage to route traffic to /reservations/.
+   ========================================================================== */
+.rental-promo {
+  margin: 4rem 0 0;
+  background: linear-gradient(135deg, rgba(122, 139, 111, 0.12), rgba(139, 111, 71, 0.14));
+  border: 1px solid rgba(201, 169, 97, 0.35);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.rental-promo-inner {
+  padding: 3rem 2rem;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.rental-promo-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--muted-gold);
+  margin: 0 0 0.6rem;
+}
+
+.rental-promo-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+  color: var(--deep-brown);
+  margin: 0 0 0.85rem;
+  line-height: 1.2;
+}
+
+.rental-promo-text {
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--dark-text);
+  margin: 0 0 1.75rem;
+}
+
+.rental-promo-cta {
+  display: inline-block;
+  padding: 0.95rem 2.1rem;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--aged-gold), var(--muted-gold));
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(201, 169, 97, 0.35);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.rental-promo-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(201, 169, 97, 0.48);
+}
+
+@media (max-width: 768px) {
+  .rental-promo-inner { padding: 2.25rem 1.25rem; }
+  .rental-promo-cta { display: block; }
+}

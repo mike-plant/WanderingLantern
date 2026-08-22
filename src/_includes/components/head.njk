@@ -10,8 +10,48 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} - The Wandering Lantern</title>
-    <meta name="description" content="{{ description or 'Cleveland\'s First Children\'s Bookstore in Lakewood, OH' }}">
+
+    {#
+      Title resolution:
+        1. `seoTitle` in front matter wins outright (use it to target keywords).
+        2. Otherwise fall back to `title`, and only append the store name when
+           the title doesn't already carry it — several pages set titles like
+           "Our Story - The Wandering Lantern", which previously rendered the
+           suffix twice.
+    #}
+    {%- if seoTitle -%}
+      {%- set pageTitle = seoTitle -%}
+    {%- elif title and (site.name in title) -%}
+      {%- set pageTitle = title -%}
+    {%- elif title -%}
+      {%- set pageTitle = title + " - " + site.name -%}
+    {%- else -%}
+      {%- set pageTitle = site.name + " - " + site.tagline -%}
+    {%- endif -%}
+    {%- set pageDescription = description or site.description -%}
+    {%- set pageImage = site.url + (ogImage or site.defaultImage) -%}
+    {%- set canonicalUrl = site.url + page.url -%}
+
+    <title>{{ pageTitle }}</title>
+    <meta name="description" content="{{ pageDescription }}">
+    <link rel="canonical" href="{{ canonicalUrl }}">
+    {% if noindex %}<meta name="robots" content="noindex, follow">{% else %}<meta name="robots" content="index, follow, max-image-preview:large">{% endif %}
+
+    <!-- Open Graph (Facebook, Instagram link previews, iMessage) -->
+    <meta property="og:type" content="{{ ogType or 'website' }}">
+    <meta property="og:site_name" content="{{ site.name }}">
+    <meta property="og:title" content="{{ ogTitle or pageTitle }}">
+    <meta property="og:description" content="{{ pageDescription }}">
+    <meta property="og:url" content="{{ canonicalUrl }}">
+    <meta property="og:image" content="{{ pageImage }}">
+    <meta property="og:image:alt" content="{{ ogImageAlt or site.name }}">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ ogTitle or pageTitle }}">
+    <meta name="twitter:description" content="{{ pageDescription }}">
+    <meta name="twitter:image" content="{{ pageImage }}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,23 +61,28 @@
     <!-- Styles -->
     <link rel="stylesheet" href="/assets/css/main.css">
 
+    {# Pages may preload their own LCP image (e.g. the reservations hero). #}
+    {% if preloadImage %}<link rel="preload" as="image" href="{{ preloadImage }}" fetchpriority="high">{% endif %}
+
     <!-- Structured Data for Local Business SEO -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "BookStore",
-      "name": "The Wandering Lantern",
+      "@id": "{{ site.url }}/#store",
+      "name": "{{ site.name }}",
       "description": "Cleveland's first dedicated children's bookstore, offering curated picture books, middle grade novels, young adult fiction, and free weekly storytimes.",
-      "image": "https://thewanderinglantern.com/store-interior-bw-compressed.jpg",
-      "url": "https://thewanderinglantern.com",
-      "telephone": "+12169994462",
+      "image": "{{ site.url }}{{ site.defaultImage }}",
+      "url": "{{ site.url }}",
+      "telephone": "{{ site.phoneRaw }}",
+      "email": "{{ site.email }}",
       "priceRange": "$$",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "15729 Madison Ave",
-        "addressLocality": "Lakewood",
-        "addressRegion": "OH",
-        "postalCode": "44107",
+        "streetAddress": "{{ site.street }}",
+        "addressLocality": "{{ site.city }}",
+        "addressRegion": "{{ site.region }}",
+        "postalCode": "{{ site.postalCode }}",
         "addressCountry": "US"
       },
       "geo": {
@@ -54,8 +99,8 @@
         }
       ],
       "sameAs": [
-        "https://www.instagram.com/thewanderinglanterncle",
-        "https://www.facebook.com/thewanderinglantern"
+        "{{ site.instagram }}",
+        "{{ site.facebook }}"
       ]
     }
     </script>
