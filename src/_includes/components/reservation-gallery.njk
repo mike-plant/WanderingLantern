@@ -1,0 +1,55 @@
+{#
+  Photo gallery for the reservations page.
+
+  Renders nothing at all when reservationPhotos.gallery is empty, so the page
+  never shows an empty frame or a "photos coming soon" apology. Add photos in
+  src/_data/reservationPhotos.json to switch it on.
+#}
+{% if reservationPhotos.gallery and reservationPhotos.gallery.length %}
+<section class="res-section res-gallery-section" id="gallery" aria-labelledby="gallery-heading">
+    <h2 class="res-h2" id="gallery-heading">Take a Look Around</h2>
+    <p class="res-lede">
+        Every celebration here happens surrounded by books, warm light, and the
+        kind of details that make photos worth keeping.
+    </p>
+
+    <div class="res-gallery" role="list">
+        {% for photo in reservationPhotos.gallery %}
+        <button
+            type="button"
+            role="listitem"
+            class="res-gallery-item{% if photo.wide %} res-gallery-item--wide{% endif %}"
+            data-gallery-index="{{ loop.index0 }}"
+            data-gallery-caption="{{ photo.caption or photo.alt }}"
+            aria-label="View larger: {{ photo.alt }}"
+        >
+            <img
+                src="{{ photo.src }}"
+                alt="{{ photo.alt }}"
+                loading="{% if loop.index0 < 2 %}eager{% else %}lazy{% endif %}"
+                decoding="async"
+                width="{{ photo.width or 1600 }}"
+                height="{{ photo.height or 1067 }}"
+            >
+            {% if photo.caption %}
+            <span class="res-gallery-caption">{{ photo.caption }}</span>
+            {% endif %}
+        </button>
+        {% endfor %}
+    </div>
+</section>
+
+{# Lightbox shell — populated and controlled by initReservationGallery() in main.js #}
+<div class="res-lightbox" id="res-lightbox" hidden>
+    <div class="res-lightbox-backdrop" data-lightbox-close></div>
+    <div class="res-lightbox-inner" role="dialog" aria-modal="true" aria-label="Photo viewer">
+        <button type="button" class="res-lightbox-btn res-lightbox-prev" aria-label="Previous photo">&#8249;</button>
+        <figure class="res-lightbox-figure">
+            <img src="" alt="" id="res-lightbox-img">
+            <figcaption id="res-lightbox-caption"></figcaption>
+        </figure>
+        <button type="button" class="res-lightbox-btn res-lightbox-next" aria-label="Next photo">&#8250;</button>
+        <button type="button" class="res-lightbox-close" aria-label="Close photo viewer" data-lightbox-close>&times;</button>
+    </div>
+</div>
+{% endif %}

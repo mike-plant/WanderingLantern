@@ -1,0 +1,16 @@
+{
+  "name": "The Wandering Lantern",
+  "url": "https://thewanderinglantern.com",
+  "tagline": "Follow the light, find the wonder",
+  "description": "Cleveland's first dedicated children's bookstore, in Lakewood, OH.",
+  "defaultImage": "/store-interior-bw-compressed.jpg",
+  "phone": "(216) 999-4462",
+  "phoneRaw": "+12169994462",
+  "email": "hello@thewanderinglantern.com",
+  "street": "15729 Madison Ave",
+  "city": "Lakewood",
+  "region": "OH",
+  "postalCode": "44107",
+  "instagram": "https://www.instagram.com/thewanderinglanterncle",
+  "facebook": "https://www.facebook.com/thewanderinglantern"
+}

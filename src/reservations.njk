@@ -1,487 +1,497 @@
 ---
 layout: layouts/base.njk
 title: Event Space Rental - The Wandering Lantern
+seoTitle: "Kids Birthday Party Venue in Lakewood, OH | Wandering Lantern"
+description: "Host birthday parties, baby showers, and book clubs inside Cleveland's children's bookstore. Private event space in Lakewood, OH for up to 50 guests."
+ogTitle: "Book a Birthday Party at The Wandering Lantern"
+ogImageAlt: "The event space at The Wandering Lantern bookstore in Lakewood, Ohio"
 ---
+{%- set heroPhoto = reservationPhotos.hero.src if reservationPhotos.hero else "/storefront-temp.webp" -%}
+{%- set heroAlt = reservationPhotos.hero.alt if reservationPhotos.hero else "The Wandering Lantern storefront on Madison Avenue in Lakewood, Ohio" -%}
 
-{# Hero Section #}
-<div class="reservations-hero" style="background: linear-gradient(135deg, rgba(122, 139, 111, 0.12) 0%, rgba(139, 111, 71, 0.12) 100%); padding: 4rem 2rem; text-align: center; border-bottom: 2px solid rgba(201, 169, 97, 0.3);">
-    <div class="container">
-        <h1 style="font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4rem); color: var(--deep-brown); margin-bottom: 1rem;">
-            Host Your Special Event
-        </h1>
-        <p style="font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: var(--warm-brown); max-width: 700px; margin: 0 auto 2rem; line-height: 1.6;">
-            Create magical memories in our enchanting bookstore space, perfect for birthday parties, tea parties, baby showers, and other celebrations.
+<div class="reservations-page">
+
+{# ============================================================= HERO #}
+{#
+  The hero image is a real <img>, not a CSS background: background images are
+  invisible to Google Images, and a venue page is exactly the kind of page
+  that earns image-search traffic. Keeping it in the DOM also lets it carry
+  alt text and act as a properly prioritised LCP element.
+#}
+<header class="res-hero">
+    <img class="res-hero-img" src="{{ heroPhoto }}" alt="{{ heroAlt }}" fetchpriority="high" decoding="async">
+    <div class="res-hero-scrim"></div>
+    <div class="container res-hero-content">
+        <p class="res-hero-eyebrow">Private Event Space &middot; Lakewood, Ohio</p>
+        <h1 class="res-hero-title">Throw the Party They&rsquo;ll Still Talk&nbsp;About</h1>
+        <p class="res-hero-sub">
+            Birthdays, baby showers, and book clubs, held inside a working
+            children&rsquo;s bookstore &mdash; surrounded by story, warm light, and
+            shelves that make every photo look intentional.
         </p>
-        <a href="#inquiry-form" class="cta-button" style="display: inline-block; background: linear-gradient(135deg, var(--aged-gold), var(--muted-gold)); color: white; padding: 1rem 2.5rem; border-radius: 6px; font-size: 1.1rem; font-weight: 600; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; border: none; box-shadow: 0 4px 12px rgba(201, 169, 97, 0.3);">
-            Get Started
-        </a>
+        <div class="res-hero-actions">
+            <a href="#inquiry-form" class="res-btn res-btn-primary" data-ga="hero_check_availability">
+                Check Your Date
+            </a>
+            {% if reservationPhotos.gallery and reservationPhotos.gallery.length %}
+            <a href="#gallery" class="res-btn res-btn-ghost" data-ga="hero_see_space">
+                See the Space
+            </a>
+            {% else %}
+            <a href="#packages" class="res-btn res-btn-ghost" data-ga="hero_see_packages">
+                See Packages
+            </a>
+            {% endif %}
+        </div>
+        <p class="res-hero-note">Usually answered within 24&ndash;48 hours &middot; No deposit to ask</p>
+    </div>
+</header>
+
+{# ============================================================= TRUST BAR #}
+<div class="res-trustbar">
+    <div class="container res-trustbar-inner">
+        <div class="res-trust-item">
+            <span class="res-trust-num">50</span>
+            <span class="res-trust-label">guests max<br><small>30 seated</small></span>
+        </div>
+        <div class="res-trust-item">
+            <span class="res-trust-num">100%</span>
+            <span class="res-trust-label">private<br><small>after hours</small></span>
+        </div>
+        <div class="res-trust-item">
+            <span class="res-trust-num">3</span>
+            <span class="res-trust-label">packages<br><small>space to fully hosted</small></span>
+        </div>
+        <div class="res-trust-item">
+            <span class="res-trust-num">Madison</span>
+            <span class="res-trust-label">Ave, Lakewood<br><small>street parking</small></span>
+        </div>
     </div>
 </div>
 
 <div class="container">
-    {# About the Space Section #}
-    <section style="max-width: 900px; margin: 4rem auto;">
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--deep-brown); text-align: center; margin-bottom: 2rem;">
-            Our Event Space
-        </h2>
 
-        <div style="background: var(--cream); padding: 2.5rem; border-radius: 12px; margin-bottom: 3rem; border: 1px solid rgba(201, 169, 97, 0.3);">
-            <p style="font-size: 1.15rem; line-height: 1.8; color: var(--dark-text); margin-bottom: 1.5rem;">
-                The Wandering Lantern offers a warm, literary atmosphere that brings a unique charm to any celebration.
-                Our thoughtfully curated space provides the perfect backdrop for creating lasting memories with family and friends.
-            </p>
+    {# ============================================================= GALLERY #}
+    {% include "components/reservation-gallery.njk" %}
 
-            <p style="font-size: 1rem; color: var(--muted-gold); font-style: italic; margin-bottom: 1.5rem; text-align: center;">
-                Our event space is new and evolving — photos coming soon as we host our first celebrations!
-            </p>
+    {# ============================================================= PACKAGES #}
+    <section class="res-section" id="packages" aria-labelledby="packages-heading">
+        <h2 class="res-h2" id="packages-heading">Three Ways to Celebrate</h2>
+        <p class="res-lede">
+            Book the room and run it yourself, or hand us the whole day. Most
+            families land somewhere in the middle &mdash; we&rsquo;ll help you pick.
+        </p>
 
-            {# Space Details Grid #}
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
-                <div>
-                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--aged-gold); margin-bottom: 0.75rem;">
-                        Capacity
-                    </h3>
-                    <p style="color: var(--dark-text); line-height: 1.6;">
-                        Comfortable for about 30 seated guests, or up to 50 for events with a mix of seating and standing. Final capacity depends on layout and activities.
-                    </p>
-                </div>
+        <div class="res-packages">
 
-                <div>
-                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--aged-gold); margin-bottom: 0.75rem;">
-                        Availability
-                    </h3>
-                    <p style="color: var(--dark-text); line-height: 1.6;">
-                        Always private during non-business hours. During store hours, we offer semi-private events separated from the shop with elegant curtains, or fully private with a store buyout.
-                    </p>
-                </div>
+            {%- set sg = reservationPricing.packages["secret-garden"] -%}
+            <article class="res-package">
+                <header class="res-package-head">
+                    <h3 class="res-package-name">The Secret Garden</h3>
+                    <p class="res-package-tag">Just the space</p>
+                </header>
+                {% if sg.from %}
+                <p class="res-package-price">Starting at <strong>${{ sg.from }}</strong> <span>/ {{ sg.unit }}</span></p>
+                {% endif %}
+                <p class="res-package-body">
+                    The room is yours. Tables and chairs are set how you want them,
+                    or leave our cozy furniture where it is. Bring your own food,
+                    cake, decorations, and plans &mdash; setup and cleanup are yours.
+                </p>
+                <ul class="res-package-list">
+                    <li>Private use of the event space</li>
+                    <li>Tables, chairs, and flexible layout</li>
+                    <li>Bring your own food, cake, and decor</li>
+                    <li class="res-package-list-bonus">Staff-led story time added free when available</li>
+                </ul>
+                <a href="#inquiry-form" class="res-package-cta" data-ga="package_secret_garden">Ask about this &rarr;</a>
+            </article>
 
-                <div>
-                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--aged-gold); margin-bottom: 0.75rem;">
-                        Duration
-                    </h3>
-                    <p style="color: var(--dark-text); line-height: 1.6;">
-                        Events are typically booked in 2-hour blocks, with the option to extend for larger groups or events that need more time.
-                    </p>
-                </div>
+            {%- set mh = reservationPricing.packages["mad-hatters-tea-party"] -%}
+            <article class="res-package res-package--featured">
+                <span class="res-package-flag">Most booked</span>
+                <header class="res-package-head">
+                    <h3 class="res-package-name">Mad Hatter&rsquo;s Tea&nbsp;Party</h3>
+                    <p class="res-package-tag">Story + activity</p>
+                </header>
+                {% if mh.from %}
+                <p class="res-package-price">Starting at <strong>${{ mh.from }}</strong> <span>/ {{ mh.unit }}</span></p>
+                {% endif %}
+                <p class="res-package-body">
+                    Everything in The Secret Garden, plus a guided story time and a
+                    simple creative activity. The structure does the heavy lifting,
+                    so nobody has to be the entertainment.
+                </p>
+                <ul class="res-package-list">
+                    <li>Everything in The Secret Garden</li>
+                    <li>Guided story time led by our staff</li>
+                    <li>Age-appropriate craft, materials included</li>
+                    <li>Activity planned with you ahead of time</li>
+                </ul>
+                <a href="#inquiry-form" class="res-package-cta" data-ga="package_mad_hatter">Ask about this &rarr;</a>
+            </article>
+
+            {%- set rb = reservationPricing.packages["royal-ball"] -%}
+            <article class="res-package">
+                <header class="res-package-head">
+                    <h3 class="res-package-name">The Royal Ball</h3>
+                    <p class="res-package-tag">Fully hosted</p>
+                </header>
+                {% if rb.from %}
+                <p class="res-package-price">Starting at <strong>${{ rb.from }}</strong> <span>/ {{ rb.unit }}</span></p>
+                {% endif %}
+                <p class="res-package-body">
+                    Show up, enjoy your own party, go home. We handle story time,
+                    the craft, light snacks, and every bit of setup and cleanup.
+                </p>
+                <ul class="res-package-list">
+                    <li>Everything in the Tea Party</li>
+                    <li>Light snacks provided</li>
+                    <li>Full setup and full cleanup</li>
+                    <li>Nothing for you to carry in or out</li>
+                </ul>
+                <a href="#inquiry-form" class="res-package-cta" data-ga="package_royal_ball">Ask about this &rarr;</a>
+            </article>
+        </div>
+
+        <p class="res-packages-note">
+            {% if reservationPricing.packages["secret-garden"].from %}
+            Final pricing depends on group size, day, and time of day. Every quote
+            is itemized &mdash; there are no hidden fees.
+            {% else %}
+            Pricing depends on package, group size, day, and time of day. Tell us
+            what you&rsquo;re picturing and we&rsquo;ll send an itemized quote &mdash;
+            no hidden fees, no obligation.
+            {% endif %}
+        </p>
+    </section>
+
+    {# ============================================================= OCCASIONS #}
+    <section class="res-section" aria-labelledby="occasions-heading">
+        <h2 class="res-h2" id="occasions-heading">What People Book It For</h2>
+        <p class="res-lede">
+            Kids&rsquo; celebrations are most of our calendar, but the room works just
+            as well for grown-ups who want somewhere quieter than a restaurant.
+        </p>
+
+        <div class="res-occasions">
+            <div class="res-occasion">
+                <h3>Birthday Parties</h3>
+                <p>The bookstore does the theming for you. Add a story time, send guests home with a book instead of a goodie bag.</p>
+            </div>
+            <div class="res-occasion">
+                <h3>Baby Showers</h3>
+                <p>A book-themed shower in an actual bookstore. Guests can pick a title for the nursery while they&rsquo;re here.</p>
+            </div>
+            <div class="res-occasion">
+                <h3>Book Clubs</h3>
+                <p>A private room, no two-hour table limit, and the book you&rsquo;re discussing on the shelf behind you.</p>
+            </div>
+            <div class="res-occasion">
+                <h3>Family Gatherings</h3>
+                <p>Reunions, milestone celebrations, and the kind of get-together where the kids need somewhere to go.</p>
+            </div>
+            <div class="res-occasion">
+                <h3>Tea Parties</h3>
+                <p>Dress-up encouraged. Pairs naturally with our Mad Hatter&rsquo;s package and the storybook setting.</p>
+            </div>
+            <div class="res-occasion">
+                <h3>Meetings &amp; Small Events</h3>
+                <p>Board meetings, workshops, author talks, and team offsites that want more character than a conference room.</p>
             </div>
         </div>
     </section>
 
-    {# Event Packages Section #}
-    <section style="max-width: 1000px; margin: 4rem auto;">
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--deep-brown); text-align: center; margin-bottom: 1rem;">
-            Event Space Packages
-        </h2>
-        <p style="text-align: center; font-size: 1.1rem; color: var(--warm-brown); max-width: 700px; margin: 0 auto 3rem; line-height: 1.6;">
-            Choose the package that fits your celebration, from just a private gathering to a fully hosted experience.
-        </p>
+    {# ============================================================= THE SPACE #}
+    <section class="res-section" id="the-space" aria-labelledby="space-heading">
+        <h2 class="res-h2" id="space-heading">The Room Itself</h2>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-            {# Basic Gathering Package #}
-            <div style="background: var(--cream); padding: 2.5rem; border-radius: 12px; border: 2px solid rgba(201, 169, 97, 0.3); display: flex; flex-direction: column;">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--aged-gold); margin-bottom: 0.25rem; text-align: center;">
-                    The Secret Garden
-                </h3>
-                <p style="font-size: 0.9rem; color: var(--muted-gold); text-align: center; margin-bottom: 1rem; font-style: italic;">
-                    Space (+ story if desired)
-                </p>
-                <p style="color: var(--dark-text); line-height: 1.8; margin-bottom: 1.5rem; flex-grow: 1;">
-                    A flexible, private use of our event space for your group to gather and celebrate. Includes access to tables and chairs, with the option to use our existing cozy furniture or arrange the room to fit your needs. You're welcome to bring your own food, cake, decorations, and activities, and handle setup and cleanup.
-                </p>
-                <div style="background: var(--parchment); padding: 1.25rem; border-radius: 8px; margin-top: auto;">
-                    <p style="color: var(--warm-brown); margin: 0; font-size: 0.95rem; line-height: 1.6;">
-                        <strong style="color: var(--deep-brown);">Optional:</strong> Staff-led story time may be added at no cost when available.
-                    </p>
-                </div>
+        <div class="res-space-grid">
+            <div class="res-space-card">
+                <h3>Capacity</h3>
+                <p>Comfortable for about <strong>30 seated guests</strong>, or up to <strong>50</strong> with a mix of seating and standing. Final capacity depends on your layout and activities.</p>
             </div>
-
-            {# Story + Creative Experience Package #}
-            <div style="background: var(--cream); padding: 2.5rem; border-radius: 12px; border: 3px solid var(--aged-gold); display: flex; flex-direction: column; position: relative;">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.75rem; color: var(--aged-gold); margin-bottom: 0.25rem; text-align: center; margin-top: 0.5rem;">
-                    Mad Hatter's Tea&nbsp;Party
-                </h3>
-                <p style="font-size: 0.9rem; color: var(--muted-gold); text-align: center; margin-bottom: 1rem; font-style: italic;">
-                    Story + Activity
-                </p>
-                <p style="color: var(--dark-text); line-height: 1.8; margin-bottom: 1.5rem; flex-grow: 1;">
-                    Everything in the Basic Gathering, plus a guided story time and a simple creative activity. This option is great for groups looking for a little structure and engagement, without needing to plan every detail themselves. Craft activities are designed to be approachable and age-appropriate, with details discussed ahead of time based on group size and needs.
-                </p>
+            <div class="res-space-card">
+                <h3>Privacy</h3>
+                <p>Fully private outside store hours. During store hours we can curtain the space off for a semi-private event, or you can book a full store buyout.</p>
             </div>
-
-            {# Full Hosted Celebration Package #}
-            <div style="background: var(--cream); padding: 2.5rem; border-radius: 12px; border: 2px solid rgba(201, 169, 97, 0.3); display: flex; flex-direction: column;">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--aged-gold); margin-bottom: 0.25rem; text-align: center;">
-                    The Royal Ball
-                </h3>
-                <p style="font-size: 0.9rem; color: var(--muted-gold); text-align: center; margin-bottom: 1rem; font-style: italic;">
-                    Fully Hosted
-                </p>
-                <p style="color: var(--dark-text); line-height: 1.8; margin-bottom: 1.5rem; flex-grow: 1;">
-                    Our most complete option. Includes private use of the space, guided story time, a facilitated craft activity, light snacks, and full setup and cleanup handled by our team. This is a relaxed, turnkey experience where families can show up, enjoy the moment, and leave the details to us.
-                </p>
-                <div style="background: linear-gradient(135deg, rgba(122, 139, 111, 0.12) 0%, rgba(139, 111, 71, 0.12) 100%); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--aged-gold); margin-top: auto;">
-                    <p style="color: var(--deep-brown); margin: 0; font-size: 0.95rem; font-weight: 600; text-align: center; line-height: 1.6;">
-                        Perfect for a stress-free celebration
-                    </p>
-                </div>
+            <div class="res-space-card">
+                <h3>Duration</h3>
+                <p>Booked in <strong>2-hour blocks</strong>, extendable for larger groups or events that need more room to breathe.</p>
             </div>
-        </div>
-
-        <p style="text-align: center; font-size: 1.05rem; color: var(--warm-brown); max-width: 800px; margin: 3rem auto 0; line-height: 1.7; font-style: italic;">
-            All events are scheduled based on availability and group size. Pricing varies by package and timing, and we're happy to help you choose the best fit.
-        </p>
-
-        <div style="text-align: center; margin-top: 2.5rem;">
-            <a href="#inquiry-form" class="cta-button" style="display: inline-block; background: linear-gradient(135deg, var(--aged-gold), var(--muted-gold)); color: white; padding: 1rem 2.5rem; border-radius: 6px; font-size: 1.1rem; font-weight: 600; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; border: none;">
-                Book Your Event
-            </a>
+            <div class="res-space-card">
+                <h3>Getting Here</h3>
+                <p>{{ site.street }}, {{ site.city }}, {{ site.region }} {{ site.postalCode }} &mdash; on Madison Ave with street parking.
+                <a href="https://maps.google.com/?q={{ site.street | urlencode }},+{{ site.city }},+{{ site.region }}+{{ site.postalCode }}" target="_blank" rel="noopener" data-ga="map_click">Open in Maps &rarr;</a></p>
+            </div>
         </div>
     </section>
 
-    {# Perfect For Section #}
-    <section style="max-width: 900px; margin: 4rem auto; text-align: center;">
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--deep-brown); margin-bottom: 1rem;">
-            Perfect For
-        </h2>
-
-        <p style="font-size: 1.05rem; color: var(--warm-brown); margin-bottom: 2rem; line-height: 1.6;">
-            We welcome both children's celebrations and adult gatherings in our literary space.
-        </p>
-
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem;">
-            <div style="background: linear-gradient(135deg, var(--aged-gold), var(--muted-gold)); color: white; padding: 1rem 2rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600;">
-                Birthday Parties
-            </div>
-            <div style="background: linear-gradient(135deg, var(--aged-gold), var(--muted-gold)); color: white; padding: 1rem 2rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600;">
-                Baby Showers
-            </div>
-            <div style="background: linear-gradient(135deg, var(--aged-gold), var(--muted-gold)); color: white; padding: 1rem 2rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600;">
-                Book Clubs
-            </div>
-            <div style="background: linear-gradient(135deg, var(--aged-gold), var(--muted-gold)); color: white; padding: 1rem 2rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600;">
-                Family Gatherings
-            </div>
-            <div style="background: linear-gradient(135deg, var(--aged-gold), var(--muted-gold)); color: white; padding: 1rem 2rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600;">
-                Tea Parties
-            </div>
-            <div style="background: linear-gradient(135deg, var(--aged-gold), var(--muted-gold)); color: white; padding: 1rem 2rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600;">
-                Private Events
-            </div>
-            <div style="background: linear-gradient(135deg, var(--aged-gold), var(--muted-gold)); color: white; padding: 1rem 2rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600;">
-                Meetings
-            </div>
+    {# ============================================================= TESTIMONIALS #}
+    {% if reservationTestimonials.testimonials and reservationTestimonials.testimonials.length %}
+    <section class="res-section" aria-labelledby="testimonials-heading">
+        <h2 class="res-h2" id="testimonials-heading">From Families Who&rsquo;ve Celebrated Here</h2>
+        <div class="res-testimonials">
+            {% for t in reservationTestimonials.testimonials %}
+            <blockquote class="res-testimonial">
+                <p>&ldquo;{{ t.quote }}&rdquo;</p>
+                <cite>{{ t.name }}{% if t.detail %}<span>{{ t.detail }}</span>{% endif %}</cite>
+            </blockquote>
+            {% endfor %}
         </div>
+    </section>
+    {% endif %}
 
+    {# ============================================================= HOW IT WORKS #}
+    <section class="res-section" aria-labelledby="how-heading">
+        <h2 class="res-h2" id="how-heading">How Booking Works</h2>
+        <ol class="res-steps">
+            <li class="res-step">
+                <span class="res-step-num">1</span>
+                <h3>Send your date</h3>
+                <p>Fill out the form below. Only your name and email are required &mdash; everything else helps us quote faster, but skip what you don&rsquo;t know yet.</p>
+            </li>
+            <li class="res-step">
+                <span class="res-step-num">2</span>
+                <h3>We reply with options</h3>
+                <p>Within 24&ndash;48 hours you&rsquo;ll get availability, an itemized price, and a recommendation on which package actually fits what you described.</p>
+            </li>
+            <li class="res-step">
+                <span class="res-step-num">3</span>
+                <h3>Lock it in</h3>
+                <p>We confirm the details in a short event agreement. Come see the space in person any time before then &mdash; no appointment needed during store hours.</p>
+            </li>
+        </ol>
     </section>
 
-    {# Inquiry Form Section #}
-    <section id="inquiry-form" style="max-width: 700px; margin: 5rem auto 4rem;">
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--deep-brown); text-align: center; margin-bottom: 1.5rem;">
-            Tell Us About Your Event
-        </h2>
-
-        <p style="text-align: center; font-size: 1.1rem; color: var(--warm-brown); margin-bottom: 2rem; line-height: 1.6;">
-            Share your event details below and we'll get back to you within 24-48 hours with availability, pricing, and guidance on which package fits best.
+    {# ============================================================= INQUIRY FORM #}
+    <section id="inquiry-form" class="res-section res-form-section" aria-labelledby="form-heading">
+        <h2 class="res-h2" id="form-heading">Check Your Date</h2>
+        <p class="res-lede">
+            Tell us what you&rsquo;re picturing. We&rsquo;ll come back with availability,
+            pricing, and which package fits &mdash; usually within 24&ndash;48 hours.
         </p>
 
-        <div style="background: linear-gradient(135deg, rgba(122, 139, 111, 0.08) 0%, rgba(139, 111, 71, 0.08) 100%); padding: 1.25rem; border-radius: 8px; margin-bottom: 2rem; border-left: 3px solid var(--aged-gold);">
-            <p style="margin: 0; font-size: 1rem; color: var(--deep-brown); line-height: 1.6; text-align: center; font-style: italic;">
-                Not sure which package is right for you? <br />That's perfectly okay — we'll help you decide after you reach out.
-            </p>
-        </div>
+        <p class="res-form-reassure">
+            Not sure which package you want? Leave it blank. Most people do, and
+            we&rsquo;ll help you decide.
+        </p>
 
         <form
             action="https://formspree.io/f/xnjdroye"
             method="POST"
-            style="background: var(--cream); padding: 2.5rem; border-radius: 12px; border: 1px solid rgba(201, 169, 97, 0.3);"
+            class="res-form"
+            id="reservation-form"
         >
-            {# Hidden field to identify this as a rental inquiry #}
             <input type="hidden" name="_subject" id="rental-subject" value="Event Space Rental Inquiry - The Wandering Lantern">
             <input type="hidden" name="form_type" value="event_rental_inquiry">
 
-            {# Contact Information #}
-            <div style="margin-bottom: 1.5rem;">
-                <label for="name" style="display: block; font-weight: 600; color: var(--deep-brown); margin-bottom: 0.5rem; font-size: 1.05rem;">
-                    Your Name *
-                </label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    style="width: 100%; padding: 0.75rem; border: 2px solid rgba(201, 169, 97, 0.3); border-radius: 6px; font-size: 1rem; font-family: 'Libre Baskerville', Georgia, serif; background: white;"
-                >
+            <div class="res-field">
+                <label for="name">Your Name <span class="res-req">*</span></label>
+                <input type="text" id="name" name="name" autocomplete="name" required>
             </div>
 
-            <div style="margin-bottom: 1.5rem;">
-                <label for="email" style="display: block; font-weight: 600; color: var(--deep-brown); margin-bottom: 0.5rem; font-size: 1.05rem;">
-                    Email Address *
-                </label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    style="width: 100%; padding: 0.75rem; border: 2px solid rgba(201, 169, 97, 0.3); border-radius: 6px; font-size: 1rem; font-family: 'Libre Baskerville', Georgia, serif; background: white;"
-                >
+            <div class="res-field">
+                <label for="email">Email Address <span class="res-req">*</span></label>
+                <input type="email" id="email" name="email" autocomplete="email" required>
             </div>
 
-            <div style="margin-bottom: 1.5rem;">
-                <label for="phone" style="display: block; font-weight: 600; color: var(--deep-brown); margin-bottom: 0.5rem; font-size: 1.05rem;">
-                    Phone Number
-                </label>
-                <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    style="width: 100%; padding: 0.75rem; border: 2px solid rgba(201, 169, 97, 0.3); border-radius: 6px; font-size: 1rem; font-family: 'Libre Baskerville', Georgia, serif; background: white;"
-                >
+            <div class="res-field">
+                <label for="phone">Phone Number <span class="res-opt">optional</span></label>
+                <input type="tel" id="phone" name="phone" autocomplete="tel">
             </div>
 
-            {# Event Details #}
-            <div style="margin-bottom: 1.5rem;">
-                <label for="package" style="display: block; font-weight: 600; color: var(--deep-brown); margin-bottom: 0.5rem; font-size: 1.05rem;">
-                    Event Package <span style="font-weight: 400; color: var(--warm-brown); font-style: italic;">(optional)</span>
-                </label>
-                <select
-                    id="package"
-                    name="package"
-                    style="width: 100%; padding: 0.75rem; border: 2px solid rgba(201, 169, 97, 0.3); border-radius: 6px; font-size: 1rem; font-family: 'Libre Baskerville', Georgia, serif; background: white;"
-                >
-                    <option value="">Select package...</option>
-                    <option value="secret-garden">The Secret Garden (Space Only)</option>
-                    <option value="mad-hatters-tea-party">Mad Hatter's Tea Party (Story + Activity)</option>
-                    <option value="royal-ball">The Royal Ball (Fully Hosted)</option>
-                    <option value="not-sure">Not sure yet</option>
+            <div class="res-field">
+                <label for="package">Event Package <span class="res-opt">optional</span></label>
+                <select id="package" name="package">
+                    <option value="">Not sure yet &mdash; help me choose</option>
+                    <option value="secret-garden">The Secret Garden (space only)</option>
+                    <option value="mad-hatters-tea-party">Mad Hatter&rsquo;s Tea Party (story + activity)</option>
+                    <option value="royal-ball">The Royal Ball (fully hosted)</option>
                 </select>
             </div>
 
-            <div style="margin-bottom: 1.5rem;">
-                <label for="event-type" style="display: block; font-weight: 600; color: var(--deep-brown); margin-bottom: 0.5rem; font-size: 1.05rem;">
-                    Type of Event <span style="font-weight: 400; color: var(--warm-brown); font-style: italic;">(optional)</span>
-                </label>
-                <select
-                    id="event-type"
-                    name="event_type"
-                    style="width: 100%; padding: 0.75rem; border: 2px solid rgba(201, 169, 97, 0.3); border-radius: 6px; font-size: 1rem; font-family: 'Libre Baskerville', Georgia, serif; background: white;"
-                >
-                    <option value="">Select event type...</option>
+            <div class="res-field">
+                <label for="event-type">Type of Event <span class="res-opt">optional</span></label>
+                <select id="event-type" name="event_type">
+                    <option value="">Select event type&hellip;</option>
                     <option value="birthday">Birthday Party</option>
                     <option value="baby-shower">Baby Shower</option>
                     <option value="book-club">Book Club</option>
                     <option value="family-gathering">Family Gathering</option>
-                    <option value="tea-parties">Tea Parties</option>
-                    <option value="private-events">Private Events</option>
-                    <option value="other">Other</option>
+                    <option value="tea-party">Tea Party</option>
+                    <option value="meeting">Meeting or Workshop</option>
+                    <option value="other">Something else</option>
                 </select>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
-                <div>
-                    <label for="preferred-date" style="display: block; font-weight: 600; color: var(--deep-brown); margin-bottom: 0.5rem; font-size: 1.05rem;">
-                        Preferred Date <span style="font-weight: 400; color: var(--warm-brown); font-style: italic;">(optional)</span>
-                    </label>
-                    <input
-                        type="date"
-                        id="preferred-date"
-                        name="preferred_date"
-                        style="width: 100%; padding: 0.75rem; border: 2px solid rgba(201, 169, 97, 0.3); border-radius: 6px; font-size: 1rem; font-family: 'Libre Baskerville', Georgia, serif; background: white;"
-                    >
+            <div class="res-field-row">
+                <div class="res-field">
+                    <label for="preferred-date">Preferred Date <span class="res-opt">optional</span></label>
+                    <input type="date" id="preferred-date" name="preferred_date">
                 </div>
-
-                <div>
-                    <label for="guest-count" style="display: block; font-weight: 600; color: var(--deep-brown); margin-bottom: 0.5rem; font-size: 1.05rem;">
-                        Expected Guests <span style="font-weight: 400; color: var(--warm-brown); font-style: italic;">(optional)</span>
-                    </label>
-                    <input
-                        type="number"
-                        id="guest-count"
-                        name="guest_count"
-                        min="1"
-                        max="50"
-                        style="width: 100%; padding: 0.75rem; border: 2px solid rgba(201, 169, 97, 0.3); border-radius: 6px; font-size: 1rem; font-family: 'Libre Baskerville', Georgia, serif; background: white;"
-                    >
+                <div class="res-field">
+                    <label for="guest-count">Expected Guests <span class="res-opt">optional</span></label>
+                    <input type="number" id="guest-count" name="guest_count" min="1" max="50" inputmode="numeric">
                 </div>
             </div>
 
-            <div style="margin-bottom: 1.5rem;">
-                <label for="duration" style="display: block; font-weight: 600; color: var(--deep-brown); margin-bottom: 0.5rem; font-size: 1.05rem;">
-                    Rental Duration <span style="font-weight: 400; color: var(--warm-brown); font-style: italic;">(optional)</span>
-                </label>
-                <select
-                    id="duration"
-                    name="duration"
-                    style="width: 100%; padding: 0.75rem; border: 2px solid rgba(201, 169, 97, 0.3); border-radius: 6px; font-size: 1rem; font-family: 'Libre Baskerville', Georgia, serif; background: white;"
-                >
-                    <option value="">Select duration...</option>
-                    <option value="2-hours">2 Hours</option>
-                    <option value="4-hours">4 Hours</option>
-                    <option value="other">Other (specify in message)</option>
+            <div class="res-field">
+                <label for="duration">Rental Duration <span class="res-opt">optional</span></label>
+                <select id="duration" name="duration">
+                    <option value="">Select duration&hellip;</option>
+                    <option value="2-hours">2 hours</option>
+                    <option value="4-hours">4 hours</option>
+                    <option value="other">Other (tell us below)</option>
                 </select>
             </div>
 
-            <div style="margin-bottom: 1.5rem;">
-                <label for="message" style="display: block; font-weight: 600; color: var(--deep-brown); margin-bottom: 0.5rem; font-size: 1.05rem;">
-                    Additional Details
-                </label>
-                <textarea
-                    id="message"
-                    name="message"
-                    rows="5"
-                    placeholder="Tell us more about your event, any special requests, alternative dates, catering plans, etc."
-                    style="width: 100%; padding: 0.75rem; border: 2px solid rgba(201, 169, 97, 0.3); border-radius: 6px; font-size: 1rem; font-family: 'Libre Baskerville', Georgia, serif; resize: vertical; background: white;"
-                ></textarea>
+            <div class="res-field">
+                <label for="message">Additional Details</label>
+                <textarea id="message" name="message" rows="5"
+                    placeholder="Ages of the kids, alternative dates, food plans, anything you're picturing..."></textarea>
             </div>
 
-            {# Submit Button #}
-            <button
-                type="submit"
-                class="cta-button"
-                style="width: 100%; padding: 1rem 2rem; background: linear-gradient(135deg, var(--aged-gold), var(--muted-gold)); color: white; border: none; border-radius: 6px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; font-family: 'Libre Baskerville', Georgia, serif;"
-            >
-                Submit Inquiry
+            <button type="submit" class="res-btn res-btn-primary res-btn-block" data-ga="form_submit">
+                Send My Inquiry
             </button>
 
-            <p style="margin-top: 1.5rem; font-size: 1rem; color: var(--deep-brown); text-align: center; line-height: 1.7;">
-                After you submit, we'll follow up to confirm availability, walk through options, and share pricing. Final details are confirmed in your event agreement.
+            <p class="res-form-fineprint">
+                We&rsquo;ll follow up to confirm availability, walk through options, and
+                share pricing. Final details are confirmed in your event agreement.
+                No deposit is required to ask.
             </p>
-
-            <script>
-                document.querySelector('#inquiry-form form').addEventListener('submit', function() {
-                    var name = document.getElementById('name').value.trim();
-                    if (name) {
-                        document.getElementById('rental-subject').value = 'Event Space Rental Inquiry from ' + name + ' - The Wandering Lantern';
-                    }
-                });
-            </script>
         </form>
     </section>
 
-    {# FAQ Section #}
-    <section style="max-width: 900px; margin: 5rem auto 4rem;">
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--deep-brown); text-align: center; margin-bottom: 3rem;">
-            Frequently Asked Questions
-        </h2>
+    {# ============================================================= FAQ #}
+    <section class="res-section" id="faq" aria-labelledby="faq-heading">
+        <h2 class="res-h2" id="faq-heading">Frequently Asked Questions</h2>
 
-        <div style="display: grid; gap: 2rem;">
-            <div style="background: var(--parchment); padding: 2rem; border-radius: 8px; border-left: 4px solid var(--warm-brown);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--deep-brown); margin-bottom: 1rem;">
-                    Can I bring my own food and drinks?
-                </h3>
-                <p style="color: var(--dark-text); line-height: 1.8; margin: 0;">
-                    Yes! You're welcome to bring your own catering, food, and non-alcoholic beverages. We can provide recommendations for local caterers if needed.
-                </p>
-            </div>
-
-            <div style="background: var(--parchment); padding: 2rem; border-radius: 8px; border-left: 4px solid var(--warm-brown);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--deep-brown); margin-bottom: 1rem;">
-                    How far in advance should I book?
-                </h3>
-                <p style="color: var(--dark-text); line-height: 1.8; margin: 0;">
-                    We recommend booking at least 4-6 weeks in advance, especially for weekend dates. However, we'll do our best to accommodate last-minute requests based on availability.
-                </p>
-            </div>
-
-            <div style="background: var(--parchment); padding: 2rem; border-radius: 8px; border-left: 4px solid var(--warm-brown);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--deep-brown); margin-bottom: 1rem;">
-                    Can I decorate the space?
-                </h3>
-                <p style="color: var(--dark-text); line-height: 1.8; margin: 0;">
-                    Absolutely! We encourage you to personalize the space. We just ask that decorations be easy to remove and don't damage walls or bookshelves (no nails, tape that might pull paint, etc.).
-                </p>
-            </div>
-
-            <div style="background: var(--parchment); padding: 2rem; border-radius: 8px; border-left: 4px solid var(--warm-brown);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--deep-brown); margin-bottom: 1rem;">
-                    What is your cancellation policy?
-                </h3>
-                <p style="color: var(--dark-text); line-height: 1.8; margin: 0;">
-                    Cancellation policies will be outlined in your rental agreement. We understand that plans change and will work with you to find a solution.
-                </p>
-            </div>
-
-            <div style="background: var(--parchment); padding: 2rem; border-radius: 8px; border-left: 4px solid var(--warm-brown);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--deep-brown); margin-bottom: 1rem;">
-                    Are books available for purchase during my event?
-                </h3>
-                <p style="color: var(--dark-text); line-height: 1.8; margin: 0;">
-                    Yes! We can arrange for a small selection of age-appropriate books to be available for browsing and purchase during your event - perfect for party favors or gifts.
-                </p>
-            </div>
-
-            <div style="background: var(--parchment); padding: 2rem; border-radius: 8px; border-left: 4px solid var(--warm-brown);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--deep-brown); margin-bottom: 1rem;">
-                    What's included in the craft activities?
-                </h3>
-                <p style="color: var(--dark-text); line-height: 1.8; margin: 0;">
-                    For our Mad Hatter's Tea Party and Royal Ball packages, craft activities are simple, age-appropriate projects designed to complement your event theme. We provide all materials and guidance. Activities are confirmed ahead of time based on your group's age range and interests.
-                </p>
-            </div>
-
-            <div style="background: var(--parchment); padding: 2rem; border-radius: 8px; border-left: 4px solid var(--warm-brown);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--deep-brown); margin-bottom: 1rem;">
-                    How does pricing work?
-                </h3>
-                <p style="color: var(--dark-text); line-height: 1.8; margin: 0;">
-                    Pricing varies based on the package you choose, group size, day of week, and time of day. When you submit an inquiry, we'll provide transparent pricing tailored to your specific event needs. There are no hidden fees.
-                </p>
-            </div>
-
-            <div style="background: var(--parchment); padding: 2rem; border-radius: 8px; border-left: 4px solid var(--warm-brown);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--deep-brown); margin-bottom: 1rem;">
-                    Can I visit the space before booking?
-                </h3>
-                <p style="color: var(--dark-text); line-height: 1.8; margin: 0;">
-                    Absolutely! We encourage you to visit during our regular business hours to see the space and ask questions. You're also welcome to schedule a brief walkthrough if you'd like to discuss your event in person.
-                </p>
-            </div>
-
-            <div style="background: var(--parchment); padding: 2rem; border-radius: 8px; border-left: 4px solid var(--warm-brown);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--deep-brown); margin-bottom: 1rem;">
-                    What if I'm not sure which package fits my event?
-                </h3>
-                <p style="color: var(--dark-text); line-height: 1.8; margin: 0;">
-                    That's completely normal! Many guests aren't sure initially. When you reach out, we'll talk through what you're envisioning and help you choose the package that fits best. You can also mix and match elements to create something custom.
-                </p>
-            </div>
-
-            <div style="background: var(--parchment); padding: 2rem; border-radius: 8px; border-left: 4px solid var(--warm-brown);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--deep-brown); margin-bottom: 1rem;">
-                    Do you host adult events or just children's parties?
-                </h3>
-                <p style="color: var(--dark-text); line-height: 1.8; margin: 0;">
-                    We welcome both! While we specialize in family-friendly celebrations, our space is perfect for adult book clubs, showers, small meetings, and intimate gatherings. The literary atmosphere appeals to all ages.
-                </p>
-            </div>
-
-            <div style="background: var(--parchment); padding: 2rem; border-radius: 8px; border-left: 4px solid var(--warm-brown);">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--deep-brown); margin-bottom: 1rem;">
-                    What happens if my guest count changes?
-                </h3>
-                <p style="color: var(--dark-text); line-height: 1.8; margin: 0;">
-                    We understand that RSVPs can be unpredictable! Let us know as soon as possible if your numbers change significantly. We'll work with you to adjust seating, activities, and any catering arrangements. Minor fluctuations are completely normal and expected.
-                </p>
-            </div>
+        <div class="res-faq">
+            {% for item in reservationFaq.faqs %}
+            <details class="res-faq-item"{% if loop.first %} open{% endif %}>
+                <summary>{{ item.q }}</summary>
+                <div class="res-faq-answer">{{ item.a | safe }}</div>
+            </details>
+            {% endfor %}
         </div>
     </section>
 
-    {# Contact CTA #}
-    <section style="max-width: 700px; margin: 4rem auto; text-align: center; background: linear-gradient(135deg, rgba(122, 139, 111, 0.12) 0%, rgba(139, 111, 71, 0.12) 100%); padding: 3rem 2rem; border-radius: 12px;">
-        <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--deep-brown); margin-bottom: 1rem;">
-            Have Questions?
-        </h3>
-        <p style="font-size: 1.1rem; color: var(--warm-brown); margin-bottom: 2rem; line-height: 1.6;">
-            We'd love to hear from you! Reach out and we'll help make your event magical.
+    {# ============================================================= CONTACT #}
+    <section class="res-section res-contact" aria-labelledby="contact-heading">
+        <h2 class="res-h2" id="contact-heading">Rather Just Talk to Someone?</h2>
+        <p class="res-lede">
+            Call or email and we&rsquo;ll walk you through it. You&rsquo;re also welcome to
+            stop in during store hours and see the space &mdash; no appointment needed.
         </p>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; font-size: 1.05rem;">
-            <div>
-                <strong style="color: var(--deep-brown);">Phone:</strong>
-                <a href="tel:2169994462" style="color: var(--aged-gold); text-decoration: none;">(216) 999-4462</a>
-            </div>
-            <div>
-                <strong style="color: var(--deep-brown);">Email:</strong>
-                <a href="mailto:hello@thewanderinglantern.com" style="color: var(--aged-gold); text-decoration: none;">hello@thewanderinglantern.com</a>
-            </div>
+        <div class="res-contact-methods">
+            <a href="tel:{{ site.phoneRaw }}" class="res-contact-method" data-ga="contact_phone">
+                <strong>Call</strong>
+                <span>{{ site.phone }}</span>
+            </a>
+            <a href="mailto:{{ site.email }}?subject=Event%20Space%20Question" class="res-contact-method" data-ga="contact_email">
+                <strong>Email</strong>
+                <span>{{ site.email }}</span>
+            </a>
         </div>
     </section>
+
+</div>{# /.container #}
+
+{# ============================================================= STICKY MOBILE CTA #}
+<div class="res-sticky-cta" id="res-sticky-cta" aria-hidden="true">
+    <span class="res-sticky-text">Private parties &amp; showers</span>
+    <a href="#inquiry-form" class="res-btn res-btn-primary" data-ga="sticky_check_date">Check Your Date</a>
 </div>
+
+</div>{# /.reservations-page #}
+
+{# =============================================================
+   STRUCTURED DATA
+   Google reads JSON-LD from the body as well as the head. These blocks make
+   the page eligible for FAQ rich results and describe the rental itself as a
+   service offered by the store, which the store-wide BookStore schema in
+   head.njk does not cover.
+   ============================================================= #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "{{ site.url }}/reservations/#service",
+  "name": "Private Event Space Rental",
+  "serviceType": "Event venue rental",
+  "description": "Private event space rental at The Wandering Lantern children's bookstore in Lakewood, Ohio. Birthday parties, baby showers, book clubs, and small private gatherings for up to 50 guests.",
+  "url": "{{ site.url }}/reservations/",
+  "provider": { "@id": "{{ site.url }}/#store" },
+  "areaServed": [
+    { "@type": "City", "name": "Lakewood", "containedInPlace": { "@type": "State", "name": "Ohio" } },
+    { "@type": "City", "name": "Cleveland", "containedInPlace": { "@type": "State", "name": "Ohio" } }
+  ],
+  "audience": { "@type": "Audience", "audienceType": "Families, parents, and small groups" },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Event Space Packages",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "name": "The Secret Garden",
+        "description": "Private use of the event space with tables and chairs. Bring your own food, decorations, and activities."
+        {%- if reservationPricing.packages["secret-garden"].from -%}
+        , "price": "{{ reservationPricing.packages["secret-garden"].from }}",
+        "priceCurrency": "{{ reservationPricing.currency }}"
+        {%- endif -%}
+      },
+      {
+        "@type": "Offer",
+        "name": "Mad Hatter's Tea Party",
+        "description": "Private space plus a staff-led story time and a guided, age-appropriate craft activity with materials included."
+        {%- if reservationPricing.packages["mad-hatters-tea-party"].from -%}
+        , "price": "{{ reservationPricing.packages["mad-hatters-tea-party"].from }}",
+        "priceCurrency": "{{ reservationPricing.currency }}"
+        {%- endif -%}
+      },
+      {
+        "@type": "Offer",
+        "name": "The Royal Ball",
+        "description": "Fully hosted celebration including story time, craft activity, light snacks, and complete setup and cleanup."
+        {%- if reservationPricing.packages["royal-ball"].from -%}
+        , "price": "{{ reservationPricing.packages["royal-ball"].from }}",
+        "priceCurrency": "{{ reservationPricing.currency }}"
+        {%- endif -%}
+      }
+    ]
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "{{ site.url }}/reservations/#faq",
+  "mainEntity": [
+    {%- for item in reservationFaq.faqs %}
+    {
+      "@type": "Question",
+      "name": {{ item.q | dump | safe }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ item.a | striptags | dump | safe }}
+      }
+    }{% if not loop.last %},{% endif %}
+    {%- endfor %}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Book Our Space", "item": "{{ site.url }}/reservations/" }
+  ]
+}
+</script>

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Thank-you and dashboard pages carry no search value
+Disallow: /thankyou/
+Disallow: /launch-dashboard/
+Disallow: /cms/
+
+Sitemap: https://thewanderinglantern.com/sitemap.xml

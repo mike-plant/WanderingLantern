@@ -1,0 +1,21 @@
+{
+  "_README": [
+    "Price anchors for the /reservations/ page and its Offer structured data.",
+    "",
+    "Leaving `from` as null keeps the current 'request a quote' behavior for that",
+    "package. Set it to a number (e.g. 150) and the card renders a 'Starting at",
+    "$150' anchor and emits schema.org Offer data, which is what makes a package",
+    "eligible for price display in Google results.",
+    "",
+    "Published price anchors are the single highest-converting change available",
+    "on this page: parents comparison-shopping party venues filter on price",
+    "first, and a page with no number is usually skipped rather than inquired",
+    "about."
+  ],
+  "currency": "USD",
+  "packages": {
+    "secret-garden": { "from": null, "unit": "2-hour block" },
+    "mad-hatters-tea-party": { "from": null, "unit": "2-hour block" },
+    "royal-ball": { "from": null, "unit": "2-hour block" }
+  }
+}
