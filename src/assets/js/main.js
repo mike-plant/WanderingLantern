@@ -319,6 +319,28 @@ function initReservationGallery() {
         if (multiple && e.key === 'ArrowRight') show(current + 1);
     });
 
+    // Expand/collapse. The gallery ships collapsed so it can't push the
+    // packages below the fold; the button is revealed only now, so browsers
+    // without JS never see a control that does nothing.
+    const toggle = document.getElementById('res-gallery-toggle');
+    const grid = document.getElementById('res-gallery');
+    if (toggle && grid) {
+        toggle.hidden = false;
+        toggle.addEventListener('click', () => {
+            const collapsed = grid.classList.toggle('is-collapsed');
+            toggle.setAttribute('aria-expanded', String(!collapsed));
+            toggle.textContent = collapsed
+                ? `Show all ${photos.length} photos`
+                : 'Show fewer photos';
+
+            // Collapsing from far down the gallery would otherwise leave the
+            // viewport somewhere past the section entirely.
+            if (collapsed) {
+                grid.scrollIntoView({ block: 'start', behavior: 'smooth' });
+            }
+        });
+    }
+
     // Swipe between photos on touch devices.
     let touchStartX = null;
     lightbox.addEventListener('touchstart', (e) => {

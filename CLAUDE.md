@@ -185,10 +185,16 @@ data hide themselves rather than rendering a placeholder.
 **Inquiry form:** Formspree ID `xnjdroye`. Subject line is rewritten client-side
 to include the sender's name.
 
-**Adding photos:** drop optimized files (~1600px, <300KB) into
+**Adding photos:** drop optimized files (~1600px long edge, WebP, <200KB) into
 `src/assets/images/reservations/`, then add entries to
 `reservationPhotos.json`. Descriptive filenames and `alt` text both matter —
 they are indexed by Google Images, which is real traffic for a venue page.
+Include `width`/`height` to prevent layout shift.
+
+The gallery is a CSS column masonry, so portrait and landscape photos both
+render uncropped at their natural shape — no orientation flag needed. It ships
+collapsed (`is-collapsed` in the markup, so there's no flash of the full
+gallery) with a "Show all" button revealed by JS.
 
 **Styling:** `src/assets/css/reservations.css`, entirely scoped under
 `.reservations-page`. Keep new rules inside that wrapper — an earlier version

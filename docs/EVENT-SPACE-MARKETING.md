@@ -12,7 +12,7 @@ and the page updates — no template work needed.
 
 | File | Controls | Status |
 |---|---|---|
-| `src/_data/reservationPhotos.json` | Hero photo + gallery | **Empty — needs the professional photos** |
+| `src/_data/reservationPhotos.json` | Hero photo + gallery | Live — 11 professional photos |
 | `src/_data/reservationPricing.json` | "Starting at $X" anchors | **Empty — needs a decision** |
 | `src/_data/reservationTestimonials.json` | Quotes from past events | Empty — collect after each booking |
 | `src/_data/reservationFaq.json` | FAQ accordions + Google FAQ rich results | 14 questions, live |
@@ -215,9 +215,20 @@ guest count, so you can see what people actually want versus what you promote.
 
 ---
 
-## 7. Adding the professional photos
+## 7. Adding more photos
 
-1. Export at ~1600px on the long edge, quality 80. Aim for under 300KB each.
+The first set is live: 11 photos from the "One for the Books" first birthday,
+converted to WebP (4.1MB of JPEGs became 1.4MB) with descriptive filenames and
+written alt text. A purpose-built 1200x630 Open Graph image was cropped from the
+wide table shot so shared links preview properly on Facebook and iMessage.
+
+The gallery is a column masonry layout, so portrait and landscape photos both
+display uncropped. It ships collapsed to a preview with a "Show all" button so
+it can't push the packages below the fold.
+
+To add more:
+
+1. Export at ~1600px on the long edge. WebP, quality 82.
 2. Name them descriptively — `event-space-birthday-table.jpg`, not `DSC_0421.jpg`.
    Filenames are a real image-search ranking signal.
 3. Drop into `src/assets/images/reservations/`.
@@ -246,7 +257,7 @@ what is happening in the photo, not just what the room is.
 
 ### Which photos to pick
 
-Choose 6–9. Prioritize, in order:
+Prioritize, in order:
 
 1. **The room set up for a party**, wide, showing scale. This is the hero.
 2. **Kids mid-activity** — a story time or craft in progress. People buy the
@@ -257,3 +268,8 @@ Choose 6–9. Prioritize, in order:
 
 Skip anything blurry, anything with an unflattering angle of the ceiling, and
 anything where a stranger's child is identifiable without a release on file.
+
+**One to check:** `bookstore-event-space-with-guests.webp` shows guests seated
+in the room. They're small in frame and mostly turned away, and it's the single
+best shot for conveying scale and atmosphere — but confirm the host is fine with
+it being public before this ships to production.
