@@ -214,3 +214,15 @@ footer a {
   font-weight: 600;
   min-width: 11rem;
 }
+
+/* Page-level H1 for listing pages. The events and press pages previously led
+   with a section H2 and no H1 at all; this gives the real page title the
+   visual weight to match its place in the document outline. */
+.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.25rem);
+  color: var(--deep-brown);
+  text-align: center;
+  line-height: 1.15;
+  margin: 2.5rem 0 1rem;
+}

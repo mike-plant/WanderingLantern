@@ -228,7 +228,54 @@ drafts, `noindex` pages, XML outputs, and `/events-print/`. Passthrough-copied
 pages aren't in collections, so they're listed manually at the bottom of that
 file.
 
-`src/root-files/robots.txt` points at the sitemap.
+`src/root-files/robots.txt` points at the sitemap, disallows `/admin/`,
+`/cms/`, `/thankyou/`, and `/launch-dashboard/`, and explicitly allows the
+major AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Applebot
+and friends) — a local business is discovered by being recommended, so being
+absent from answer engines costs more than the crawl does.
+
+Page-specific structured data lives in the page body; the store-wide
+`BookStore` schema stays in `head.njk`. Current coverage:
+
+| Page | Schema |
+|---|---|
+| Every page | `BookStore` |
+| `/reservations/` | `Service` + `OfferCatalog`, `FAQPage`, `BreadcrumbList` |
+| `/events/` | `ItemList`, `BreadcrumbList` |
+| Event pages | `Event` (with image, offers, age range, performer), `BreadcrumbList` |
+| Press releases | `Article`, `BreadcrumbList` |
+
+Meta descriptions resolve in this order: explicit `description`, then an event
+or press `excerpt` (event pages get the date prefixed, which differentiates
+recurring events that share an excerpt and is the most useful thing to show in
+a search result), then the site default. The `metaDescription` filter strips
+Markdown and truncates on a word boundary.
+
+### Machine-Readable Feeds
+
+For crawlers, AI assistants, and anyone syndicating the calendar:
+
+| URL | Source | Contents |
+|---|---|---|
+| `/events.json` | `src/events-json.njk` | schema.org `ItemList` of upcoming events |
+| `/events.ics` | `src/events-ics.njk` | iCalendar subscription feed (RFC 5545) |
+| `/feed.xml` | `src/feed.njk` | RSS 2.0 |
+| `/llms.txt` | `src/llms.njk` | Plain-markdown site index per llmstxt.org |
+| `/sitemap.xml` | `src/sitemap.njk` | Indexable pages |
+
+All are generated from the same collections as the pages, so they can't drift.
+They're linked from `<link rel="alternate">` in `head.njk`, from `robots.txt`,
+and from `/llms.txt`.
+
+**iCalendar gotchas:** values must pass through `icsText` (RFC 5545 escaping)
+then `icsFold` (75-octet line folding) and be marked `| safe` — Nunjucks would
+otherwise HTML-escape the backslashes the escaping depends on. Build the full
+string *before* `icsText` so embedded newlines become `\n` escapes rather than
+real line breaks. A transform in `.eleventy.js` rewrites `.ics` output to CRLF.
+
+**Adding a page that bypasses the layout** (passthrough copy, like `/signup/`):
+it won't get any of the head tags, so add canonical/description/OG by hand or
+mark it `noindex`.
 
 Page-specific structured data (`Service`, `FAQPage`, `BreadcrumbList`) lives in
 the page body — Google reads JSON-LD from the body as well as the head. The

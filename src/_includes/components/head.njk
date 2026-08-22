@@ -28,8 +28,24 @@
     {%- else -%}
       {%- set pageTitle = site.name + " - " + site.tagline -%}
     {%- endif -%}
-    {%- set pageDescription = description or site.description -%}
-    {%- set pageImage = site.url + (ogImage or site.defaultImage) -%}
+    {#
+      Description priority: an explicit `description`, then an event or press
+      `excerpt` (so every event page gets its own without touching 25 files),
+      then the site default. Duplicate descriptions across a site are treated
+      as a quality signal, and before this every page but the homepage shared
+      one string.
+    #}
+    {%- if description -%}
+      {%- set pageDescription = description | metaDescription -%}
+    {%- elif excerpt and date and ("/events/" in page.url) -%}
+      {%- set pageDescription = (date | date("MMMM D, YYYY")) + " · " + (excerpt | metaDescription(125)) -%}
+    {%- elif excerpt -%}
+      {%- set pageDescription = excerpt | metaDescription -%}
+    {%- else -%}
+      {%- set pageDescription = site.description -%}
+    {%- endif -%}
+    {%- set resolvedImage = ogImage or flyerImage or site.defaultImage -%}
+    {%- set pageImage = resolvedImage if ("http" in resolvedImage) else (site.url + resolvedImage) -%}
     {%- set canonicalUrl = site.url + page.url -%}
 
     <title>{{ pageTitle }}</title>
@@ -52,6 +68,12 @@
     <meta name="twitter:title" content="{{ ogTitle or pageTitle }}">
     <meta name="twitter:description" content="{{ pageDescription }}">
     <meta name="twitter:image" content="{{ pageImage }}">
+
+    <!-- Feed discovery. Browsers, readers, and crawlers look for these; they
+         are also what /llms.txt points assistants at. -->
+    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} — Upcoming Events" href="{{ site.url }}/feed.xml">
+    <link rel="alternate" type="text/calendar" title="{{ site.name }} — Events Calendar" href="{{ site.url }}/events.ics">
+    <link rel="alternate" type="application/json" title="{{ site.name }} — Events (JSON)" href="{{ site.url }}/events.json">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

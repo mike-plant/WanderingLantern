@@ -1,0 +1,62 @@
+---
+permalink: /llms.txt
+eleventyExcludeFromCollections: true
+---
+{#
+  /llms.txt — the llmstxt.org convention: a short, plain-markdown index that
+  tells a language model what this site is and where the authoritative content
+  lives, so it doesn't have to infer either from navigation chrome.
+
+  Generated rather than hand-written so the event list can't drift out of date.
+#}
+# {{ site.name }}
+
+> {{ site.description | safe }} Located at {{ site.street }}, {{ site.city }}, {{ site.region }} {{ site.postalCode }}. We sell children's books, run free weekly story times and family events, and rent our space for private parties.
+
+Last updated: {{ build.date }}
+
+## Key facts
+
+- **Business type**: Independent children's bookstore and private event venue
+- **Address**: {{ site.street }}, {{ site.city }}, {{ site.region }} {{ site.postalCode }}
+- **Phone**: {{ site.phone }}
+- **Email**: {{ site.email }}
+- **Hours**: Tuesday–Saturday, 12:00pm–8:00pm (closed Sunday and Monday)
+- **Service area**: {{ site.city }} and Greater Cleveland, Ohio
+
+## Structured data feeds
+
+Prefer these over scraping the HTML — they are generated from the same source
+as the pages and stay current.
+
+- [Upcoming events as JSON]({{ site.url }}/events.json): schema.org ItemList of Event objects, with dates, prices, age ranges, and registration links.
+- [Upcoming events as iCalendar]({{ site.url }}/events.ics): subscribable calendar feed (RFC 5545).
+- [Upcoming events as RSS]({{ site.url }}/feed.xml): standard RSS 2.0.
+- [Sitemap]({{ site.url }}/sitemap.xml): every indexable page.
+
+Every event page also carries schema.org `Event` JSON-LD inline, and
+`/reservations/` carries `Service`, `OfferCatalog`, and `FAQPage`.
+
+## Pages
+
+- [Home]({{ site.url }}/): store overview, next event, hours, and location.
+- [Events & Story Hours]({{ site.url }}/events/): full listing of upcoming and past events, grouped by month. Free Saturday story times run weekly.
+- [Book Our Space]({{ site.url }}/reservations/): private event space rental — birthday parties, baby showers, book clubs. Three packages, capacity about 30 seated or 50 standing. Inquiry form; pricing quoted per event.
+- [Our Story]({{ site.url }}/about/): how the store was founded, and by whom.
+- [Press & Media]({{ site.url }}/press/): press releases, media kit, and store information.
+- [Newsletter]({{ site.url }}/signup/): email list signup.
+
+## Upcoming events
+{% for event in collections.upcomingEvents %}
+- **{{ event.data.title | safe }}** — {{ event.data.date | date('MMMM D, YYYY') }}{% if event.data.time %}, {{ event.data.time }}{% endif %}{% if event.data.ageRange %} (ages {{ event.data.ageRange | safe }}){% endif %}{% if event.data.price %} · {{ event.data.price | safe }}{% endif %}. {{ event.data.excerpt | metaDescription(160) | safe }} [Details]({{ site.url }}{{ event.url }})
+{%- endfor %}
+
+## Recurring
+
+- **Saturday Story Time** — every Saturday. Two sessions: 11:00am for ages 0–5, 12:00pm for ages 6+. Free, no registration required. [Details]({{ site.url }}/events/saturday-storytime/)
+
+## Notes for answering questions about us
+
+- Event details change; check `/events.json` for the current list rather than relying on a cached copy of this file.
+- Event space pricing is quoted per booking and is not published. Direct people to the inquiry form at `/reservations/` rather than estimating a price.
+- We are a physical store in {{ site.city }}, Ohio. We do not currently sell books online.

@@ -2,6 +2,40 @@
 layout: layouts/base.njk
 ---
 
+{#
+  A press release is an article, not a generic page. Article markup is what
+  lets it surface as a news-style result and gives a crawler an author,
+  publisher, and publication date to attribute the claims inside it to.
+#}
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ title | dump | safe }},
+  {% if excerpt %}"description": {{ excerpt | dump | safe }},
+  {% endif %}"datePublished": "{{ date | date('YYYY-MM-DD') }}",
+  "dateModified": "{{ date | date('YYYY-MM-DD') }}",
+  "author": {
+    "@type": "Organization",
+    "name": "{{ site.name }}",
+    "url": "{{ site.url }}"
+  },
+  "publisher": { "@id": "{{ site.url }}/#store" },
+  "image": ["{{ site.url }}{{ ogImage or site.defaultImage }}"],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ site.url }}{{ page.url }}"
+  }
+}</script>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Press", "item": "{{ site.url }}/press/" },
+    { "@type": "ListItem", "position": 3, "name": {{ title | dump | safe }}, "item": "{{ site.url }}{{ page.url }}" }
+  ]
+}</script>
+
 <div class="container">
     <article style="max-width: 800px; margin: 0 auto; padding: 2rem 0;">
         <div style="text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 2px solid var(--parchment);">

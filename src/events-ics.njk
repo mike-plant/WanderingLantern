@@ -1,0 +1,38 @@
+---
+permalink: /events.ics
+eleventyExcludeFromCollections: true
+---
+{#
+  iCalendar subscription feed of upcoming events.
+
+  Anyone — a parent, a community calendar, or an assistant acting for one — can
+  subscribe to this URL once and keep every new event automatically. Values are
+  piped through `icsText` (RFC 5545 escaping) then `icsFold` (75-octet line
+  folding) and marked `safe`, since Nunjucks would otherwise HTML-escape the
+  backslashes that the escaping depends on. A transform in .eleventy.js
+  rewrites the whole file to CRLF endings.
+#}
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//The Wandering Lantern//Events//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:{{ site.name }} Events
+X-WR-CALDESC:{{ ("Story times, author visits, and family events at " + site.name + " in " + site.city + ", " + site.region + ".") | icsText | safe }}
+X-WR-TIMEZONE:America/New_York
+{%- for event in collections.upcomingEvents %}
+{%- set e = event.data %}
+{%- set detailUrl = site.url + event.url %}
+BEGIN:VEVENT
+UID:{{ event.fileSlug }}@thewanderinglantern.com
+DTSTAMP:{{ build.icsStamp }}
+DTSTART:{{ e.date | eventStartISO(e.time) | icsStamp }}
+DTEND:{{ e.date | eventEndISO(e.time) | icsStamp }}
+{{ ("SUMMARY:" + (e.title | icsText)) | icsFold | safe }}
+{{ ("DESCRIPTION:" + ((e.excerpt + "\n\nDetails: " + detailUrl) | icsText)) | icsFold | safe }}
+{{ ("LOCATION:" + ((e.location or (site.name + ", " + site.street + ", " + site.city + ", " + site.region + " " + site.postalCode)) | icsText)) | icsFold | safe }}
+URL:{{ detailUrl }}
+STATUS:{% if e.status == 'cancelled' %}CANCELLED{% else %}CONFIRMED{% endif %}
+END:VEVENT
+{%- endfor %}
+END:VCALENDAR

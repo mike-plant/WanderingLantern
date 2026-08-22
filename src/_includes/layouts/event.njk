@@ -2,42 +2,75 @@
 layout: layouts/base.njk
 ---
 
+{#
+  Event structured data. This is what makes an event eligible for Google's
+  event rich results and for the event listings surfaced in Search and Maps —
+  the highest-leverage markup on the site for a store that runs weekly events.
+
+  Recurring events (Saturday Story Time) are excluded because a single Event
+  node with one start date would misrepresent them.
+#}
 {% if not recurring %}
+{%- set eventImage = flyerImage or ogImage or "/assets/images/reservations/og-event-space.jpg" -%}
+{%- set eventImageUrl = eventImage if ("http" in eventImage) else (site.url + eventImage) -%}
+{%- set priceNumber = price | eventPriceNumber -%}
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "Event",
   "name": {{ title | dump | safe }},
   "description": {{ excerpt | dump | safe }},
+  "image": [{{ eventImageUrl | dump | safe }}],
   "startDate": "{{ date | eventStartISO(time) }}",
   "endDate": "{{ date | eventEndISO(time) }}",
   "eventStatus": "{% if status == 'cancelled' %}https://schema.org/EventCancelled{% else %}https://schema.org/EventScheduled{% endif %}",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-  "location": {% if location %}{
+  "inLanguage": "en-US",
+  {% if ageRange %}"typicalAgeRange": {{ ageRange | dump | safe }},
+  {% endif %}"location": {% if location %}{
     "@type": "Place",
     "name": {{ location | dump | safe }}
   }{% else %}{
     "@type": "Place",
-    "name": "The Wandering Lantern",
+    "name": "{{ site.name }}",
+    "url": "{{ site.url }}",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "15729 Madison Ave",
-      "addressLocality": "Lakewood",
-      "addressRegion": "OH",
-      "postalCode": "44107",
+      "streetAddress": "{{ site.street }}",
+      "addressLocality": "{{ site.city }}",
+      "addressRegion": "{{ site.region }}",
+      "postalCode": "{{ site.postalCode }}",
       "addressCountry": "US"
     }
   }{% endif %},
   "organizer": {
     "@type": "Organization",
-    "name": "The Wandering Lantern",
-    "url": "https://thewanderinglantern.com"
+    "name": "{{ site.name }}",
+    "url": "{{ site.url }}"
   },
-  "url": "https://thewanderinglantern.com{{ page.url }}"{% if price %},
+  {% if specialGuest %}"performer": {
+    "@type": "Person",
+    "name": {{ specialGuest | dump | safe }}{% if specialGuestRole %},
+    "jobTitle": {{ specialGuestRole | dump | safe }}{% endif %}
+  },
+  {% endif %}"url": "{{ site.url }}{{ page.url }}"{% if priceNumber %},
+  "isAccessibleForFree": {% if priceNumber == "0" %}true{% else %}false{% endif %},
   "offers": {
     "@type": "Offer",
-    "name": {{ price | dump | safe }},
-    "url": "https://thewanderinglantern.com{{ page.url }}"
+    "price": "{{ priceNumber }}",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/{% if status == 'full' %}SoldOut{% elif status == 'cancelled' %}Discontinued{% else %}InStock{% endif %}",
+    "url": "{{ registrationUrl or ticketUrl or (site.url + page.url) }}",
+    "validFrom": "{{ page.date | date('YYYY-MM-DD') }}"
   }{% endif %}
+}</script>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Events", "item": "{{ site.url }}/events/" },
+    { "@type": "ListItem", "position": 3, "name": {{ title | dump | safe }}, "item": "{{ site.url }}{{ page.url }}" }
+  ]
 }</script>
 {% endif %}
 
