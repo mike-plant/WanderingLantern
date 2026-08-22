@@ -621,3 +621,170 @@ section {
     margin: 0;
   }
 }
+
+/* ===== SHELF GUIDE (Homepage) ===== */
+.shelf-guide {
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.shelf-guide-intro {
+  max-width: 620px;
+  margin: 0 auto 2.5rem;
+  color: var(--dark-text);
+  line-height: 1.7;
+}
+
+.shelf-guide-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  text-align: left;
+}
+
+.shelf-band {
+  position: relative;
+  background: var(--cream);
+  border: 1px solid rgba(139, 111, 71, 0.18);
+  border-left: 4px solid var(--aged-gold);
+  border-radius: 6px;
+  padding: 1.5rem 1.5rem 1.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.shelf-band:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(92, 77, 60, 0.12);
+}
+
+.shelf-band-age {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+  margin-bottom: 0.4rem;
+}
+
+.shelf-band h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--deep-brown);
+  margin: 0 0 0.6rem;
+}
+
+.shelf-band p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--dark-text);
+}
+
+.shelf-guide-note {
+  margin: 2.5rem auto 0;
+  max-width: 560px;
+  font-size: 0.95rem;
+  color: var(--dark-text);
+}
+
+.shelf-guide-note a {
+  color: var(--deep-brown);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--aged-gold);
+  text-underline-offset: 3px;
+}
+
+@media (min-width: 640px) {
+  .shelf-guide-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .shelf-guide-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ===== VISIT BLOCK (Homepage) ===== */
+.visit-block {
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.visit-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+  text-align: left;
+}
+
+.visit-col {
+  background: var(--parchment);
+  border: 1px solid rgba(139, 111, 71, 0.18);
+  border-radius: 6px;
+  padding: 1.75rem 1.5rem;
+}
+
+.visit-col h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+  margin: 0 0 0.9rem;
+}
+
+.visit-address,
+.visit-hours,
+.visit-contact {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--deep-brown);
+  margin: 0 0 0.9rem;
+}
+
+.visit-hours-open {
+  font-weight: 700;
+}
+
+.visit-contact a {
+  color: var(--deep-brown);
+  text-decoration: none;
+}
+
+.visit-contact a:hover {
+  text-decoration: underline;
+}
+
+.visit-note {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--dark-text);
+  margin: 0 0 1rem;
+}
+
+.visit-map-link {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gold-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--aged-gold);
+  padding-bottom: 2px;
+  transition: color 0.2s ease;
+}
+
+.visit-map-link:hover {
+  color: var(--deep-brown);
+}
+
+@media (min-width: 800px) {
+  .visit-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

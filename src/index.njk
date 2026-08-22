@@ -16,6 +16,16 @@ description: "Cleveland's first dedicated children's bookstore, on Madison Ave i
     {% include "components/offerings-streamlined.njk" %}
 </div>
 
+{#
+  Shelf guide and visit block. Both are here because the homepage was thin
+  enough (under 500 rendered words) that search engines had almost nothing to
+  read, and neither the words people search for — "picture books", "middle
+  grade", "Lakewood" — nor the store's own address appeared in any heading.
+#}
+<div class="container">
+    {% include "components/browse-by-age.njk" %}
+</div>
+
 <!-- Private Event Rentals -->
 <div class="container">
     {% set promoContext = "homepage" %}
@@ -32,6 +42,11 @@ description: "Cleveland's first dedicated children's bookstore, on Madison Ave i
 <!-- About Teaser -->
 <div class="container">
     {% include "components/about-short.njk" %}
+</div>
+
+<!-- Visit / hours / directions -->
+<div class="container">
+    {% include "components/visit-us.njk" %}
 </div>
 
 <!-- Contact Section -->

@@ -1,0 +1,55 @@
+{#
+  Name / address / phone block.
+
+  Local search leans hard on NAP consistency between a site and the directories
+  that reference it, and this is the homepage's only full, marked-up copy of it.
+  Everything here reads from site.json so it can't drift out of sync with the
+  header, the footer, and the JSON-LD — which is exactly how the opening hours
+  managed to be wrong by two hours at both ends for as long as they were.
+#}
+<section id="visit" class="visit-block">
+    <h2>Visit the Bookstore in Lakewood</h2>
+
+    <div class="visit-grid">
+        <div class="visit-col">
+            <h3>Find Us</h3>
+            <p class="visit-address">
+                {{ site.street }}<br>
+                {{ site.city }}, {{ site.region }} {{ site.postalCode }}
+            </p>
+            <p class="visit-note">
+                On Madison Avenue across from the park, an easy walk from the middle
+                school. We picked Lakewood because it's the kind of neighborhood where
+                people still walk to the library.
+            </p>
+            <a class="visit-map-link" href="{{ site.mapUrl }}" target="_blank" rel="noopener">
+                Get directions &rarr;
+            </a>
+        </div>
+
+        <div class="visit-col">
+            <h3>Hours</h3>
+            <p class="visit-hours">
+                <span class="visit-hours-open">{{ site.hours.display }}</span><br>
+                {{ site.hours.closedDisplay }}
+            </p>
+            <p class="visit-note">
+                Free story time every Saturday morning &mdash; 11:00 for ages 0&ndash;5,
+                11:30 for ages 6&ndash;10. No sign-up, just come.
+            </p>
+            <a class="visit-map-link" href="/events/">See what's on &rarr;</a>
+        </div>
+
+        <div class="visit-col">
+            <h3>Get in Touch</h3>
+            <p class="visit-contact">
+                <a href="tel:{{ site.phoneRaw }}">{{ site.phone }}</a>
+            </p>
+            <p class="visit-note">
+                Questions about a book, a special order, or booking the space for a
+                party? Call during store hours or send us a note below.
+            </p>
+            <a class="visit-map-link" href="#contact">Send a message &rarr;</a>
+        </div>
+    </div>
+</section>

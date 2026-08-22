@@ -12,9 +12,9 @@
         <div class="footer-links">
             <div class="footer-link-group">
                 <h4>Visit</h4>
-                <p>15729 Madison Ave<br>Lakewood, OH 44107</p>
+                <p>{{ site.street }}<br>{{ site.city }}, {{ site.region }} {{ site.postalCode }}</p>
                 <p><a href="tel:2169994462">(216) 999-4462</a></p>
-                <p>Tue-Sat: 10am-6pm<br>Closed Sunday & Monday</p>
+                <p>{{ site.hours.display }}<br>{{ site.hours.closedDisplay }}</p>
             </div>
 
             <div class="footer-link-group">

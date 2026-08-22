@@ -75,6 +75,16 @@
     <link rel="alternate" type="text/calendar" title="{{ site.name }} — Events Calendar" href="{{ site.url }}/events.ics">
     <link rel="alternate" type="application/json" title="{{ site.name }} — Events (JSON)" href="{{ site.url }}/events.json">
 
+    <!-- Icons. The .ico carries 16/32/48 for legacy and browser-chrome use;
+         the small sizes are cropped tighter than the large ones because the
+         lantern's line art turns to mush below ~24px. -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#5c4d3c">
+    <meta name="apple-mobile-web-app-title" content="Wandering Lantern">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -86,19 +96,37 @@
     {# Pages may preload their own LCP image (e.g. the reservations hero). #}
     {% if preloadImage %}<link rel="preload" as="image" href="{{ preloadImage }}" fetchpriority="high">{% endif %}
 
-    <!-- Structured Data for Local Business SEO -->
+    {#
+      Store-wide identity graph. Two things matter here beyond the obvious:
+
+      1. `@type` is an ARRAY. BookStore is already a subtype of LocalBusiness,
+         so "BookStore" alone is semantically correct and Google reads it fine
+         — but plenty of third-party SEO auditors and directory scrapers do a
+         literal string match for "LocalBusiness" and report it missing.
+         Declaring both costs nothing and satisfies both readers.
+      2. Opening hours come from site.json, not a literal. They used to be
+         hardcoded as 12:00-20:00 here while the header, footer, and press page
+         all said 10am-6pm — so the hours Google showed in local results were
+         two hours off at both ends, every day.
+    #}
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "BookStore",
+      "@type": ["BookStore", "LocalBusiness"],
       "@id": "{{ site.url }}/#store",
       "name": "{{ site.name }}",
-      "description": "Cleveland's first dedicated children's bookstore, offering curated picture books, middle grade novels, young adult fiction, and free weekly storytimes.",
+      "alternateName": "Wandering Lantern Bookstore",
+      "slogan": "{{ site.tagline }}",
+      "description": "Cleveland's first dedicated children's bookstore, offering curated picture books, middle grade novels, young adult fiction, free weekly storytimes, and a private event space in Lakewood, Ohio.",
       "image": "{{ site.url }}{{ site.defaultImage }}",
+      "logo": "{{ site.url }}{{ site.logo }}",
       "url": "{{ site.url }}",
       "telephone": "{{ site.phoneRaw }}",
       "email": "{{ site.email }}",
       "priceRange": "$$",
+      "currenciesAccepted": "USD",
+      "paymentAccepted": "Cash, Credit Card, Debit Card",
+      "hasMap": "{{ site.mapUrl }}",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "{{ site.street }}",
@@ -112,12 +140,19 @@
         "latitude": 41.4817,
         "longitude": -81.7982
       },
+      "areaServed": [
+        { "@type": "City", "name": "Lakewood", "@id": "https://en.wikipedia.org/wiki/Lakewood,_Ohio" },
+        { "@type": "City", "name": "Cleveland", "@id": "https://en.wikipedia.org/wiki/Cleveland" },
+        { "@type": "City", "name": "Rocky River" },
+        { "@type": "City", "name": "Westlake" },
+        { "@type": "City", "name": "Bay Village" }
+      ],
       "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-          "opens": "12:00",
-          "closes": "20:00"
+          "dayOfWeek": {{ site.hours.days | dump | safe }},
+          "opens": "{{ site.hours.opens }}",
+          "closes": "{{ site.hours.closes }}"
         }
       ],
       "sameAs": [
