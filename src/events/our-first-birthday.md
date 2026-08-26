@@ -1,13 +1,18 @@
 ---
 layout: layouts/event.njk
-draft: true
-title: Our First Birthday!
-date: 2026-11-27
+draft: false
+title: A Very Merry UnBirthday to US!
+date: 2026-11-29
 time: During Store Hours
 ageRange: All ages
 location: ''
 category: special-event
-excerpt: A huge celebration for our first year in the books!
+excerpt: |-
+  Celebrate The Wandering Lantern’s first birthday with us on **Sunday, November 29** during Small Business Weekend!
+
+  We’ll have tea and crumpets, a Mad Hatter’s Tea Party photo op, raffles and prizes, and a book character costume contest. Come dressed as your favorite character and bring everyone you know who loves books, parties, tea, and a little bit of nonsense.
+
+  **Free • All day • All ages welcome**
 price: ''
 host: ''
 status: ''
@@ -26,10 +31,15 @@ recurringSchedule: ''
 permalink: ''
 ---
 
-## One Year of Wonder: Our First Anniversary Celebration
+# A Very Merry UnBirthday to Us!
 
-Join us on **November 27–28** as we celebrate The Wandering Lantern’s first anniversary during Small Business Weekend!
+The Wandering Lantern is turning one, and we’re celebrating with a wonderfully silly **Very Merry UnBirthday Party** on **Sunday, November 29** as part of Small Business Weekend in Lakewood.
 
-We’re planning two joyful days filled with story times, crafts, treats, giveaways, a bookstore scavenger hunt, family photo opportunities, special guests, holiday book bundles, and plenty of birthday fun. Come help us celebrate one wonderful year of stories, creativity, and community—and shop small while finding meaningful gifts for the readers in your life.
+Stop in throughout the day for tea and crumpets, festive treats, a **Mad Hatter’s Tea Party** photo op, raffles, prizes, and plenty of bookstore fun. Come dressed as your favorite book character for a chance to enter our costume contest, and bring your friends, family, and fellow book lovers along for the celebration.
 
-More details and a full schedule will be announced soon!
+This is our way of saying thank you for an incredible first year of stories, creativity, community, and support.
+
+If you love books, parties, tea, costumes, and a little Wonderland-style fun, come celebrate with us.
+
+**Sunday, November 29 • All Day**
+**Free and open to everyone**
