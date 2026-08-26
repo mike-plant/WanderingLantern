@@ -2,7 +2,7 @@
 layout: layouts/event.njk
 draft: false
 title: Moms Connect
-date: 2026-08-20
+date: 2026-08-27
 time: 10:00 AM - 12:00 PM & 4:00 PM - 6:00 PM
 ageRange: 0-4
 location: ''
