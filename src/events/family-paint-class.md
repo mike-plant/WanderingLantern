@@ -2,7 +2,7 @@
 layout: layouts/event.njk
 draft: false
 title: Family Bonding Paint Class
-date: 2026-08-15
+date: 2026-09-12
 time: 1:00 PM- 2:00 PM
 ageRange: 3+
 location: ''
@@ -22,7 +22,7 @@ specialGuest: Christina C.
 specialGuestRole: Painter/Instructor
 specialGuestBook: ''
 mailchimpFormId: f1915b185f
-mailchimpTag: ''
+mailchimpTag: '3728830'
 showChildFields: true
 flyerImage: ''
 recurring: false
