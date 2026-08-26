@@ -3,7 +3,7 @@ layout: layouts/event.njk
 draft: false
 title: Moms Connect
 date: 2026-08-20
-time: 2:00 PM - 4:00 PM
+time: 10:00 AM - 12:00 PM & 4:00 PM - 6:00 PM
 ageRange: 0-4
 location: ''
 category: ''
@@ -22,7 +22,7 @@ mailchimpTag: '3728680'
 showChildFields: true
 flyerImage: ''
 recurring: true
-recurringSchedule: Every Thursday afternoon
+recurringSchedule: Every Thursday morning and evening
 permalink: ''
 ---
 
