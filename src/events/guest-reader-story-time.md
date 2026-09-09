@@ -2,34 +2,41 @@
 layout: layouts/event.njk
 draft: false
 title: Guest Reader Story Time
-date: 2026-08-29
-time: 11:00 AM - 11:30 AM
+date: 2026-11-14
+time: 11:00 AM - 12:00 PM
 ageRange: All ages
 location: ''
 category: story-time
-excerpt: Join local illustrator Kristen Kantounatakis for a silly special Story Time featuring Paula the Poop Pal! Kristen will read the book, answer questions, sign and sell copies, and help families create their own “Poop Pal” craft. Come ready for potty talk, digestive adventures, and plenty of giggles!
+excerpt: |-
+  Join award-winning Ohio author Marcy Campbell on Saturday, November 14 for a special morning all about friendship!
+
+  At 11:00 AM, Marcy will be our guest reader for Story Time, sharing friendship-themed stories perfect for younger listeners. Afterward, we’ll continue the conversation with the older audience (for school age children ages 6-12) with Marcy’s brand-new book, We Used to Be Friends, followed by an exciting discussion and friendship craft. 
+
+  Come for the stories, stay for the conversation and creativity!
 price: ''
-host: ''
+host: Marcy Campbell
 status: ''
 ticketUrl: ''
 registrationUrl: ''
 dateRange: ''
-specialGuest: Kristen Kantounatakis
-specialGuestRole: Illustrator
-specialGuestBook: Paula the Poop Pal
+specialGuest: Marcy Campbell
+specialGuestRole: Author
+specialGuestBook: We Used to Be Friends
 mailchimpFormId: f1915b185f
 mailchimpTag: '3728680'
 showChildFields: true
-flyerImage: ''
+flyerImage: https://marcycampbell.com/books2/
 recurring: false
 recurringSchedule: ''
 permalink: ''
 ---
 
-Get ready for a silly morning of stories, crafts, and potty talk at The Wandering Lantern!
+Friendships can be joyful, complicated, silly, comforting—and sometimes they change. Join us on **Saturday, November 14** for a special visit from award-winning Ohio children’s author **Marcy Campbell** and a morning devoted to stories about friendship.
 
-On Saturday, August 29 at 11:00 AM, local illustrator and book creator Kristen Kantounatakis will join us for a special reading of _Paula the Poop Pal_. This funny and approachable story follows Paula on a journey through the digestive system while exploring a struggle many families know well: sometimes, pooping can be difficult!
+We’ll begin at **11:00 AM** with our regular Story Time, with Marcy joining us as our special guest reader. She’ll share friendship-themed picture books chosen especially for our younger listeners.
 
-After the story, Kristen will chat with families, answer questions, and lead a fun craft where everyone can create their own “Poop Pal” to take home. Copies of the book will also be available to purchase and have signed.
+Following Story Time, families with school age children (6-12) are invited to stay as Marcy shares her new book, _We Used to Be Friends_, illustrated by Aimée Sicuro. The story explores the big feelings that can come when a close friendship changes or comes to an end, opening the door for a thoughtful, age-appropriate conversation about friendship, feelings, and moving forward. We’ll finish with a fun friendship-themed craft for kids to make and take home.
 
-Tell your friends with kids who love silly humor—or who might appreciate a lighthearted way to talk about digestion and going to the bathroom—and join us for a morning full of learning and good giggles.
+Copies of _We Used to Be Friends_ will be available to purchase and have signed by Marcy.
+
+Come for a cozy story, meet an Ohio author, make something together, and celebrate all the different ways friendship can be part of our lives.
