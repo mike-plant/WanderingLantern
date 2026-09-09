@@ -3,7 +3,7 @@ layout: layouts/event.njk
 draft: false
 title: Inkubator 2026 Book Fair
 date: 2026-09-11
-time: 10:00 AM - 5:00 PM
+time: 10:00 AM - 4:00 PM
 ageRange: All ages
 location: Cleveland Public Library
 category: special-event
