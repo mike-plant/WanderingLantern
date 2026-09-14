@@ -3,7 +3,7 @@ layout: layouts/event.njk
 draft: false
 title: 'Lantern Chess Club: Learn & Play'
 date: 2026-09-18
-time: 4:00 PM - 6:00 PM
+time: 3:30 PM - 6:00 PM
 ageRange: All ages
 location: ''
 category: workshop
@@ -31,11 +31,11 @@ permalink: ''
 
 ## Calling all chess players — and kids who want to learn!
 
-Join us at The Wandering Lantern twice a month on **Friday evening from 4:00–6:00 PM** for our free **Lantern Chess Club**.
+Join us at The Wandering Lantern twice a month on **Friday evening from 3:30–6:00 PM** for our free **Lantern Chess Club**.
 
 New to chess? We’ll help you get started with the basics. Already know how to play? Pull up a chair, find an opponent, and see where the game takes you.
 
 Come for the whole time or stop in whenever it works for your family. Chess boards will be available — just bring your curiosity and your best moves.
 
-**Fridays | 4:00–6:00 PM**
+**2 Fridays a month | 3:30–6:00 PM**
 **Free to attend • Drop-in • All skill levels welcome**
