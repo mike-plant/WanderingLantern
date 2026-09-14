@@ -1,7 +1,7 @@
 ---
 layout: layouts/event.njk
 draft: false
-title: Read-Aloud Book Club
+title: Family Classics Read Aloud
 date: 2026-12-15
 time: 5:30 PM - 6:00 PM
 ageRange: School age kids
