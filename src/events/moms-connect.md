@@ -2,12 +2,12 @@
 layout: layouts/event.njk
 draft: false
 title: Moms Connect
-date: 2026-09-10
+date: 2026-09-17
 time: 10:00 AM - 12:00 PM & 4:00 PM - 6:00 PM
 ageRange: 0-5
 location: ''
 category: ''
-excerpt: Bring a friend or come on your own and meet someone new. **Moms Connect** is a casual gathering for moms with little ones ages 0–5 to get out of the house, enjoy some snacks, share stories, and spend time with other moms in the same stage of life.
+excerpt: Bring a friend or come on your own and meet someone new. Moms Connect is a casual gathering for moms with little ones ages 0–5 to get out of the house, enjoy some snacks, share stories, and spend time with other moms in the same stage of life.
 price: ''
 host: ''
 status: ''
