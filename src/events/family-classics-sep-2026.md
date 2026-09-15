@@ -1,6 +1,6 @@
 ---
 layout: layouts/event.njk
-draft: false
+draft: true
 title: Family Classics Read-Aloud
 date: 2026-09-15
 time: 5:30 PM - 6:00 PM
@@ -40,4 +40,4 @@ Our September selection is P. L. Travers’s _Mary Poppins_, the magical story o
 Come get comfortable, enjoy the opening chapters, and begin a new family reading tradition.
 
 **September 15 at 5:30 PM**
-Bring the while family!
+Bring the whole family!
