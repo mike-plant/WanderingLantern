@@ -1,6 +1,6 @@
 ---
 layout: layouts/event.njk
-draft: false
+draft: true
 title: 'Lantern Chess Club: Learn & Play'
 date: 2026-09-18
 time: 3:30 PM - 6:00 PM
