@@ -2,12 +2,12 @@
 layout: layouts/event.njk
 draft: false
 title: test
-date: ''
-time: ''
+date: 2026-09-15
+time: jygjhb
 ageRange: All ages
 location: ''
 category: ''
-excerpt: ''
+excerpt: jgfugioj
 price: ''
 host: ''
 status: ''
@@ -25,3 +25,5 @@ recurring: false
 recurringSchedule: ''
 permalink: ''
 ---
+
+kutflkjh
