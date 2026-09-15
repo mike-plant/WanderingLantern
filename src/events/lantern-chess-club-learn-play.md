@@ -24,7 +24,7 @@ mailchimpFormId: f1915b185f
 mailchimpTag: '3728680'
 showChildFields: true
 flyerImage: ''
-recurring: true
+recurring: false
 recurringSchedule: every other Friday evening
 permalink: ''
 ---
