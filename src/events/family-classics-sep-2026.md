@@ -6,7 +6,7 @@ date: 2026-09-15
 time: 5:30 PM - 6:00 PM
 ageRange: The Whole Family
 location: ''
-category: story-time
+category: ''
 excerpt: |-
   Cozy up at The Wandering Lantern for our monthly *Family Classics Read-Aloud.* We’ll begin a beloved classic together, giving families a warm introduction to the story and inspiration to keep reading at home.
 
