@@ -1,6 +1,6 @@
 ---
 layout: layouts/event.njk
-draft: true
+draft: false
 title: Family Classics Read-Aloud
 date: 2026-09-15
 time: 5:30 PM - 6:00 PM
