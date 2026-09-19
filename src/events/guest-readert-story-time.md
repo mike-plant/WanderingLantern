@@ -1,12 +1,12 @@
 ---
 layout: layouts/event.njk
 draft: false
-title: Guest Readert Story Time
+title: Guest Reader Story Time
 date: 2026-10-10
 time: 11:00 AM
 ageRange: All ages
 location: ''
-category: story-time
+category: author-visit
 excerpt: You’re invited to a pretend birthday celebration! Join local author Kelly Tooman on October 10 for a reading of *The Birthday Triplets*, a festive birthday setup, and coloring pages featuring characters from the book.
 price: ''
 host: ''
