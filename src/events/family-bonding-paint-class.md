@@ -2,7 +2,7 @@
 layout: layouts/event.njk
 draft: false
 title: Family Bonding Paint Class
-date: 2026-09-12
+date: 2026-10-10
 time: 1:00 PM- 2:00 PM
 ageRange: 3+
 location: ''
