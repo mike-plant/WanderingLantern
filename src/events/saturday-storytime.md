@@ -2,7 +2,7 @@
 layout: layouts/event.njk
 draft: false
 title: Saturday Story Time
-date: 2026-09-26
+date: 2026-10-03
 time: 11:00 AM - 12:00 PM
 ageRange: 0-10
 location: ''
