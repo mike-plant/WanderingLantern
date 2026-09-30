@@ -3,7 +3,7 @@ layout: layouts/event.njk
 draft: false
 title: A Santa Experience at TWL
 date: 2026-12-05
-time: 2:00 PM - 4:00 PM
+time: TBD
 ageRange: All ages
 location: ''
 category: special-event
