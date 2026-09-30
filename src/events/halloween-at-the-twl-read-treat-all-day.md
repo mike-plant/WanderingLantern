@@ -1,7 +1,7 @@
 ---
 layout: layouts/event.njk
 draft: false
-title: 'Halloween at the TWL: Read & Treat All Day!'
+title: 'Halloween at TWL: Read & Treat All Day!'
 date: 2026-10-31
 time: During Store Hours
 ageRange: All ages
