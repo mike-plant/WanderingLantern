@@ -7,7 +7,7 @@ time: 11:00 AM
 ageRange: All ages
 location: ''
 category: author-visit
-excerpt: You’re invited to a pretend birthday celebration! Join local author Kelly Tooman on October 10 for a reading of *The Birthday Triplets*, a festive birthday setup, and coloring pages featuring characters from the book.
+excerpt: You’re invited to a book celebration! Join local author Kelly Tooman on October 10 for a reading of *The Birthday Triplets*, a festive birthday setup, and coloring pages featuring characters from the book.
 price: ''
 host: ''
 status: ''
@@ -26,8 +26,8 @@ recurringSchedule: ''
 permalink: ''
 ---
 
-Come celebrate with local children’s author Kelly Tooman at a special birthday-themed story time on October 10!
+Come celebrate with local children’s author and creative writing teacher, Kelly Tooman at a special birthday-themed story time complete with cupcakes, party hats and plenty of party fun! 
 
-Kelly will read her book _The Birthday Triplets_ surrounded by a playful pretend birthday setup that brings the celebration to life. After the story, children can continue the fun with coloring pages featuring characters from the book.
+Kelly is part of a mother & daughter, writing and illustrating team. Her mother, Lynn, is a former American Greetings artist. Kelly will read from her first book, _The Birthday Triplets,_ featuring magical inventor Granny Rosie, sisters Cookie, Candi and Coco Birthday & their dog Chocolate Pudding. After the story, children can continue the fun with coloring pages from the Birthday Triplets’ coloring book. 
 
-With a delightful story, birthday cheer, and a creative activity, this story time will feel like a little party for everyone. Families are invited to join us for a fun and festive morning at The Wandering Lantern!
+With a marvelous magical story, birthday cheer, and a creative activity, this story time will feel like a party for everyone!
