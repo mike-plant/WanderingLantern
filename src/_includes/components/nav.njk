@@ -4,6 +4,20 @@
     <a href="/">Home</a>
     {% endif %}
 
+    {% if features.navigation.showShopInMainNav %}
+    {# Mirrors "Shop Books" in the shop's Lantern Main Menu (see shopify/README.md).
+       Opens on hover/focus; on touch, the tap goes to the shop homepage,
+       which opens on the same age shelves. #}
+    <div class="nav-dropdown">
+        <a href="{{ site.shopUrl }}/" class="nav-dropdown-toggle" aria-haspopup="true">Shop Books</a>
+        <ul class="nav-dropdown-menu">
+            {% for item in site.shopMenu %}
+            <li><a href="{{ site.shopUrl }}{{ item.path }}">{{ item.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
     {% if features.navigation.showEventsInMainNav %}
     <a href="/events/">Our Events</a>
     {% endif %}
@@ -22,5 +36,16 @@
 
     {% if features.navigation.showContactInMainNav %}
     <a href="/#contact">Contact Us</a>
+    {% endif %}
+
+    {% if features.navigation.showShopInMainNav %}
+    <span class="nav-icons">
+        <a href="{{ site.shopUrl }}/search" class="nav-icon" aria-label="Search the shop">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </a>
+        <a href="{{ site.shopUrl }}/cart" class="nav-icon" aria-label="Shop cart">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2L5 8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        </a>
+    </span>
     {% endif %}
 </nav>

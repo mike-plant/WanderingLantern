@@ -1,0 +1,84 @@
+{%- comment -%}
+  Product page: the book's age shelf, format and topics as links back to the
+  shelves, then "More from this shelf" — up to 8 other in-stock books.
+
+  The "Shelf: X" tag decides the shelf. The map setting pairs each shelf tag
+  with its collection handle, one per line: "Shelf: Board Books 0-3 = board-books-ages-0-3".
+{%- endcomment -%}
+{%- liquid
+  assign shelf_handle = ''
+  assign shelf_tag = ''
+  assign map_lines = section.settings.shelf_map | newline_to_br | split: '<br />'
+  for tag in product.tags
+    if tag contains 'Shelf:'
+      for line in map_lines
+        assign pair = line | split: '='
+        assign map_tag = pair | first | strip
+        if map_tag == tag
+          assign shelf_handle = pair | last | strip
+          assign shelf_tag = tag
+          break
+        endif
+      endfor
+    endif
+    if shelf_handle != ''
+      break
+    endif
+  endfor
+
+  if shelf_handle != ''
+    assign shelf = collections[shelf_handle]
+    assign topic_base = shelf.url
+  else
+    assign topic_base = routes.all_products_collection_url
+  endif
+-%}
+
+<div class="lantern-product-shelf page-width">
+  <ul class="lantern-product-tags" role="list">
+    {%- if shelf_handle != '' -%}
+      <li><a href="{{ shelf.url }}">{{ shelf.title }}</a></li>
+    {%- endif -%}
+    {%- for tag in product.tags -%}
+      {%- if tag contains 'Type:' or tag contains 'Topic:' or tag contains 'Occasion:' -%}
+        {%- assign label = tag | split: ':' | last | strip -%}
+        <li><a href="{{ topic_base }}/{{ tag | handleize }}">{{ label }}</a></li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+
+  {%- if shelf_handle != '' and shelf.products_count > 1 -%}
+    <div class="lantern-row">
+      <div class="lantern-row__head">
+        <h2 class="lantern-section-heading">{{ section.settings.heading }}</h2>
+        <a class="lantern-row__more" href="{{ shelf.url }}">See all {{ shelf.title }}</a>
+      </div>
+      <ul class="lantern-row__list" role="list">
+        {%- assign shown = 0 -%}
+        {%- for other in shelf.products -%}
+          {%- if shown >= 8 -%}{%- break -%}{%- endif -%}
+          {%- if other.id == product.id or other.available == false -%}{%- continue -%}{%- endif -%}
+          <li>{% render 'lantern-book-card', product: other %}</li>
+          {%- assign shown = shown | plus: 1 -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Lantern shelf links",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "More from this shelf" },
+    {
+      "type": "textarea",
+      "id": "shelf_map",
+      "label": "Shelf tag = collection handle (one per line)",
+      "default": "Shelf: Board Books 0-3 = board-books-ages-0-3\nShelf: Picture Books 3-7 = picture-books-ages-3-7\nShelf: Early Readers 5-8 = early-readers-chapter-books-ages-5-8\nShelf: Middle Grade 8-12 = middle-grade-ages-8-12\nShelf: Young Adult 12+ = young-adult-ages-12\nShelf: Grown-Ups = for-grown-ups\nShelf: Gifts & Sidelines = gifts-goodies"
+    }
+  ],
+  "presets": [{ "name": "Lantern shelf links" }]
+}
+{% endschema %}

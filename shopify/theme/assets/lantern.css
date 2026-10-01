@@ -1,0 +1,459 @@
+/*
+ * Wandering Lantern overrides for the Shopify theme.
+ * Palette mirrors src/assets/css/variables.css on the website.
+ * Most colors/fonts are set through theme settings (color schemes, fonts);
+ * this file only covers what the settings can't.
+ */
+:root {
+  --lantern-warm-brown: #8b6f47;
+  --lantern-deep-brown: #5c4d3c;
+  --lantern-aged-gold: #c9a961;
+  --lantern-muted-gold: #a38b5f;
+  --lantern-cream: #faf7f0;
+  --lantern-parchment: #f5eedc;
+}
+
+/* Info bar — same as .info-bar on the website */
+.lantern-info-bar {
+  background: var(--lantern-deep-brown);
+  color: var(--lantern-cream);
+  padding: 1rem 2rem;
+  text-align: center;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.lantern-info-bar__content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.lantern-info-bar a {
+  color: var(--lantern-aged-gold);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.lantern-info-bar a:hover {
+  color: var(--lantern-cream);
+}
+
+.lantern-info-bar__sep {
+  color: var(--lantern-muted-gold);
+  opacity: 0.5;
+}
+
+/* Header: thin warm rule under the nav, like the website */
+.header-section .header {
+  border-bottom: 1px solid rgba(139, 111, 71, 0.2);
+}
+
+/* Same as the website's mobile.css info bar */
+@media (max-width: 768px) {
+  .lantern-info-bar {
+    padding: 0.5rem 1rem;
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+
+  .lantern-info-bar__content {
+    gap: 0.35rem 0.5rem;
+  }
+
+  .lantern-info-bar__content span,
+  .lantern-info-bar__content a {
+    white-space: nowrap;
+  }
+
+  .lantern-info-bar__sep {
+    opacity: 0.4;
+  }
+}
+
+/* Shop notice line above the address (pickup) */
+.lantern-info-bar__notice {
+  margin: 0 0 0.4rem;
+  color: var(--lantern-aged-gold);
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  /* Socials live in the footer; keep the phone bar to notice, address, phone */
+  .lantern-info-bar__social,
+  .lantern-info-bar__sep--social {
+    display: none;
+  }
+}
+
+/* ---------- Book covers: whole cover in a 2:3 cream frame ---------- */
+.product-card .card-gallery {
+  --gallery-aspect-ratio: 2 / 3;
+}
+
+.product-card .product-media-container.media-fit {
+  --product-media-fit: contain;
+  background: var(--lantern-cream);
+}
+
+.lantern-book__title {
+  display: block;
+  margin: 0;
+  font-family: var(--font-body--family);
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: var(--color-foreground);
+}
+
+.lantern-book__author,
+.lantern-book__pickup {
+  display: block;
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: #7d6a48; /* --gold-text on the website: gold that passes contrast */
+}
+
+.lantern-book__pickup {
+  font-style: italic;
+}
+
+.lantern-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ---------- Page gutter for Lantern sections ----------
+   Vessel's .page-width is a grid helper, not a padded container, so our
+   sections set their own width and side margin. */
+.lantern-shelves-section,
+.lantern-row.page-width,
+.lantern-special,
+.lantern-topics,
+.lantern-product-shelf,
+.lantern-search--compact {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1400px;
+  margin-inline: auto;
+  padding-inline: var(--page-margin, 1rem);
+}
+
+/* ---------- Shared section heading ---------- */
+.lantern-section-heading {
+  margin: 0;
+  font-family: var(--font-heading--family);
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  color: var(--lantern-deep-brown);
+}
+
+/* ---------- Search field ---------- */
+.lantern-search {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.lantern-search--compact {
+  max-width: 1400px;
+}
+
+.lantern-search--compact input[type='search'] {
+  max-width: 640px;
+}
+
+.lantern-search input[type='search'] {
+  flex: 1;
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--color-foreground);
+  background: #fff;
+  border: 1px solid rgba(139, 111, 71, 0.45);
+  border-radius: 4px;
+}
+
+.lantern-search input[type='search']:focus {
+  outline: 2px solid var(--lantern-aged-gold);
+  outline-offset: 1px;
+}
+
+.lantern-search button {
+  padding: 0 1.25rem;
+  font: inherit;
+  color: #fff;
+  background: var(--lantern-warm-brown);
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.lantern-search button:hover {
+  background: var(--lantern-deep-brown);
+}
+
+.lantern-search-bar {
+  padding: 0.75rem 0;
+  background: var(--lantern-parchment);
+  border-bottom: 1px solid rgba(139, 111, 71, 0.2);
+}
+
+.lantern-search--compact input[type='search'] {
+  padding: 0.6rem 0.9rem;
+}
+
+@media (max-width: 749px) {
+  .lantern-search-bar {
+    display: none;
+  }
+}
+
+/* ---------- Homepage: age shelves ---------- */
+.lantern-shelves-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-block: 2rem 1rem;
+}
+
+.lantern-shelves {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 750px) {
+  .lantern-shelves {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .lantern-shelves {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.lantern-shelf {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+  height: 100%;
+  min-height: 7.5rem;
+  padding: 1rem;
+  text-align: center;
+  text-decoration: none;
+  background: var(--lantern-cream);
+  border: 1px solid rgba(139, 111, 71, 0.25);
+  border-top: 3px solid var(--lantern-aged-gold);
+  border-radius: 4px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.lantern-shelf:hover {
+  border-color: var(--lantern-warm-brown);
+  transform: translateY(-2px);
+}
+
+.lantern-shelf__ages {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7d6a48;
+}
+
+.lantern-shelf__name {
+  font-family: var(--font-heading--family);
+  font-size: 1.1rem;
+  line-height: 1.25;
+  color: var(--lantern-deep-brown);
+}
+
+/* ---------- Book rows ---------- */
+.lantern-row {
+  padding-block: 2rem;
+}
+
+.lantern-row__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(201, 169, 97, 0.6);
+}
+
+.lantern-row__more {
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  color: var(--lantern-warm-brown);
+}
+
+.lantern-row__sub {
+  margin: -0.5rem 0 1rem;
+  color: #7d6a48;
+}
+
+.lantern-row__list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 42%;
+  gap: 1rem;
+  margin: 0;
+  padding: 0 0 0.5rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.lantern-row__list > li {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 750px) {
+  .lantern-row__list {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(4, 1fr);
+    overflow: visible;
+  }
+}
+
+@media (min-width: 1100px) {
+  .lantern-row__list {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+.lantern-book {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.lantern-book__cover {
+  display: block;
+  aspect-ratio: 2 / 3;
+  margin-bottom: 0.5rem;
+  background: var(--lantern-cream);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.lantern-book__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.lantern-book:hover .lantern-book__title {
+  text-decoration: underline;
+}
+
+.lantern-book__price {
+  font-size: 0.9rem;
+}
+
+/* ---------- Special order ---------- */
+.lantern-special {
+  padding-block: 2rem 3rem;
+}
+
+.lantern-special__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.75rem;
+  background: var(--lantern-cream);
+  border: 1px solid rgba(139, 111, 71, 0.25);
+  border-top: 3px solid var(--lantern-aged-gold);
+  border-radius: 4px;
+}
+
+.lantern-special__text {
+  margin: 0.5rem 0 1rem;
+}
+
+.lantern-special__form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.lantern-special__form label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.lantern-special__form input {
+  padding: 0.65rem 0.8rem;
+  font: inherit;
+  background: #fff;
+  border: 1px solid rgba(139, 111, 71, 0.45);
+  border-radius: 4px;
+}
+
+.lantern-special__form .button {
+  justify-self: start;
+}
+
+.lantern-special__ok {
+  margin: 0;
+  font-style: italic;
+}
+
+/* ---------- Topic shortcuts on shelf pages ---------- */
+.lantern-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-block: 0.25rem 1rem;
+}
+
+.lantern-topics a,
+.lantern-product-tags a {
+  display: inline-block;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+  color: var(--lantern-deep-brown);
+  text-decoration: none;
+  background: var(--lantern-cream);
+  border: 1px solid rgba(201, 169, 97, 0.7);
+  border-radius: 999px;
+}
+
+.lantern-topics a:hover,
+.lantern-product-tags a:hover,
+.lantern-topics a[aria-current='page'] {
+  color: #fff;
+  background: var(--lantern-warm-brown);
+  border-color: var(--lantern-warm-brown);
+}
+
+/* ---------- Product page shelf links ---------- */
+.lantern-product-shelf {
+  padding-block: 1rem 2rem;
+}
+
+.lantern-product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

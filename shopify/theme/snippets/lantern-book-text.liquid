@@ -1,0 +1,31 @@
+{%- comment -%}
+  Title and author for a book. Product titles are stored as "Title: Author"
+  (or "Title : Author"), so everything after the last colon is the author.
+  Titles without a colon (gifts, toys) render whole with no author line.
+
+  Accepts:
+  - product: {Object}
+  - tag: {String} heading tag for the title (default 'span')
+{%- endcomment -%}
+{%- liquid
+  assign tag = tag | default: 'span'
+  assign parts = product.title | split: ':'
+  assign author = ''
+  assign book_title = product.title
+  if parts.size > 1
+    assign author = parts | last | strip
+    assign title_size = parts.size | minus: 1
+    for part in parts limit: title_size
+      if forloop.first
+        assign book_title = part
+      else
+        assign book_title = book_title | append: ':' | append: part
+      endif
+    endfor
+    assign book_title = book_title | strip
+  endif
+-%}
+<{{ tag }} class="lantern-book__title">{{ book_title }}</{{ tag }}>
+{%- if author != '' -%}
+  <span class="lantern-book__author">{{ author }}</span>
+{%- endif -%}

@@ -115,3 +115,64 @@ nav a:hover {
   color: var(--aged-gold);
   border-bottom-color: var(--aged-gold);
 }
+
+/* "Shop Books" dropdown — links into the Shopify store */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 110;
+  min-width: 13rem;
+  margin: 0;
+  padding: 0.5rem 0;
+  list-style: none;
+  text-align: left;
+  background: var(--cream);
+  border: 1px solid rgba(139, 111, 71, 0.25);
+  border-top: 3px solid var(--aged-gold);
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 8px 20px rgba(58, 47, 39, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 4px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+nav .nav-dropdown-menu a {
+  display: block;
+  margin: 0;
+  padding: 0.4rem 1.25rem;
+  border-bottom: 0;
+  white-space: nowrap;
+}
+
+nav .nav-dropdown-menu a:hover,
+nav .nav-dropdown-menu a:focus {
+  color: var(--deep-brown);
+  background: var(--parchment);
+}
+
+/* Search and cart icons, both pointing at the shop */
+.nav-icons {
+  display: inline-flex;
+  gap: 0.25rem;
+  vertical-align: middle;
+}
+
+nav a.nav-icon {
+  margin: 0 0.4rem;
+  padding: 0.25rem;
+  line-height: 0;
+}

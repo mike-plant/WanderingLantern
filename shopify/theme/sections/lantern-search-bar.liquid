@@ -1,0 +1,33 @@
+{%- comment -%}
+  Full-width search field directly under the header, desktop only. Phones
+  use the header's search icon. Skipped on the homepage, which opens with
+  its own search field, and on the search page, which has one already.
+{%- endcomment -%}
+{%- unless template.name == 'index' or template.name == 'search' -%}
+  <div class="lantern-search-bar">
+    <form action="{{ routes.search_url }}" method="get" role="search" class="lantern-search lantern-search--compact page-width">
+      <label for="LanternSearchBar" class="visually-hidden">Search books</label>
+      <input
+        id="LanternSearchBar"
+        type="search"
+        name="q"
+        placeholder="{{ section.settings.placeholder | escape }}"
+        autocomplete="off"
+      >
+      <input type="hidden" name="type" value="product">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Lantern search bar",
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    { "type": "text", "id": "placeholder", "label": "Placeholder", "default": "Search by title, author or topic" }
+  ],
+  "presets": [{ "name": "Lantern search bar" }]
+}
+{% endschema %}

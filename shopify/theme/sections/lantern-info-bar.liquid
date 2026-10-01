@@ -1,0 +1,49 @@
+{%- comment -%}
+  Mirrors the website's info bar (src/_includes/components/header.njk) so the
+  store and thewanderinglantern.com share the same top-of-page chrome.
+  Content lives in section settings; keep it in sync with src/_data/site.json.
+{%- endcomment -%}
+
+{{ 'lantern.css' | asset_url | stylesheet_tag }}
+
+<div class="lantern-info-bar">
+  {%- if section.settings.notice != blank -%}
+    <p class="lantern-info-bar__notice">{{ section.settings.notice }}</p>
+  {%- endif -%}
+  <div class="lantern-info-bar__content">
+    <span>{{ section.settings.address }}</span>
+    <span class="lantern-info-bar__sep" aria-hidden="true">|</span>
+    <span>{{ section.settings.hours }}</span>
+    {%- if section.settings.phone != blank -%}
+      <span class="lantern-info-bar__sep" aria-hidden="true">|</span>
+      <a href="tel:{{ section.settings.phone | remove: '(' | remove: ')' | remove: ' ' | remove: '-' }}">
+        {{- section.settings.phone -}}
+      </a>
+    {%- endif -%}
+    {%- if section.settings.instagram != blank -%}
+      <span class="lantern-info-bar__sep lantern-info-bar__sep--social" aria-hidden="true">|</span>
+      <a class="lantern-info-bar__social" href="{{ section.settings.instagram }}" target="_blank" rel="noopener">Instagram</a>
+    {%- endif -%}
+    {%- if section.settings.facebook != blank -%}
+      <span class="lantern-info-bar__sep lantern-info-bar__sep--social" aria-hidden="true">|</span>
+      <a class="lantern-info-bar__social" href="{{ section.settings.facebook }}" target="_blank" rel="noopener">Facebook</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Lantern info bar",
+  "class": "lantern-info-bar-section",
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    { "type": "text", "id": "notice", "label": "Shop notice (shop only, above the address)", "default": "Order online, pick up at the shop Tue-Sat · usually ready in 24 hours" },
+    { "type": "text", "id": "address", "label": "Address", "default": "15729 Madison Ave, Lakewood, OH 44107" },
+    { "type": "text", "id": "hours", "label": "Hours", "default": "Tue-Sat: 10am-6pm" },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "(216) 999-4462" },
+    { "type": "text", "id": "instagram", "label": "Instagram URL", "default": "https://www.instagram.com/thewanderinglanterncle" },
+    { "type": "text", "id": "facebook", "label": "Facebook URL", "default": "https://www.facebook.com/thewanderinglantern" }
+  ],
+  "presets": [{ "name": "Lantern info bar" }]
+}
+{% endschema %}

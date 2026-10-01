@@ -27,5 +27,18 @@
     "closedDisplay": "Closed Sunday & Monday"
   },
   "logo": "/logo.png",
+  "shopUrl": "https://shop.thewanderinglantern.com",
+  "shopMenu": [
+    { "title": "Board Books (0-3)", "path": "/collections/board-books-ages-0-3" },
+    { "title": "Picture Books (3-7)", "path": "/collections/picture-books-ages-3-7" },
+    { "title": "Early Readers (5-8)", "path": "/collections/early-readers-chapter-books-ages-5-8" },
+    { "title": "Middle Grade (8-12)", "path": "/collections/middle-grade-ages-8-12" },
+    { "title": "Young Adult (12+)", "path": "/collections/young-adult-ages-12" },
+    { "title": "For Grown-Ups", "path": "/collections/for-grown-ups" },
+    { "title": "Emily's Picks", "path": "/collections/emilys-recommendations" },
+    { "title": "Halloween", "path": "/collections/halloween-collection" },
+    { "title": "Gifts & Goodies", "path": "/collections/gifts-goodies" },
+    { "title": "Gift Cards", "path": "/products/gift-cards" }
+  ],
   "mapUrl": "https://www.google.com/maps/search/?api=1&query=15729+Madison+Ave%2C+Lakewood%2C+OH+44107"
 }

@@ -1,5 +1,6 @@
 {
   "navigation": {
+    "showShopInMainNav": true,
     "showEventsInMainNav": true,
     "showReservationsInMainNav": true,
     "showAboutInMainNav": true,

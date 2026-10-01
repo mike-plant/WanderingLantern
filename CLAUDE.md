@@ -281,6 +281,22 @@ Page-specific structured data (`Service`, `FAQPage`, `BreadcrumbList`) lives in
 the page body — Google reads JSON-LD from the body as well as the head. The
 store-wide `BookStore` schema stays in `head.njk`.
 
+### Shopify Store
+
+The online store (`shop.thewanderinglantern.com`; the old
+`thewanderinglantern.store` redirects there) runs the Shopify **Vessel** theme,
+restyled to match this site. Our theme code lives in `shopify/` — see
+`shopify/README.md` for the file map, theme IDs, and what's still open.
+
+- The store's info bar duplicates `components/header.njk`; when contact info
+  in `src/_data/site.json` changes, update the Shopify section too.
+- The nav's "Shop Books" dropdown (behind
+  `features.navigation.showShopInMainNav`) is built from `site.shopMenu` and
+  mirrors the shop's `lantern-main-menu`. Change both together.
+- The nav's search and cart icons go to the shop's `/search` and `/cart`.
+- GA4 (`G-DD109W64TG`) is configured with a cross-domain `linker` for the
+  site and shop in `head.njk` and the passthrough `signup`/`thankyou` pages.
+
 ## Forms & Mailchimp
 
 ### Mailchimp Tags

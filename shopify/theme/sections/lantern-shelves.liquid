@@ -1,0 +1,61 @@
+{%- comment -%}
+  Homepage first screen: a search field, then the age shelves as equal tiles.
+  Tiles are typographic (age range + shelf name) so they share one style
+  without needing matching artwork.
+{%- endcomment -%}
+<div class="lantern-shelves-section page-width">
+  {%- if section.settings.show_search -%}
+    <form action="{{ routes.search_url }}" method="get" role="search" class="lantern-search">
+      <label for="LanternSearch-{{ section.id }}" class="visually-hidden">Search books</label>
+      <input
+        id="LanternSearch-{{ section.id }}"
+        type="search"
+        name="q"
+        placeholder="{{ section.settings.placeholder | escape }}"
+        autocomplete="off"
+      >
+      <input type="hidden" name="type" value="product">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button type="submit">Search</button>
+    </form>
+  {%- endif -%}
+
+  {%- if section.settings.heading != blank -%}
+    <h2 class="lantern-section-heading">{{ section.settings.heading }}</h2>
+  {%- endif -%}
+
+  <ul class="lantern-shelves" role="list">
+    {%- for block in section.blocks -%}
+      {%- assign shelf = block.settings.collection -%}
+      <li {{ block.shopify_attributes }}>
+        <a class="lantern-shelf" href="{{ shelf.url | default: routes.all_products_collection_url }}">
+          <span class="lantern-shelf__ages">{{ block.settings.ages }}</span>
+          <span class="lantern-shelf__name">{{ block.settings.label | default: shelf.title }}</span>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "Lantern shelves",
+  "settings": [
+    { "type": "checkbox", "id": "show_search", "label": "Show search field", "default": true },
+    { "type": "text", "id": "placeholder", "label": "Search placeholder", "default": "Search by title, author or topic" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by age" }
+  ],
+  "blocks": [
+    {
+      "type": "shelf",
+      "name": "Shelf",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "text", "id": "ages", "label": "Ages", "default": "Ages 3-7" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Lantern shelves" }]
+}
+{% endschema %}

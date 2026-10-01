@@ -1,0 +1,45 @@
+{%- comment -%}
+  Topic shortcuts under a shelf title: one link per "Topic: X" tag found in
+  the collection. Each opens the same shelf filtered to that tag
+  (/collections/<shelf>/topic-x).
+{%- endcomment -%}
+{%- liquid
+  assign prefix = section.settings.prefix
+  assign prefix_size = prefix | size
+  assign topic_count = 0
+  for tag in collection.all_tags
+    assign head = tag | slice: 0, prefix_size
+    if head == prefix
+      assign topic_count = topic_count | plus: 1
+    endif
+  endfor
+-%}
+{%- if topic_count > 0 -%}
+  <nav class="lantern-topics page-width" aria-label="Browse {{ collection.title | escape }} by topic">
+    <a href="{{ collection.url }}" {% if current_tags == empty %}aria-current="page"{% endif %}>All</a>
+    {%- for tag in collection.all_tags -%}
+      {%- assign head = tag | slice: 0, prefix_size -%}
+      {%- if head == prefix -%}
+        <a
+          href="{{ collection.url }}/{{ tag | handleize }}"
+          {% if current_tags contains tag %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{- tag | remove_first: prefix | strip -}}
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  </nav>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Lantern topic links",
+  "enabled_on": { "templates": ["collection"] },
+  "settings": [
+    { "type": "text", "id": "prefix", "label": "Tag prefix", "default": "Topic:" }
+  ],
+  "presets": [{ "name": "Lantern topic links" }]
+}
+{% endschema %}

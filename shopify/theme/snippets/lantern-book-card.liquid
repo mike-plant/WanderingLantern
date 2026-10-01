@@ -1,0 +1,27 @@
+{%- comment -%}
+  Book card for Lantern rows: whole cover inside a 2:3 cream frame, then
+  title, author, price and pickup. Matches the collection-page cards.
+
+  Accepts:
+  - product: {Object}
+{%- endcomment -%}
+<a class="lantern-book" href="{{ product.url }}">
+  <span class="lantern-book__cover">
+    {%- if product.featured_image -%}
+      {{-
+        product.featured_image
+        | image_url: width: 480
+        | image_tag:
+          loading: 'lazy',
+          alt: product.featured_image.alt | default: product.title,
+          widths: '160, 240, 320, 480',
+          sizes: '(min-width: 990px) 200px, 40vw'
+      -}}
+    {%- endif -%}
+  </span>
+  {% render 'lantern-book-text', product: product %}
+  <span class="lantern-book__price">{{ product.price | money }}</span>
+  {%- if product.available -%}
+    <span class="lantern-book__pickup">Ready for pickup</span>
+  {%- endif -%}
+</a>

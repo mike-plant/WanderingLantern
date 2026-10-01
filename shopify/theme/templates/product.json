@@ -1,0 +1,171 @@
+{
+  "sections": {
+    "main": {
+      "type": "product-information",
+      "blocks": {
+        "media-gallery": {
+          "type": "_product-media-gallery",
+          "static": true,
+          "settings": {
+            "media_presentation": "carousel",
+            "slideshow_controls_style": "thumbnails",
+            "slideshow_mobile_controls_style": "dots",
+            "aspect_ratio": "adapt",
+            "constrain_to_viewport": true,
+            "media_fit": "contain",
+            "zoom": true
+          }
+        },
+        "product-details": {
+          "type": "_product-details",
+          "static": true,
+          "settings": {
+            "width": "fill",
+            "gap": 20,
+            "sticky_details_desktop": true,
+            "padding-block-end": 32
+          },
+          "blocks": {
+            "details": {
+              "type": "group",
+              "name": "Details",
+              "settings": {
+                "content_direction": "column",
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "gap": 24,
+                "width": "fill",
+                "padding-block-start": 40
+              },
+              "blocks": {
+                "title": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<h1>{{ closest.product.title }}</h1>",
+                    "type_preset": "h3",
+                    "width": "100%"
+                  },
+                  "name": "Title"
+                },
+                "price": {
+                  "type": "price",
+                  "settings": {
+                    "show_sale_price_first": true,
+                    "show_installments": false,
+                    "show_tax_info": false,
+                    "type_preset": "h5",
+                    "alignment": "left"
+                  }
+                },
+                "description": {
+                  "type": "product-description",
+                  "settings": {
+                    "text": "<p>{{ closest.product.description }}</p>"
+                  }
+                },
+                "variant_picker": {
+                  "type": "variant-picker",
+                  "settings": {
+                    "variant_style": "buttons",
+                    "show_swatches": true,
+                    "alignment": "left"
+                  }
+                },
+                "buy_buttons": {
+                  "type": "buy-buttons",
+                  "settings": {
+                    "stacking": false,
+                    "show_pickup_availability": true,
+                    "gift_card_form": true
+                  },
+                  "blocks": {
+                    "quantity": {
+                      "type": "quantity",
+                      "static": true,
+                      "settings": {}
+                    },
+                    "add-to-cart": {
+                      "type": "add-to-cart",
+                      "static": true,
+                      "settings": {
+                        "style_class": "button"
+                      }
+                    },
+                    "accelerated-checkout": {
+                      "type": "accelerated-checkout",
+                      "static": true,
+                      "settings": {}
+                    }
+                  },
+                  "block_order": []
+                },
+                "pickup_info": {
+                  "type": "accordion",
+                  "settings": {
+                    "icon": "plus",
+                    "dividers": true,
+                    "type_preset": "h5"
+                  },
+                  "blocks": {
+                    "pickup_row": {
+                      "type": "_accordion-row",
+                      "settings": {
+                        "heading": "Pickup & special orders",
+                        "open_by_default": false
+                      },
+                      "blocks": {
+                        "pickup_text": {
+                          "type": "text",
+                          "settings": {
+                            "text": "<p>Order online and pick up at 15729 Madison Ave, Tuesday to Saturday, 10am to 6pm. We'll email you when it's ready, usually within 24 hours.</p><p>Looking for something we don't have? Call (216) 999-4462 and we'll order it for you.</p>",
+                            "type_preset": "rte",
+                            "width": "100%"
+                          }
+                        }
+                      },
+                      "block_order": [
+                        "pickup_text"
+                      ]
+                    }
+                  },
+                  "block_order": [
+                    "pickup_row"
+                  ]
+                }
+              },
+              "block_order": [
+                "title",
+                "price",
+                "description",
+                "variant_picker",
+                "buy_buttons",
+                "pickup_info"
+              ]
+            }
+          },
+          "block_order": [
+            "details"
+          ]
+        }
+      },
+      "settings": {
+        "content_width": "content-center-aligned",
+        "desktop_media_position": "left",
+        "equal_columns": true,
+        "limit_details_width": true,
+        "gap": 48,
+        "enable_sticky_add_to_cart": true,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "shelf": {
+      "type": "lantern-product-shelf",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "shelf"
+  ]
+}

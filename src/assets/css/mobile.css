@@ -167,6 +167,11 @@
     font-size: 0.85rem;
   }
 
+  /* No hover on touch: "Shop Books" just goes to the shop homepage */
+  .nav-dropdown-menu {
+    display: none;
+  }
+
   /* Container & Layout */
   .container {
     padding: 1.5rem 1rem;

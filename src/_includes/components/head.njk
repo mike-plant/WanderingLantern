@@ -5,7 +5,11 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-DD109W64TG');
+      gtag('config', 'G-DD109W64TG', {
+        // One session across the site and the shop (and the old shop domain
+        // until its redirect traffic stops).
+        linker: { domains: ['thewanderinglantern.com', 'shop.thewanderinglantern.com', 'thewanderinglantern.store'] }
+      });
     </script>
 
     <meta charset="UTF-8">

@@ -1,0 +1,133 @@
+{
+  "sections": {
+    "shelves": {
+      "type": "lantern-shelves",
+      "blocks": {
+        "shelf_0": {
+          "type": "shelf",
+          "settings": {
+            "collection": "board-books-ages-0-3",
+            "label": "Board Books",
+            "ages": "Ages 0-3"
+          }
+        },
+        "shelf_1": {
+          "type": "shelf",
+          "settings": {
+            "collection": "picture-books-ages-3-7",
+            "label": "Picture Books",
+            "ages": "Ages 3-7"
+          }
+        },
+        "shelf_2": {
+          "type": "shelf",
+          "settings": {
+            "collection": "early-readers-chapter-books-ages-5-8",
+            "label": "Early Readers",
+            "ages": "Ages 5-8"
+          }
+        },
+        "shelf_3": {
+          "type": "shelf",
+          "settings": {
+            "collection": "middle-grade-ages-8-12",
+            "label": "Middle Grade",
+            "ages": "Ages 8-12"
+          }
+        },
+        "shelf_4": {
+          "type": "shelf",
+          "settings": {
+            "collection": "young-adult-ages-12",
+            "label": "Young Adult",
+            "ages": "Ages 12+"
+          }
+        },
+        "shelf_5": {
+          "type": "shelf",
+          "settings": {
+            "collection": "for-grown-ups",
+            "label": "For Grown-Ups",
+            "ages": "Adults"
+          }
+        }
+      },
+      "block_order": [
+        "shelf_0",
+        "shelf_1",
+        "shelf_2",
+        "shelf_3",
+        "shelf_4",
+        "shelf_5"
+      ],
+      "settings": {
+        "show_search": true,
+        "placeholder": "Search by title, author or topic",
+        "heading": "Shop by age"
+      }
+    },
+    "row_emily": {
+      "type": "lantern-book-row",
+      "settings": {
+        "collection": "emilys-recommendations",
+        "heading": "Emily's Picks",
+        "subheading": "Hand-picked from our shelves",
+        "link_label": "See all",
+        "limit": 8
+      }
+    },
+    "row_season": {
+      "type": "lantern-book-row",
+      "settings": {
+        "collection": "halloween-collection",
+        "heading": "Halloween Reads",
+        "subheading": "",
+        "link_label": "See all",
+        "limit": 8
+      }
+    },
+    "row_picture": {
+      "type": "lantern-book-row",
+      "settings": {
+        "collection": "picture-books-ages-3-7",
+        "heading": "Picture Books",
+        "subheading": "",
+        "link_label": "See all",
+        "limit": 8
+      }
+    },
+    "row_middle": {
+      "type": "lantern-book-row",
+      "settings": {
+        "collection": "middle-grade-ages-8-12",
+        "heading": "Middle Grade",
+        "subheading": "",
+        "link_label": "See all",
+        "limit": 8
+      }
+    },
+    "special_order": {
+      "type": "lantern-special-order",
+      "settings": {}
+    },
+    "row_gifts": {
+      "type": "lantern-book-row",
+      "settings": {
+        "collection": "gifts-goodies",
+        "heading": "Gifts & Goodies",
+        "subheading": "",
+        "link_label": "See all",
+        "limit": 8
+      }
+    }
+  },
+  "order": [
+    "shelves",
+    "row_emily",
+    "row_season",
+    "row_picture",
+    "row_middle",
+    "special_order",
+    "row_gifts"
+  ]
+}

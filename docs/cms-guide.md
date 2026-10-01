@@ -110,7 +110,7 @@ Uncheck it for adult-only evening workshops where child details aren't needed.
 ---
 
 ## Event Type B — Paid Event via Shopify Store
-*Use when customers buy tickets through thewanderinglantern.store*
+*Use when customers buy tickets through shop.thewanderinglantern.com*
 
 **Real examples:** Cardboard Maker's Space, Postcard Pen Pals, Layered Paper Art Workshop, Stories Pretend & Puppets, Improv Puppetry & Performance camp
 
@@ -124,7 +124,7 @@ Always fill this in for paid events. It shows in the event details.
 
 **Ticket Purchase URL (Shopify)**
 Paste the full URL from the Shopify product page.
-> `https://thewanderinglantern.store/products/cardboard-makers-space-april-3rd-2026`
+> `https://shop.thewanderinglantern.com/products/cardboard-makers-space-april-3rd-2026`
 
 This adds a **"Purchase Tickets"** button to the event page. The Mailchimp fields are not needed — leave them blank.
 

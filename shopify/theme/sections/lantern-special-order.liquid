@@ -1,0 +1,68 @@
+{%- comment -%}
+  Special-order block. On the homepage it always shows; on the search page
+  it can be limited to searches with no results, pre-filled with the search.
+  Submissions go through Shopify's contact form to the store email.
+{%- endcomment -%}
+{%- liquid
+  assign show = true
+  if section.settings.only_without_results
+    assign show = false
+    if search.performed and search.results_count == 0
+      assign show = true
+    endif
+  endif
+-%}
+{%- if show -%}
+  <div class="lantern-special page-width">
+    <div class="lantern-special__inner">
+      <h2 class="lantern-section-heading">{{ section.settings.heading }}</h2>
+      <div class="lantern-special__text">{{ section.settings.text }}</div>
+      {%- form 'contact', class: 'lantern-special__form' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="lantern-special__ok" role="status">{{ section.settings.success }}</p>
+        {%- else -%}
+          {{ form.errors | default_errors }}
+          <input type="hidden" name="contact[Request]" value="Special order">
+          <label>
+            Book title (and author, if you know it)
+            <input
+              type="text"
+              name="contact[Book]"
+              required
+              {% if search.terms != blank %}
+                value="{{ search.terms | escape }}"
+              {% endif %}
+            >
+          </label>
+          <label>
+            Your name
+            <input type="text" name="contact[name]" autocomplete="name" required>
+          </label>
+          <label>
+            Email
+            <input type="email" name="contact[email]" autocomplete="email" required>
+          </label>
+          <button type="submit" class="button">Send request</button>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Lantern special order",
+  "settings": [
+    { "type": "checkbox", "id": "only_without_results", "label": "Only show when a search finds nothing", "default": false },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Can't find it? We can probably get it." },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Call <a href=\"tel:+12169994462\">(216) 999-4462</a> or send us the title. We'll let you know when it's in.</p>"
+    },
+    { "type": "text", "id": "success", "label": "Thank-you message", "default": "Thank you! We'll be in touch about your book." }
+  ],
+  "presets": [{ "name": "Lantern special order" }]
+}
+{% endschema %}

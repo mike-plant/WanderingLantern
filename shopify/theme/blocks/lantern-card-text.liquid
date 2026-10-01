@@ -1,0 +1,33 @@
+{%- comment -%}
+  Product-card block: either the split title/author, or the pickup line.
+  Replaces the stock product-title block on collection and search cards.
+{%- endcomment -%}
+{%- assign product = closest.product -%}
+{%- if block.settings.content == 'pickup' -%}
+  {%- if product.available -%}
+    <p class="lantern-book__pickup" {{ block.shopify_attributes }}>Ready for pickup</p>
+  {%- endif -%}
+{%- else -%}
+  <div class="lantern-card-text" {{ block.shopify_attributes }}>
+    {% render 'lantern-book-text', product: product, tag: 'h3' %}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Lantern book text",
+  "settings": [
+    {
+      "type": "select",
+      "id": "content",
+      "label": "Show",
+      "options": [
+        { "value": "title_author", "label": "Title and author" },
+        { "value": "pickup", "label": "Pickup line" }
+      ],
+      "default": "title_author"
+    }
+  ],
+  "presets": [{ "name": "Lantern book text" }]
+}
+{% endschema %}

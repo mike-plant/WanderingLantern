@@ -1,0 +1,124 @@
+{
+  "sections": {
+    "section": {
+      "type": "section",
+      "name": "Collection heading",
+      "blocks": {
+        "title": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.collection.title }}</h1>",
+            "type_preset": "h2",
+            "alignment": "left"
+          }
+        }
+      },
+      "block_order": [
+        "title"
+      ],
+      "settings": {
+        "section_width": "page-width",
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 32,
+        "padding-block-end": 8
+      }
+    },
+    "topics": {
+      "type": "lantern-topic-links",
+      "settings": {
+        "prefix": "Topic:"
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "blocks": {
+        "filters": {
+          "type": "filters",
+          "static": true,
+          "settings": {
+            "enable_filtering": true,
+            "filter_style": "vertical",
+            "text_label_case": "none",
+            "enable_sorting": true,
+            "enable_grid_density": false
+          }
+        },
+        "product-card": {
+          "type": "_product-card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 10
+          },
+          "blocks": {
+            "card-gallery": {
+              "type": "_product-card-gallery",
+              "settings": {
+                "image_ratio": "portrait"
+              },
+              "blocks": {}
+            },
+            "group": {
+              "type": "_product-card-group",
+              "settings": {
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "gap": 4
+              },
+              "blocks": {
+                "book_text": {
+                  "type": "lantern-card-text",
+                  "settings": {
+                    "content": "title_author"
+                  }
+                },
+                "price": {
+                  "type": "price",
+                  "settings": {
+                    "show_sale_price_first": true,
+                    "show_installments": false,
+                    "show_tax_info": false,
+                    "type_preset": "paragraph",
+                    "alignment": "left"
+                  }
+                },
+                "pickup": {
+                  "type": "lantern-card-text",
+                  "settings": {
+                    "content": "pickup"
+                  }
+                }
+              },
+              "block_order": [
+                "book_text",
+                "price",
+                "pickup"
+              ]
+            }
+          },
+          "block_order": [
+            "card-gallery",
+            "group"
+          ]
+        }
+      },
+      "settings": {
+        "layout_type": "grid",
+        "product_card_size": "small",
+        "mobile_product_card_size": "small",
+        "product_grid_width": "centered",
+        "full_width_on_mobile": false,
+        "columns_gap_horizontal": 20,
+        "columns_gap_vertical": 32,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 48
+      }
+    }
+  },
+  "order": [
+    "section",
+    "topics",
+    "main"
+  ]
+}
