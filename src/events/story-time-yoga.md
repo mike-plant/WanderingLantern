@@ -3,10 +3,10 @@ layout: layouts/event.njk
 draft: false
 title: Story Time Yoga
 date: 2026-10-17
-time: 2:00 PM -3:00 PM
+time: 11:00 AM -12:00 PM
 ageRange: All ages
 location: ''
-category: special-event
+category: story-time
 excerpt: Celebrate the release of *Skelly T. Bones and Nami Do Yoga* with local author Terese M. G.! Join us October 17 from 2–3 PM for a free, playful story time yoga class for children and families.
 price: ''
 host: Terese M. G.
