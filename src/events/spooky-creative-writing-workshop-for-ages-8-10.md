@@ -11,7 +11,7 @@ excerpt: Young writers are invited to stretch their imaginations with local chil
 price: '39.00'
 host: Kelly Tooman
 status: ''
-ticketUrl: https://shop.thewanderinglantern.com/products/spooky-creative-writing-workshop
+ticketUrl: ''
 registrationUrl: ''
 dateRange: ''
 specialGuest: Kelly Tooman
@@ -23,6 +23,7 @@ showChildFields: true
 flyerImage: ''
 recurring: false
 recurringSchedule: ''
+permalink: ''
 ---
 
 Join local children’s author and creative writing teacher **Kelly Tooman** for a hands-on workshop designed to help young writers discover just how much they have to say.
