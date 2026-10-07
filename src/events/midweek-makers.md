@@ -2,7 +2,7 @@
 layout: layouts/event.njk
 draft: false
 title: Midweek Makers
-date: 2026-10-07
+date: 2026-10-14
 time: 10:00 PM - 1:00 PM
 ageRange: All ages
 location: ''
@@ -28,7 +28,7 @@ showChildFields: true
 flyerImage: ''
 recurring: false
 recurringSchedule: Every Wednesday Morning
-permalink: /events/wednesday-workshop
+permalink: ''
 ---
 
 We're excited to introduce a new weekly tradition at The Wandering Lantern: Midweek Makers!
