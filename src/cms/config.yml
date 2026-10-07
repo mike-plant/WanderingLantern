@@ -10,8 +10,6 @@ backend:
   # For local development: run `npx @sveltia/cms-proxy-server` in the
   # repo root and Sveltia will auto-detect it and use the local backend.
 
-# Use editorial workflow so saves create PRs, not direct commits
-publish_mode: editorial_workflow
 
 # Where uploaded images go in the repo
 media_folder: "src/root-files/event-images"
@@ -87,7 +85,7 @@ collections:
       # Recurring event fields — only for Saturday Story Time and similar standing events
       - { name: "recurring", label: "This is a recurring event", widget: "boolean", required: false, default: false, hint: "Check only for standing weekly or monthly events like Saturday Story Time. Recurring events are excluded from the main events listings and handled separately." }
       - { name: "recurringSchedule", label: "Recurring schedule description", widget: "string", required: false, hint: "e.g. 'Every Saturday'" }
-      - { name: "permalink", label: "Custom URL path (recurring only)", widget: "string", required: false, hint: "Only set this for recurring events. e.g. /events/saturday-storytime/" }
+      - { name: "permalink", label: "Custom URL path (recurring only)", widget: "string", required: false, hint: "Leave blank for normal events. Only for recurring events, e.g. /events/saturday-storytime/. Shop or ticket links go in 'Ticket Purchase URL' above, not here.", pattern: ["^/[^:?#]*/$", "Must be a site path like /events/my-event/ — paste shop or ticket links into 'Ticket Purchase URL' instead."] }
       # Body
       - { name: "body", label: "Event Details (long description)", widget: "markdown" }
 
