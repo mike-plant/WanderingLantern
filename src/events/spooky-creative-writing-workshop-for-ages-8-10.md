@@ -1,6 +1,6 @@
 ---
 layout: layouts/event.njk
-draft: false
+draft: true
 title: Spooky Creative Writing Workshop for Ages 8-10
 date: 2026-10-17
 time: 1:00 PM - 2:30 PM
