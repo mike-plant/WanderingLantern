@@ -16,7 +16,7 @@ price: ''
 host: Ohio City Art House
 status: ''
 ticketUrl: https://www.eventbrite.com/e/parent-and-child-acrylic-painting-class-tickets-1998083584789?aff=erelpanelorg
-registrationUrl: https://ohiocityarthouse.com/#classes
+registrationUrl: ''
 dateRange: ''
 specialGuest: Christina C.
 specialGuestRole: Painter/Instructor
