@@ -11,8 +11,8 @@ excerpt: Young writers are invited to stretch their imaginations with local chil
 price: '39.00'
 host: Kelly Tooman
 status: ''
-ticketUrl: ''
-registrationUrl: https://shop.thewanderinglantern.com/products/spooky-creative-writing-workshop
+ticketUrl: https://shop.thewanderinglantern.com/products/spooky-creative-writing-workshop
+registrationUrl: ''
 dateRange: ''
 specialGuest: Kelly Tooman
 specialGuestRole: Teacher & Writer
