@@ -12,7 +12,7 @@ price: '39.00'
 host: Kelly Tooman
 status: ''
 ticketUrl: ''
-registrationUrl: ''
+registrationUrl: https://shop.thewanderinglantern.com/products/spooky-creative-writing-workshop
 dateRange: ''
 specialGuest: Kelly Tooman
 specialGuestRole: Teacher & Writer
