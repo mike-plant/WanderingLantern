@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DD109W64TG"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      // Same bot guard as components/head.njk — keep the two in sync.
+      if (!/MSIE |Trident\//.test(navigator.userAgent) && !navigator.webdriver) {
+        var gaScript = document.createElement('script');
+        gaScript.async = true;
+        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-DD109W64TG';
+        document.head.appendChild(gaScript);
+      }
       gtag('js', new Date());
 
       gtag('config', 'G-DD109W64TG', {
@@ -14,40 +20,28 @@
         linker: { domains: ['thewanderinglantern.com', 'shop.thewanderinglantern.com', 'thewanderinglantern.store'] }
       });
 
-      // Fire conversion event based on source
+      // Fire the conversion for the form that sent the visitor here.
+      // Event registrations are counted on the event page itself (main.js),
+      // where the event title is known, so they aren't repeated here.
       const urlParams = new URLSearchParams(window.location.search);
-      const source = urlParams.get('source') || 'contact';
+      const source = urlParams.get('source');
 
-      // Map sources to event names and labels
       const eventMapping = {
-        'event': {
-          name: 'event_registration',
-          category: 'conversion',
-          label: 'Event Registration'
-        },
-        'newsletter': {
-          name: 'newsletter_signup',
-          category: 'conversion',
-          label: 'Newsletter Signup'
-        },
-        'firstlight': {
-          name: 'newsletter_signup',
-          category: 'conversion',
-          label: 'Newsletter Signup'
-        },
-        'contact': {
-          name: 'contact_form_submit',
-          category: 'engagement',
-          label: 'Contact Form Submission'
-        }
+        'newsletter': { name: 'newsletter_signup', label: 'Newsletter Signup' },
+        'firstlight': { name: 'newsletter_signup', label: 'Newsletter Signup' },
+        'contact': { name: 'contact_form_submit', label: 'Contact Form Submission' }
       };
 
-      const eventData = eventMapping[source] || eventMapping['contact'];
+      // A reload or back-button visit isn't a new submission.
+      const nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+      const isRepeatView = nav && (nav.type === 'reload' || nav.type === 'back_forward');
 
-      gtag('event', eventData.name, {
-        'event_category': eventData.category,
-        'event_label': eventData.label
-      });
+      if (eventMapping[source] && !isRepeatView) {
+        gtag('event', eventMapping[source].name, {
+          'event_category': 'conversion',
+          'event_label': eventMapping[source].label
+        });
+      }
     </script>
 
     <meta charset="UTF-8">
@@ -272,7 +266,7 @@
             </div>
 
             <div class="back-link">
-                <a href="../index.html" class="back-button">Back to Home</a>
+                <a href="/" class="back-button">Back to Home</a>
             </div>
 
             <div class="social-links">

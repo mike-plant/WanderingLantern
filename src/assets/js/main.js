@@ -152,46 +152,60 @@ function initGATracking() {
     // Track CTA button clicks
     const ctaButtons = document.querySelectorAll('.cta-button, .primary-cta, .secondary-cta, .secondary-outline');
     ctaButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            const buttonText = e.target.textContent.trim();
-            const buttonHref = e.target.getAttribute('href');
-
+        // [data-ga] elements are tracked by initDataGaTracking instead.
+        if (button.hasAttribute('data-ga')) return;
+        button.addEventListener('click', () => {
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'cta_click', {
                     'event_category': 'engagement',
-                    'event_label': buttonText,
-                    'value': buttonHref
+                    'event_label': button.textContent.trim(),
+                    // GA4 reserves `value` for numeric amounts, so the
+                    // destination goes in its own parameter.
+                    'link_url': button.getAttribute('href') || ''
                 });
             }
         });
     });
 
-    // Track contact form submission
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', () => {
+    // Contact form conversions are counted on /thankyou/?source=contact, after
+    // Formspree accepts the message.
+
+    // Track event registration form submission (the only place it's counted;
+    // the thank-you page skips source=event).
+    const eventForm = document.getElementById('mc-embedded-subscribe-form');
+    if (eventForm && eventForm.hasAttribute('data-redirect')) {
+        eventForm.addEventListener('submit', () => {
+            const eventTitle = document.querySelector('h1')?.textContent.trim() || 'unknown_event';
             if (typeof gtag !== 'undefined') {
-                gtag('event', 'form_submission', {
-                    'event_category': 'engagement',
-                    'event_label': 'contact_form'
+                gtag('event', 'event_registration', {
+                    'event_category': 'conversion',
+                    'event_label': eventTitle,
+                    'event_title': eventTitle
                 });
             }
         });
     }
 
-    // Track event registration form submission
-    const eventForm = document.getElementById('mc-embedded-subscribe-form');
-    if (eventForm) {
-        eventForm.addEventListener('submit', () => {
-            const eventTitle = document.querySelector('h1')?.textContent || 'unknown_event';
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'event_registration', {
-                    'event_category': 'conversion',
-                    'event_label': eventTitle
-                });
-            }
+    // Local-intent clicks that otherwise go unrecorded: phone taps, directions,
+    // and trips to the shop (GA's cross-domain linker means the shop doesn't
+    // count as an outbound click, so enhanced measurement misses it).
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href]');
+        if (!link || typeof gtag === 'undefined') return;
+        const href = link.getAttribute('href');
+
+        let eventName = null;
+        if (href.startsWith('tel:')) eventName = 'phone_click';
+        else if (/google\.com\/maps|maps\.google\.com|maps\.apple\.com/.test(href)) eventName = 'directions_click';
+        else if (href.includes('shop.thewanderinglantern.com')) eventName = 'shop_click';
+        if (!eventName) return;
+
+        gtag('event', eventName, {
+            'event_category': eventName === 'shop_click' ? 'engagement' : 'conversion',
+            'event_label': link.textContent.trim() || href,
+            'link_url': href
         });
-    }
+    });
 
     // Track newsletter signups
     const newsletterButtons = document.querySelectorAll('a[href*="signup"]');
