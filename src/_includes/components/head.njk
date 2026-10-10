@@ -1,24 +1,24 @@
 <head>
     <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DD109W64TG"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      // Skip the tag for retired browsers and automation tools. No real
-      // visitor sends an Internet Explorer user agent, but form-spam bots do,
-      // and GA4's built-in bot list doesn't catch them (Sept 2026: ~1,500
-      // fake "Germany" users on /signup/).
-      if (!/MSIE |Trident\//.test(navigator.userAgent) && !navigator.webdriver) {
-        var gaScript = document.createElement('script');
-        gaScript.async = true;
-        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-DD109W64TG';
-        document.head.appendChild(gaScript);
-      }
       gtag('js', new Date());
-      gtag('config', 'G-DD109W64TG', {
+      var gaConfig = {
         // One session across the site and the shop (and the old shop domain
         // until its redirect traffic stops).
         linker: { domains: ['thewanderinglantern.com', 'shop.thewanderinglantern.com', 'thewanderinglantern.store'] }
-      });
+      };
+      // Tag likely bots rather than dropping them. No real visitor sends an
+      // Internet Explorer user agent, but form-spam bots do, and GA4's
+      // built-in bot list doesn't catch them (Sept 2026: ~1,500 fake
+      // "Germany" users on /signup/). The "Suspected bots" data filter in GA
+      // matches this value.
+      if (/MSIE |Trident\//.test(navigator.userAgent) || navigator.webdriver) {
+        gaConfig.traffic_type = 'suspected_bot';
+      }
+      gtag('config', 'G-DD109W64TG', gaConfig);
     </script>
 
     <meta charset="UTF-8">

@@ -2,23 +2,22 @@
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DD109W64TG"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      // Same bot guard as components/head.njk — keep the two in sync.
-      if (!/MSIE |Trident\//.test(navigator.userAgent) && !navigator.webdriver) {
-        var gaScript = document.createElement('script');
-        gaScript.async = true;
-        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-DD109W64TG';
-        document.head.appendChild(gaScript);
-      }
       gtag('js', new Date());
 
-      gtag('config', 'G-DD109W64TG', {
+      var gaConfig = {
         // One session across the site and the shop (and the old shop domain
         // until its redirect traffic stops).
         linker: { domains: ['thewanderinglantern.com', 'shop.thewanderinglantern.com', 'thewanderinglantern.store'] }
-      });
+      };
+      // Same bot tagging as components/head.njk — keep the two in sync.
+      if (/MSIE |Trident\//.test(navigator.userAgent) || navigator.webdriver) {
+        gaConfig.traffic_type = 'suspected_bot';
+      }
+      gtag('config', 'G-DD109W64TG', gaConfig);
     </script>
 
     <meta charset="UTF-8">
